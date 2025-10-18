@@ -12,7 +12,7 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
-  a{color:#0f6b99;text-decoration:none}
+  a{color:var(--accent);text-decoration:none}
   header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
   .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
   .brand{display:flex;gap:12px;align-items:center}
@@ -21,61 +21,52 @@
   .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
   .input, select{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;outline:none;min-width:180px}
   .btn{background:var(--cta);color:#111827;border:1px solid var(--cta-border);border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.05)}
-  .btn.primary{background:#0073bb;color:#fff;border-color:#005d96;border-radius:8px}
+  .btn.primary{background:var(--accent);color:#fff;border-color:#005d96;border-radius:8px}
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:460px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:28px solid #ff9900;border-right:28px solid transparent}
-  .card .corner span{position:absolute;top:-24px;left:2px;color:#fff;font-weight:700;font-size:12px}
-  .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
-  .thumb img{max-width:90%;max-height:90%}
-  .body{padding:10px;display:grid;gap:8px}
-  .title{font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
-  .barcode{display:flex;justify-content:flex-start;align-items:flex-start}
-  .barcode .box{background:#fff;padding:2px 6px;border-radius:6px;border:1px solid var(--line)}
+  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:34px solid #ff9900;border-right:34px solid transparent}
+  .card .corner span{position:absolute;top:-28px;left:3px;color:#fff;font-weight:700;font-size:13px}
+  .card .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+  .card .thumb img{max-width:90%;max-height:90%}
+  .card .body{padding:12px;display:grid;gap:8px}
+  .title{font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3.4em}
+  .barcode{display:flex;justify-content:flex-start;align-items:flex-start;padding-top:2px;min-height:48px}
+  .barcode .box{background:#ffffff;padding:2px 6px;border-radius:6px;border:1px solid var(--line)}
   .barcode svg{max-width:140px;height:34px;display:block}
-  .barcode .digits{font-size:11px;margin-top:2px;letter-spacing:.5px}
-  .meta{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{background:#f3f4f6;border:1px solid var(--line);padding:2px 6px;border-radius:999px;color:#374151;font-size:12px}
-  .pricebox{display:flex;align-items:baseline;gap:6px}
+  .barcode .digits{color:#111827;font-size:11px;text-align:left;margin-top:2px;letter-spacing:.6px}
+  .meta{display:flex;gap:6px;flex-wrap:wrap;min-height:26px}
+  .chip{background:var(--chip);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:#374151;font-size:12px}
+  .pricebox{display:flex;align-items:baseline;gap:8px;min-height:22px}
   .pricebox .label{color:#6b7280;font-size:12px}
   .pricebox .value{font-weight:700;font-size:18px}
   .qtyrow{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}
-  .qty{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+  .qty{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
   .btn.wide{width:100%}
   .cart{position:sticky;top:76px;height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
   .cart h2{margin:0 0 4px 0;font-size:16px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
   .cartitem{display:grid;grid-template-columns:1fr 64px 84px 24px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
+  footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
-  /* ===== 印刷：A4縦・3列×12段（36件/ページ） ===== */
-  @page { size: A4 portrait; margin: 8mm; } /* 余白を少し狭く（ヘッダー/フッターは印刷ダイアログでOFF推奨） */
+  /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ） ===== */
+  @page { size: A4 portrait; margin: 10mm; }
   @media print{
-    header, .cart, .qtyrow, .controls .btn { display:none !important; }
+    header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
     body{background:#fff}
     main{display:block}
-    .grid{grid-template-columns:repeat(3,1fr);gap:4mm}
-    /* 高密度カード */
-    .card{height:20mm;min-height:0;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid;overflow:visible;border-radius:6px}
-    .card .corner{border-top-width:18px;border-right-width:18px}
-    .card .corner span{top:-16px;left:2px;font-size:10px}
-    .thumb{height:9mm;aspect-ratio:auto;border-bottom:1px solid #e5e7eb}
-    .thumb img{max-height:8.2mm}
-    .body{padding:2mm;gap:1.6mm}
-    .title{font-size:10pt;min-height:auto;-webkit-line-clamp:1}
-    .barcode .box{padding:0.6mm 1.4mm;border-radius:3px}
-    .barcode svg{height:18px;max-width:80px}
-    .barcode .digits{font-size:8.5px;margin-top:0.6mm}
-    .meta{display:none} /* 36件/ページ用に非表示 */
-    .pricebox .label{display:none}
-    .pricebox .value{font-size:10pt}
+    .grid{grid-template-columns:repeat(3,1fr);gap:8mm}
+    .card{min-height:0;height:auto;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid;overflow:visible}
+    .card .thumb{height:40mm;aspect-ratio:auto;border-bottom:1px solid #cbd5e1}
+    .barcode svg{height:22px;max-width:110px}
+    .barcode .digits{font-size:10px}
     .print-qty{display:block !important}
-    .print-qty .lbl{font-size:8.5pt}
-    .print-qty .box{height:7mm;border:1px dashed #9ca3af;border-radius:3px;margin-top:1mm}
-    /* 36件ごとに改ページ */
-    .card:nth-of-type(36n){page-break-after:always;break-after:page}
+    .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
+  .print-qty{display:none}
+  .print-qty .lbl{font-size:12px;color:#374151}
+  .print-qty .box{height:24px;border:1px dashed #9ca3af;border-radius:6px;margin-top:4px}
 </style>
 </head>
 <body>
@@ -100,18 +91,25 @@
   </section>
 
   <aside class="cart">
+    <div class="toolbar">
+      <button class="btn ghost" id="clearCart">カートを空にする</button>
+    </div>
     <h2>カート</h2>
     <div id="cartlist" class="cartlist"></div>
     <div class="total">
-      <div>小計（税抜）：<span id="subtotal">-</span></div>
-      <div>消費税：<span id="tax">-</span></div>
-      <div style="font-weight:700">税込合計：<span id="grand">-</span></div>
+      <div><span class="muted">小計（税抜）</span>：<span id="subtotal">-</span></div>
+      <div><span class="muted">消費税</span>：<span id="tax">-</span></div>
+      <div style="font-weight:700"><span>税込合計</span>：<span id="grand">-</span></div>
+      <hr style="border:0;border-top:1px dashed var(--line)">
       <input id="username" class="input" placeholder="ご担当者名 / 店舗名など（メールに記載）">
       <input id="note" class="input" placeholder="伝達事項（任意）">
       <button class="btn" id="submit">この内容で発注する</button>
+      <div class="muted" style="font-size:12px">発注後、mail_list の全アドレスへメール送信されます。</div>
     </div>
   </aside>
 </main>
+
+<footer>印刷はA4縦で3列×4段=12件/ページ。カードは通常と同じ情報（タイトル/JAN/メタ/価格）＋印刷専用の発注数量欄を表示。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -176,7 +174,7 @@ function ean13Pattern(digits){
   bits += "101";
   return bits;
 }
-function renderEAN13SVG(jan, width=80, height=18){  // 小さめバーコード
+function renderEAN13SVG(jan, width=110, height=22){
   const ds = onlyDigits(jan); if(ds.length<12) return "";
   const bits = ean13Pattern(ds); if(!bits) return "";
   const barW = Math.max(1, Math.floor(width / bits.length));
@@ -203,7 +201,7 @@ let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
 function renderGrid(list){
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  if(list.length===0){ grid.innerHTML = '<div style="color:#6b7280;text-align:center;padding:20px">該当商品がありません</div>'; return; }
+  if(list.length===0){ grid.innerHTML = '<div class="empty">該当商品がありません</div>'; return; }
   list.forEach((p,idx)=>{
     const el = document.createElement("div");
     el.className = "card";
@@ -211,19 +209,30 @@ function renderGrid(list){
     const barcodeSVG = renderEAN13SVG(p.jan);
     el.innerHTML = `
       <div class="corner"><span>${(idx+1)}</span></div>
-      <div class="thumb"><img alt="${p.name}" id="thumb-${p.jan}"></div>
-      <div class="body">
-        <div class="title">${p.name}</div>
-        <div class="barcode">
-          <div class="box">
-            ${barcodeSVG || `<div class="digits">JAN：${p.jan || "-"}</div>`}
-            ${barcodeSVG ? `<div class="digits" style="font-size:9px">${p.jan || ""}</div>` : ""}
+      <div class="card-inner">
+        <div class="thumb"><img alt="${p.name}" id="thumb-${p.jan}"></div>
+        <div class="body">
+          <div class="title">${p.name}</div>
+          <div class="barcode">
+            <div class="box">
+              ${barcodeSVG || `<div class="digits">JAN：${p.jan || "-"}</div>`}
+              ${barcodeSVG ? `<div class="digits">${p.jan || ""}</div>` : ""}
+            </div>
           </div>
-        </div>
-        <div class="pricebox"><span class="value">${money(p.price)}</span></div>
-        <div class="print-qty">
-          <div class="lbl">発注数量：</div>
-          <div class="box"></div>
+          <div class="meta">
+            ${p.brand?`<span class="chip">#${p.brand}</span>`:""}
+            ${p.category?`<span class="chip">${p.category}</span>`:""}
+            ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
+          </div>
+          <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${money(p.price)}</span></div>
+          <div class="qtyrow">
+            <input type="number" min="0" step="1" class="qty" placeholder="数量" id="qty-${p.jan}">
+            <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
+          </div>
+          <div class="print-qty">
+            <div class="lbl">発注数量：</div>
+            <div class="box"></div>
+          </div>
         </div>
       </div>`;
     grid.appendChild(el);
@@ -235,7 +244,7 @@ function renderGrid(list){
 function renderCart(){
   const list = document.getElementById("cartlist");
   list.innerHTML = "";
-  if(CART.length===0){ list.innerHTML = '<div style="color:#6b7280;text-align:center;padding:20px">カートは空です</div>'; }
+  if(CART.length===0){ list.innerHTML = '<div class="empty">カートは空です</div>'; }
 }
 
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
