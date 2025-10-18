@@ -13,6 +13,8 @@
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent);text-decoration:none}
+
+  /* ===== 画面表示（通常） ===== */
   header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
   .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
   .brand{display:flex;gap:12px;align-items:center}
@@ -22,11 +24,15 @@
   .input, select{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;outline:none;min-width:180px}
   .btn{background:var(--cta);color:#111827;border:1px solid var(--cta-border);border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.05)}
   .btn.primary{background:var(--accent);color:#fff;border-color:#005d96;border-radius:8px}
+
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:34px solid #ff9900;border-right:34px solid transparent}
-  .card .corner span{position:absolute;top:-28px;left:3px;color:#fff;font-weight:700;font-size:13px}
+  /* ▼番号タグを大きく（通常表示） */
+  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:42px solid #ff9900;border-right:42px solid transparent}
+  .card .corner span{position:absolute;top:-34px;left:4px;color:#fff;font-weight:800;font-size:15px;line-height:1}
+
   .card .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
   .card .thumb img{max-width:90%;max-height:90%}
   .card .body{padding:12px;display:grid;gap:8px}
@@ -43,6 +49,7 @@
   .qtyrow{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}
   .qty{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
   .btn.wide{width:100%}
+
   .cart{position:sticky;top:76px;height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
   .cart h2{margin:0 0 4px 0;font-size:16px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
@@ -51,81 +58,66 @@
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
   /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ） ===== */
-@page { size: A4 portrait; margin: 10mm; } /* ブラウザの印刷ヘッダー/フッターはOFF推奨 */
-@media print{
-  :root{ --gap: 6mm; }
+  @page { size: A4 portrait; margin: 10mm; } /* 印刷ダイアログでヘッダー/フッターOFF推奨 */
+  @media print{
+    :root{ --gap: 6mm; }
 
-  header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
-  body{background:#fff}
-  main{display:block;margin:0;padding:0}
+    header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
+    body{background:#fff}
+    main{display:block;margin:0;padding:0}
 
-  /* A4 内寸（210-20=190mm）×（297-20=277mm） */
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--gap);
-    width: calc(210mm - 20mm);
-    height: calc(297mm - 20mm);
-    margin: 0 auto;
+    /* A4 内寸（210-20=190mm）×（297-20=277mm）をそのままグリッドに適用 */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gap);
+      width: calc(210mm - 20mm);   /* 190mm */
+      height: calc(297mm - 20mm);  /* 277mm */
+      margin: 0 auto;
+    }
+
+    /* 各カードの高さ = (総高さ - ギャップ×3) / 4（厳密） */
+    .card{
+      height: calc( (100% - (var(--gap) * 3)) / 4 );
+      min-height: 0;
+      border:1px solid #cbd5e1;
+      border-radius:6px;
+      box-shadow:none;
+      page-break-inside:avoid;
+      overflow:visible;
+      display:flex;flex-direction:column;
+    }
+
+    /* ▼番号タグも印刷時にさらに大きく・読みやすく */
+    .card .corner{border-top-width:36px;border-right-width:36px}
+    .card .corner span{top:-30px;left:3px;font-size:14px;font-weight:900}
+
+    /* 画像は据え置き（ご指定どおり） */
+    .card .thumb{height:46%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
+
+    /* --- 情報を拡大（視認性アップ） --- */
+    .card .body{ padding: 3mm 3.2mm; gap: 2.2mm; }
+    .title{ font-size: 12pt; line-height: 1.25; -webkit-line-clamp: 1; min-height: auto; }
+    .barcode svg{ height: 22px; max-width: 110px; }
+    .barcode .digits{ font-size: 10pt; letter-spacing: .4px; }
+    .meta{ gap: 3px; }
+    .chip{ padding: 2px 6px; font-size: 9.5pt; }
+    .pricebox .label{ display:none; }
+    .pricebox .value{ font-size: 12pt; font-weight: 800; }
+
+    /* ▼数量欄：点線→実線＆少し大きく */
+    .print-qty{ display:block !important; }
+    .print-qty .lbl{ font-size: 11pt; }
+    .print-qty .box{
+      height: 10mm;                /* しっかり書ける高さ */
+      border: 1.6px solid #374151; /* 実線（濃いめ） */
+      border-radius: 4px;
+      margin-top: 1.4mm;
+    }
+
+    /* 12件ごとに改ページ */
+    .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
-
-  /* カード高さは厳密に1/4で固定 */
-  .card{
-    height: calc( (100% - (var(--gap) * 3)) / 4 );
-    min-height: 0;
-    border:1px solid #cbd5e1;
-    border-radius:6px;
-    box-shadow:none;
-    page-break-inside:avoid;
-    overflow:visible;
-    display:flex;flex-direction:column;
-  }
-
-  /* 画像サイズは据え置き（ご指定どおり） */
-  .card .thumb{
-    height:46%;
-    aspect-ratio:auto;
-    border-bottom:1px solid #cbd5e1;
-  }
-
-  /* ↓↓↓ ここから「情報と発注数量」を大きくする調整 ↓↓↓ */
-
-  /* 本文の余白を少し増やして読みやすく */
-  .card .body{ padding: 3mm 3.2mm; gap: 2.2mm; }
-
-  /* タイトルを大きく（1行で切り） */
-  .title{
-    font-size: 12pt;          /* 11 → 12pt */
-    line-height: 1.25;
-    -webkit-line-clamp: 1;
-    min-height: auto;
-  }
-
-  /* JANバーコードと数字を大きく */
-  .barcode svg{ height: 22px; max-width: 110px; }  /* 18px → 22px */
-  .barcode .digits{ font-size: 10pt; letter-spacing: .4px; } /* 8.5pt → 10pt */
-
-  /* メタ情報は少し大きくしつつ詰める */
-  .meta{ gap: 3px; }
-  .chip{ padding: 2px 6px; font-size: 9.5pt; }     /* 読みやすさ優先で微増 */
-
-  /* 価格をはっきり大きく */
-  .pricebox .label{ display:none; }                /* ラベルは省略して余白確保 */
-  .pricebox .value{ font-size: 12pt; font-weight: 800; } /* 11 → 12pt & 太字 */
-
-  /* 発注数量欄を大きく（枠も高く） */
-  .print-qty{ display:block !important; }
-  .print-qty .lbl{ font-size: 11pt; }              /* 9pt → 11pt */
-  .print-qty .box{
-    height: 10mm;                                  /* 8mm → 10mm */
-    border: 1.2px dashed #6b7280;                  /* 少し太くして視認性UP */
-    border-radius: 4px;
-    margin-top: 1.4mm;
-  }
-
-  /* 12件ごとに改ページ */
-  .card:nth-of-type(12n){ page-break-after: always; break-after: page; }
-}
 
   .print-qty{display:none}
 </style>
@@ -170,7 +162,7 @@
   </aside>
 </main>
 
-<footer>印刷はA4縦で3列×4段=12件/ページ。カードは通常と同じ情報（タイトル/JAN/メタ/価格）＋印刷専用の発注数量欄を表示。</footer>
+<footer>印刷はA4縦で3列×4段=12件/ページ。番号タグ大型化・数量欄は実線で視認性UP。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -231,7 +223,7 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]); }
   bits += "101";
   return bits;
 }
