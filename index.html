@@ -6,17 +6,9 @@
 <title>発注アプリ</title>
 <meta name="color-scheme" content="light">
 <style>
-  /* ===== Amazon風のライトテーマ ===== */
   :root{
-    --bg:#f7fafa;
-    --card:#ffffff;
-    --ink:#111827;
-    --muted:#4b5563;
-    --line:#e5e7eb;
-    --accent:#0073bb;
-    --cta:#ffd814;
-    --cta-border:#f3cc00;
-    --chip:#f3f4f6;
+    --bg:#f7fafa;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
+    --accent:#0073bb;--cta:#ffd814;--cta-border:#f3cc00;--chip:#f3f4f6;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
@@ -36,7 +28,6 @@
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  /* うっすら枠線・左上番号タグ */
   .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:28px solid #ff9900;border-right:28px solid transparent}
   .card .corner span{position:absolute;top:-24px;left:2px;color:#fff;font-weight:700;font-size:12px}
   .card .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
@@ -64,8 +55,6 @@
   .empty{color:#6b7280;text-align:center;padding:20px}
   .toolbar{display:flex;gap:8px;flex-wrap:wrap}
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
-
-  /* ===== 印刷（A4縦・1ページ8アイテム・カードそのまま） ===== */
   @page { size: A4 portrait; margin: 10mm; }
   @media print{
     header, .toolbar, .cart, .controls .btn, .qtyrow, .note { display:none !important; }
@@ -122,9 +111,7 @@
   </aside>
 </main>
 
-<footer>
-  印刷画面も発注画面と同じカードで表示。A4縦・2列×4段=8件/ページ。左上に番号タグ、うっすら枠線、JANは小さめ左詰め。
-</footer>
+<footer>印刷画面もカードで表示。A4縦・2列×4段=8件/ページ。左上番号タグ、JANは小さめ左詰め。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -143,6 +130,7 @@ async function fetchFirstJSON(urls){
   }
   throw lastErr || new Error("No sources available");
 }
+
 function buildImageCandidates(jan){
   const exts = ["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
   const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
@@ -150,21 +138,24 @@ function buildImageCandidates(jan){
   for(const b of bases){ for(const e of exts){ arr.push(`${b}${jan}.${e}`); } }
   return arr;
 }
-function svgPlaceholder(label){
+function svgPlaceholder(){
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='450'><rect width='100%' height='100%' fill='#f3f4f6'/><g fill='#6b7280' font-family='system-ui, -apple-system, Segoe UI, Roboto, Noto Sans JP' text-anchor='middle'><text x='50%' y='52%' font-size='18'>NO IMAGE</text></g></svg>`;
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 function setBestImage(imgEl, candidates){
   let i = 0;
   function tryNext(){
-    if(i >= candidates.length){ imgEl.src = svgPlaceholder('product'); imgEl.onerror = null; return; }
+    if(i >= candidates.length){ imgEl.src = svgPlaceholder(); imgEl.onerror = null; return; }
     imgEl.src = candidates[i++];
   }
   imgEl.onerror = tryNext;
   tryNext();
 }
+
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
 function onlyDigits(s){ return (s||"").replace(/[^0-9]/g,""); }
+
+// EAN-13
 const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
 const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
 const R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
@@ -184,7 +175,7 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]); }
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }  // ← 余計な括弧を削除して修正
   bits += "101";
   return bits;
 }
@@ -208,6 +199,7 @@ function renderEAN13SVG(jan, width=140, height=34){
   out += `</svg>`;
   return out;
 }
+
 let PRODUCTS = [];
 let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
 const buyerKey = "order.buyerName";
@@ -217,6 +209,7 @@ function initBuyer(){
   el.value = saved;
   el.addEventListener("input", ()=> localStorage.setItem(buyerKey, el.value.trim()));
 }
+
 function renderGrid(list){
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -259,6 +252,7 @@ function renderGrid(list){
     if(t) setBestImage(t, imgCandidates);
   });
 }
+
 function renderCart(){
   const list = document.getElementById("cartlist");
   list.innerHTML = "";
@@ -283,6 +277,7 @@ function renderCart(){
   document.getElementById("tax").textContent = money(tax);
   document.getElementById("grand").textContent = money(grand);
 }
+
 function addToCart(jan){
   const qtyEl = document.getElementById("qty-"+jan);
   const qty = parseInt(qtyEl.value||"0",10);
@@ -297,6 +292,7 @@ function addToCart(jan){
 function updQty(i,v){ const n = parseInt(v||"0",10); if(n<=0){ CART.splice(i,1); } else { CART[i].qty = n; } persistCart(); renderCart(); }
 function delItem(i){ CART.splice(i,1); persistCart(); renderCart(); }
 function persistCart(){ localStorage.setItem("cart.v1", JSON.stringify(CART)); }
+
 function applyFilters(){
   const q = document.getElementById("q").value.trim().toLowerCase();
   const cat = document.getElementById("cat").value;
@@ -314,9 +310,12 @@ function setOptions(id, values){
   uniq.sort((a,b)=> a.localeCompare(b, 'ja'));
   uniq.forEach(v=>{ const opt = document.createElement("option"); opt.value = v; opt.textContent = v; sel.appendChild(opt); });
 }
+
 async function boot(){
   initBuyer();
-  const prods = await fetchFirstJSON([ `${BASE}/products.json`, `${CDN}/products.json` ]);
+  const here = (new URL('./products.json', location.href)).href; // 相対も試す
+  const prods = await fetchFirstJSON([ here, `${BASE}/products.json`, `${CDN}/products.json` ]);
+  if(!Array.isArray(prods)) throw new Error("products.json の形式が配列ではありません");
   PRODUCTS = prods;
   setOptions("cat", PRODUCTS.map(p=>p.category).filter(Boolean));
   renderGrid(PRODUCTS);
@@ -326,7 +325,8 @@ async function boot(){
   document.getElementById("clearCart").addEventListener("click", ()=>{ CART=[]; persistCart(); renderCart(); });
   document.getElementById("submit").addEventListener("click", submitOrder);
 }
-boot().catch(err=>{ console.error(err); alert("初期化に失敗しました: " + err.message); });
+boot().catch(err=>{ console.error(err); alert("初期化エラー: " + err.message); });
+
 async function submitOrder(){
   if(CART.length===0){ alert("カートが空です"); return; }
   if(!GAS_ENDPOINT || GAS_ENDPOINT.startsWith("YOUR_")){ alert("GAS の Web アプリ URL を設定してください。"); return; }
