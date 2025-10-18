@@ -24,12 +24,11 @@
   .btn{background:var(--cta);color:#111827;border:1px solid var(--cta-border);border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.05)}
   .btn.ghost{background:#fff;border-color:var(--line);border-radius:8px}
   .btn.primary{background:var(--accent);color:#fff;border-color:#005d96;border-radius:8px}
-  .note{color:#6b7280;font-size:12px}
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:28px solid #ff9900;border-right:28px solid transparent}
-  .card .corner span{position:absolute;top:-24px;left:2px;color:#fff;font-weight:700;font-size:12px}
+  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:34px solid #ff9900;border-right:34px solid transparent}
+  .card .corner span{position:absolute;top:-28px;left:3px;color:#fff;font-weight:700;font-size:13px}
   .card .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
   .card .thumb img{max-width:90%;max-height:90%}
   .card .body{padding:12px;display:grid;gap:8px}
@@ -57,13 +56,14 @@
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
   @page { size: A4 portrait; margin: 10mm; }
   @media print{
-    header, .toolbar, .cart, .controls .btn, .qtyrow, .note { display:none !important; }
+    header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
     body{background:#fff}
     main{display:block}
-    .grid{grid-template-columns:repeat(2,1fr);gap:8mm}
-    .card{min-height:0;height:68mm;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid}
+    .grid{grid-template-columns:repeat(2,1fr);gap:10mm}
+    .card{min-height:0;height:auto;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid;overflow:visible}
+    .card .thumb{height:42mm;aspect-ratio:auto;border-bottom:1px solid #cbd5e1}
     .print-qty{display:block !important}
-    .card:nth-child(8n){page-break-after:always;break-after:page}
+    .card:nth-of-type(8n){page-break-after:always;break-after:page}
   }
   .print-qty{display:none}
   .print-qty .lbl{font-size:12px;color:#374151}
@@ -82,7 +82,6 @@
       <select id="cat" class="input"><option value="">すべてのカテゴリ</option></select>
       <input id="buyerName" class="input" placeholder="発注者名（履歴に保存）">
       <button class="btn primary" onclick="window.print()">印刷（カタログ）</button>
-      <span class="note">商品画像：webp/jfif対応 / JANはEAN-13バーコード</span>
     </div>
   </div>
 </header>
@@ -111,7 +110,7 @@
   </aside>
 </main>
 
-<footer>印刷画面もカードで表示。A4縦・2列×4段=8件/ページ。左上番号タグ、JANは小さめ左詰め。</footer>
+<footer>印刷も発注カードと同じ構成。A4縦・2列×4段=8件/ページ。左上番号タグ拡大、JANは小さめ左詰め、発注数量欄は印刷のみ表示。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -130,7 +129,6 @@ async function fetchFirstJSON(urls){
   }
   throw lastErr || new Error("No sources available");
 }
-
 function buildImageCandidates(jan){
   const exts = ["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
   const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
@@ -151,10 +149,8 @@ function setBestImage(imgEl, candidates){
   imgEl.onerror = tryNext;
   tryNext();
 }
-
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
 function onlyDigits(s){ return (s||"").replace(/[^0-9]/g,""); }
-
 // EAN-13
 const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
 const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
@@ -175,7 +171,7 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }  // ← 余計な括弧を削除して修正
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }
   bits += "101";
   return bits;
 }
@@ -233,9 +229,7 @@ function renderGrid(list){
         <div class="meta">
           ${p.brand?`<span class="chip">#${p.brand}</span>`:""}
           ${p.category?`<span class="chip">${p.category}</span>`:""}
-          ${p.supplier?`<span class="chip">@${p.supplier}</span>`:""}
           ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
-          ${p.unit?`<span class="chip">${p.unit}</span>`:""}
         </div>
         <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${money(p.price)}</span></div>
         <div class="qtyrow">
@@ -297,7 +291,7 @@ function applyFilters(){
   const q = document.getElementById("q").value.trim().toLowerCase();
   const cat = document.getElementById("cat").value;
   const filtered = PRODUCTS.filter(p=>{
-    const hay = [p.name,p.brand,p.category,p.supplier,p.jan].filter(Boolean).join(" ").toLowerCase();
+    const hay = [p.name,p.brand,p.category,p.jan].filter(Boolean).join(" ").toLowerCase();
     const hitQ = !q || hay.includes(q);
     const hitC = !cat || p.category===cat;
     return hitQ && hitC;
@@ -312,11 +306,13 @@ function setOptions(id, values){
 }
 
 async function boot(){
-  initBuyer();
-  const here = (new URL('./products.json', location.href)).href; // 相対も試す
+  const buyer = localStorage.getItem("order.buyerName") || "";
+  document.getElementById("buyerName").value = buyer;
+  document.getElementById("buyerName").addEventListener("input", (e)=> localStorage.setItem("order.buyerName", e.target.value.trim()));
+
+  const here = (new URL('./products.json', location.href)).href;
   const prods = await fetchFirstJSON([ here, `${BASE}/products.json`, `${CDN}/products.json` ]);
-  if(!Array.isArray(prods)) throw new Error("products.json の形式が配列ではありません");
-  PRODUCTS = prods;
+  PRODUCTS = Array.isArray(prods) ? prods : [];
   setOptions("cat", PRODUCTS.map(p=>p.category).filter(Boolean));
   renderGrid(PRODUCTS);
   renderCart();
