@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>発注アプリ</title>
+<meta name="color-scheme" content="dark light">
 <style>
   :root{
-    --bg:#0f172a;--card:#0b1224;--ink:#e5e7eb;--accent:#38bdf8;--muted:#94a3b8;--line:#1f2a44;--chip:#0f2238;
+    --bg:#0f172a;--card:#0b1224;--ink:#e5e7eb;--accent:#38bdf8;--muted:#94a3b8;--line:#1f2a44;--chip:#0f2238;--light:#f8fafc;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:linear-gradient(180deg,#0b1020,#0f172a 40%,#0b1020);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
@@ -27,15 +28,16 @@
   .card .thumb img{max-width:90%;max-height:90%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
   .card .body{padding:12px;display:grid;gap:8px}
   .title{font-weight:700;line-height:1.35}
-  .janline{font-size:12px;color:var(--muted)}
-  .barcode{display:flex;justify-content:center;align-items:flex-end;padding-top:4px}
-  .barcode svg{max-width:240px;height:54px}
+  .barcode{display:flex;justify-content:center;align-items:center;padding:6px 0}
+  .barcode .box{background:var(--light);padding:4px 8px;border-radius:8px;border:1px solid #e2e8f0}
+  .barcode svg{max-width:180px;height:42px;display:block}
+  .barcode .digits{color:#111827;font-size:11px;text-align:center;margin-top:2px;letter-spacing:1px}
   .meta{display:flex;gap:8px;flex-wrap:wrap}
   .chip{background:var(--chip);border:1px solid var(--line);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px}
   .pricebox{display:flex;align-items:baseline;justify-content:space-between}
   .pricebox .label{color:var(--muted);font-size:12px}
   .pricebox .value{font-weight:700;font-size:16px}
-  .qtyrow{display:grid;grid-template-columns:1fr 96px 96px;gap:10px;align-items:center}
+  .qtyrow{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:center}
   .qty{background:#0b1628;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
   .btn.wide{width:100%}
   .cart{position:sticky;top:76px;height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
@@ -95,16 +97,18 @@
 </main>
 
 <footer>
-  商品画像がない場合は自動でプレースホルダ表示。<br>
-  JANは <b>EAN-13</b> バーコード（<b>SVG</b>）で自動生成して表示します。
+  画像は <code>img/</code>（または <code>img/jan/</code>, <code>img/barcode/</code>）配下から、
+  <code>png/jpg/jpeg/webp/jfif</code>（大小文字OK）を自動で探索。JANは <b>EAN-13</b> バーコード（<b>SVG</b>）を白地ボックスに小さめ表示します。
 </footer>
 
 <script>
-const REPO = "kakaku_Order-Form-";
-const BASE = `https://${location.host}/${REPO}`;
+// ====== 設定 ======
+const REPO = "kakaku_Order-Form-";                                   // リポジトリ名
+const BASE = `https://${location.host}/${REPO}`;                      // 例: https://shimacp-studio.github.io/kakaku_Order-Form-/
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";                  // ★GAS WebアプリURL
 
+// ====== データ取得 ======
 async function fetchFirstJSON(urls){
   let lastErr = null;
   for(const u of urls){
@@ -116,8 +120,10 @@ async function fetchFirstJSON(urls){
   }
   throw lastErr || new Error("No sources available");
 }
+
+// ====== 画像解決（WEBP/JFIF対応 & フォールバック） ======
 function buildImageCandidates(jan){
-  const exts = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP","JFIF"];
+  const exts = ["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
   const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
   const arr = [];
   for(const b of bases){ for(const e of exts){ arr.push(`${b}${jan}.${e}`); } }
@@ -136,10 +142,12 @@ function setBestImage(imgEl, candidates){
   imgEl.onerror = tryNext;
   tryNext();
 }
+
+// ====== フォーマット ======
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
 function onlyDigits(s){ return (s||"").replace(/[^0-9]/g,""); }
 
-// EAN-13 barcode
+// ====== EAN-13 バーコード（SVG生成・小型＆白地） ======
 const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
 const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
 const R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
@@ -163,7 +171,7 @@ function ean13Pattern(digits){
   bits += "101";
   return bits;
 }
-function renderEAN13SVG(jan, width=240, height=54){
+function renderEAN13SVG(jan, width=180, height=42){
   const ds = onlyDigits(jan); if(ds.length<12) return "";
   const bits = ean13Pattern(ds); if(!bits) return "";
   const barW = Math.max(1, Math.floor(width / bits.length));
@@ -171,11 +179,12 @@ function renderEAN13SVG(jan, width=240, height=54){
   const hGuard = Math.floor(height * 0.92);
   const hFull  = height;
   let x = 0, out = `<svg viewBox='0 0 ${svgW} ${height}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'>`;
+  out += `<rect x='0' y='0' width='${svgW}' height='${height}' fill='#ffffff'/>`; // 白地
   for(let i=0;i<bits.length;i++){
     if(bits[i]==='1'){
       const isGuard = (i<3) || (i>=45 && i<50) || (i>=92);
       const h = isGuard ? hFull : hGuard;
-      out += `<rect x='${x}' y='0' width='${barW}' height='${h}' fill='#0f172a' />`;
+      out += `<rect x='${x}' y='0' width='${barW}' height='${h}' fill='#111827'/>`; // 黒バー
     }
     x += barW;
   }
@@ -183,10 +192,11 @@ function renderEAN13SVG(jan, width=240, height=54){
   return out;
 }
 
-// State
+// ====== 状態 ======
 let PRODUCTS = [];
 let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
 
+// ====== レンダリング ======
 function renderGrid(list){
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -195,12 +205,17 @@ function renderGrid(list){
     const el = document.createElement("div");
     el.className = "card";
     const imgCandidates = buildImageCandidates(p.jan);
-    const barcodeSVG = renderEAN13SVG(p.jan, 240, 54);
+    const barcodeSVG = renderEAN13SVG(p.jan, 180, 42);
     el.innerHTML = `
       <div class="thumb"><img alt="${p.name}" id="thumb-${p.jan}"></div>
       <div class="body">
         <div class="title">${p.name}</div>
-        <div class="barcode">${barcodeSVG || `<div class="janline">JAN：${p.jan || "-"}</div>`}</div>
+        <div class="barcode">
+          <div class="box">
+            ${barcodeSVG || `<div class="digits">JAN：${p.jan || "-"}</div>`}
+            ${barcodeSVG ? `<div class="digits">${p.jan || ""}</div>` : ""}
+          </div>
+        </div>
         <div class="meta">
           ${p.brand?`<span class="chip">#${p.brand}</span>`:""}
           ${p.category?`<span class="chip">${p.category}</span>`:""}
@@ -280,6 +295,7 @@ function setOptions(id, values){
   uniq.forEach(v=>{ const opt = document.createElement("option"); opt.value = v; opt.textContent = v; sel.appendChild(opt); });
 }
 
+// ====== 起動 ======
 async function boot(){
   const prods = await fetchFirstJSON([ `${BASE}/products.json`, `${CDN}/products.json` ]);
   PRODUCTS = prods;
@@ -295,6 +311,7 @@ async function boot(){
 }
 boot().catch(err=>{ console.error(err); alert("初期化に失敗しました: " + err.message); });
 
+// ====== 送信 ======
 async function submitOrder(){
   if(CART.length===0){ alert("カートが空です"); return; }
   if(!GAS_ENDPOINT || GAS_ENDPOINT.startsWith("YOUR_")){ alert("GAS の Web アプリ URL を設定してください。"); return; }
@@ -302,7 +319,7 @@ async function submitOrder(){
   const note = document.getElementById("note").value.trim();
   const payload = { username, note, total_excl: CART.reduce((s,it)=>s+(it.price||0)*it.qty,0), items: CART };
   try{
-    const res = await fetch(GAS_ENDPOINT, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
+    await fetch(GAS_ENDPOINT, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
     alert("発注を送信しました。メール送信を開始します。");
     CART = []; persistCart(); renderCart();
   }catch(e){ alert("送信エラー: " + e.message); }
