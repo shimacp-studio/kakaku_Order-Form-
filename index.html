@@ -221,7 +221,7 @@ function ean13Pattern(digits){
   const first = d12[0], left = d12.slice(1,7), right = d12.slice(7,12) + String(cd);
   const parity = PARITY[first] || "LLLLLL";
   let bits = "101";
-  for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
+  for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]; }
   bits += "01010";
   for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]); }
   bits += "101";
