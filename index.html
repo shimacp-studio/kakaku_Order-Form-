@@ -51,47 +51,82 @@
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
   /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ） ===== */
-  @page { size: A4 portrait; margin: 10mm; } /* ブラウザ印刷でヘッダー/フッターはOFFに */
-  @media print{
-    :root{ --gap: 6mm; }
-    header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
-    body{background:#fff}
-    main{display:block;margin:0;padding:0}
-    /* A4 内寸（210-20=190mm）×（297-20=277mm）をグリッドに適用 */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--gap);
-      width: calc(210mm - 20mm);   /* 190mm */
-      height: calc(297mm - 20mm);  /* 277mm */
-      margin: 0 auto;
-    }
-    /* 各カードの高さ = (総高さ - ギャップ×3) / 4 で厳密計算 */
-    .card{
-      height: calc( (100% - (var(--gap) * 3)) / 4 );
-      min-height: 0;
-      border:1px solid #cbd5e1;
-      border-radius:6px;
-      box-shadow:none;
-      page-break-inside:avoid;
-      overflow:visible;
-      display:flex;flex-direction:column;
-    }
-    /* 印刷用の内部比率 */
-    .card .thumb{height:46%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
-    .title{font-size:11pt; -webkit-line-clamp:1; min-height:auto}
-    .barcode svg{height:18px; max-width:90px}
-    .barcode .digits{font-size:8.5pt}
-    .meta{gap:4px}
-    .chip{padding:2px 6px; font-size:10px}
-    .pricebox .label{display:none}
-    .pricebox .value{font-size:11pt}
-    .print-qty{display:block !important}
-    .print-qty .lbl{font-size:9pt}
-    .print-qty .box{height:8mm; border:1px dashed #9ca3af; border-radius:3px; margin-top:1mm}
-    /* 12件ごとに改ページ */
-    .card:nth-of-type(12n){page-break-after:always;break-after:page}
+@page { size: A4 portrait; margin: 10mm; } /* ブラウザの印刷ヘッダー/フッターはOFF推奨 */
+@media print{
+  :root{ --gap: 6mm; }
+
+  header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
+  body{background:#fff}
+  main{display:block;margin:0;padding:0}
+
+  /* A4 内寸（210-20=190mm）×（297-20=277mm） */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+    width: calc(210mm - 20mm);
+    height: calc(297mm - 20mm);
+    margin: 0 auto;
   }
+
+  /* カード高さは厳密に1/4で固定 */
+  .card{
+    height: calc( (100% - (var(--gap) * 3)) / 4 );
+    min-height: 0;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+    box-shadow:none;
+    page-break-inside:avoid;
+    overflow:visible;
+    display:flex;flex-direction:column;
+  }
+
+  /* 画像サイズは据え置き（ご指定どおり） */
+  .card .thumb{
+    height:46%;
+    aspect-ratio:auto;
+    border-bottom:1px solid #cbd5e1;
+  }
+
+  /* ↓↓↓ ここから「情報と発注数量」を大きくする調整 ↓↓↓ */
+
+  /* 本文の余白を少し増やして読みやすく */
+  .card .body{ padding: 3mm 3.2mm; gap: 2.2mm; }
+
+  /* タイトルを大きく（1行で切り） */
+  .title{
+    font-size: 12pt;          /* 11 → 12pt */
+    line-height: 1.25;
+    -webkit-line-clamp: 1;
+    min-height: auto;
+  }
+
+  /* JANバーコードと数字を大きく */
+  .barcode svg{ height: 22px; max-width: 110px; }  /* 18px → 22px */
+  .barcode .digits{ font-size: 10pt; letter-spacing: .4px; } /* 8.5pt → 10pt */
+
+  /* メタ情報は少し大きくしつつ詰める */
+  .meta{ gap: 3px; }
+  .chip{ padding: 2px 6px; font-size: 9.5pt; }     /* 読みやすさ優先で微増 */
+
+  /* 価格をはっきり大きく */
+  .pricebox .label{ display:none; }                /* ラベルは省略して余白確保 */
+  .pricebox .value{ font-size: 12pt; font-weight: 800; } /* 11 → 12pt & 太字 */
+
+  /* 発注数量欄を大きく（枠も高く） */
+  .print-qty{ display:block !important; }
+  .print-qty .lbl{ font-size: 11pt; }              /* 9pt → 11pt */
+  .print-qty .box{
+    height: 10mm;                                  /* 8mm → 10mm */
+    border: 1.2px dashed #6b7280;                  /* 少し太くして視認性UP */
+    border-radius: 4px;
+    margin-top: 1.4mm;
+  }
+
+  /* 12件ごとに改ページ */
+  .card:nth-of-type(12n){ page-break-after: always; break-after: page; }
+}
+
   .print-qty{display:none}
 </style>
 </head>
