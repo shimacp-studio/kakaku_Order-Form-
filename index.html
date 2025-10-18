@@ -6,58 +6,34 @@
 <title>発注アプリ</title>
 <style>
   :root{
-    --bg:#0f172a;        /* slate-900 */
-    --card:#0b1224;      /* slightly lighter */
-    --ink:#e5e7eb;       /* text */
-    --accent:#38bdf8;    /* sky-400 */
-    --muted:#94a3b8;     /* slate-400 */
-    --line:#1f2a44;
-    --chip:#0f2238;
+    --bg:#0f172a;--card:#0b1224;--ink:#e5e7eb;--accent:#38bdf8;--muted:#94a3b8;--line:#1f2a44;--chip:#0f2238;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:linear-gradient(180deg,#0b1020,#0f172a 40%,#0b1020);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent)}
-  header{
-    position:sticky;top:0;z-index:30;
-    backdrop-filter:saturate(140%) blur(6px);
-    background:rgba(10,14,28,.7);
-    border-bottom:1px solid var(--line);
-  }
+  header{position:sticky;top:0;z-index:30;backdrop-filter:saturate(140%) blur(6px);background:rgba(10,14,28,.7);border-bottom:1px solid var(--line)}
   .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
   .brand{display:flex;gap:12px;align-items:center}
   .brand img{height:28px;width:auto;object-fit:contain}
   h1{font-weight:700;font-size:20px;margin:0}
   .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .input, select{
-    background:var(--card);color:var(--ink);
-    border:1px solid var(--line);border-radius:12px;padding:10px 12px;outline:none;min-width:180px
-  }
+  .input, select{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 12px;outline:none;min-width:180px}
   .input::placeholder{color:var(--muted)}
-  .btn{
-    background:linear-gradient(180deg,var(--accent),#0ea5e9);
-    color:#001018;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer
-  }
+  .btn{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#001018;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .card{
-    background:radial-gradient(1200px 400px at -10% -10%, #11224433, transparent 60%), var(--card);
-    border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column
-  }
-  .card .thumb{
-    background:#0a1222;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)
-  }
+  .card{background:radial-gradient(1200px 400px at -10% -10%, #11224433, transparent 60%), var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-height:480px}
+  .card .thumb{background:#0a1222;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
   .card .thumb img{max-width:90%;max-height:90%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
   .card .body{padding:12px;display:grid;gap:8px}
-  .jan{display:flex;justify-content:center;padding:8px}
-  .jan img{max-width:220px;max-height:52px;object-fit:contain;filter:contrast(1.05)}
+  .title{font-weight:700;line-height:1.35}
+  .janline{font-size:12px;color:var(--muted)}
   .meta{display:flex;gap:8px;flex-wrap:wrap}
   .chip{background:var(--chip);border:1px solid var(--line);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px}
-  .qtyrow{display:grid;grid-template-columns:1fr 88px 40px;gap:8px;align-items:center}
+  .qtyrow{display:grid;grid-template-columns:1fr 96px 96px;gap:10px;align-items:center}
   .qty{background:#0b1628;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
-  .cart{
-    position:sticky;top:76px;height:calc(100dvh - 92px);
-    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px
-  }
+  .btn.wide{width:100%}
+  .cart{position:sticky;top:76px;height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
   .cart h2{margin:0 0 4px 0;font-size:16px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
   .cartitem{display:grid;grid-template-columns:1fr 64px 84px 24px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #0c1730}
@@ -68,30 +44,16 @@
   .ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
   .success{background:#22c55e;color:#00140b}
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:var(--muted)}
-  /* Responsive */
-  @media (max-width:1024px){
-    .grid{grid-template-columns:repeat(2,1fr)}
-  }
-  @media (max-width:800px){
-    main{grid-template-columns:1fr}
-    .grid{grid-template-columns:1fr}
-    .cart{position:static;height:auto}
-  }
-  /* Print (catalog) */
-  @media print{
-    header,.toolbar,.cart{display:none !important}
-    main{display:block}
-    .grid{grid-template-columns:repeat(2,1fr);gap:10mm}
-    .card{page-break-inside:avoid;border:1px solid #cbd5e1;background:white;color:black}
-    body{background:white}
-  }
+  @media (max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:800px){main{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.cart{position:static;height:auto}}
+  @media print{header,.toolbar,.cart{display:none !important}main{display:block}.grid{grid-template-columns:repeat(2,1fr);gap:10mm}.card{page-break-inside:avoid;border:1px solid #cbd5e1;background:white;color:black}body{background:white}}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <div class="brand">
-      <img id="logo" src="${BASE}/img/shima_owl.png" alt="Shima Owl Logo" onerror="this.style.display='none'">
+      <img id="logo" src="${location.origin}/kakaku_Order-Form-/img/shima_owl.png" alt="Shima Owl Logo" onerror="this.style.display='none'">
       <h1>発注アプリ</h1>
     </div>
     <div class="controls">
@@ -128,18 +90,19 @@
 </main>
 
 <footer>
-  画像は <code>img/</code> フォルダ内の <code>JAN.png</code> / <code>JAN.jpg</code> / <code>JAN.jpeg</code> を自動参照します。
-  JAN は数字表記ではなく画像（バーコード等）で表示します。ロゴは <code>img/shima_owl.png</code> を参照します。
+  画像は <code>img/</code> （または <code>img/jan/</code>, <code>img/barcode/</code>）内の <code>JAN.png/jpg/jpeg/webp</code> を自動参照。<br>
+  JAN は商品名の下に**テキスト**で表示されます（画像は使いません）。
 </footer>
 
 <script>
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec"; // ★Google Apps Script のWebアプリURLを設定
-
-const REPO = "kakaku_Order-Form-"; // ← リポジトリ名（プロジェクトページ）
-const BASE = `https://${location.host}/${REPO}`;   // 例: https://shimacp-studio.github.io/kakaku_Order-Form-/
+// ====== 環境設定 ======
+const REPO = "kakaku_Order-Form-";                                   // リポジトリ名
+const BASE = `https://${location.host}/${REPO}`;                      // 例: https://shimacp-studio.github.io/kakaku_Order-Form-/
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
+const GAS_ENDPOINT = "YOUR_GAS_DEPLOYMENT_URL_HERE";                  // ★GAS WebアプリURL
 
-async function fetchFirst(urls){
+// ====== 便利関数 ======
+async function fetchFirstJSON(urls){
   let lastErr = null;
   for(const u of urls){
     try{
@@ -150,63 +113,46 @@ async function fetchFirst(urls){
   }
   throw lastErr || new Error("No sources available");
 }
-
-async function loadJSONProducts(){
-  // Pages優先→CDNフォールバック（jsDelivr）
-  const urls = [
-    BASE + "/products.json",
-    CDN  + "/products.json"
-  ];
-  return await fetchFirst(urls);
-}
-
-let PRODUCTS = [];
-let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
-
-function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
-
 function buildImageCandidates(jan){
-  // 複数の拡張子 / 大文字小文字 / サブフォルダを総当たり
   const exts = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP"];
   const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
   const arr = [];
-  for(const b of bases){
-    for(const e of exts){ arr.push(`${b}${jan}.${e}`); }
-  }
+  for(const b of bases){ for(const e of exts){ arr.push(`${b}${jan}.${e}`); } }
   return arr;
 }
-function janImg(jan){ return buildImageCandidates(jan); }
-
+function svgPlaceholder(label){
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='450'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#0b1628'/><stop offset='100%' stop-color='#0f2238'/></linearGradient></defs><rect width='100%' height='100%' fill='url(#g)'/><g fill='#94a3b8' font-family='system-ui, -apple-system, Segoe UI, Roboto, Noto Sans JP' text-anchor='middle'><text x='50%' y='48%' font-size='24' opacity='0.9'>NO IMAGE</text><text x='50%' y='58%' font-size='16' opacity='0.7'>${label}</text></g></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
 function setBestImage(imgEl, candidates){
   let i = 0;
   function tryNext(){
-    if(i >= candidates.length){ imgEl.style.display = "none"; return; }
+    if(i >= candidates.length){ imgEl.src = svgPlaceholder('product'); imgEl.onerror = null; return; }
     imgEl.src = candidates[i++];
   }
   imgEl.onerror = tryNext;
   tryNext();
 }
+function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
 
+// ====== アプリ状態 ======
+let PRODUCTS = [];
+let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
+
+// ====== レンダリング ======
 function renderGrid(list){
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  if(list.length===0){
-    grid.innerHTML = '<div class="empty">該当商品がありません</div>';
-    return;
-  }
+  if(list.length===0){ grid.innerHTML = '<div class="empty">該当商品がありません</div>'; return; }
   list.forEach(p=>{
     const el = document.createElement("div");
     el.className = "card";
-    const janImgs = janImg(p.jan);
+    const imgCandidates = buildImageCandidates(p.jan);
     el.innerHTML = `
-      <div class="thumb">
-        <img alt="${p.name}" id="thumb-${p.jan}">
-      </div>
-      <div class="jan">
-        <img alt="${p.jan}" id="janimg-${p.jan}">
-      </div>
+      <div class="thumb"><img alt="${p.name}" id="thumb-${p.jan}"></div>
       <div class="body">
-        <div style="font-weight:700;line-height:1.3">${p.name}</div>
+        <div class="title">${p.name}</div>
+        <div class="janline">JAN：${p.jan || "-"}</div>
         <div class="meta">
           ${p.brand?`<span class="chip">#${p.brand}</span>`:""}
           ${p.category?`<span class="chip">${p.category}</span>`:""}
@@ -217,17 +163,39 @@ function renderGrid(list){
         <div class="qtyrow">
           <div class="muted">単価（税抜）：<b>${money(p.price)}</b></div>
           <input type="number" min="0" step="1" class="qty" placeholder="数量" id="qty-${p.jan}">
-          <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
+          <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
         ${p.note?`<div class="muted" style="font-size:12px">${p.note}</div>`:""}
       </div>`;
     grid.appendChild(el);
-    // set images with robust fallback
-    const t = el.querySelector(`#thumb-${p.jan.replace(/[^0-9]/g,"")}`) || el.querySelector(`#thumb-${p.jan}`);
-    const j = el.querySelector(`#janimg-${p.jan.replace(/[^0-9]/g,"")}`) || el.querySelector(`#janimg-${p.jan}`);
-    if(t) setBestImage(t, janImgs);
-    if(j) setBestImage(j, janImgs);
+    const t = el.querySelector(`#thumb-${p.jan}`);
+    if(t) setBestImage(t, imgCandidates);
   });
+}
+
+function renderCart(){
+  const list = document.getElementById("cartlist");
+  list.innerHTML = "";
+  if(CART.length===0){ list.innerHTML = '<div class="empty">カートは空です</div>'; }
+  else{
+    CART.forEach((it,idx)=>{
+      const row = document.createElement("div");
+      row.className = "cartitem";
+      const line = (it.price||0) * it.qty;
+      row.innerHTML = `
+        <div><div style="font-weight:600">${it.name}</div><div class="muted" style="font-size:12px">JAN：${it.jan}</div></div>
+        <input type="number" class="qty" min="1" value="${it.qty}" onchange="updQty(${idx}, this.value)">
+        <div class="muted">${money(line)}</div>
+        <button class="btn ghost" title="削除" onclick="delItem(${idx})">×</button>`;
+      list.appendChild(row);
+    });
+  }
+  const subtotal = CART.reduce((s,it)=> s + (it.price||0)*it.qty, 0);
+  const tax = Math.floor(subtotal * 0.1);
+  const grand = subtotal + tax;
+  document.getElementById("subtotal").textContent = money(subtotal);
+  document.getElementById("tax").textContent = money(tax);
+  document.getElementById("grand").textContent = money(grand);
 }
 
 function addToCart(jan){
@@ -239,45 +207,11 @@ function addToCart(jan){
   const exist = CART.find(x=>x.jan===jan);
   if(exist){ exist.qty += qty; } else { CART.push({jan: p.jan, name: p.name, price: p.price||0, pack: p.pack||1, qty}); }
   qtyEl.value = "";
-  persistCart();
-  renderCart();
-}
-
-function persistCart(){ localStorage.setItem("cart.v1", JSON.stringify(CART)); }
-
-function renderCart(){
-  const list = document.getElementById("cartlist");
-  list.innerHTML = "";
-  if(CART.length===0){
-    list.innerHTML = '<div class="empty">カートは空です</div>';
-  } else {
-    CART.forEach((it,idx)=>{
-      const row = document.createElement("div");
-      row.className = "cartitem";
-      const line = (it.price||0) * it.qty;
-      row.innerHTML = `
-        <div><div style="font-weight:600">${it.name}</div><div class="muted" style="font-size:12px">${it.jan}</div></div>
-        <input type="number" class="qty" min="1" value="${it.qty}" onchange="updQty(${idx}, this.value)">
-        <div class="muted">${money(line)}</div>
-        <button class="btn ghost" title="削除" onclick="delItem(${idx})">×</button>`;
-      list.appendChild(row);
-    });
-  }
-  // totals
-  const subtotal = CART.reduce((s,it)=> s + (it.price||0)*it.qty, 0);
-  const tax = Math.floor(subtotal * 0.1);
-  const grand = subtotal + tax;
-  document.getElementById("subtotal").textContent = money(subtotal);
-  document.getElementById("tax").textContent = money(tax);
-  document.getElementById("grand").textContent = money(grand);
-}
-
-function updQty(i,v){
-  const n = parseInt(v||"0",10);
-  if(n<=0){ CART.splice(i,1); } else { CART[i].qty = n; }
   persistCart(); renderCart();
 }
+function updQty(i,v){ const n = parseInt(v||"0",10); if(n<=0){ CART.splice(i,1); } else { CART[i].qty = n; } persistCart(); renderCart(); }
 function delItem(i){ CART.splice(i,1); persistCart(); renderCart(); }
+function persistCart(){ localStorage.setItem("cart.v1", JSON.stringify(CART)); }
 
 function applyFilters(){
   const q = document.getElementById("q").value.trim().toLowerCase();
@@ -291,27 +225,21 @@ function applyFilters(){
   });
   renderGrid(filtered);
 }
-
 function setOptions(id, values){
   const sel = document.getElementById(id);
   const uniq = Array.from(new Set(values.filter(Boolean)));
   uniq.sort((a,b)=> a.localeCompare(b, 'ja'));
-  uniq.forEach(v=>{
-    const opt = document.createElement("option");
-    opt.value = v; opt.textContent = v;
-    sel.appendChild(opt);
-  });
+  uniq.forEach(v=>{ const opt = document.createElement("option"); opt.value = v; opt.textContent = v; sel.appendChild(opt); });
 }
 
+// ====== 起動 ======
 async function boot(){
-  const prods = await loadJSONProducts();
+  const prods = await fetchFirstJSON([ `${BASE}/products.json`, `${CDN}/products.json` ]);
   PRODUCTS = prods;
-  // build options
   setOptions("cat", PRODUCTS.map(p=>p.category).filter(Boolean));
   setOptions("supplier", PRODUCTS.map(p=>p.supplier).filter(Boolean));
   renderGrid(PRODUCTS);
   renderCart();
-  // listeners
   document.getElementById("q").addEventListener("input", applyFilters);
   document.getElementById("cat").addEventListener("change", applyFilters);
   document.getElementById("supplier").addEventListener("change", applyFilters);
@@ -325,23 +253,12 @@ async function submitOrder(){
   if(!GAS_ENDPOINT || GAS_ENDPOINT.startsWith("YOUR_")){ alert("GAS の Web アプリ URL を設定してください。"); return; }
   const username = document.getElementById("username").value.trim();
   const note = document.getElementById("note").value.trim();
-  const payload = {
-    username, note,
-    total_excl: CART.reduce((s,it)=>s+(it.price||0)*it.qty,0),
-    items: CART
-  };
+  const payload = { username, note, total_excl: CART.reduce((s,it)=>s+(it.price||0)*it.qty,0), items: CART };
   try{
-    const res = await fetch(GAS_ENDPOINT, {
-      method:"POST",
-      mode:"no-cors",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(GAS_ENDPOINT, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
     alert("発注を送信しました。メール送信を開始します。");
     CART = []; persistCart(); renderCart();
-  }catch(e){
-    alert("送信エラー: " + e.message);
-  }
+  }catch(e){ alert("送信エラー: " + e.message); }
 }
 </script>
 </body>
