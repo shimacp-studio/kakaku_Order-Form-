@@ -22,14 +22,19 @@
   .btn{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#001018;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .card{background:radial-gradient(1200px 400px at -10% -10%, #11224433, transparent 60%), var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-height:480px}
+  .card{background:radial-gradient(1200px 400px at -10% -10%, #11224433, transparent 60%), var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-height:520px}
   .card .thumb{background:#0a1222;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
   .card .thumb img{max-width:90%;max-height:90%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
   .card .body{padding:12px;display:grid;gap:8px}
   .title{font-weight:700;line-height:1.35}
   .janline{font-size:12px;color:var(--muted)}
+  .barcode{display:flex;justify-content:center;align-items:flex-end;padding-top:4px}
+  .barcode svg{max-width:240px;height:54px}
   .meta{display:flex;gap:8px;flex-wrap:wrap}
   .chip{background:var(--chip);border:1px solid var(--line);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px}
+  .pricebox{display:flex;align-items:baseline;justify-content:space-between}
+  .pricebox .label{color:var(--muted);font-size:12px}
+  .pricebox .value{font-weight:700;font-size:16px}
   .qtyrow{display:grid;grid-template-columns:1fr 96px 96px;gap:10px;align-items:center}
   .qty{background:#0b1628;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
   .btn.wide{width:100%}
@@ -90,18 +95,16 @@
 </main>
 
 <footer>
-  画像は <code>img/</code> （または <code>img/jan/</code>, <code>img/barcode/</code>）内の <code>JAN.png/jpg/jpeg/webp</code> を自動参照。<br>
-  JAN は商品名の下に**テキスト**で表示されます（画像は使いません）。
+  商品画像がない場合は自動でプレースホルダ表示。<br>
+  JANは <b>EAN-13</b> バーコード（<b>SVG</b>）で自動生成して表示します。
 </footer>
 
 <script>
-// ====== 環境設定 ======
-const REPO = "kakaku_Order-Form-";                                   // リポジトリ名
-const BASE = `https://${location.host}/${REPO}`;                      // 例: https://shimacp-studio.github.io/kakaku_Order-Form-/
+const REPO = "kakaku_Order-Form-";
+const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const GAS_ENDPOINT = "YOUR_GAS_DEPLOYMENT_URL_HERE";                  // ★GAS WebアプリURL
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";
 
-// ====== 便利関数 ======
 async function fetchFirstJSON(urls){
   let lastErr = null;
   for(const u of urls){
@@ -134,12 +137,56 @@ function setBestImage(imgEl, candidates){
   tryNext();
 }
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
+function onlyDigits(s){ return (s||"").replace(/[^0-9]/g,""); }
 
-// ====== アプリ状態 ======
+// EAN-13 barcode
+const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
+const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
+const R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
+const PARITY = {"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
+function ean13Checksum12(d12){
+  let sum = 0;
+  for(let i=0;i<12;i++){ const n = +d12[i]; sum += (i%2===0) ? n : n*3; }
+  return (10 - (sum%10)) % 10;
+}
+function ean13Pattern(digits){
+  const ds = onlyDigits(digits);
+  if(ds.length < 12) return null;
+  const d12 = ds.slice(0,12);
+  const cd  = (ds.length>=13) ? +ds[12] : ean13Checksum12(d12);
+  const first = d12[0], left = d12.slice(1,7), right = d12.slice(7,12) + String(cd);
+  const parity = PARITY[first] || "LLLLLL";
+  let bits = "101";
+  for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
+  bits += "01010";
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }
+  bits += "101";
+  return bits;
+}
+function renderEAN13SVG(jan, width=240, height=54){
+  const ds = onlyDigits(jan); if(ds.length<12) return "";
+  const bits = ean13Pattern(ds); if(!bits) return "";
+  const barW = Math.max(1, Math.floor(width / bits.length));
+  const svgW = barW * bits.length;
+  const hGuard = Math.floor(height * 0.92);
+  const hFull  = height;
+  let x = 0, out = `<svg viewBox='0 0 ${svgW} ${height}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'>`;
+  for(let i=0;i<bits.length;i++){
+    if(bits[i]==='1'){
+      const isGuard = (i<3) || (i>=45 && i<50) || (i>=92);
+      const h = isGuard ? hFull : hGuard;
+      out += `<rect x='${x}' y='0' width='${barW}' height='${h}' fill='#0f172a' />`;
+    }
+    x += barW;
+  }
+  out += `</svg>`;
+  return out;
+}
+
+// State
 let PRODUCTS = [];
 let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
 
-// ====== レンダリング ======
 function renderGrid(list){
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -148,11 +195,12 @@ function renderGrid(list){
     const el = document.createElement("div");
     el.className = "card";
     const imgCandidates = buildImageCandidates(p.jan);
+    const barcodeSVG = renderEAN13SVG(p.jan, 240, 54);
     el.innerHTML = `
       <div class="thumb"><img alt="${p.name}" id="thumb-${p.jan}"></div>
       <div class="body">
         <div class="title">${p.name}</div>
-        <div class="janline">JAN：${p.jan || "-"}</div>
+        <div class="barcode">${barcodeSVG || `<div class="janline">JAN：${p.jan || "-"}</div>`}</div>
         <div class="meta">
           ${p.brand?`<span class="chip">#${p.brand}</span>`:""}
           ${p.category?`<span class="chip">${p.category}</span>`:""}
@@ -160,8 +208,8 @@ function renderGrid(list){
           ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
           ${p.unit?`<span class="chip">${p.unit}</span>`:""}
         </div>
+        <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${money(p.price)}</span></div>
         <div class="qtyrow">
-          <div class="muted">単価（税抜）：<b>${money(p.price)}</b></div>
           <input type="number" min="0" step="1" class="qty" placeholder="数量" id="qty-${p.jan}">
           <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
@@ -232,7 +280,6 @@ function setOptions(id, values){
   uniq.forEach(v=>{ const opt = document.createElement("option"); opt.value = v; opt.textContent = v; sel.appendChild(opt); });
 }
 
-// ====== 起動 ======
 async function boot(){
   const prods = await fetchFirstJSON([ `${BASE}/products.json`, `${CDN}/products.json` ]);
   PRODUCTS = prods;
