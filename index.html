@@ -51,22 +51,48 @@
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
   /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ） ===== */
-  @page { size: A4 portrait; margin: 10mm; }
+  @page { size: A4 portrait; margin: 10mm; } /* ブラウザ印刷でヘッダー/フッターはOFFに */
   @media print{
+    :root{ --gap: 6mm; }
     header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
     body{background:#fff}
-    main{display:block}
-    .grid{grid-template-columns:repeat(3,1fr);gap:8mm}
-    .card{min-height:0;height:auto;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid;overflow:visible}
-    .card .thumb{height:40mm;aspect-ratio:auto;border-bottom:1px solid #cbd5e1}
-    .barcode svg{height:22px;max-width:110px}
-    .barcode .digits{font-size:10px}
+    main{display:block;margin:0;padding:0}
+    /* A4 内寸（210-20=190mm）×（297-20=277mm）をグリッドに適用 */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gap);
+      width: calc(210mm - 20mm);   /* 190mm */
+      height: calc(297mm - 20mm);  /* 277mm */
+      margin: 0 auto;
+    }
+    /* 各カードの高さ = (総高さ - ギャップ×3) / 4 で厳密計算 */
+    .card{
+      height: calc( (100% - (var(--gap) * 3)) / 4 );
+      min-height: 0;
+      border:1px solid #cbd5e1;
+      border-radius:6px;
+      box-shadow:none;
+      page-break-inside:avoid;
+      overflow:visible;
+      display:flex;flex-direction:column;
+    }
+    /* 印刷用の内部比率 */
+    .card .thumb{height:46%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
+    .title{font-size:11pt; -webkit-line-clamp:1; min-height:auto}
+    .barcode svg{height:18px; max-width:90px}
+    .barcode .digits{font-size:8.5pt}
+    .meta{gap:4px}
+    .chip{padding:2px 6px; font-size:10px}
+    .pricebox .label{display:none}
+    .pricebox .value{font-size:11pt}
     .print-qty{display:block !important}
+    .print-qty .lbl{font-size:9pt}
+    .print-qty .box{height:8mm; border:1px dashed #9ca3af; border-radius:3px; margin-top:1mm}
+    /* 12件ごとに改ページ */
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
   .print-qty{display:none}
-  .print-qty .lbl{font-size:12px;color:#374151}
-  .print-qty .box{height:24px;border:1px dashed #9ca3af;border-radius:6px;margin-top:4px}
 </style>
 </head>
 <body>
