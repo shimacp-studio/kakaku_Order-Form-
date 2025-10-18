@@ -165,9 +165,26 @@ let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
 
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
 
-function janImg(jan){
-  const exts = ["png","jpg","jpeg"];
-  return exts.map(ext => `${BASE}/img/${jan}.${ext}`);
+function buildImageCandidates(jan){
+  // 複数の拡張子 / 大文字小文字 / サブフォルダを総当たり
+  const exts = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP"];
+  const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
+  const arr = [];
+  for(const b of bases){
+    for(const e of exts){ arr.push(`${b}${jan}.${e}`); }
+  }
+  return arr;
+}
+function janImg(jan){ return buildImageCandidates(jan); }
+
+function setBestImage(imgEl, candidates){
+  let i = 0;
+  function tryNext(){
+    if(i >= candidates.length){ imgEl.style.display = "none"; return; }
+    imgEl.src = candidates[i++];
+  }
+  imgEl.onerror = tryNext;
+  tryNext();
 }
 
 function renderGrid(list){
@@ -183,10 +200,10 @@ function renderGrid(list){
     const janImgs = janImg(p.jan);
     el.innerHTML = `
       <div class="thumb">
-        <img src="${janImgs[0]}" alt="${p.name}" onerror="this.onerror=null;this.src='${janImgs[1]}';this.onerror=null;this.addEventListener('error',()=>{this.src='${janImgs[2]}';});">
+        <img alt="${p.name}" id="thumb-${p.jan}">
       </div>
       <div class="jan">
-        <img src="${janImgs[0]}" alt="${p.jan}" onerror="this.onerror=null;this.src='${janImgs[1]}';this.addEventListener('error',()=>{this.src='${janImgs[2]}';});">
+        <img alt="${p.jan}" id="janimg-${p.jan}">
       </div>
       <div class="body">
         <div style="font-weight:700;line-height:1.3">${p.name}</div>
@@ -205,6 +222,11 @@ function renderGrid(list){
         ${p.note?`<div class="muted" style="font-size:12px">${p.note}</div>`:""}
       </div>`;
     grid.appendChild(el);
+    // set images with robust fallback
+    const t = el.querySelector(`#thumb-${p.jan.replace(/[^0-9]/g,"")}`) || el.querySelector(`#thumb-${p.jan}`);
+    const j = el.querySelector(`#janimg-${p.jan.replace(/[^0-9]/g,"")}`) || el.querySelector(`#janimg-${p.jan}`);
+    if(t) setBestImage(t, janImgs);
+    if(j) setBestImage(j, janImgs);
   });
 }
 
