@@ -91,7 +91,7 @@
 <header>
   <div class="wrap">
     <div class="brand">
-      <img id="logo" src="img/shima_owl.png" alt="Shima Owl Logo" onerror="this.style.display='none'">
+      <img id="logo" src="${BASE}/img/shima_owl.png" alt="Shima Owl Logo" onerror="this.style.display='none'">
       <h1>発注アプリ</h1>
     </div>
     <div class="controls">
@@ -133,12 +133,31 @@
 </footer>
 
 <script>
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec"; // ★Google Apps Script のWebアプリURLを設定
+const GAS_ENDPOINT = "YOUR_GAS_DEPLOYMENT_URL_HERE"; // ★Google Apps Script のWebアプリURLを設定
 
-async function loadJSON(path){
-  const res = await fetch(path, {cache:"no-store"});
-  if(!res.ok) throw new Error("Failed to load " + path);
-  return await res.json();
+const REPO = "kakaku_Order-Form-"; // ← リポジトリ名（プロジェクトページ）
+const BASE = `https://${location.host}/${REPO}`;   // 例: https://shimacp-studio.github.io/kakaku_Order-Form-/
+const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
+
+async function fetchFirst(urls){
+  let lastErr = null;
+  for(const u of urls){
+    try{
+      const res = await fetch(u, {cache:"no-store"});
+      if(res.ok) return await res.json();
+      lastErr = new Error("HTTP " + res.status + " on " + u);
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error("No sources available");
+}
+
+async function loadJSONProducts(){
+  // Pages優先→CDNフォールバック（jsDelivr）
+  const urls = [
+    BASE + "/products.json",
+    CDN  + "/products.json"
+  ];
+  return await fetchFirst(urls);
 }
 
 let PRODUCTS = [];
@@ -148,7 +167,7 @@ function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString()
 
 function janImg(jan){
   const exts = ["png","jpg","jpeg"];
-  return exts.map(ext => `img/${jan}.${ext}`);
+  return exts.map(ext => `${BASE}/img/${jan}.${ext}`);
 }
 
 function renderGrid(list){
@@ -263,7 +282,7 @@ function setOptions(id, values){
 }
 
 async function boot(){
-  const prods = await loadJSON("products.json");
+  const prods = await loadJSONProducts();
   PRODUCTS = prods;
   // build options
   setOptions("cat", PRODUCTS.map(p=>p.category).filter(Boolean));
