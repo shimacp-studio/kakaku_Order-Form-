@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>発注アプリ</title>
+<style>
+  :root{
+    --bg:#0f172a;        /* slate-900 */
+    --card:#0b1224;      /* slightly lighter */
+    --ink:#e5e7eb;       /* text */
+    --accent:#38bdf8;    /* sky-400 */
+    --muted:#94a3b8;     /* slate-400 */
+    --line:#1f2a44;
+    --chip:#0f2238;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:linear-gradient(180deg,#0b1020,#0f172a 40%,#0b1020);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+  a{color:var(--accent)}
+  header{
+    position:sticky;top:0;z-index:30;
+    backdrop-filter:saturate(140%) blur(6px);
+    background:rgba(10,14,28,.7);
+    border-bottom:1px solid var(--line);
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand img{height:28px;width:auto;object-fit:contain}
+  h1{font-weight:700;font-size:20px;margin:0}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .input, select{
+    background:var(--card);color:var(--ink);
+    border:1px solid var(--line);border-radius:12px;padding:10px 12px;outline:none;min-width:180px
+  }
+  .input::placeholder{color:var(--muted)}
+  .btn{
+    background:linear-gradient(180deg,var(--accent),#0ea5e9);
+    color:#001018;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer
+  }
+  main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .card{
+    background:radial-gradient(1200px 400px at -10% -10%, #11224433, transparent 60%), var(--card);
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column
+  }
+  .card .thumb{
+    background:#0a1222;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)
+  }
+  .card .thumb img{max-width:90%;max-height:90%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
+  .card .body{padding:12px;display:grid;gap:8px}
+  .jan{display:flex;justify-content:center;padding:8px}
+  .jan img{max-width:220px;max-height:52px;object-fit:contain;filter:contrast(1.05)}
+  .meta{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:var(--chip);border:1px solid var(--line);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px}
+  .qtyrow{display:grid;grid-template-columns:1fr 88px 40px;gap:8px;align-items:center}
+  .qty{background:#0b1628;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
+  .cart{
+    position:sticky;top:76px;height:calc(100dvh - 92px);
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px
+  }
+  .cart h2{margin:0 0 4px 0;font-size:16px}
+  .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
+  .cartitem{display:grid;grid-template-columns:1fr 64px 84px 24px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #0c1730}
+  .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
+  .muted{color:var(--muted)}
+  .empty{color:var(--muted);text-align:center;padding:20px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  .ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .success{background:#22c55e;color:#00140b}
+  footer{max-width:1200px;margin:24px auto;padding:0 16px;color:var(--muted)}
+  /* Responsive */
+  @media (max-width:1024px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:800px){
+    main{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .cart{position:static;height:auto}
+  }
+  /* Print (catalog) */
+  @media print{
+    header,.toolbar,.cart{display:none !important}
+    main{display:block}
+    .grid{grid-template-columns:repeat(2,1fr);gap:10mm}
+    .card{page-break-inside:avoid;border:1px solid #cbd5e1;background:white;color:black}
+    body{background:white}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <img id="logo" src="img/shima_owl.png" alt="Shima Owl Logo" onerror="this.style.display='none'">
+      <h1>発注アプリ</h1>
+    </div>
+    <div class="controls">
+      <input id="q" class="input" placeholder="検索（商品名 / ブランド / 取引先 / JAN）">
+      <select id="cat" class="input"><option value="">すべてのカテゴリ</option></select>
+      <select id="supplier" class="input"><option value="">すべての取引先</option></select>
+      <button class="btn ghost" onclick="window.print()">印刷（カタログ）</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <aside class="cart">
+    <div class="toolbar">
+      <button class="btn ghost" id="clearCart">カートを空にする</button>
+    </div>
+    <h2>カート</h2>
+    <div id="cartlist" class="cartlist"></div>
+    <div class="total">
+      <div><span class="muted">小計（税抜）</span>：<span id="subtotal">-</span></div>
+      <div><span class="muted">消費税</span>：<span id="tax">-</span></div>
+      <div style="font-weight:700"><span>税込合計</span>：<span id="grand">-</span></div>
+      <hr style="border:0;border-top:1px dashed var(--line)">
+      <input id="username" class="input" placeholder="ご担当者名 / 店舗名など（メールに記載）">
+      <input id="note" class="input" placeholder="伝達事項（任意）">
+      <button class="btn success" id="submit">この内容で発注する</button>
+      <div class="muted" style="font-size:12px">発注後、mail_list の全アドレスへメール送信されます。</div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  画像は <code>img/</code> フォルダ内の <code>JAN.png</code> / <code>JAN.jpg</code> / <code>JAN.jpeg</code> を自動参照します。
+  JAN は数字表記ではなく画像（バーコード等）で表示します。ロゴは <code>img/shima_owl.png</code> を参照します。
+</footer>
+
+<script>
+const GAS_ENDPOINT = "YOUR_GAS_DEPLOYMENT_URL_HERE"; // ★Google Apps Script のWebアプリURLを設定
+
+async function loadJSON(path){
+  const res = await fetch(path, {cache:"no-store"});
+  if(!res.ok) throw new Error("Failed to load " + path);
+  return await res.json();
+}
+
+let PRODUCTS = [];
+let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
+
+function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
+
+function janImg(jan){
+  const exts = ["png","jpg","jpeg"];
+  return exts.map(ext => `img/${jan}.${ext}`);
+}
+
+function renderGrid(list){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  if(list.length===0){
+    grid.innerHTML = '<div class="empty">該当商品がありません</div>';
+    return;
+  }
+  list.forEach(p=>{
+    const el = document.createElement("div");
+    el.className = "card";
+    const janImgs = janImg(p.jan);
+    el.innerHTML = `
+      <div class="thumb">
+        <img src="${janImgs[0]}" alt="${p.name}" onerror="this.onerror=null;this.src='${janImgs[1]}';this.onerror=null;this.addEventListener('error',()=>{this.src='${janImgs[2]}';});">
+      </div>
+      <div class="jan">
+        <img src="${janImgs[0]}" alt="${p.jan}" onerror="this.onerror=null;this.src='${janImgs[1]}';this.addEventListener('error',()=>{this.src='${janImgs[2]}';});">
+      </div>
+      <div class="body">
+        <div style="font-weight:700;line-height:1.3">${p.name}</div>
+        <div class="meta">
+          ${p.brand?`<span class="chip">#${p.brand}</span>`:""}
+          ${p.category?`<span class="chip">${p.category}</span>`:""}
+          ${p.supplier?`<span class="chip">@${p.supplier}</span>`:""}
+          ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
+          ${p.unit?`<span class="chip">${p.unit}</span>`:""}
+        </div>
+        <div class="qtyrow">
+          <div class="muted">単価（税抜）：<b>${money(p.price)}</b></div>
+          <input type="number" min="0" step="1" class="qty" placeholder="数量" id="qty-${p.jan}">
+          <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
+        </div>
+        ${p.note?`<div class="muted" style="font-size:12px">${p.note}</div>`:""}
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+function addToCart(jan){
+  const qtyEl = document.getElementById("qty-"+jan);
+  const qty = parseInt(qtyEl.value||"0",10);
+  if(!qty || qty<1) return;
+  const p = PRODUCTS.find(x=>x.jan===jan);
+  if(!p) return;
+  const exist = CART.find(x=>x.jan===jan);
+  if(exist){ exist.qty += qty; } else { CART.push({jan: p.jan, name: p.name, price: p.price||0, pack: p.pack||1, qty}); }
+  qtyEl.value = "";
+  persistCart();
+  renderCart();
+}
+
+function persistCart(){ localStorage.setItem("cart.v1", JSON.stringify(CART)); }
+
+function renderCart(){
+  const list = document.getElementById("cartlist");
+  list.innerHTML = "";
+  if(CART.length===0){
+    list.innerHTML = '<div class="empty">カートは空です</div>';
+  } else {
+    CART.forEach((it,idx)=>{
+      const row = document.createElement("div");
+      row.className = "cartitem";
+      const line = (it.price||0) * it.qty;
+      row.innerHTML = `
+        <div><div style="font-weight:600">${it.name}</div><div class="muted" style="font-size:12px">${it.jan}</div></div>
+        <input type="number" class="qty" min="1" value="${it.qty}" onchange="updQty(${idx}, this.value)">
+        <div class="muted">${money(line)}</div>
+        <button class="btn ghost" title="削除" onclick="delItem(${idx})">×</button>`;
+      list.appendChild(row);
+    });
+  }
+  // totals
+  const subtotal = CART.reduce((s,it)=> s + (it.price||0)*it.qty, 0);
+  const tax = Math.floor(subtotal * 0.1);
+  const grand = subtotal + tax;
+  document.getElementById("subtotal").textContent = money(subtotal);
+  document.getElementById("tax").textContent = money(tax);
+  document.getElementById("grand").textContent = money(grand);
+}
+
+function updQty(i,v){
+  const n = parseInt(v||"0",10);
+  if(n<=0){ CART.splice(i,1); } else { CART[i].qty = n; }
+  persistCart(); renderCart();
+}
+function delItem(i){ CART.splice(i,1); persistCart(); renderCart(); }
+
+function applyFilters(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const cat = document.getElementById("cat").value;
+  const sup = document.getElementById("supplier").value;
+  const filtered = PRODUCTS.filter(p=>{
+    const hitQ = !q || [p.name,p.brand,p.category,p.supplier,p.jan].filter(Boolean).some(v=>String(v).toLowerCase().includes(q));
+    const hitC = !cat || p.category===cat;
+    const hitS = !sup || p.supplier===sup;
+    return hitQ && hitC && hitS;
+  });
+  renderGrid(filtered);
+}
+
+function setOptions(id, values){
+  const sel = document.getElementById(id);
+  const uniq = Array.from(new Set(values.filter(Boolean)));
+  uniq.sort((a,b)=> a.localeCompare(b, 'ja'));
+  uniq.forEach(v=>{
+    const opt = document.createElement("option");
+    opt.value = v; opt.textContent = v;
+    sel.appendChild(opt);
+  });
+}
+
+async function boot(){
+  const prods = await loadJSON("products.json");
+  PRODUCTS = prods;
+  // build options
+  setOptions("cat", PRODUCTS.map(p=>p.category).filter(Boolean));
+  setOptions("supplier", PRODUCTS.map(p=>p.supplier).filter(Boolean));
+  renderGrid(PRODUCTS);
+  renderCart();
+  // listeners
+  document.getElementById("q").addEventListener("input", applyFilters);
+  document.getElementById("cat").addEventListener("change", applyFilters);
+  document.getElementById("supplier").addEventListener("change", applyFilters);
+  document.getElementById("clearCart").addEventListener("click", ()=>{ CART=[]; persistCart(); renderCart(); });
+  document.getElementById("submit").addEventListener("click", submitOrder);
+}
+boot().catch(err=>{ console.error(err); alert("初期化に失敗しました: " + err.message); });
+
+async function submitOrder(){
+  if(CART.length===0){ alert("カートが空です"); return; }
+  if(!GAS_ENDPOINT || GAS_ENDPOINT.startsWith("YOUR_")){ alert("GAS の Web アプリ URL を設定してください。"); return; }
+  const username = document.getElementById("username").value.trim();
+  const note = document.getElementById("note").value.trim();
+  const payload = {
+    username, note,
+    total_excl: CART.reduce((s,it)=>s+(it.price||0)*it.qty,0),
+    items: CART
+  };
+  try{
+    const res = await fetch(GAS_ENDPOINT, {
+      method:"POST",
+      mode:"no-cors",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+    alert("発注を送信しました。メール送信を開始します。");
+    CART = []; persistCart(); renderCart();
+  }catch(e){
+    alert("送信エラー: " + e.message);
+  }
+}
+</script>
+</body>
+</html>
