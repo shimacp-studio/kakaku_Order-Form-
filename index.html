@@ -117,7 +117,7 @@ async function fetchFirstJSON(urls){
   throw lastErr || new Error("No sources available");
 }
 function buildImageCandidates(jan){
-  const exts = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP"];
+  const exts = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP","JFIF"];
   const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
   const arr = [];
   for(const b of bases){ for(const e of exts){ arr.push(`${b}${jan}.${e}`); } }
