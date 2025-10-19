@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / タイトル表示 + JAN大きめ + 近接）</title>
+<title>発注書兼カタログ（A4縦 3×4 / JAN拡大＆近接強化）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -54,8 +54,7 @@
     body{background:#fff;margin:0;padding:0}
     main{display:block;margin:0;padding:0}
 
-    /* 上中央タイトルを表示 */
-    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3.6mm 0}
+    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3.4mm 0}
 
     .sheet{
       width: calc(210mm - 18mm);
@@ -73,22 +72,22 @@
     .card .corner{border-top-width:34px;border-right-width:34px}
     .card .corner span{top:-26px;left:4px;font-size:11px}
 
-    /* 画像エリアはそのまま、本文を詰めてJANと商品名を近接 */
+    /* 画像そのまま・情報を上に寄せて近接 */
     .thumb{flex:0 0 25.6mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
     .thumb img{max-width:92%;max-height:24.1mm}
 
-    .body{flex:1 1 auto; padding:1.0mm 2.1mm 0.8mm; gap:0.55mm; display:grid;
+    .body{flex:1 1 auto; padding:0.9mm 2.0mm 0.8mm; gap:0.45mm; display:grid;
           grid-template-rows:auto auto auto 1fr auto; align-content:start}
-    .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.12;min-height:2.1em}
+    .title{-webkit-line-clamp:2;font-size:10.1pt;line-height:1.11;min-height:2.0em}
 
-    /* JAN：少し大きく＆タイトル直下の近接／右寄せのまま */
-    .janrow{justify-content:flex-end; gap:4px; margin-top:0.1mm}
-    .janrow .box{max-width:96px}
-    .janrow .box svg{height:16px; max-width:92px}
-    .janrow .digits{font-size:7.6pt; letter-spacing:.18px; margin-top:0.2mm}
+    /* ▼JANをさらに大きく＋タイトルに近接 */
+    .janrow{justify-content:flex-end; gap:3px; margin-top:0}
+    .janrow .box{max-width:108px}
+    .janrow .box svg{height:18px; max-width:106px}
+    .janrow .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.4mm}
 
-    .sell{font-size:9.1pt}
-    .price-tax{font-size:9.1pt}
+    .sell{font-size:9.2pt}
+    .price-tax{font-size:9.2pt}
 
     .print-qty{display:flex !important; align-items:center; gap:1.6mm; margin-top:auto}
     .print-qty .lbl{font-size:9.1pt; white-space:nowrap}
