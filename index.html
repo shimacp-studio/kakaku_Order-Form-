@@ -3,17 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注カタログ | Blue Luxe v27</title>
+<title>発注カタログ | Blue Luxe v28 (compact-mobile)</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
-    /* ==== Blue (スタイリッシュ基調) ==== */
     --bg:#f6f8ff; --card:#ffffff; --ink:#0b1220; --muted:#5870a3;
     --line:#e5e7ef; --line-strong:#d7dcf2;
-    --accent:#1e40af;    /* 番号バッジ/枠線 (indigo-700) */
-    --accent-2:#2563eb;  /* 強調ブルー (blue-600) */
+    --accent:#1e40af; --accent-2:#2563eb;
     --cta:#2563eb; --cta-text:#ffffff;
-    --chip:#f2f6ff; --qty:#3b82f6;     /* フォーカスブルー */
+    --chip:#f2f6ff; --qty:#3b82f6;
     --shadow:0 10px 28px rgba(30,64,175,.08), 0 3px 10px rgba(30,64,175,.06);
     --radius:14px;
   }
@@ -21,13 +19,12 @@
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent-2);text-decoration:none}
 
-  /* ===== 画面（発注フォーム） ===== */
   header{position:sticky;top:0;z-index:50;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
   .wrap{max-width:1280px;margin:0 auto;padding:10px 14px}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:12px}
-  .brand img{height:46px;width:auto;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.12))}
-  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.03em;color:#0b1220}
+  .brand img{height:46px;width:auto;object-fit:contain}
+  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.03em}
   .actions{display:flex;align-items:center;gap:10px}
   .carticon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04);cursor:pointer}
   .carticon img{width:24px;height:24px;object-fit:contain;opacity:.95}
@@ -36,51 +33,53 @@
   .input, select{background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-width:180px;color:var(--ink);outline:none}
   .btn{background:var(--cta);color:var(--cta-text);border:1px solid #1d4fd8;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);white-space:nowrap}
   .btn.primary{background:var(--accent-2)}
-  .btn:hover{filter:brightness(1.03)}
-  .btn:active{transform:translateY(1px)}
 
   main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;max-width:1280px;margin:16px auto;padding:0 14px}
   @media (max-width:1100px){ main{grid-template-columns:1fr} .cart{position:static} }
 
   .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 
-  /* ===== iPhone（〜640px）：2列。バーコード画像は非表示。JAN数字はタイトル直下に表示。
-           タイトルは3行まで伸ばし、見切れ回避（折返し/ハイフン可） ===== */
+  /* ======= モバイル超コンパクト（〜640px） ======= */
   @media (max-width:640px){
-    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .card{--pad:10px}
-    .thumb{min-height:108px}
-    .title{font-size:14px;min-height:auto;display:block;line-height:1.25;max-height:none;overflow:visible;
-           word-break:break-word; hyphens:auto; margin-bottom:2px}
+    .wrap{padding:8px 10px}
+    .brand img{height:40px}
+    .brand h1{font-size:20px}
+    .actions .btn{padding:9px 12px}
+    .carticon{width:38px;height:38px}
+    .controls{gap:6px;margin-top:6px}
+    .input, select{padding:9px 10px;min-width:160px}
+    main{margin:10px auto;padding:0 10px}
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .card{--pad:8px;border-radius:12px}
+    .badge{font-size:14px;padding:7px 12px 7px 14px}
+    .thumb{min-height:96px}
+    .thumb img{max-width:90%;max-height:90%}
+    .body{gap:6px;padding:var(--pad)}
+    .title{font-size:13px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:1px 0}
     .mobile-janset{display:block}
     .desk-janset{display:none !important}
     .janline{display:flex;align-items:center;justify-content:space-between;gap:6px}
     .barsvg{display:none !important}
-    .digits{display:block !important;font-size:12px;color:#0b1220;margin-top:2px}
-    .prices{display:flex;gap:8px;font-size:12px}
-    .qtyrow{grid-template-columns:78px 1fr;gap:8px}
-    .qty{padding:8px 10px}
-    .btn{padding:9px 12px}
+    .digits{display:block !important;font-size:11.5px;color:#0b1220;margin-top:1px}
+    .prices{display:flex;gap:6px;font-size:12px}
+    .qtyrow{grid-template-columns:70px 1fr;gap:6px}
+    .qty{padding:7px 9px}
+    .btn{padding:8px 10px}
   }
 
   .card{position:relative;background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-  /* ===== 番号デザイン：斜めリボン（色＝枠線と合わせる） ===== */
   .badge{position:absolute;top:0;left:0;background:var(--accent);color:#fff;font-weight:900;font-size:17px;padding:9px 15px 9px 17px;border-bottom-right-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.18)}
-  .badge::before{content:"";position:absolute;left:0;top:0;border-left:12px solid #0000;border-top:12px solid #0000;border-right:12px solid #0005;border-bottom:12px solid #0000;transform:translate(-12px,-4px) skewY(-18deg);filter:blur(.2px)}
-
   .thumb{flex:0 0 40%; min-height:150px; display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
   .thumb img{max-width:92%;max-height:92%}
   .body{--pad:14px;flex:1 1 auto; display:grid; gap:10px; padding:var(--pad)}
   .title{font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;margin-top:2px}
 
-  /* ==== デスクトップ/印刷用のJAN＋価格（従来レイアウト） ==== */
   .desk-janset{display:block}
   .desk-janset .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
   .desk-janset .barsvg svg{max-width:170px; height:26px; display:block}
   .desk-janset .digits{font-size:11px; letter-spacing:.35px; color:#0b1220}
   .desk-janset .price{font-weight:800; white-space:nowrap; color:#0b1220}
 
-  /* ==== モバイル用セットは @media で .mobile-janset を表示 ==== */
   .mobile-janset{display:none}
 
   .qtyrow{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center;margin-top:auto;min-width:0}
@@ -93,51 +92,27 @@
   .muted{color:var(--muted);font-size:13px}
   .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
-  /* ===== 印刷（従来のA4縦 3x4=12） ===== */
   @page { size: A4 portrait; margin: 9mm; }
   @media print{
     header, .actions, .controls, .cart, .qtyrow{ display:none !important; }
     body{background:#fff;margin:0;padding:0;color:var(--ink)}
     main{display:block;margin:0;padding:0}
-
-    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3mm 0;color:#0b1220}
-
-    .sheet{
-      width: calc(210mm - 18mm);
-      height: calc(297mm - 18mm);
-      margin: 0 auto;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      column-gap: 3.6mm; row-gap: 3.6mm;
-      grid-auto-rows: 67mm;
-    }
+    .sheet{width: calc(210mm - 18mm);height: calc(297mm - 18mm);margin: 0 auto;display:grid;grid-template-columns: repeat(3, 1fr);column-gap: 3.6mm; row-gap: 3.6mm;grid-auto-rows: 67mm;}
     #grid{display:contents}
-
     .card{height:67mm;min-height:0;border:1px solid #d1d5db;border-radius:7px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;page-break-inside:avoid;background:#fff}
     .badge{position:absolute;top:0;left:0;background:#0b1220;color:#fff;padding:4px 10px;border-bottom-right-radius:8px;box-shadow:none;font-size:13px}
-    .badge::before{display:none}
-
     .thumb{flex:0 0 25mm; border-bottom:1px solid #d1d5db; display:flex;align-items:center;justify-content:center; background:#fff}
     .thumb img{max-width:92%;max-height:23.6mm}
-
     .body{flex:1 1 auto; padding:0.8mm 1.9mm 0.7mm; display:grid; gap:0.32mm; grid-template-rows:auto auto 1fr; align-content:start}
     .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.08;min-height:1.75em;margin:0}
-
     .desk-janset{display:block}
     .desk-janset .janrow{gap:1.8mm}
     .desk-janset .barsvg svg{height:18px; max-width:108px}
     .desk-janset .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
     .desk-janset .price{font-size:9.2pt; line-height:1}
-
-    .print-qty{display:flex !important; align-items:center; gap:2.0mm; margin-top:auto; padding-top:0.4mm}
-    .print-qty .lbl{font-size:9.0pt; white-space:nowrap; color:#1d4ed8; font-weight:800}
-    .print-qty .box{height:5.0mm; width:28mm; border:1.4px solid #1d4ed8; border-radius:3px; background:#fff}
-
     .mobile-janset{display:none !important}
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
-  .print-header{display:none}
-  .print-qty{display:none}
 </style>
 </head>
 <body>
@@ -165,7 +140,6 @@
 </header>
 
 <main>
-  <div class="print-header">発注書兼カタログ</div>
   <section class="sheet">
     <div class="grid" id="grid"></div>
   </section>
@@ -251,7 +225,7 @@ function renderGrid(list){
       <div class="thumb"><img alt=""></div>
       <div class="body">
         <div class="title" title="${p.name||""}">${p.name||""}</div>
-        <!-- デスクトップ＆印刷 向け（従来表示）：バーコード画像＋税抜/税込 -->
+
         <div class="desk-janset">
           <div class="janrow">
             <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
@@ -262,11 +236,9 @@ function renderGrid(list){
             <div class="digits">${p.jan||""}</div>
           </div>
         </div>
-        <!-- モバイル 向け（見切れない構成）：JAN数字 + 税抜/税込を横並び -->
+
         <div class="mobile-janset">
-          <div class="janline">
-            <div class="digits">${p.jan||""}</div>
-          </div>
+          <div class="janline"><div class="digits">${p.jan||""}</div></div>
           <div class="prices"><div>税抜：${price!=null? price.toLocaleString()+"円":""}</div><div>税込：${gross!=null? gross.toLocaleString()+"円": ""}</div></div>
         </div>
 
@@ -274,7 +246,6 @@ function renderGrid(list){
           <input type="number" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
           <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
-        <div class="print-qty"><div class="lbl">発注数量：</div><div class="box"></div></div>
       </div>`;
     grid.appendChild(el);
     setBest(el.querySelector('img'), candidates(p.jan));
@@ -290,7 +261,7 @@ function renderCart(){
     row.className="cartitem row";
     row.innerHTML=`
       <div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name||it.jan}</div>
-      <input type="number" min="0" step="1" value="${it.qty}" oninput="updateQty('${it.jan}', this.value)" style="width:72px">
+      <input type="number" min="0" step="1" value="${it.qty}" oninput="updateQty('${it.jan}', this.value)" style="width:70px">
       <div style="text-align:right;width:110px">${money((p.price||0)*it.qty)}</div>
       <button onclick="removeFromCart('${it.jan}')" style="border:0;background:#fff;cursor:pointer">✕</button>`;
     list.appendChild(row);
