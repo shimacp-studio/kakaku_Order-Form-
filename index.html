@@ -3,26 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（Gray Luxe + 旧印刷仕様 v23）</title>
+<title>発注書兼カタログ（Gray Luxe + Legacy Print / v24）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
-    /* Gray Luxe palette */
     --bg:#f5f6f7; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
-    --line:#e5e7eb; --line-strong:#d1d5db; --accent:#111827; --accent-2:#334155;
-    --cta:#1f2937; --cta-text:#ffffff; --chip:#f3f4f6;
-    --badge1:#9ca3af; --badge2:#6b7280; --qty:#1d4ed8;
+    --line:#e5e7eb; --line-strong:#d1d5db;
+    --accent:#111827; --accent-2:#334155;
+    --cta:#1f2937; --cta-text:#ffffff;
+    --chip:#f3f4f6; --qty:#1d4ed8;
     --shadow:0 8px 24px rgba(15,23,42,.06), 0 2px 6px rgba(15,23,42,.05);
     --radius:14px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+  a{color:var(--accent-2);text-decoration:none}
 
-  /* ====== WEB（画面） ====== */
+  /* ===== 画面（発注フォーム） ===== */
   header{position:sticky;top:0;z-index:50;background:#ffffffe6;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
   .wrap{max-width:1280px;margin:0 auto;padding:12px 16px}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:10px}
+  .brand img{height:26px;width:auto;object-fit:contain}
   .brand h1{font-size:20px;margin:0;font-weight:800;letter-spacing:.02em}
   .actions{display:flex;align-items:center;gap:10px}
   .carticon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04);cursor:pointer}
@@ -43,7 +45,13 @@
   @media (max-width:720px){ .grid{grid-template-columns:1fr;gap:14px} .input, select{min-width:0;flex:1} .controls{justify-content:stretch} .topbar{flex-wrap:wrap} }
 
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-  .badge{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:999px;background:linear-gradient(135deg,var(--badge1),var(--badge2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;box-shadow:0 10px 18px rgba(0,0,0,.12), inset 0 1px 1px #fff6}
+
+  /* ===== おすすめ番号デザイン（Option A: 斜めリボン） ===== */
+  .badge{position:absolute;top:0;left:0;background:var(--accent);color:#fff;font-weight:900;font-size:12px;padding:6px 12px 6px 14px;border-bottom-right-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+  .badge::before{content:"";position:absolute;left:0;top:0;border-left:10px solid #0000;border-top:10px solid #0000;border-right:10px solid #0005;border-bottom:10px solid #0000;transform:translate(-10px,-3px) skewY(-18deg);filter:blur(.2px)}
+  /* Option B: 丸バッジ（使う場合は .badge-circle を要素に付与） */
+  .badge-circle{top:10px;left:10px;border-radius:999px;padding:0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:#0f172a}
+  .badge-circle::before{display:none}
 
   .thumb{flex:0 0 40%; min-height:160px; display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
   .thumb img{max-width:92%;max-height:92%}
@@ -64,38 +72,33 @@
   .cart h2{margin:0 0 6px 0;font-size:16px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
   .muted{color:var(--muted);font-size:13px}
-
   .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
-  /* ====== 印刷（旧仕様をそのまま） ====== */
-  @page { size: A4 portrait; margin: 9.0mm; } /* 旧：A4縦/倍率100%/1ページ12件 */
+  /* ===== 印刷：旧仕様 + カラーは画面と同じグレー基調 ===== */
+  @page { size: A4 portrait; margin: 9mm; }
   @media print{
-    /* 画面用は全部非表示 */
-    header, .actions, .controls, .cart, .qtyrow { display:none !important; }
-    body{background:#fff;margin:0;padding:0}
+    header, .actions, .controls, .cart, .qtyrow{ display:none !important; }
+    body{background:#fff;margin:0;padding:0;color:var(--ink)}
     main{display:block;margin:0;padding:0}
 
-    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3.0mm 0}
+    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3mm 0;color:#111827}
 
-    /* 旧仕様のシートとグリッド */
     .sheet{
       width: calc(210mm - 18mm);
       height: calc(297mm - 18mm);
       margin: 0 auto;
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      column-gap: 3.6mm;
-      row-gap: 3.6mm;
-      grid-auto-rows: 67mm;           /* 1ページ 4段 */
+      column-gap: 3.6mm; row-gap: 3.6mm;
+      grid-auto-rows: 67mm;
     }
-    #grid{display:contents}            /* 画面と同じ要素を印刷グリッドに流し込む */
+    #grid{display:contents}
 
-    /* カードの旧印刷スタイル */
-    .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:7px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;page-break-inside:avoid}
-    .badge{border-radius:0; width:0;height:0; top:0; left:0; border-top:34px solid #ff9900; border-right:34px solid transparent; background:none; box-shadow:none}
-    .badge::after{content:attr(data-n); position:absolute; top:-26px; left:4px; color:#fff; font-weight:900; font-size:11px}
+    .card{height:67mm;min-height:0;border:1px solid #d1d5db;border-radius:7px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;page-break-inside:avoid;background:#fff}
+    .badge{position:absolute;top:0;left:0;background:#0f172a;color:#fff;padding:4px 10px;border-bottom-right-radius:8px;box-shadow:none}
+    .badge::before{display:none}
 
-    .thumb{flex:0 0 25.0mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center; background:#fff}
+    .thumb{flex:0 0 25mm; border-bottom:1px solid #d1d5db; display:flex;align-items:center;justify-content:center; background:#fff}
     .thumb img{max-width:92%;max-height:23.6mm}
 
     .body{flex:1 1 auto; padding:0.8mm 1.9mm 0.7mm; display:grid; gap:0.32mm; grid-template-rows:auto auto 1fr; align-content:start}
@@ -109,12 +112,11 @@
 
     .print-qty{display:flex !important; align-items:center; gap:2.0mm; margin-top:auto; padding-top:0.4mm}
     .print-qty .lbl{font-size:9.0pt; white-space:nowrap; color:#1d4ed8; font-weight:800}
-    .print-qty .box{height:5.0mm; width:28mm; border:1.6px solid #1d4ed8; border-radius:3px; background:#fff}
+    .print-qty .box{height:5.0mm; width:28mm; border:1.4px solid #1d4ed8; border-radius:3px; background:#fff}
 
     .meta{display:none !important}
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
-
   .print-header{display:none}
   .print-qty{display:none}
 </style>
@@ -123,7 +125,10 @@
 <header>
   <div class="wrap">
     <div class="topbar">
-      <div class="brand"><h1>発注書兼カタログ</h1></div>
+      <div class="brand">
+        <img id="logo" alt="logo">
+        <h1>発注書兼カタログ</h1>
+      </div>
       <div class="actions">
         <button class="btn primary" onclick="window.print()">印刷（カタログ）</button>
         <button class="carticon" title="カートへ移動" onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">
@@ -165,7 +170,26 @@
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const CART_IMG = `${BASE}/img/KART.PNG`;
+// image candidates helper (tries multiple filenames/cases)
+function pickImage(imgEl, paths){
+  let i=0;
+  const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
+  imgEl.onerror=tryNext; tryNext();
+}
+const cartCandidates = [
+  `${BASE}/img/KART.PNG`,
+  `${BASE}/img/KART.png`,
+  `${BASE}/img/cart.png`,
+  `${BASE}/img/Cart.png`,
+  `${BASE}/img/KRAT.png`
+];
+const logoCandidates = [
+  `${BASE}/img/shima_owl.png`,
+  `${BASE}/img/shima_owl.PNG`,
+  `${BASE}/img/shima_owl.jpg`,
+  `${BASE}/img/shima_owl.svg`,
+  `${BASE}/img/シマフクロウロゴ.png`
+];
 
 async function fetchFirstJSON(urls){
   let lastErr=null;
@@ -182,7 +206,6 @@ function candidates(jan){
 function setBest(img, urls){let i=0; function next(){ if(i>=urls.length){img.src=''; img.onerror=null; return;} img.src=urls[i++]; } img.onerror=next; next(); }
 function onlyDigits(s){return (s||'').replace(/[^0-9]/g,'');}
 function money(n){return (Number(n)||0).toLocaleString()+'円';}
-
 /* EAN13 */
 const L=['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
 const G=['0100111','0110011','0011011','0100001','0011101','0111001','0000101','0010001','0001001','0010111'];
@@ -206,7 +229,7 @@ function renderGrid(list){
     const el=document.createElement('article');
     el.className='card';
     el.innerHTML=`
-      <div class="badge" data-n="${idx+1}"></div>
+      <div class="badge">${idx+1}</div>
       <div class="thumb"><img alt=""></div>
       <div class="body">
         <div class="title">${p.name||""}</div>
@@ -283,8 +306,8 @@ function filterGrid(){
 }
 
 async function boot(){
-  const cartImg = document.getElementById('cartImg');
-  cartImg.src = `${BASE}/img/KART.PNG`; cartImg.onerror = () => { cartImg.style.opacity='.35'; };
+  pickImage(document.getElementById('cartImg'), cartCandidates);
+  pickImage(document.getElementById('logo'), logoCandidates);
 
   const here=(new URL('./products.json',location.href)).href;
   const prods=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
