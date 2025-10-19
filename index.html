@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / 画像サイズ維持 / 情報面ゆとり＋発注数を横に）</title>
+<title>発注書兼カタログ（A4縦 3×4 / 入力欄見切れ対策版）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -14,7 +14,6 @@
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent);text-decoration:none}
 
-  /* ===== 画面（通常） ===== */
   header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
   .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
   .brand{display:flex;gap:10px;align-items:center;justify-content:center}
@@ -35,7 +34,6 @@
   .body{padding:12px;display:grid;gap:8px}
   .title{font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;font-size:clamp(13px,1.8vw,15px)}
 
-  /* 画面：JANの幅制限（でかすぎ防止） */
   .barcode{display:flex;justify-content:flex-start;align-items:flex-start;padding-top:2px;min-height:32px}
   .barcode .box{background:#ffffff;padding:2px 6px;border-radius:6px;border:1px solid var(--line);max-width:160px}
   .barcode svg{max-width:120px;height:22px;display:block}
@@ -57,7 +55,6 @@
   .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280;text-align:center}
 
-  /* ===== 印刷：A4縦・3列×4段（12/ページ） ===== */
   @page { size: A4 portrait; margin: 8.5mm; }
   @media print{
     header, .controls, .cart, footer { display:none !important; }
@@ -75,33 +72,32 @@
       grid-template-columns: repeat(3, 1fr);
       column-gap: 4mm;
       row-gap: 4mm;
-      grid-auto-rows: 67mm; /* 4×67 + 3×4 = 280mm → ぴったり */
+      grid-auto-rows: 67mm;
     }
     #grid{display:contents}
     .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:6px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column}
 
-    /* ★ 画像サイズは“以前の大きさ”のまま固定（約26.8mm） */
-    .thumb{flex:0 0 26.8mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
-    .thumb img{max-width:92%;max-height:24.5mm}
+    /* 画像は前回サイズを維持。ただし入力欄見切れ対策で 0.5mm だけ圧縮 */
+    .thumb{flex:0 0 26.3mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
+    .thumb img{max-width:92%;max-height:24.0mm}
 
-    /* 下段の情報スペースを稼ぐ：余白を最小化＆行間タイト */
-    .body{flex:1 1 auto; padding:1.8mm 2.2mm 1.8mm; gap:1.0mm; display:grid; grid-template-rows:auto auto 1fr auto; align-content:start}
+    /* 本文の下マージン＆行間を最適化し、下端が切れないようにする */
+    .body{flex:1 1 auto; padding:1.6mm 2.2mm 1.2mm; gap:0.9mm; display:grid; grid-template-rows:auto auto 1fr auto; align-content:start}
     .title{-webkit-line-clamp:1;font-size:10pt;line-height:1.15;min-height:auto}
 
-    /* JAN + 売価（横並び） */
     .janrow{display:flex;align-items:center;gap:4px}
     .janrow .box{border:0.9px solid #dbe2ea;border-radius:4px;padding:0.9mm 1.4mm;background:#fff;max-width:90px}
     .janrow .box svg{height:14px;max-width:80px;display:block}
-    .janrow .digits{font-size:8pt;margin-top:0.3mm;letter-spacing:.2px}
+    .janrow .digits{font-size:8pt;margin-top:0.2mm;letter-spacing:.2px}
     .sell{font-weight:800;font-size:9.6pt;white-space:nowrap}
 
     .meta{display:none !important}
     .pricebox{display:none !important}
 
-    /* ★ 発注数：ラベルの“横”に記入欄（実線） */
-    .print-qty{display:flex !important; align-items:center; gap:2.2mm; margin-top:0.8mm}
+    /* 入力欄：見切れ防止（高さ・位置を微調整、下寄せではなく auto 押上げ） */
+    .print-qty{display:flex !important; align-items:center; gap:2mm; margin-top:auto}
     .print-qty .lbl{font-size:9.4pt; white-space:nowrap}
-    .print-qty .box{height:7.5mm; width:28mm; border:1.4px solid #374151; border-radius:4px}
+    .print-qty .box{height:6.6mm; width:28mm; border:1.4px solid #374151; border-radius:4px}
 
     .card .corner{border-top-width:24px;border-right-width:24px}
     .card .corner span{top:-18px;left:2px;font-size:10px}
@@ -137,28 +133,15 @@
   <section class="sheet">
     <div class="grid" id="grid"></div>
   </section>
-
-  <aside class="cart">
-    <h2>カート</h2>
-    <div id="cartlist" class="cartlist"></div>
-    <div class="total">
-      <div>小計（税抜）：<span id="subtotal">0円</span></div>
-      <div>消費税：<span id="tax">0円</span></div>
-      <div style="font-weight:700">税込合計：<span id="grand">0円</span></div>
-      <hr style="border:0;border-top:1px dashed var(--line)">
-      <input id="username" class="input" placeholder="ご担当者名 / 店舗名など（メールに記載）">
-      <input id="note" class="input" placeholder="伝達事項（任意）">
-      <button class="btn" id="submit">この内容で発注する</button>
-    </div>
-  </aside>
 </main>
 
-<footer>印刷は倍率100%、ヘッダー/フッターOFF を推奨。JANは画面でも幅制限済み。</footer>
+<footer>印刷は倍率100%、ヘッダー/フッターOFF を推奨。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
+
 /* ===== Util ===== */
 async function fetchFirstJSON(urls){
   let lastErr=null;
@@ -190,7 +173,7 @@ function svg(jan,w=110,h=22){const bits=pat(jan); if(!bits) return ""; const bar
   for(let i=0;i<bits.length;i++){ if(bits[i]==='1'){const g=(i<3)||(i>=45&&i<50)||(i>=92); s+=`<rect x='${x}' y='0' width='${barW}' height='${g?h:hg}' fill='#111827'/>`; } x+=barW; } return s+`</svg>`; }
 
 /* ===== App State ===== */
-let PRODUCTS=[], CART=JSON.parse(localStorage.getItem("cart.v1")||"[]");
+let PRODUCTS=[];
 
 /* ===== Render ===== */
 function renderGrid(list){
@@ -213,56 +196,12 @@ function renderGrid(list){
           ${p.brand?`<span class="chip">#${p.brand}</span>`:""} ${p.category?`<span class="chip">${p.category}</span>`:""} ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
         </div>
 
-        <div class="qtyrow">
-          <input type="number" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
-          <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
-        </div>
-
         <div class="print-qty"><div class="lbl">発注数：</div><div class="box"></div></div>
       </div>`;
     grid.appendChild(el);
     setBest(el.querySelector('img'), candidates(p.jan));
   });
 }
-
-function renderCart(){
-  const list=document.getElementById('cartlist'); list.innerHTML='';
-  if(CART.length===0){ list.innerHTML='<div class="muted">カートは空です</div>'; }
-  CART.forEach((it)=>{
-    const p=PRODUCTS.find(x=>x.jan===it.jan)||{name:""};
-    const row=document.createElement('div');
-    row.className="cartitem";
-    row.innerHTML=`
-      <div>${p.name||it.jan}</div>
-      <input type="number" min="0" step="1" value="${it.qty}" oninput="updateQty('${it.jan}', this.value)" />
-      <div style="text-align:right">${money((p.price||0)*it.qty)}</div>
-      <button onclick="removeFromCart('${it.jan}')" style="border:0;background:#fff;cursor:pointer">✕</button>`;
-    list.appendChild(row);
-  });
-  const subtotal=CART.reduce((s,it)=>{const p=PRODUCTS.find(x=>x.jan===it.jan)||{}; return s + (Number(p.price)||0)*it.qty;},0);
-  const tax=Math.round(subtotal*0.1);
-  const grand=subtotal+tax;
-  document.getElementById('subtotal').textContent=money(subtotal);
-  document.getElementById('tax').textContent=money(tax);
-  document.getElementById('grand').textContent=money(grand);
-  localStorage.setItem("cart.v1", JSON.stringify(CART));
-}
-
-/* ===== Actions ===== */
-function addToCart(jan){
-  const qtyEl=document.getElementById(`qty-${jan}`);
-  const q=Math.max(1, Number(qtyEl && qtyEl.value || 1));
-  const ex=CART.find(x=>x.jan===jan);
-  if(ex) ex.qty += q; else CART.push({jan, qty:q});
-  renderCart();
-}
-function updateQty(jan,val){
-  const it=CART.find(x=>x.jan===jan); if(!it) return;
-  it.qty=Math.max(0, Number(val)||0);
-  if(it.qty===0) CART=CART.filter(x=>x.jan!==jan);
-  renderCart();
-}
-function removeFromCart(jan){ CART=CART.filter(x=>x.jan!==jan); renderCart(); }
 
 /* ===== Filter ===== */
 function filterGrid(){
@@ -283,10 +222,7 @@ async function boot(){
   PRODUCTS=Array.isArray(prods)?prods:[];
   const set=new Set(PRODUCTS.map(p=>p.category).filter(Boolean)); const sel=document.getElementById('cat');
   [...set].sort().forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o);});
-  document.getElementById('buyerName').value = localStorage.getItem('buyerName') || "";
   renderGrid(PRODUCTS);
-  renderCart();
-  document.getElementById('submit').addEventListener('click', ()=>alert('送信先未設定です（GASやメール連携を有効化してください）'));
 }
 boot().catch(e=>{console.error(e); alert("初期化エラー: "+e.message);});
 </script>
