@@ -3,11 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注アプリ（A4縦・3x4=12/ページ・倍率100%フィット）</title>
+<title>発注アプリ（A4縦・3x4=12/ページ・確実フィット版）</title>
 <meta name="color-scheme" content="light">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <style>
   :root{
     --bg:#f7fafa;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
@@ -17,7 +14,6 @@
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent);text-decoration:none}
 
-  /* ===== 画面表示（通常） ===== */
   header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
   .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
   .brand{display:flex;gap:12px;align-items:center}
@@ -30,12 +26,9 @@
 
   main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  /* 番号タグ（通常表示） */
   .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:42px solid #ff9900;border-right:42px solid transparent}
   .card .corner span{position:absolute;top:-34px;left:4px;color:#fff;font-weight:800;font-size:15px;line-height:1}
-
   .card .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
   .card .thumb img{max-width:90%;max-height:90%}
   .card .body{padding:12px;display:grid;gap:8px}
@@ -52,58 +45,35 @@
   .qtyrow{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}
   .qty{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
   .btn.wide{width:100%}
-
   .cart{position:sticky;top:76px;height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
   .cart h2{margin:0 0 4px 0;font-size:16px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
-  .cartitem{display:grid;grid-template-columns:1fr 64px 84px 24px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
-  /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ）・倍率100% ===== */
-  @page { size: A4 portrait; margin: 10mm; } /* 印刷ダイアログ：倍率=100%、ヘッダー/フッターOFF */
+  /* ===== 印刷：A4縦・3列×4段（12/ページ）・倍率100%・確実に収める ===== */
+  @page { size: A4 portrait; margin: 9mm; }
   @media print{
-    :root{ --gap: 5.5mm; --fit: 0.985; } /* ← はみ出し対策の微縮小（100%印刷のまま中身だけ微縮小） */
-
-    header, .toolbar, .cart, .controls .btn, .qtyrow, footer { display:none !important; }
+    header, .toolbar, .cart, .controls .btn { display:none !important; }
     body{background:#fff}
     main{display:block;margin:0;padding:0}
 
-    /* A4 内寸（210-20=190mm × 297-20=277mm） */
-    .sheet{
-      width: calc(210mm - 20mm);
-      height: calc(297mm - 20mm);
-      margin: 0 auto;
-      transform: scale(var(--fit));
-      transform-origin: top left;
-    }
+    .sheet{ width: calc(210mm - 18mm); height: calc(297mm - 18mm); margin: 0 auto; }
     .grid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: var(--gap);
-      width: 100%;
-      height: 100%;
+      gap: 5mm;
+      width: 100%; height: 100%;
     }
     .card{
-      height: calc( (100% - (var(--gap) * 3)) / 4 );
+      height: calc( (100% - (5mm * 3)) / 4 );
       min-height: 0;
-      border:1px solid #cbd5e1;
-      border-radius:6px;
-      box-shadow:none;
-      page-break-inside:avoid;
-      overflow:hidden;
-      display:flex;flex-direction:column;
+      border:1px solid #cbd5e1; border-radius:6px; box-shadow:none;
+      page-break-inside:avoid; display:flex; flex-direction:column; overflow:hidden;
     }
-
-    /* 番号タグを印刷時に見やすく */
-    .card .corner{border-top-width:34px;border-right-width:34px}
-    .card .corner span{top:-28px;left:3px;font-size:13px;font-weight:900}
-
-    /* 画像はやや小さめにして本文余白を確保 */
-    .card .thumb{height:44%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
-
-    /* 情報部：確実に収めるため控えめサイズ */
-    .card .body{ padding: 2.6mm 3mm; gap: 2mm; }
+    .card .thumb{height: 35mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
+    .card .thumb img{max-width:90%;max-height:32mm}
+    .card .body{ padding: 2.8mm 3.2mm; gap: 2mm; }
     .title{ font-size: 11pt; line-height: 1.22; -webkit-line-clamp: 1; min-height: auto; }
     .barcode svg{ height: 20px; max-width: 100px; }
     .barcode .digits{ font-size: 9.5pt; letter-spacing: .3px; }
@@ -111,17 +81,9 @@
     .chip{ padding: 2px 6px; font-size: 9pt; }
     .pricebox .label{ display:none; }
     .pricebox .value{ font-size: 11pt; font-weight: 800; }
-
-    /* 数量欄：実線 */
     .print-qty{ display:block !important; }
     .print-qty .lbl{ font-size: 10.5pt; }
-    .print-qty .box{
-      height: 9mm;
-      border: 1.4px solid #374151;
-      border-radius: 4px;
-      margin-top: 1.2mm;
-    }
-
+    .print-qty .box{ height: 9mm; border: 1.4px solid #374151; border-radius: 4px; margin-top: 1.2mm; }
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
 
@@ -148,27 +110,9 @@
   <section class="sheet">
     <div class="grid" id="grid"></div>
   </section>
-
-  <aside class="cart">
-    <div class="toolbar">
-      <button class="btn ghost" id="clearCart">カートを空にする</button>
-    </div>
-    <h2>カート</h2>
-    <div id="cartlist" class="cartlist"></div>
-    <div class="total">
-      <div><span class="muted">小計（税抜）</span>：<span id="subtotal">-</span></div>
-      <div><span class="muted">消費税</span>：<span id="tax">-</span></div>
-      <div style="font-weight:700"><span>税込合計</span>：<span id="grand">-</span></div>
-      <hr style="border:0;border-top:1px dashed var(--line)">
-      <input id="username" class="input" placeholder="ご担当者名 / 店舗名など（メールに記載）">
-      <input id="note" class="input" placeholder="伝達事項（任意）">
-      <button class="btn" id="submit">この内容で発注する</button>
-      <div class="muted" style="font-size:12px">発注後、mail_list の全アドレスへメール送信されます。</div>
-    </div>
-  </aside>
 </main>
 
-<footer>印刷はA4縦で3列×4段=12件/ページ。倍率100%で収まらない場合は --fit を 0.98〜0.99 に微調整してください。</footer>
+<footer>印刷はA4縦・倍率100%。切れる/余る場合は @page margin を 8–10mm で微調整。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -199,8 +143,7 @@ function svgPlaceholder(){
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 function setBestImage(imgEl, candidates){
-  let i = 0;
-  function tryNext(){ if(i >= candidates.length){ imgEl.src = svgPlaceholder(); imgEl.onerror = null; return; } imgEl.src = candidates[i++]; }
+  let i = 0; function tryNext(){ if(i >= candidates.length){ imgEl.src = svgPlaceholder(); imgEl.onerror = null; return; } imgEl.src = candidates[i++]; }
   imgEl.onerror = tryNext; tryNext();
 }
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
@@ -223,11 +166,11 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; } /* ← 以前の括弧バグは修正済み */
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }
   bits += "101";
   return bits;
 }
-function renderEAN13SVG(jan, width=110, height=22){
+function renderEAN13SVG(jan, width=100, height=20){
   const ds = onlyDigits(jan); if(ds.length<12) return "";
   const bits = ean13Pattern(ds); if(!bits) return "";
   const barW = Math.max(1, Math.floor(width / bits.length));
@@ -283,10 +226,6 @@ function renderGrid(list){
             ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
           </div>
           <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${(p.price??'')!==''? (Number(p.price)||0).toLocaleString()+'円':'-'}</span></div>
-          <div class="qtyrow">
-            <input type="number" min="0" step="1" class="qty" placeholder="数量" id="qty-${p.jan}">
-            <button class="btn wide" onclick="void(0)">カートへ</button>
-          </div>
           <div class="print-qty">
             <div class="lbl">発注数量：</div>
             <div class="box"></div>
