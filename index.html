@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注アプリ（通常＋印刷A4縦3×4固定）</title>
+<title>発注アプリ（通常UI＋印刷A4縦3×4固定／画像小さめ・JAN横に売価・下部数量欄）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -71,24 +71,34 @@
       row-gap: 4mm;
       grid-auto-rows: 67mm;   /* 280 - (3*4mm) = 268 / 4 = 67mm */
     }
-    /* グリッドの中身は通常と同じカードをそのまま流用 */
-    #grid{display:contents} /* ← sheetにそのまま配置 */
+    #grid{display:contents} /* sheetにそのまま配置 */
     .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:6px;box-shadow:none;overflow:hidden}
-    .thumb{flex:0 0 26.5mm;border-bottom:1px solid #cbd5e1}
-    .thumb img{max-width:92%;max-height:24.5mm}
-    .body{padding:2mm 2.4mm 2mm;gap:1.6mm}
+    /* 画像を小さく（ご要望） */
+    .thumb{flex:0 0 22mm;border-bottom:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center}
+    .thumb img{max-width:90%;max-height:20mm}
+    /* 本文を下まで使う */
+    .body{padding:2mm 2.4mm 2mm;gap:1.6mm;display:grid;grid-template-rows:auto auto 1fr auto}
     .title{-webkit-line-clamp:1;font-size:10.6pt;line-height:1.22;min-height:auto}
+
+    /* JANの横に売価を配置（行内） */
+    .janrow{display:flex;align-items:center;gap:6px}
+    .janrow .box{border:0.9px solid #dbe2ea;border-radius:4px;padding:1.2mm 1.8mm;background:#fff}
+    .janrow .box svg{height:16px;max-width:88px;display:block}
+    .janrow .digits{font-size:8.6pt;margin-top:1mm;letter-spacing:.2px}
+    .sell{font-weight:800;font-size:10.4pt;white-space:nowrap}
+
     .meta{display:none !important}       /* 印刷では非表示 */
-    .barcode svg{height:16px;max-width:88px}
-    .barcode .digits{font-size:8.8pt;letter-spacing:.2px;margin-top:1mm}
-    .pricebox .label{display:none}
-    .pricebox .value{font-size:10.4pt;font-weight:800}
-    .qtyrow{display:none}                 /* 画面用数量は非表示 */
-    .print-qty{display:block !important}  /* 印刷用数量欄 */
+    .pricebox{display:none !important}   /* 旧の価格行は非表示（JAN横に移動） */
+
+    /* 下部の空白に数量入力欄（実線） */
+    .print-qty{display:block !important; align-self:end}
     .print-qty .lbl{font-size:9.8pt}
-    .print-qty .box{height:7mm;border:1.2px solid #374151;border-radius:4px;margin-top:1mm}
+    .print-qty .box{height:9mm;border:1.4px solid #374151;border-radius:4px;margin-top:1mm}
+
     .card .corner{border-top-width:26px;border-right-width:26px}
     .card .corner span{top:-20px;left:2px;font-size:11px}
+    .qtyrow{display:none} /* 画面用数量は印刷で非表示 */
+
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
   .print-qty{display:none}
@@ -129,8 +139,6 @@
     </div>
   </aside>
 </main>
-
-<footer>画面は通常の発注UI、印刷はA4縦3×4固定。倍率100%、ヘッダー/フッターOFFで印刷してください。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -175,15 +183,25 @@ function renderGrid(list){
       <div class="thumb"><img alt=""></div>
       <div class="body">
         <div class="title">${p.name||""}</div>
-        <div class="barcode"><div class="box">${svg(p.jan)}<div class="digits">${p.jan||""}</div></div></div>
+
+        <!-- JAN + 売価（印刷で横並び） -->
+        <div class="janrow">
+          <div class="box">${svg(p.jan)}<div class="digits">${p.jan||""}</div></div>
+          <div class="sell">${p.price!=null?Number(p.price).toLocaleString()+"円":""}</div>
+        </div>
+
         <div class="meta">
           ${p.brand?`<span class="chip">#${p.brand}</span>`:""} ${p.category?`<span class="chip">${p.category}</span>`:""} ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
         </div>
         <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${p.price!=null?Number(p.price).toLocaleString()+"円":"-"}</span></div>
+
+        <!-- 画面用の数量入力 -->
         <div class="qtyrow">
           <input type="number" min="0" step="1" class="qty" placeholder="数量">
           <button class="btn wide">カートへ</button>
         </div>
+
+        <!-- 印刷時のみ表示・カード下の空白に配置 -->
         <div class="print-qty"><div class="lbl">発注数量：</div><div class="box"></div></div>
       </div>`;
     grid.appendChild(el);
