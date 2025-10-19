@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / JANと税抜売価 横並び v17）</title>
+<title>発注書兼カタログ（A4縦 3×4 / 横並び整列＋青の発注欄 v18）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
     --bg:#f7fafa;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
     --accent:#0073bb;--cta:#ffd814;--cta-border:#f3cc00;--chip:#f3f4f6;--corner:#ff9900;
-    --qty:#ef4444;
+    --qty:#2563eb; /* 青 */
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
@@ -40,8 +40,8 @@
   .qtyrow{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:center}
   .qty{border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
 
-  /* 横並び行（通常） */
-  .janline{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+  /* 横並び行（通常も印刷も共通ベース） */
+  .janline{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .janline .price-ex{font-weight:800}
   .janline .box{padding:0;border:none;max-width:170px}
   .janline .box svg{max-width:150px;height:24px;margin-left:auto;display:block}
@@ -75,34 +75,31 @@
     .card .corner{border-top-width:34px;border-right-width:34px}
     .card .corner span{top:-26px;left:4px;font-size:11px}
 
-    /* 画像はわずかに短く確保（本文領域を広げる） */
     .thumb{flex:0 0 25.0mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
     .thumb img{max-width:92%;max-height:23.6mm}
 
-    /* 本文：タイトル → （税抜売価＋JAN） → 税込 → 発注欄 */
     .body{
       flex:1 1 auto; padding:0.8mm 1.9mm 0.7mm;
-      display:grid; gap:0.28mm;
+      display:grid; gap:0.32mm;
       grid-template-rows: auto auto auto 1fr;
       align-content:start
     }
     .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.08;min-height:1.75em; margin:0}
 
-    /* ▼税抜売価＋JAN を横並びに */
-    .janline{display:flex; align-items:flex-end; justify-content:space-between; gap:2.2mm; margin-top:0}
-    .janline .price-ex{font-size:9.2pt; line-height:1; margin:0; padding:0}
+    /* ▼税抜売価＋JAN をきれいに横並び（ベースライン揃え） */
+    .janline{display:flex; align-items:flex-end; justify-content:space-between; gap:1.8mm; margin-top:0}
+    .janline .price-ex{font-size:9.2pt; line-height:1; margin:0; padding:0; white-space:nowrap}
     .janline .box{max-width:110px}
-    .janline .box svg{height:18px; max-width:108px}
-    .janline .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.25mm}
+    .janline .box svg{height:18px; max-width:108px; display:block}
+    .janline .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
 
-    /* ▼税込売価（単独行） */
     .price-tax{font-size:9.2pt; line-height:1.05; margin:0; padding:0; font-weight:800}
 
-    /* ▼発注数量：横並び（赤） */
-    .print-qty{display:flex !important; align-items:center; gap:2.2mm; margin-top:auto; padding-top:0.4mm}
-    .print-qty .lbl{font-size:9.2pt; white-space:nowrap; color:var(--qty); font-weight:800}
+    /* ▼発注数量：青・やや小さめ */
+    .print-qty{display:flex !important; align-items:center; gap:2.0mm; margin-top:auto; padding-top:0.4mm}
+    .print-qty .lbl{font-size:9.0pt; white-space:nowrap; color:var(--qty); font-weight:800}
     .print-qty .box{
-      height:6.0mm; width:34mm; border:1.6px solid var(--qty); border-radius:3.5px; background:#fff;
+      height:5.0mm; width:28mm; border:1.6px solid var(--qty); border-radius:3px; background:#fff;
     }
 
     .meta{display:none !important}
