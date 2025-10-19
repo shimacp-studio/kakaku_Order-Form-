@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / JANと売価を横並び v19）</title>
+<title>発注書兼カタログ（A4縦 3×4 / 価格×JAN行別配置 v20）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -40,12 +40,12 @@
   .qtyrow{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:center}
   .qty{border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
 
-  /* 横並び行（通常も印刷も共通ベース） */
-  .janline{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .janline .price-combo{font-weight:800;white-space:nowrap}
-  .janline .box{padding:0;border:none;max-width:170px}
-  .janline .box svg{max-width:150px;height:24px;margin-left:auto;display:block}
-  .janline .digits{font-size:10px;text-align:right;margin-top:2px;letter-spacing:.3px}
+  /* ▼価格×JANブロック（2行構成） */
+  .janblock{display:grid; gap:4px}
+  .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:8px}
+  .janrow .price{font-weight:800; white-space:nowrap}
+  .janrow .barsvg svg{max-width:150px; height:24px; display:block}
+  .janrow .digits{font-size:10px; text-align:right; letter-spacing:.3px}
 
   .cart{position:sticky;top:76px;max-height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
@@ -86,12 +86,12 @@
     }
     .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.08;min-height:1.75em; margin:0}
 
-    /* ▼税抜/税込の複合売価＋JAN を横並び（ベースライン揃え） */
-    .janline{display:flex; align-items:flex-end; justify-content:space-between; gap:1.8mm; margin-top:0}
-    .janline .price-combo{font-size:9.2pt; line-height:1; margin:0; padding:0; white-space:nowrap}
-    .janline .box{max-width:110px}
-    .janline .box svg{height:18px; max-width:108px; display:block}
-    .janline .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
+    /* ▼価格×JAN：1行目=税抜×バーコード、2行目=税込×JAN数字 */
+    .janblock{gap:0.4mm}
+    .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:1.8mm}
+    .janrow .price{font-size:9.2pt; line-height:1; margin:0; padding:0}
+    .janrow .barsvg svg{height:18px; max-width:108px}
+    .janrow .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
 
     /* ▼発注数量：青・やや小さめ */
     .print-qty{display:flex !important; align-items:center; gap:2.0mm; margin-top:auto; padding-top:0.4mm}
@@ -192,10 +192,18 @@ function renderGrid(list){
       <div class="thumb"><img alt=""></div>
       <div class="body">
         <div class="title">${p.name||""}</div>
-        <div class="janline">
-          <div class="price-combo">税抜：${price!=null? price.toLocaleString()+"円":""} / 税込：${gross!=null? gross.toLocaleString()+"円": ""}</div>
-          <div class="box">${svg(p.jan)}<div class="digits">${p.jan||""}</div></div>
+
+        <div class="janblock">
+          <div class="janrow">
+            <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
+            <div class="barsvg">${svg(p.jan)}</div>
+          </div>
+          <div class="janrow">
+            <div class="price">税込：${gross!=null? gross.toLocaleString()+"円": ""}</div>
+            <div class="digits">${p.jan||""}</div>
+          </div>
         </div>
+
         <div class="qtyrow">
           <input type="number" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
           <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
