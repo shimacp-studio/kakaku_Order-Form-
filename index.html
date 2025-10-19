@@ -223,11 +223,10 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }  // ← 修正済み
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]); }
   bits += "101";
   return bits;
 }
-
 function renderEAN13SVG(jan, width=110, height=22){
   const ds = onlyDigits(jan); if(ds.length<12) return "";
   const bits = ean13Pattern(ds); if(!bits) return "";
