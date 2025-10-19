@@ -3,110 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / 価格×JAN行別配置 v20）</title>
+<title>発注書兼カタログ（WEB用カード最終 v21）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
-    --bg:#f7fafa;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
-    --accent:#0073bb;--cta:#ffd814;--cta-border:#f3cc00;--chip:#f3f4f6;--corner:#ff9900;
-    --qty:#2563eb; /* 青 */
+    --bg:#f7f9fc;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
+    --accent:#0073bb;--cta:#ffd814;--cta-border:#f3cc00;--chip:#f3f4f6;
+    --badge1:#ff9a3d;--badge2:#ff6a00;--qty:#2563eb;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+  a{color:var(--accent)}
 
-  /* === 画面（通常） === */
-  header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
+  /* Header */
+  header{position:sticky;top:0;z-index:20;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
   .wrap{max-width:1280px;margin:0 auto;padding:12px 16px}
-  .brand{display:flex;justify-content:center;align-items:center}
-  .brand h1{font-weight:800;font-size:22px;margin:0}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;justify-content:center}
+  .brand{display:flex;justify-content:center;align-items:center;gap:10px}
+  .brand h1{font-size:20px;margin:0;font-weight:800}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
   .input, select{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-width:180px}
-  .btn{background:var(--cta);border:1px solid var(--cta-border);border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}
+  .btn{background:var(--cta);border:1px solid var(--cta-border);border-radius:999px;padding:10px 14px;font-weight:700;cursor:pointer}
   .btn.primary{background:var(--accent);color:#fff;border-radius:8px}
 
+  /* Layout */
   main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;max-width:1280px;margin:16px auto;padding:0 16px}
   @media (max-width:1100px){ main{grid-template-columns:1fr} .cart{position:static} }
+
   .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
   @media (max-width:1100px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
   @media (max-width:720px){ .grid{grid-template-columns:1fr} }
 
-  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:420px}
-  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:40px solid var(--corner);border-right:40px solid transparent}
-  .card .corner span{position:absolute;top:-32px;left:6px;color:#fff;font-weight:900;font-size:14px}
-  .thumb{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
-  .thumb img{max-width:92%;max-height:92%}
-  .body{padding:12px;display:grid;gap:10px}
-  .title{font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
-  .qtyrow{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:center}
-  .qty{border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
-
-  /* ▼価格×JANブロック（2行構成） */
-  .janblock{display:grid; gap:4px}
-  .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:8px}
-  .janrow .price{font-weight:800; white-space:nowrap}
-  .janrow .barsvg svg{max-width:150px; height:24px; display:block}
-  .janrow .digits{font-size:10px; text-align:right; letter-spacing:.3px}
-
-  .cart{position:sticky;top:76px;max-height:calc(100dvh - 92px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
-  .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
-
-  /* === 印刷（A4縦 / 3×4=12） === */
-  @page { size: A4 portrait; margin: 9.0mm; }
-  @media print{
-    header, .controls, .cart, footer { display:none !important; }
-    body{background:#fff;margin:0;padding:0}
-    main{display:block;margin:0;padding:0}
-
-    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3.0mm 0}
-
-    .sheet{
-      width: calc(210mm - 18mm);
-      height: calc(297mm - 18mm);
-      margin: 0 auto;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      column-gap: 3.6mm;
-      row-gap: 3.6mm;
-      grid-auto-rows: 67mm;
-    }
-    #grid{display:contents}
-    .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;display:flex;flex-direction:column}
-
-    .card .corner{border-top-width:34px;border-right-width:34px}
-    .card .corner span{top:-26px;left:4px;font-size:11px}
-
-    .thumb{flex:0 0 25.0mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
-    .thumb img{max-width:92%;max-height:23.6mm}
-
-    .body{
-      flex:1 1 auto; padding:0.8mm 1.9mm 0.7mm;
-      display:grid; gap:0.32mm;
-      grid-template-rows: auto auto 1fr;
-      align-content:start
-    }
-    .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.08;min-height:1.75em; margin:0}
-
-    /* ▼価格×JAN：1行目=税抜×バーコード、2行目=税込×JAN数字 */
-    .janblock{gap:0.4mm}
-    .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:1.8mm}
-    .janrow .price{font-size:9.2pt; line-height:1; margin:0; padding:0}
-    .janrow .barsvg svg{height:18px; max-width:108px}
-    .janrow .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
-
-    /* ▼発注数量：青・やや小さめ */
-    .print-qty{display:flex !important; align-items:center; gap:2.0mm; margin-top:auto; padding-top:0.4mm}
-    .print-qty .lbl{font-size:9.0pt; white-space:nowrap; color:var(--qty); font-weight:800}
-    .print-qty .box{
-      height:5.0mm; width:28mm; border:1.6px solid var(--qty); border-radius:3px; background:#fff;
-    }
-
-    .meta{display:none !important}
-    .qtyrow{display:none}
-    .card:nth-of-type(12n){page-break-after:always;break-after:page}
+  /* Card */
+  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  /* New number badge */
+  .badge{
+    position:absolute;top:10px;left:10px;
+    width:30px;height:30px;border-radius:999px;
+    background:linear-gradient(135deg,var(--badge1),var(--badge2));
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:13px;box-shadow:0 3px 8px rgba(255,106,0,.35), inset 0 1px 1px #fff6;
   }
 
-  .print-header{display:none}
-  .print-qty{display:none}
+  /* Image 40% / Info 60% like print (but image stays big) */
+  .thumb{flex:0 0 40%; min-height:160px; display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
+  .thumb img{max-width:92%;max-height:92%}
+  .body{flex:1 1 auto; display:grid; gap:10px; padding:12px}
+  .title{font-weight:800;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;margin-top:2px}
+
+  /* JAN＋価格：印刷画面と同様の2行ブロック */
+  .janblock{display:grid; gap:6px}
+  .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
+  .janrow .price{font-weight:800; white-space:nowrap}
+  .janrow .barsvg svg{max-width:160px; height:26px; display:block}
+  .janrow .digits{font-size:11px; letter-spacing:.35px; color:#111827}
+
+  .qtyrow{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center;margin-top:auto}
+  .qty{border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+
+  /* Cart side */
+  .cart{position:sticky;top:84px;max-height:calc(100dvh - 100px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+  .cart h2{margin:0 0 6px 0;font-size:16px}
+  .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
+
+  .muted{color:#6b7280;font-size:13px}
+  .chip{background:var(--chip);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:#374151;font-size:12px}
 </style>
 </head>
 <body>
@@ -123,9 +83,7 @@
 </header>
 
 <main>
-  <div class="print-header">発注書兼カタログ</div>
-
-  <section class="sheet">
+  <section>
     <div class="grid" id="grid"></div>
   </section>
 
@@ -188,11 +146,10 @@ function renderGrid(list){
     const el=document.createElement('article');
     el.className='card';
     el.innerHTML=`
-      <div class="corner"><span>${idx+1}</span></div>
+      <div class="badge">${idx+1}</div>
       <div class="thumb"><img alt=""></div>
       <div class="body">
         <div class="title">${p.name||""}</div>
-
         <div class="janblock">
           <div class="janrow">
             <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
@@ -203,12 +160,10 @@ function renderGrid(list){
             <div class="digits">${p.jan||""}</div>
           </div>
         </div>
-
         <div class="qtyrow">
           <input type="number" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
           <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
-        <div class="print-qty"><div class="lbl">発注数量：</div><div class="box"></div></div>
       </div>`;
     grid.appendChild(el);
     setBest(el.querySelector('img'), candidates(p.jan));
