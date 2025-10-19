@@ -1,241 +1,158 @@
-<!doctype html>
+from pathlib import Path
+
+html = r"""<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注アプリ（A4縦・3x4=12/ページ・TIGHT版）</title>
+<title>発注アプリ（A4縦・3x4=12固定 / 高さロック版）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
     --bg:#f7fafa;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
-    --accent:#0073bb;--cta:#ffd814;--cta-border:#f3cc00;--chip:#f3f4f6;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
-  a{color:var(--accent);text-decoration:none}
 
-  header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
-  .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
-  .brand{display:flex;gap:12px;align-items:center}
-  .brand img{height:28px;width:auto;object-fit:contain}
-  h1{font-weight:700;font-size:22px;margin:0}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
-  .input, select{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;outline:none;min-width:180px}
-  .btn{background:var(--cta);color:#111827;border:1px solid var(--cta-border);border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.05)}
-  .btn.primary{background:var(--accent);color:#fff;border-color:#005d96;border-radius:8px}
+  /* ===== 画面UIは省略、印刷最優先 ===== */
 
-  main{display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1200px;margin:16px auto;padding:0 16px}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:42px solid #ff9900;border-right:42px solid transparent}
-  .card .corner span{position:absolute;top:-34px;left:4px;color:#fff;font-weight:800;font-size:15px;line-height:1}
-  .card .thumb{background:#fff;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
-  .card .thumb img{max-width:92%;max-height:92%}
-  .card .body{padding:12px;display:grid;gap:8px}
-  .title{font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3.4em}
-  .barcode{display:flex;justify-content:flex-start;align-items:flex-start;padding-top:2px;min-height:48px}
-  .barcode .box{background:#ffffff;padding:2px 6px;border-radius:6px;border:1px solid var(--line)}
-  .barcode svg{max-width:140px;height:34px;display:block}
-  .barcode .digits{color:#111827;font-size:11px;text-align:left;margin-top:2px;letter-spacing:.6px}
-  .meta{display:flex;gap:6px;flex-wrap:wrap;min-height:26px}
-  .chip{background:var(--chip);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:#374151;font-size:12px}
-  .pricebox{display:flex;align-items:baseline;gap:8px;min-height:22px}
-  .pricebox .label{color:#6b7280;font-size:12px}
-  .pricebox .value{font-weight:700;font-size:18px}
-
-  /* ===== 印刷：A4縦・3列×4段（12/ページ）・TIGHT ===== */
-  @page { size: A4 portrait; margin: 8.5mm; } /* ← 余白を少し詰める */
+  /* ===== A4縦・倍率100%・3列×4段：カード高さをmmで固定 ===== */
+  @page { size: A4 portrait; margin: 8.5mm; }  /* 内寸: 193mm × 280mm */
   @media print{
-    header, .controls, footer { display:none !important; }
-    body{background:#fff}
-    main{display:block;margin:0;padding:0}
+    body{background:#fff;margin:0;padding:0}
+    header, footer { display:none !important; }
 
-    .sheet{ width: calc(210mm - 17mm); height: calc(297mm - 17mm); margin: 0 auto; }
-    .grid{
+    .sheet{
+      width: calc(210mm - 17mm);   /* 193mm */
+      height: calc(297mm - 17mm);  /* 280mm */
+      margin: 0 auto;
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      gap: 4mm;                    /* ← 余白さらに詰める */
-      width: 100%; height: 100%;
+      column-gap: 4mm;           /* 横ギャップ合計 8mm */
+      row-gap: 4mm;              /* 縦ギャップ合計 12mm */
+      grid-auto-rows: 67mm;      /* (280 - 12) / 4 = 67mm 固定 */
     }
+
     .card{
-      height: 100%;
-      border:1px solid #cbd5e1; border-radius:8px; box-shadow:none;
-      overflow:hidden; display:flex; flex-direction:column;
+      height: 67mm;              /* 二重に指定して確実にロック */
+      border:0.9px solid #cbd5e1;
+      border-radius:6px;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      page-break-inside:avoid;
     }
 
-    /* 画像42% / 情報58% に再配分（本文を確保） */
-    .card .thumb{flex: 0 0 42%; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
-    .card .thumb img{max-width:92%;max-height:92%}
+    /* 中身の比率：画像 40% / 情報 60%（高さ固定下で余白を最小化） */
+    .thumb{flex: 0 0 26.5mm; border-bottom:0.9px solid #dbe2ea; display:flex;align-items:center;justify-content:center;background:#fff}
+    .thumb img{max-width:92%;max-height:24.5mm}
 
-    .card .body{flex: 1 1 auto; padding: 2.4mm 2.8mm; gap: 1.8mm; display:grid; grid-template-rows: auto auto auto auto; align-content:start;}
+    .body{flex:1 1 auto; padding: 2mm 2.4mm 2mm; display:grid; gap: 1.6mm; align-content:start}
+    .title{font-size: 10.6pt; line-height: 1.22; display:-webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow:hidden;}
 
-    .title{ font-size: 11.3pt; line-height: 1.22; -webkit-line-clamp: 1; min-height: auto; }
+    /* JANバーコード */
+    .barcode{display:flex;align-items:flex-start}
+    .barcode .box{background:#fff;border:0.9px solid #dbe2ea;border-radius:4px;padding:1.5mm 2mm}
+    .barcode svg{height:16px;max-width:88px;display:block}
+    .digits{font-size:8.8pt;letter-spacing:.2px;margin-top:1mm}
 
-    .barcode svg{ height: 18px; max-width: 96px; }
-    .barcode .digits{ font-size: 9.2pt; letter-spacing: .2px; }
+    /* メタ情報は印刷では非表示（高さ確保） */
+    .meta{display:none !important}
 
-    /* ← 印刷ではメタ行を非表示にして高さを稼ぐ */
-    .meta{ display:none !important; }
+    .price{font-size:10.4pt;font-weight:700}
 
-    .pricebox .label{ display:none; }
-    .pricebox .value{ font-size: 10.8pt; font-weight: 800; }
+    .qtywrap{display:grid;grid-template-columns: 16mm 1fr;align-items:center;gap:1.8mm}
+    .qtylbl{font-size:9.8pt}
+    .qtybox{height:7mm;border:1.2px solid #374151;border-radius:4px}
 
-    .print-qty{ display:block !important; }
-    .print-qty .lbl{ font-size: 10pt; }
-    .print-qty .box{ height: 8mm; border: 1.4px solid #374151; border-radius: 4px; margin-top: 1mm; }
+    /* 左上の番号タグは控えめに（高さ圧迫を避ける） */
+    .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:26px solid #ff9900;border-right:26px solid transparent}
+    .tag{position:absolute;top:-20px;left:2px;color:#fff;font-weight:800;font-size:11px;}
 
-    /* 番号タグをやや小さくして本文側に余裕を回す */
-    .card .corner{border-top-width:30px;border-right-width:30px}
-    .card .corner span{top:-25px;left:2px;font-size:12px;font-weight:900}
-
+    /* 12枚で改ページ */
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
 
-  .print-qty{display:none}
+  /* 画面確認用の簡易格子（印刷以外で見た目確認したい時用） */
+  @media screen{
+    .sheet{max-width:900px;margin:16px auto;padding:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .card{border:1px solid #e5e7eb;background:#fff}
+    .thumb{aspect-ratio:3/2;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:center}
+    .thumb img{max-width:95%;max-height:95%}
+    .body{padding:8px;display:grid;gap:6px}
+    .barcode .box{border:1px solid #e5e7eb;border-radius:6px;padding:6px 8px}
+    .qtybox{height:28px;border:1px solid #94a3b8;border-radius:6px}
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="brand">
-      <img id="logo" src="${location.origin}/kakaku_Order-Form-/img/shima_owl.png" alt="Shima Owl Logo" onerror="this.style.display='none'">
-      <h1>発注アプリ</h1>
-    </div>
-    <div class="controls">
-      <input id="q" class="input" placeholder="検索（商品名 / ブランド / カテゴリ / JAN）">
-      <select id="cat" class="input"><option value="">すべてのカテゴリ</option></select>
-      <input id="buyerName" class="input" placeholder="発注者名（履歴に保存）">
-      <button class="btn primary" onclick="window.print()">印刷（カタログ）</button>
-    </div>
-  </div>
-</header>
 
-<main>
-  <section class="sheet">
-    <div class="grid" id="grid"></div>
-  </section>
-</main>
+<section class="sheet" id="sheet">
+  <!-- JSで12件カードを流し込み -->
+</section>
 
 <script>
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
 
-/* ========== Utility ========== */
 async function fetchFirstJSON(urls){
-  let lastErr = null;
+  let lastErr=null;
   for(const u of urls){
-    try{
-      const res = await fetch(u, {cache:"no-store"});
-      if(res.ok) return await res.json();
-      lastErr = new Error("HTTP " + res.status + " on " + u);
-    }catch(e){ lastErr = e; }
+    try{const r=await fetch(u,{cache:"no-store"}); if(r.ok) return await r.json(); lastErr=new Error(r.status+"@"+u);}catch(e){lastErr=e;}
   }
-  throw lastErr || new Error("No sources available");
+  throw lastErr||new Error("load error");
 }
-function buildImageCandidates(jan){
-  const exts = ["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
-  const bases = [`${BASE}/img/`, `${BASE}/img/jan/`, `${BASE}/img/barcode/`];
-  const arr = [];
-  for(const b of bases){ for(const e of exts){ arr.push(`${b}${jan}.${e}`); } }
-  return arr;
+function candidates(jan){
+  const exts=["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
+  const bases=[`${BASE}/img/`,`${BASE}/img/jan/`,`${BASE}/img/barcode/`];
+  const arr=[]; for(const b of bases){for(const e of exts){arr.push(`${b}${jan}.${e}`)}} return arr;
 }
-function svgPlaceholder(){
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='450'><rect width='100%' height='100%' fill='#f3f4f6'/><g fill='#6b7280' font-family='system-ui, -apple-system, Segoe UI, Roboto, Noto Sans JP' text-anchor='middle'><text x='50%' y='52%' font-size='18'>NO IMAGE</text></g></svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-}
-function setBestImage(imgEl, candidates){
-  let i = 0; function tryNext(){ if(i >= candidates.length){ imgEl.src = svgPlaceholder(); imgEl.onerror = null; return; } imgEl.src = candidates[i++]; }
-  imgEl.onerror = tryNext; tryNext();
-}
-function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
-function onlyDigits(s){ return (s||"").replace(/[^0-9]/g,""); }
+function setBest(img, urls){let i=0; img.onerror=()=>{i<urls.length?img.src=urls[i++]:img.onerror=null}; img.onerror();}
 
-/* ========== EAN-13 Barcode ========== */
-const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
-const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
-const R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
-const PARITY = {"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
-function ean13Checksum12(d12){
-  let sum = 0; for(let i=0;i<12;i++){ const n = +d12[i]; sum += (i%2===0) ? n : n*3; } return (10 - (sum%10)) % 10;
-}
-function ean13Pattern(digits){
-  const ds = onlyDigits(digits); if(ds.length < 12) return null;
-  const d12 = ds.slice(0,12);
-  const cd  = (ds.length>=13) ? +ds[12] : ean13Checksum12(d12);
-  const first = d12[0], left = d12.slice(1,7), right = d12.slice(7,12) + String(cd);
-  const parity = PARITY[first] || "LLLLLL";
-  let bits = "101";
-  for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
-  bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; }
-  bits += "101";
-  return bits;
-}
-function renderEAN13SVG(jan, width=96, height=18){
-  const ds = onlyDigits(jan); if(ds.length<12) return "";
-  const bits = ean13Pattern(ds); if(!bits) return "";
-  const barW = Math.max(1, Math.floor(width / bits.length));
-  const svgW = barW * bits.length;
-  const hGuard = Math.floor(height * 0.92);
-  const hFull  = height;
-  let x = 0, out = `<svg viewBox='0 0 ${svgW} ${height}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'>`;
-  out += `<rect x='0' y='0' width='${svgW}' height='${height}' fill='#ffffff'/>`;
-  for(let i=0;i<bits.length;i++){
-    if(bits[i]==='1'){
-      const isGuard = (i<3) || (i>=45 && i<50) || (i>=92);
-      const h = isGuard ? hFull : hGuard;
-      out += `<rect x='${x}' y='0' width='${barW}' height='${h}' fill='#111827'/>`;
-    }
-    x += barW;
-  }
-  out += `</svg>`;
-  return out;
+function onlyDigits(s){return (s||"").replace(/[^0-9]/g,"");}
+const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
+const G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
+const R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
+const PAR={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
+function cd12(d){let s=0; for(let i=0;i<12;i++){const n=+d[i]; s+=(i%2===0)?n:n*3;} return (10-(s%10))%10;}
+function pat(d){const ds=onlyDigits(d); if(ds.length<12) return null; const d12=ds.slice(0,12); const cd=(ds.length>=13)?+ds[12]:cd12(d12);
+  const first=d12[0], left=d12.slice(1,7), right=d12.slice(7,12)+String(cd), parity=PAR[first]||"LLLLLL"; let bits="101";
+  for(let i=0;i<6;i++){const n=+left[i]; bits+= (parity[i]==="L"?L[n]:G[n]);} bits+="01010"; for(let i=0;i<6;i++){bits+=R[+right[i]];} bits+="101"; return bits; }
+function svg(jan,w=88,h=16){const bits=pat(jan); if(!bits) return ""; const barW=Math.max(1,Math.floor(w/bits.length)); const W=barW*bits.length; const hg=Math.floor(h*0.92);
+  let x=0, s=`<svg viewBox='0 0 ${W} ${h}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${W}' height='${h}' fill='#fff'/>`;
+  for(let i=0;i<bits.length;i++){ if(bits[i]==='1'){const guard=(i<3)||(i>=45&&i<50)||(i>=92); s+=`<rect x='${x}' y='0' width='${barW}' height='${guard?h:hg}' fill='#111827'/>`; } x+=barW; } return s+`</svg>`; }
+
+const sheet=document.getElementById('sheet');
+let PRODUCTS=[];
+
+function addCard(p,idx){
+  const el=document.createElement('article');
+  el.className='card';
+  el.innerHTML=`
+    <div class="corner"><span class="tag">${idx+1}</span></div>
+    <div class="thumb"><img alt=""></div>
+    <div class="body">
+      <div class="title">${p.name||""}</div>
+      <div class="barcode"><div class="box">${svg(p.jan)}<div class="digits">${p.jan||""}</div></div></div>
+      <div class="price">${(p.price!=null?Number(p.price).toLocaleString()+"円":"")}</div>
+      <div class="qtywrap"><div class="qtylbl">発注数量：</div><div class="qtybox"></div></div>
+    </div>`;
+  sheet.appendChild(el);
+  const img=el.querySelector('img');
+  const urls=candidates(p.jan);
+  let i=0; function next(){ if(i>=urls.length){img.src=''; img.onerror=null; return;} img.src=urls[i++]; }
+  img.onerror=next; next();
 }
 
-/* ========== App ========== */
-let PRODUCTS = [];
 async function boot(){
-  const here = (new URL('./products.json', location.href)).href;
-  const prods = await fetchFirstJSON([ here, `${BASE}/products.json`, `${CDN}/products.json` ]);
-  PRODUCTS = Array.isArray(prods) ? prods : [];
-  renderGrid(PRODUCTS);
+  const here=(new URL('./products.json',location.href)).href;
+  const data=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
+  PRODUCTS=Array.isArray(data)?data:[];
+  PRODUCTS.slice(0,12).forEach(addCard);
 }
-function renderGrid(list){
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  if(list.length===0){ grid.innerHTML = '<div class="empty">該当商品がありません</div>'; return; }
-  list.forEach((p,idx)=>{
-    const el = document.createElement("div");
-    el.className = "card";
-    const imgCandidates = buildImageCandidates(p.jan);
-    const barcodeSVG = renderEAN13SVG(p.jan);
-    el.innerHTML = `
-      <div class="corner"><span>${(idx+1)}</span></div>
-      <div class="card-inner">
-        <div class="thumb"><img alt="${p.name||''}" id="thumb-${p.jan}"></div>
-        <div class="body">
-          <div class="title">${p.name||''}</div>
-          <div class="barcode">
-            <div class="box">
-              ${barcodeSVG || `<div class="digits">JAN：${p.jan || "-"}</div>`}
-              ${barcodeSVG ? `<div class="digits">${p.jan || ""}</div>` : ""}
-            </div>
-          </div>
-          <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${(p.price??'')!==''? (Number(p.price)||0).toLocaleString()+'円':'-'}</span></div>
-          <div class="print-qty">
-            <div class="lbl">発注数量：</div>
-            <div class="box"></div>
-          </div>
-        </div>
-      </div>`;
-    grid.appendChild(el);
-    const t = el.querySelector(`#thumb-${p.jan}`);
-    if(t) setBestImage(t, imgCandidates);
-  });
-}
-boot().catch(err=>{ console.error(err); alert("初期化エラー: " + err.message); });
+boot().catch(e=>alert("初期化エラー:"+e.message));
 </script>
+
 </body>
 </html>
