@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PRO発注カタログ | Gray Luxe + Legacy Print v25</title>
+<title>発注カタログ | Gray Luxe v26</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -26,9 +26,7 @@
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:12px}
   .brand img{height:42px;width:auto;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
-  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.04em;
-    background:linear-gradient(90deg,#0f172a,#334155);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .brand .sub{font-size:12px;color:var(--muted);margin-left:6px}
+  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.03em;color:#0f172a}
   .actions{display:flex;align-items:center;gap:10px}
   .carticon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04);cursor:pointer}
   .carticon img{width:24px;height:24px;object-fit:contain;opacity:.9}
@@ -44,14 +42,17 @@
   @media (max-width:1100px){ main{grid-template-columns:1fr} .cart{position:static} }
 
   .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-  /* iPhone想定（~640px）：2列＋カードコンパクト化。画面内に約4件見える高さへ */
+
+  /* ===== iPhone（〜640px）：2列。バーコード画像は非表示。JAN数字はタイトル直下に表示 ===== */
   @media (max-width:640px){
     .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
     .card{--pad:10px}
     .thumb{min-height:110px}
     .title{font-size:14px;min-height:2.4em}
-    .janrow .barsvg svg{height:22px;max-width:120px}
-    .janrow .digits{font-size:10px}
+    .barsvg{display:none !important}
+    .digits{display:block !important;font-size:12px;color:#0f172a;margin-top:2px}
+    .janrow{gap:8px}
+    .janrow .price{font-size:12px}
     .qtyrow{grid-template-columns:84px 1fr;gap:8px}
   }
 
@@ -66,6 +67,7 @@
   .title{font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;margin-top:2px}
 
   .janblock{display:grid; gap:6px}
+  /* スマホでは .barsvg は消え、.digits が見出し下に残る */
   .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
   .janrow .price{font-weight:800; white-space:nowrap; color:#111827}
   .janrow .barsvg svg{max-width:170px; height:26px; display:block}
@@ -81,7 +83,7 @@
   .muted{color:var(--muted);font-size:13px}
   .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
-  /* ===== 印刷は従来仕様（レイアウト固定 / 色はグレー） ===== */
+  /* ===== 印刷（従来のA4縦 3x4=12） ===== */
   @page { size: A4 portrait; margin: 9mm; }
   @media print{
     header, .actions, .controls, .cart, .qtyrow{ display:none !important; }
@@ -134,7 +136,7 @@
     <div class="topbar">
       <div class="brand">
         <img id="logo" alt="logo">
-        <h1>PRO発注カタログ</h1><span class="sub">Pro Edition</span>
+        <h1>発注カタログ</h1>
       </div>
       <div class="actions">
         <button class="btn primary" onclick="window.print()">印刷（カタログ）</button>
@@ -240,13 +242,14 @@ function renderGrid(list){
       <div class="body">
         <div class="title">${p.name||""}</div>
         <div class="janblock">
+          <!-- モバイルではバー画像を消し、JAN数字を残す -->
           <div class="janrow">
-            <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
+            <div class="digits">${p.jan||""}</div>
             <div class="barsvg">${svg(p.jan)}</div>
           </div>
           <div class="janrow">
+            <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
             <div class="price">税込：${gross!=null? gross.toLocaleString()+"円": ""}</div>
-            <div class="digits">${p.jan||""}</div>
           </div>
         </div>
         <div class="qtyrow">
