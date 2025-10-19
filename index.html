@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / 画像36% 情報64% / 印刷下部に数量欄）</title>
+<title>発注書兼カタログ（A4縦 3×4 / 画像サイズ維持 / 情報面ゆとり＋発注数を横に）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -55,7 +55,6 @@
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
   .cartitem{display:grid;grid-template-columns:1fr 70px 70px 24px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
-
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280;text-align:center}
 
   /* ===== 印刷：A4縦・3列×4段（12/ページ） ===== */
@@ -76,33 +75,33 @@
       grid-template-columns: repeat(3, 1fr);
       column-gap: 4mm;
       row-gap: 4mm;
-      grid-auto-rows: 67mm;
+      grid-auto-rows: 67mm; /* 4×67 + 3×4 = 280mm → ぴったり */
     }
     #grid{display:contents}
     .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:6px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column}
 
-    /* ★ 上段（画像）を 36% に縮小 → 下段情報にゆとり */
-    .thumb{flex:0 0 calc(67mm * 0.36); border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
-    .thumb img{max-width:92%;max-height:calc(67mm * 0.36 - 2.5mm)}
+    /* ★ 画像サイズは“以前の大きさ”のまま固定（約26.8mm） */
+    .thumb{flex:0 0 26.8mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
+    .thumb img{max-width:92%;max-height:24.5mm}
 
-    /* 本文配置は上詰め、ラベル行間も圧縮して情報入る余白を確保 */
-    .body{flex:1 1 auto; padding:2mm 2.4mm 2mm; gap:1.2mm; display:grid; grid-template-rows:auto auto 1fr auto; align-content:start}
-    .title{-webkit-line-clamp:1;font-size:10pt;line-height:1.16;min-height:auto}
+    /* 下段の情報スペースを稼ぐ：余白を最小化＆行間タイト */
+    .body{flex:1 1 auto; padding:1.8mm 2.2mm 1.8mm; gap:1.0mm; display:grid; grid-template-rows:auto auto 1fr auto; align-content:start}
+    .title{-webkit-line-clamp:1;font-size:10pt;line-height:1.15;min-height:auto}
 
     /* JAN + 売価（横並び） */
-    .janrow{display:flex;align-items:center;gap:5px}
-    .janrow .box{border:0.9px solid #dbe2ea;border-radius:4px;padding:1mm 1.5mm;background:#fff;max-width:90px}
+    .janrow{display:flex;align-items:center;gap:4px}
+    .janrow .box{border:0.9px solid #dbe2ea;border-radius:4px;padding:0.9mm 1.4mm;background:#fff;max-width:90px}
     .janrow .box svg{height:14px;max-width:80px;display:block}
-    .janrow .digits{font-size:8pt;margin-top:0.4mm;letter-spacing:.2px}
-    .sell{font-weight:800;font-size:9.8pt;white-space:nowrap}
+    .janrow .digits{font-size:8pt;margin-top:0.3mm;letter-spacing:.2px}
+    .sell{font-weight:800;font-size:9.6pt;white-space:nowrap}
 
     .meta{display:none !important}
     .pricebox{display:none !important}
 
-    /* ★ 下端に発注数量欄（実線・フル幅） */
-    .print-qty{display:block !important; margin-top:1mm; align-self:end}
-    .print-qty .lbl{font-size:9.4pt}
-    .print-qty .box{height:8mm;border:1.4px solid #374151;border-radius:4px;margin-top:0.8mm;width:100%}
+    /* ★ 発注数：ラベルの“横”に記入欄（実線） */
+    .print-qty{display:flex !important; align-items:center; gap:2.2mm; margin-top:0.8mm}
+    .print-qty .lbl{font-size:9.4pt; white-space:nowrap}
+    .print-qty .box{height:7.5mm; width:28mm; border:1.4px solid #374151; border-radius:4px}
 
     .card .corner{border-top-width:24px;border-right-width:24px}
     .card .corner span{top:-18px;left:2px;font-size:10px}
@@ -160,8 +159,6 @@
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const GAS_ENDPOINT = ""; // 必要なら差し替え
-
 /* ===== Util ===== */
 async function fetchFirstJSON(urls){
   let lastErr=null;
@@ -221,7 +218,7 @@ function renderGrid(list){
           <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
 
-        <div class="print-qty"><div class="lbl">発注数量：</div><div class="box"></div></div>
+        <div class="print-qty"><div class="lbl">発注数：</div><div class="box"></div></div>
       </div>`;
     grid.appendChild(el);
     setBest(el.querySelector('img'), candidates(p.jan));
