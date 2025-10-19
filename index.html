@@ -3,95 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（Gray Luxe / Mobile / Cart Badge v22）</title>
+<title>発注書兼カタログ（Gray Luxe + 旧印刷仕様 v23）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
     /* Gray Luxe palette */
-    --bg:#f5f6f7;          /* page */
-    --card:#ffffff;        /* surfaces */
-    --ink:#0f172a;         /* primary text (slate-900) */
-    --muted:#64748b;       /* secondary text (slate-500) */
-    --line:#e5e7eb;        /* borders */
-    --line-strong:#d1d5db;
-    --accent:#111827;      /* near-black accent */
-    --accent-2:#334155;    /* slate-700 */
-    --cta:#1f2937;         /* buttons (slate-800) */
-    --cta-text:#ffffff;
-    --chip:#f3f4f6;
-    --badge1:#9ca3af;      /* number badge gradient */
-    --badge2:#6b7280;
-    --qty:#1d4ed8;         /* blue focus for qty */
+    --bg:#f5f6f7; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
+    --line:#e5e7eb; --line-strong:#d1d5db; --accent:#111827; --accent-2:#334155;
+    --cta:#1f2937; --cta-text:#ffffff; --chip:#f3f4f6;
+    --badge1:#9ca3af; --badge2:#6b7280; --qty:#1d4ed8;
     --shadow:0 8px 24px rgba(15,23,42,.06), 0 2px 6px rgba(15,23,42,.05);
     --radius:14px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
-  a{color:var(--accent-2);text-decoration:none}
 
-  /* Header */
+  /* ====== WEB（画面） ====== */
   header{position:sticky;top:0;z-index:50;background:#ffffffe6;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
   .wrap{max-width:1280px;margin:0 auto;padding:12px 16px}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:10px}
   .brand h1{font-size:20px;margin:0;font-weight:800;letter-spacing:.02em}
   .actions{display:flex;align-items:center;gap:10px}
-  .carticon{
-    position:relative;display:inline-flex;align-items:center;justify-content:center;
-    width:40px;height:40px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;
-    box-shadow:0 2px 6px rgba(0,0,0,.04);
-    cursor:pointer;
-  }
+  .carticon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04);cursor:pointer}
   .carticon img{width:24px;height:24px;object-fit:contain;opacity:.9}
-  .carticon .count{
-    position:absolute;right:-4px;top:-4px;
-    min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#111827;color:#fff;
-    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.25);
-  }
-
+  .carticon .count{position:absolute;right:-4px;top:-4px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
   .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px}
-  .input, select{
-    background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-width:180px;
-    color:var(--ink);outline:none;
-  }
-  .btn{
-    background:var(--cta);color:var(--cta-text);border:1px solid #0b1220;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;
-    box-shadow:var(--shadow);
-  }
+  .input, select{background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-width:180px;color:var(--ink);outline:none}
+  .btn{background:var(--cta);color:var(--cta-text);border:1px solid #0b1220;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
   .btn.primary{background:#111827}
   .btn:hover{opacity:.95}
   .btn:active{transform:translateY(1px)}
 
-  /* Layout */
   main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;max-width:1280px;margin:18px auto;padding:0 16px}
   @media (max-width:1100px){ main{grid-template-columns:1fr} .cart{position:static} }
 
   .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
   @media (max-width:1100px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
-  @media (max-width:720px){
-    .grid{grid-template-columns:1fr;gap:14px}
-    .input, select{min-width:0;flex:1}
-    .controls{justify-content:stretch}
-    .topbar{flex-wrap:wrap}
-  }
+  @media (max-width:720px){ .grid{grid-template-columns:1fr;gap:14px} .input, select{min-width:0;flex:1} .controls{justify-content:stretch} .topbar{flex-wrap:wrap} }
 
-  /* Card */
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-  /* luxe number badge */
-  .badge{
-    position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:999px;
-    background:linear-gradient(135deg,var(--badge1),var(--badge2));
-    color:#fff;display:flex;align-items:center;justify-content:center;
-    font-weight:900;font-size:13px;box-shadow:0 10px 18px rgba(0,0,0,.12), inset 0 1px 1px #fff6;
-  }
+  .badge{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:999px;background:linear-gradient(135deg,var(--badge1),var(--badge2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;box-shadow:0 10px 18px rgba(0,0,0,.12), inset 0 1px 1px #fff6}
 
-  /* Image / Info */
   .thumb{flex:0 0 40%; min-height:160px; display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
   .thumb img{max-width:92%;max-height:92%}
   .body{flex:1 1 auto; display:grid; gap:10px; padding:14px}
   .title{font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;margin-top:2px}
 
-  /* JAN＋価格（2行） */
   .janblock{display:grid; gap:6px}
   .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
   .janrow .price{font-weight:800; white-space:nowrap; color:#111827}
@@ -102,14 +60,63 @@
   .qty{border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;width:100%}
   .qty:focus{outline:2px solid var(--qty); outline-offset:1px}
 
-  /* Cart side */
   .cart{position:sticky;top:96px;max-height:calc(100dvh - 120px);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
   .cart h2{margin:0 0 6px 0;font-size:16px}
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
   .muted{color:var(--muted);font-size:13px}
 
-  /* Small helpers */
   .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+
+  /* ====== 印刷（旧仕様をそのまま） ====== */
+  @page { size: A4 portrait; margin: 9.0mm; } /* 旧：A4縦/倍率100%/1ページ12件 */
+  @media print{
+    /* 画面用は全部非表示 */
+    header, .actions, .controls, .cart, .qtyrow { display:none !important; }
+    body{background:#fff;margin:0;padding:0}
+    main{display:block;margin:0;padding:0}
+
+    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3.0mm 0}
+
+    /* 旧仕様のシートとグリッド */
+    .sheet{
+      width: calc(210mm - 18mm);
+      height: calc(297mm - 18mm);
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 3.6mm;
+      row-gap: 3.6mm;
+      grid-auto-rows: 67mm;           /* 1ページ 4段 */
+    }
+    #grid{display:contents}            /* 画面と同じ要素を印刷グリッドに流し込む */
+
+    /* カードの旧印刷スタイル */
+    .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:7px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;page-break-inside:avoid}
+    .badge{border-radius:0; width:0;height:0; top:0; left:0; border-top:34px solid #ff9900; border-right:34px solid transparent; background:none; box-shadow:none}
+    .badge::after{content:attr(data-n); position:absolute; top:-26px; left:4px; color:#fff; font-weight:900; font-size:11px}
+
+    .thumb{flex:0 0 25.0mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center; background:#fff}
+    .thumb img{max-width:92%;max-height:23.6mm}
+
+    .body{flex:1 1 auto; padding:0.8mm 1.9mm 0.7mm; display:grid; gap:0.32mm; grid-template-rows:auto auto 1fr; align-content:start}
+    .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.08;min-height:1.75em;margin:0}
+
+    .janblock{gap:0.4mm}
+    .janrow{gap:1.8mm}
+    .janrow .price{font-size:9.2pt; line-height:1}
+    .janrow .barsvg svg{height:18px; max-width:108px}
+    .janrow .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
+
+    .print-qty{display:flex !important; align-items:center; gap:2.0mm; margin-top:auto; padding-top:0.4mm}
+    .print-qty .lbl{font-size:9.0pt; white-space:nowrap; color:#1d4ed8; font-weight:800}
+    .print-qty .box{height:5.0mm; width:28mm; border:1.6px solid #1d4ed8; border-radius:3px; background:#fff}
+
+    .meta{display:none !important}
+    .card:nth-of-type(12n){page-break-after:always;break-after:page}
+  }
+
+  .print-header{display:none}
+  .print-qty{display:none}
 </style>
 </head>
 <body>
@@ -134,7 +141,8 @@
 </header>
 
 <main>
-  <section>
+  <div class="print-header">発注書兼カタログ</div>
+  <section class="sheet">
     <div class="grid" id="grid"></div>
   </section>
 
@@ -198,7 +206,7 @@ function renderGrid(list){
     const el=document.createElement('article');
     el.className='card';
     el.innerHTML=`
-      <div class="badge">${idx+1}</div>
+      <div class="badge" data-n="${idx+1}"></div>
       <div class="thumb"><img alt=""></div>
       <div class="body">
         <div class="title">${p.name||""}</div>
@@ -216,6 +224,7 @@ function renderGrid(list){
           <input type="number" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
           <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
+        <div class="print-qty"><div class="lbl">発注数量：</div><div class="box"></div></div>
       </div>`;
     grid.appendChild(el);
     setBest(el.querySelector('img'), candidates(p.jan));
@@ -245,12 +254,7 @@ function renderCart(){
   localStorage.setItem('cart.v1', JSON.stringify(CART));
   updateCartCount();
 }
-
-function updateCartCount(){
-  const count = CART.reduce((s,it)=>s+Number(it.qty||0),0);
-  document.getElementById('cartCount').textContent = count;
-}
-
+function updateCartCount(){ document.getElementById('cartCount').textContent = CART.reduce((s,it)=>s+Number(it.qty||0),0); }
 function addToCart(jan){
   const qtyEl=document.getElementById(`qty-${jan}`);
   const q=Math.max(1, Number(qtyEl && qtyEl.value || 1));
@@ -279,10 +283,8 @@ function filterGrid(){
 }
 
 async function boot(){
-  // cart icon image
   const cartImg = document.getElementById('cartImg');
-  cartImg.src = CART_IMG;
-  cartImg.onerror = () => { cartImg.style.opacity='.35'; };
+  cartImg.src = `${BASE}/img/KART.PNG`; cartImg.onerror = () => { cartImg.style.opacity='.35'; };
 
   const here=(new URL('./products.json',location.href)).href;
   const prods=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
