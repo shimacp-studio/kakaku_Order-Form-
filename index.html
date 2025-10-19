@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / 入力欄見切れゼロ版）</title>
+<title>発注書兼カタログ（A4縦 3×4 / タイトル表示 + JAN大きめ + 近接）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -36,9 +36,9 @@
   .thumb img{max-width:92%;max-height:92%}
   .body{padding:12px;display:grid;gap:10px}
   .title{font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
-  .janrow{display:flex;align-items:center;gap:8px;justify-content:flex-end}
-  .janrow .box{padding:0;border:none;max-width:160px}
-  .janrow .box svg{max-width:140px;height:22px;margin-left:auto;display:block}
+  .janrow{display:flex;align-items:flex-start;gap:8px;justify-content:flex-end}
+  .janrow .box{padding:0;border:none;max-width:170px}
+  .janrow .box svg{max-width:150px;height:24px;margin-left:auto;display:block}
   .janrow .digits{font-size:10px;text-align:right;margin-top:2px;letter-spacing:.3px}
   .sell,.price-tax{font-weight:800}
   .qtyrow{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:center}
@@ -48,11 +48,14 @@
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
 
   /* === 印刷（A4縦 / 3×4=12） === */
-  @page { size: A4 portrait; margin: 9.0mm; } /* 余白+0.1mmで安全側 */
+  @page { size: A4 portrait; margin: 9.0mm; }
   @media print{
     header, .controls, .cart, footer { display:none !important; }
     body{background:#fff;margin:0;padding:0}
     main{display:block;margin:0;padding:0}
+
+    /* 上中央タイトルを表示 */
+    .print-header{display:block!important;text-align:center;font-weight:800;font-size:15pt;letter-spacing:.02em;margin:0 0 3.6mm 0}
 
     .sheet{
       width: calc(210mm - 18mm);
@@ -62,43 +65,41 @@
       grid-template-columns: repeat(3, 1fr);
       column-gap: 3.6mm;
       row-gap: 3.6mm;
-      grid-auto-rows: 67mm; /* 高さ固定で4段＝268mm + 隙間10.8mm ≒ ほぼジャスト */
+      grid-auto-rows: 67mm;
     }
     #grid{display:contents}
     .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;display:flex;flex-direction:column}
 
-    /* 角リボン（印刷） */
     .card .corner{border-top-width:34px;border-right-width:34px}
     .card .corner span{top:-26px;left:4px;font-size:11px}
 
-    /* ---- ここから見切れゼロ調整 ---- */
+    /* 画像エリアはそのまま、本文を詰めてJANと商品名を近接 */
     .thumb{flex:0 0 25.6mm; border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
     .thumb img{max-width:92%;max-height:24.1mm}
 
-    /* 余白を詰めて情報を上へ */
-    .body{flex:1 1 auto; padding:1.0mm 2.1mm 0.8mm; gap:0.6mm; display:grid;
+    .body{flex:1 1 auto; padding:1.0mm 2.1mm 0.8mm; gap:0.55mm; display:grid;
           grid-template-rows:auto auto auto 1fr auto; align-content:start}
-    .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.13;min-height:2.15em}
+    .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.12;min-height:2.1em}
 
-    .janrow{gap:4px}
-    .janrow .box{max-width:82px}
-    .janrow .box svg{height:13px;max-width:76px}
-    .janrow .digits{font-size:7.4pt;margin-top:0.1mm;letter-spacing:.16px}
+    /* JAN：少し大きく＆タイトル直下の近接／右寄せのまま */
+    .janrow{justify-content:flex-end; gap:4px; margin-top:0.1mm}
+    .janrow .box{max-width:96px}
+    .janrow .box svg{height:16px; max-width:92px}
+    .janrow .digits{font-size:7.6pt; letter-spacing:.18px; margin-top:0.2mm}
 
     .sell{font-size:9.1pt}
     .price-tax{font-size:9.1pt}
 
-    /* 発注数：確実に収めるため高さをさらに微縮 */
     .print-qty{display:flex !important; align-items:center; gap:1.6mm; margin-top:auto}
     .print-qty .lbl{font-size:9.1pt; white-space:nowrap}
     .print-qty .box{height:5.6mm; width:27.5mm; border:1.3px solid #374151; border-radius:3.5px}
-    /* ---- 調整ここまで ---- */
 
     .meta{display:none !important}
     .qtyrow{display:none}
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
 
+  .print-header{display:none}
   .print-qty{display:none}
 </style>
 </head>
@@ -116,6 +117,8 @@
 </header>
 
 <main>
+  <div class="print-header">発注書兼カタログ</div>
+
   <section class="sheet">
     <div class="grid" id="grid"></div>
   </section>
