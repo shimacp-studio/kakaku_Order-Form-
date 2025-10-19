@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注アプリ</title>
+<title>発注アプリ（A4縦・3x4=12/ページ・倍率100%対応）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -29,7 +29,7 @@
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  /* ▼番号タグを大きく（通常表示） */
+  /* ▼番号タグ（通常表示） */
   .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:42px solid #ff9900;border-right:42px solid transparent}
   .card .corner span{position:absolute;top:-34px;left:4px;color:#fff;font-weight:800;font-size:15px;line-height:1}
 
@@ -57,8 +57,8 @@
   .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
-  /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ） ===== */
-  @page { size: A4 portrait; margin: 10mm; } /* 印刷ダイアログでヘッダー/フッターOFF推奨 */
+  /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ）・倍率100% ===== */
+  @page { size: A4 portrait; margin: 10mm; } /* 印刷ダイアログでは倍率=100%、ヘッダー/フッターOFFに */
   @media print{
     :root{ --gap: 6mm; }
 
@@ -66,7 +66,7 @@
     body{background:#fff}
     main{display:block;margin:0;padding:0}
 
-    /* A4 内寸（210-20=190mm）×（297-20=277mm）をそのままグリッドに適用 */
+    /* A4 内寸（210-20=190mm）×（297-20=277mm）をグリッドに適用 */
     .grid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -76,7 +76,7 @@
       margin: 0 auto;
     }
 
-    /* 各カードの高さ = (総高さ - ギャップ×3) / 4（厳密） */
+    /* 各カードの高さ = (総高さ - ギャップ×3) / 4 */
     .card{
       height: calc( (100% - (var(--gap) * 3)) / 4 );
       min-height: 0;
@@ -88,14 +88,13 @@
       display:flex;flex-direction:column;
     }
 
-    /* ▼番号タグも印刷時にさらに大きく・読みやすく */
+    /* 番号タグ（印刷時も見やすく） */
     .card .corner{border-top-width:36px;border-right-width:36px}
     .card .corner span{top:-30px;left:3px;font-size:14px;font-weight:900}
 
-    /* 画像は据え置き（ご指定どおり） */
     .card .thumb{height:46%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
 
-    /* --- 情報を拡大（視認性アップ） --- */
+    /* 情報を拡大 */
     .card .body{ padding: 3mm 3.2mm; gap: 2.2mm; }
     .title{ font-size: 12pt; line-height: 1.25; -webkit-line-clamp: 1; min-height: auto; }
     .barcode svg{ height: 22px; max-width: 110px; }
@@ -105,17 +104,16 @@
     .pricebox .label{ display:none; }
     .pricebox .value{ font-size: 12pt; font-weight: 800; }
 
-    /* ▼数量欄：点線→実線＆少し大きく */
+    /* 数量欄：実線・太め */
     .print-qty{ display:block !important; }
     .print-qty .lbl{ font-size: 11pt; }
     .print-qty .box{
-      height: 10mm;                /* しっかり書ける高さ */
-      border: 1.6px solid #374151; /* 実線（濃いめ） */
+      height: 10mm;
+      border: 1.6px solid #374151;
       border-radius: 4px;
       margin-top: 1.4mm;
     }
 
-    /* 12件ごとに改ページ */
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
   }
 
@@ -162,14 +160,14 @@
   </aside>
 </main>
 
-<footer>印刷はA4縦で3列×4段=12件/ページ。番号タグ大型化・数量欄は実線で視認性UP。</footer>
+<footer>印刷はA4縦で3列×4段=12件/ページ。倍率100%でピッタリ収まります（ブラウザのヘッダー/フッターはOFFに）。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";
 
+/* ========== Utility ========== */
 async function fetchFirstJSON(urls){
   let lastErr = null;
   for(const u of urls){
@@ -194,28 +192,22 @@ function svgPlaceholder(){
 }
 function setBestImage(imgEl, candidates){
   let i = 0;
-  function tryNext(){
-    if(i >= candidates.length){ imgEl.src = svgPlaceholder(); imgEl.onerror = null; return; }
-    imgEl.src = candidates[i++];
-  }
-  imgEl.onerror = tryNext;
-  tryNext();
+  function tryNext(){ if(i >= candidates.length){ imgEl.src = svgPlaceholder(); imgEl.onerror = null; return; } imgEl.src = candidates[i++]; }
+  imgEl.onerror = tryNext; tryNext();
 }
 function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
 function onlyDigits(s){ return (s||"").replace(/[^0-9]/g,""); }
-// EAN-13
+
+/* ========== EAN-13 Barcode ========== */
 const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
 const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
 const R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
 const PARITY = {"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
 function ean13Checksum12(d12){
-  let sum = 0;
-  for(let i=0;i<12;i++){ const n = +d12[i]; sum += (i%2===0) ? n : n*3; }
-  return (10 - (sum%10)) % 10;
+  let sum = 0; for(let i=0;i<12;i++){ const n = +d12[i]; sum += (i%2===0) ? n : n*3; } return (10 - (sum%10)) % 10;
 }
 function ean13Pattern(digits){
-  const ds = onlyDigits(digits);
-  if(ds.length < 12) return null;
+  const ds = onlyDigits(digits); if(ds.length < 12) return null;
   const d12 = ds.slice(0,12);
   const cd  = (ds.length>=13) ? +ds[12] : ean13Checksum12(d12);
   const first = d12[0], left = d12.slice(1,7), right = d12.slice(7,12) + String(cd);
@@ -223,7 +215,7 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]); }
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; } /* ← 余計な括弧バグ修正済み */
   bits += "101";
   return bits;
 }
@@ -248,8 +240,16 @@ function renderEAN13SVG(jan, width=110, height=22){
   return out;
 }
 
+/* ========== App ========== */
 let PRODUCTS = [];
 let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
+
+function addToCart(jan){
+  const p = PRODUCTS.find(x=>String(x.jan)===String(jan));
+  if(!p) return;
+  CART.push({jan: p.jan, qty: 1, price: p.price});
+  localStorage.setItem("cart.v1", JSON.stringify(CART));
+}
 
 function renderGrid(list){
   const grid = document.getElementById("grid");
@@ -263,9 +263,9 @@ function renderGrid(list){
     el.innerHTML = `
       <div class="corner"><span>${(idx+1)}</span></div>
       <div class="card-inner">
-        <div class="thumb"><img alt="${p.name}" id="thumb-${p.jan}"></div>
+        <div class="thumb"><img alt="${p.name||''}" id="thumb-${p.jan}"></div>
         <div class="body">
-          <div class="title">${p.name}</div>
+          <div class="title">${p.name||''}</div>
           <div class="barcode">
             <div class="box">
               ${barcodeSVG || `<div class="digits">JAN：${p.jan || "-"}</div>`}
@@ -294,20 +294,11 @@ function renderGrid(list){
   });
 }
 
-function renderCart(){
-  const list = document.getElementById("cartlist");
-  list.innerHTML = "";
-  if(CART.length===0){ list.innerHTML = '<div class="empty">カートは空です</div>'; }
-}
-
-function money(n){ if(n==null || isNaN(n)) return "-"; return n.toLocaleString() + "円"; }
-
 async function boot(){
   const here = (new URL('./products.json', location.href)).href;
   const prods = await fetchFirstJSON([ here, `${BASE}/products.json`, `${CDN}/products.json` ]);
   PRODUCTS = Array.isArray(prods) ? prods : [];
   renderGrid(PRODUCTS);
-  renderCart();
 }
 boot().catch(err=>{ console.error(err); alert("初期化エラー: " + err.message); });
 </script>
