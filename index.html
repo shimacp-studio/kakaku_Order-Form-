@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注書兼カタログ（A4縦 3×4 / 画像40% 情報60% / 発注機能つき）</title>
+<title>発注書兼カタログ（A4縦 3×4 / 画像36% 情報64% / 印刷下部に数量欄）</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -14,7 +14,7 @@
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent);text-decoration:none}
 
-  /* ===== 通常の発注画面 ===== */
+  /* ===== 画面（通常） ===== */
   header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
   .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
   .brand{display:flex;gap:10px;align-items:center;justify-content:center}
@@ -35,7 +35,7 @@
   .body{padding:12px;display:grid;gap:8px}
   .title{font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;font-size:clamp(13px,1.8vw,15px)}
 
-  /* ▼ 画面：JANを縮小＆横幅抑制（いっぱいに広がらない） */
+  /* 画面：JANの幅制限（でかすぎ防止） */
   .barcode{display:flex;justify-content:flex-start;align-items:flex-start;padding-top:2px;min-height:32px}
   .barcode .box{background:#ffffff;padding:2px 6px;border-radius:6px;border:1px solid var(--line);max-width:160px}
   .barcode svg{max-width:120px;height:22px;display:block}
@@ -55,16 +55,17 @@
   .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
   .cartitem{display:grid;grid-template-columns:1fr 70px 70px 24px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
+
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280;text-align:center}
 
-  /* ===== 印刷：A4縦・3列×4段（12/ページ）・高さロック ===== */
+  /* ===== 印刷：A4縦・3列×4段（12/ページ） ===== */
   @page { size: A4 portrait; margin: 8.5mm; }
   @media print{
-    header, .controls, .cart { display:none !important; }
+    header, .controls, .cart, footer { display:none !important; }
     body{background:#fff;margin:0;padding:0}
     main{display:block;margin:0;padding:0}
 
-    .print-header{display:block !important; text-align:center; margin:0 0 6mm 0; font-weight:800; font-size:14pt;}
+    .print-header{display:block !important; text-align:center; margin:0 0 5mm 0; font-weight:800; font-size:14pt;}
     .print-sub{display:block !important; text-align:center; margin:-4mm 0 2mm; font-size:9pt; color:#6b7280;}
 
     .sheet{
@@ -80,29 +81,31 @@
     #grid{display:contents}
     .card{height:67mm;min-height:0;border:1px solid #cbd5e1;border-radius:6px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column}
 
-    /* 画像40% / 情報60% */
-    .thumb{flex:0 0 calc(67mm * 0.40); border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
-    .thumb img{max-width:92%;max-height:calc(67mm * 0.40 - 3mm)}
+    /* ★ 上段（画像）を 36% に縮小 → 下段情報にゆとり */
+    .thumb{flex:0 0 calc(67mm * 0.36); border-bottom:1px solid #cbd5e1; display:flex;align-items:center;justify-content:center}
+    .thumb img{max-width:92%;max-height:calc(67mm * 0.36 - 2.5mm)}
 
-    .body{flex:1 1 auto; padding:2mm 2.4mm 2mm; gap:1.3mm; display:grid; grid-template-rows:auto auto 1fr auto; align-content:start}
-    .title{-webkit-line-clamp:1;font-size:10.2pt;line-height:1.18;min-height:auto}
+    /* 本文配置は上詰め、ラベル行間も圧縮して情報入る余白を確保 */
+    .body{flex:1 1 auto; padding:2mm 2.4mm 2mm; gap:1.2mm; display:grid; grid-template-rows:auto auto 1fr auto; align-content:start}
+    .title{-webkit-line-clamp:1;font-size:10pt;line-height:1.16;min-height:auto}
 
     /* JAN + 売価（横並び） */
-    .janrow{display:flex;align-items:center;gap:6px}
-    .janrow .box{border:0.9px solid #dbe2ea;border-radius:4px;padding:1.1mm 1.6mm;background:#fff;max-width:92px}
-    .janrow .box svg{height:15px;max-width:82px;display:block}
-    .janrow .digits{font-size:8.2pt;margin-top:0.6mm;letter-spacing:.2px}
-    .sell{font-weight:800;font-size:10pt;white-space:nowrap}
+    .janrow{display:flex;align-items:center;gap:5px}
+    .janrow .box{border:0.9px solid #dbe2ea;border-radius:4px;padding:1mm 1.5mm;background:#fff;max-width:90px}
+    .janrow .box svg{height:14px;max-width:80px;display:block}
+    .janrow .digits{font-size:8pt;margin-top:0.4mm;letter-spacing:.2px}
+    .sell{font-weight:800;font-size:9.8pt;white-space:nowrap}
 
     .meta{display:none !important}
     .pricebox{display:none !important}
 
-    .print-qty{display:block !important; align-self:end}
-    .print-qty .lbl{font-size:9.6pt}
-    .print-qty .box{height:8mm;border:1.4px solid #374151;border-radius:4px;margin-top:1mm}
+    /* ★ 下端に発注数量欄（実線・フル幅） */
+    .print-qty{display:block !important; margin-top:1mm; align-self:end}
+    .print-qty .lbl{font-size:9.4pt}
+    .print-qty .box{height:8mm;border:1.4px solid #374151;border-radius:4px;margin-top:0.8mm;width:100%}
 
-    .card .corner{border-top-width:26px;border-right-width:26px}
-    .card .corner span{top:-20px;left:2px;font-size:11px}
+    .card .corner{border-top-width:24px;border-right-width:24px}
+    .card .corner span{top:-18px;left:2px;font-size:10px}
 
     .qtyrow{display:none}
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
@@ -151,13 +154,13 @@
   </aside>
 </main>
 
-<footer>印刷は倍率100%、ヘッダー/フッターOFF を推奨。JANは画面でも幅制限をかけています。</footer>
+<footer>印刷は倍率100%、ヘッダー/フッターOFF を推奨。JANは画面でも幅制限済み。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec"; // 任意
+const GAS_ENDPOINT = ""; // 必要なら差し替え
 
 /* ===== Util ===== */
 async function fetchFirstJSON(urls){
@@ -190,7 +193,7 @@ function svg(jan,w=110,h=22){const bits=pat(jan); if(!bits) return ""; const bar
   for(let i=0;i<bits.length;i++){ if(bits[i]==='1'){const g=(i<3)||(i>=45&&i<50)||(i>=92); s+=`<rect x='${x}' y='0' width='${barW}' height='${g?h:hg}' fill='#111827'/>`; } x+=barW; } return s+`</svg>`; }
 
 /* ===== App State ===== */
-let PRODUCTS=[], FILTERED=[], CART=JSON.parse(localStorage.getItem("cart.v1")||"[]"), MAILS=[];
+let PRODUCTS=[], CART=JSON.parse(localStorage.getItem("cart.v1")||"[]");
 
 /* ===== Render ===== */
 function renderGrid(list){
@@ -268,37 +271,12 @@ function removeFromCart(jan){ CART=CART.filter(x=>x.jan!==jan); renderCart(); }
 function filterGrid(){
   const q=(document.getElementById('q').value||'').trim().toLowerCase();
   const cat=document.getElementById('cat').value||'';
-  FILTERED = PRODUCTS.filter(p=>{
+  const list=PRODUCTS.filter(p=>{
     const hitQ = !q || JSON.stringify(p).toLowerCase().includes(q);
     const hitC = !cat || (p.category||'')===cat;
     return hitQ && hitC;
   });
-  renderGrid(FILTERED);
-}
-
-/* ===== Submit ===== */
-async function submitOrder(){
-  if(CART.length===0){ alert("カートが空です。"); return; }
-  const buyer=(document.getElementById('buyerName').value||"").trim();
-  const user=(document.getElementById('username').value||"").trim();
-  const note=(document.getElementById('note').value||"").trim();
-  const items=CART.map(it=>{
-    const p=PRODUCTS.find(x=>x.jan===it.jan)||{};
-    return { jan: it.jan, name: p.name||"", qty: it.qty, price: p.price||0, amount: (p.price||0)*it.qty };
-  });
-  const payload={ buyer, user, note, items, total_ex: items.reduce((s,i)=>s+i.amount,0) };
-  try{
-    const r=await fetch(GAS_ENDPOINT,{method:"POST",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(!r.ok) throw new Error("HTTP "+r.status);
-    alert("発注を送信しました。");
-    CART=[]; renderCart();
-  }catch(e){
-    // mailto フォールバック（mail_list.json があれば BCC に使う）
-    const lines=items.map(i=>`${i.name}(${i.jan}) x ${i.qty} ＝ ${money(i.amount)}`).join('%0D%0A');
-    const body=`発注者:${encodeURIComponent(user)}%0D%0A依頼名:${encodeURIComponent(buyer)}%0D%0A%0D%0A${lines}%0D%0A----%0D%0A備考:${encodeURIComponent(note)}`;
-    const bcc = MAILS.length ? `&bcc=${encodeURIComponent(MAILS.join(','))}` : '';
-    location.href=`mailto:?subject=${encodeURIComponent('発注')}${bcc}&body=${body}`;
-  }
+  renderGrid(list);
 }
 
 /* ===== Boot ===== */
@@ -306,23 +284,12 @@ async function boot(){
   const here=(new URL('./products.json',location.href)).href;
   const prods=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
   PRODUCTS=Array.isArray(prods)?prods:[];
-  // メール宛先（任意）：/mail_list.json に ["a@x","b@y"] 形式で置けば自動読込
-  try{
-    MAILS = await fetchFirstJSON([
-      (new URL('./mail_list.json', location.href)).href,
-      `${BASE}/mail_list.json`,
-      `${CDN}/mail_list.json`
-    ]);
-    if(!Array.isArray(MAILS)) MAILS=[];
-  }catch(_){ MAILS=[]; }
-
   const set=new Set(PRODUCTS.map(p=>p.category).filter(Boolean)); const sel=document.getElementById('cat');
   [...set].sort().forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o);});
   document.getElementById('buyerName').value = localStorage.getItem('buyerName') || "";
-
   renderGrid(PRODUCTS);
   renderCart();
-  document.getElementById('submit').addEventListener('click', submitOrder);
+  document.getElementById('submit').addEventListener('click', ()=>alert('送信先未設定です（GASやメール連携を有効化してください）'));
 }
 boot().catch(e=>{console.error(e); alert("初期化エラー: "+e.message);});
 </script>
