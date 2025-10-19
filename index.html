@@ -3,8 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注アプリ（A4縦・3x4=12/ページ・倍率100%対応）</title>
+<title>発注アプリ（A4縦・3x4=12/ページ・倍率100%フィット）</title>
 <meta name="color-scheme" content="light">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
   :root{
     --bg:#f7fafa;--card:#ffffff;--ink:#111827;--muted:#4b5563;--line:#e5e7eb;
@@ -29,7 +32,7 @@
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-  /* ▼番号タグ（通常表示） */
+  /* 番号タグ（通常表示） */
   .card .corner{position:absolute;top:0;left:0;width:0;height:0;border-top:42px solid #ff9900;border-right:42px solid transparent}
   .card .corner span{position:absolute;top:-34px;left:4px;color:#fff;font-weight:800;font-size:15px;line-height:1}
 
@@ -58,25 +61,29 @@
   footer{max-width:1200px;margin:24px auto;padding:0 16px;color:#6b7280}
 
   /* ===== 印刷：A4縦・3列×4段（12アイテム/ページ）・倍率100% ===== */
-  @page { size: A4 portrait; margin: 10mm; } /* 印刷ダイアログでは倍率=100%、ヘッダー/フッターOFFに */
+  @page { size: A4 portrait; margin: 10mm; } /* 印刷ダイアログ：倍率=100%、ヘッダー/フッターOFF */
   @media print{
-    :root{ --gap: 6mm; }
+    :root{ --gap: 5.5mm; --fit: 0.985; } /* ← はみ出し対策の微縮小（100%印刷のまま中身だけ微縮小） */
 
-    header, .toolbar, .cart, .controls .btn, .qtyrow { display:none !important; }
+    header, .toolbar, .cart, .controls .btn, .qtyrow, footer { display:none !important; }
     body{background:#fff}
     main{display:block;margin:0;padding:0}
 
-    /* A4 内寸（210-20=190mm）×（297-20=277mm）をグリッドに適用 */
+    /* A4 内寸（210-20=190mm × 297-20=277mm） */
+    .sheet{
+      width: calc(210mm - 20mm);
+      height: calc(297mm - 20mm);
+      margin: 0 auto;
+      transform: scale(var(--fit));
+      transform-origin: top left;
+    }
     .grid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap: var(--gap);
-      width: calc(210mm - 20mm);   /* 190mm */
-      height: calc(297mm - 20mm);  /* 277mm */
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
     }
-
-    /* 各カードの高さ = (総高さ - ギャップ×3) / 4 */
     .card{
       height: calc( (100% - (var(--gap) * 3)) / 4 );
       min-height: 0;
@@ -84,34 +91,35 @@
       border-radius:6px;
       box-shadow:none;
       page-break-inside:avoid;
-      overflow:visible;
+      overflow:hidden;
       display:flex;flex-direction:column;
     }
 
-    /* 番号タグ（印刷時も見やすく） */
-    .card .corner{border-top-width:36px;border-right-width:36px}
-    .card .corner span{top:-30px;left:3px;font-size:14px;font-weight:900}
+    /* 番号タグを印刷時に見やすく */
+    .card .corner{border-top-width:34px;border-right-width:34px}
+    .card .corner span{top:-28px;left:3px;font-size:13px;font-weight:900}
 
-    .card .thumb{height:46%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
+    /* 画像はやや小さめにして本文余白を確保 */
+    .card .thumb{height:44%; aspect-ratio:auto; border-bottom:1px solid #cbd5e1}
 
-    /* 情報を拡大 */
-    .card .body{ padding: 3mm 3.2mm; gap: 2.2mm; }
-    .title{ font-size: 12pt; line-height: 1.25; -webkit-line-clamp: 1; min-height: auto; }
-    .barcode svg{ height: 22px; max-width: 110px; }
-    .barcode .digits{ font-size: 10pt; letter-spacing: .4px; }
-    .meta{ gap: 3px; }
-    .chip{ padding: 2px 6px; font-size: 9.5pt; }
+    /* 情報部：確実に収めるため控えめサイズ */
+    .card .body{ padding: 2.6mm 3mm; gap: 2mm; }
+    .title{ font-size: 11pt; line-height: 1.22; -webkit-line-clamp: 1; min-height: auto; }
+    .barcode svg{ height: 20px; max-width: 100px; }
+    .barcode .digits{ font-size: 9.5pt; letter-spacing: .3px; }
+    .meta{ gap: 2.5px; }
+    .chip{ padding: 2px 6px; font-size: 9pt; }
     .pricebox .label{ display:none; }
-    .pricebox .value{ font-size: 12pt; font-weight: 800; }
+    .pricebox .value{ font-size: 11pt; font-weight: 800; }
 
-    /* 数量欄：実線・太め */
+    /* 数量欄：実線 */
     .print-qty{ display:block !important; }
-    .print-qty .lbl{ font-size: 11pt; }
+    .print-qty .lbl{ font-size: 10.5pt; }
     .print-qty .box{
-      height: 10mm;
-      border: 1.6px solid #374151;
+      height: 9mm;
+      border: 1.4px solid #374151;
       border-radius: 4px;
-      margin-top: 1.4mm;
+      margin-top: 1.2mm;
     }
 
     .card:nth-of-type(12n){page-break-after:always;break-after:page}
@@ -137,7 +145,7 @@
 </header>
 
 <main>
-  <section>
+  <section class="sheet">
     <div class="grid" id="grid"></div>
   </section>
 
@@ -160,7 +168,7 @@
   </aside>
 </main>
 
-<footer>印刷はA4縦で3列×4段=12件/ページ。倍率100%でピッタリ収まります（ブラウザのヘッダー/フッターはOFFに）。</footer>
+<footer>印刷はA4縦で3列×4段=12件/ページ。倍率100%で収まらない場合は --fit を 0.98〜0.99 に微調整してください。</footer>
 
 <script>
 const REPO = "kakaku_Order-Form-";
@@ -215,7 +223,7 @@ function ean13Pattern(digits){
   let bits = "101";
   for(let i=0;i<6;i++){ const d = +left[i]; bits += (parity[i]==="L" ? L[d] : G[d]); }
   bits += "01010";
-  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; } /* ← 余計な括弧バグ修正済み */
+  for(let i=0;i<6;i++){ const d = +right[i]; bits += R[d]; } /* ← 以前の括弧バグは修正済み */
   bits += "101";
   return bits;
 }
@@ -242,15 +250,12 @@ function renderEAN13SVG(jan, width=110, height=22){
 
 /* ========== App ========== */
 let PRODUCTS = [];
-let CART = JSON.parse(localStorage.getItem("cart.v1")||"[]");
-
-function addToCart(jan){
-  const p = PRODUCTS.find(x=>String(x.jan)===String(jan));
-  if(!p) return;
-  CART.push({jan: p.jan, qty: 1, price: p.price});
-  localStorage.setItem("cart.v1", JSON.stringify(CART));
+async function boot(){
+  const here = (new URL('./products.json', location.href)).href;
+  const prods = await fetchFirstJSON([ here, `${BASE}/products.json`, `${CDN}/products.json` ]);
+  PRODUCTS = Array.isArray(prods) ? prods : [];
+  renderGrid(PRODUCTS);
 }
-
 function renderGrid(list){
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -277,10 +282,10 @@ function renderGrid(list){
             ${p.category?`<span class="chip">${p.category}</span>`:""}
             ${p.pack?`<span class="chip">入数 ${p.pack}</span>`:""}
           </div>
-          <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${money(p.price)}</span></div>
+          <div class="pricebox"><span class="label">単価（税抜）</span><span class="value">${(p.price??'')!==''? (Number(p.price)||0).toLocaleString()+'円':'-'}</span></div>
           <div class="qtyrow">
             <input type="number" min="0" step="1" class="qty" placeholder="数量" id="qty-${p.jan}">
-            <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
+            <button class="btn wide" onclick="void(0)">カートへ</button>
           </div>
           <div class="print-qty">
             <div class="lbl">発注数量：</div>
@@ -292,13 +297,6 @@ function renderGrid(list){
     const t = el.querySelector(`#thumb-${p.jan}`);
     if(t) setBestImage(t, imgCandidates);
   });
-}
-
-async function boot(){
-  const here = (new URL('./products.json', location.href)).href;
-  const prods = await fetchFirstJSON([ here, `${BASE}/products.json`, `${CDN}/products.json` ]);
-  PRODUCTS = Array.isArray(prods) ? prods : [];
-  renderGrid(PRODUCTS);
 }
 boot().catch(err=>{ console.error(err); alert("初期化エラー: " + err.message); });
 </script>
