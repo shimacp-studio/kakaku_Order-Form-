@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>発注カタログ | Blue Luxe v30 (mobile-compact+miniJAN)</title>
+<title>発注カタログ | Blue Luxe v31 (mobile header centered)</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -23,7 +23,7 @@
 
   /* ===== ヘッダ（共通） ===== */
   header{position:sticky;top:0;z-index:50;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
-  .wrap{max-width:1280px;margin:0 auto;padding:6px 12px}
+  .wrap{max-width:1280px;margin:0 auto;padding:8px 14px}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:10px;min-width:0}
   .brand img{height:44px;width:auto;object-fit:contain}
@@ -34,27 +34,34 @@
   .carticon .count{position:absolute;right:-4px;top:-4px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent-2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
   .btn{background:var(--cta);color:var(--cta-text);border:1px solid #1d4fd8;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);white-space:nowrap}
   .btn.primary{background:var(--accent-2)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
   .input, select{background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-width:180px;color:var(--ink);outline:none}
 
   /* ===== レイアウト ===== */
-  main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;max-width:1280px;margin:14px auto;padding:0 12px}
+  main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;max-width:1280px;margin:14px auto;padding:0 14px}
   @media (max-width:1100px){ main{grid-template-columns:1fr} .cart{position:static} }
   .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 
   /* ======= モバイル（〜640px） ======= */
   @media (max-width:640px){
-    header{padding-bottom:2px}
-    .wrap{padding:6px 10px;max-width:680px}
-    .brand img{height:34px}
-    .brand h1{font-size:16px;white-space:normal;line-height:1.12}
-    .actions .btn{padding:8px 10px;font-size:16px}
+    header{padding-bottom:4px}
+    .wrap{padding:8px 10px;max-width:680px}
+    /* タイトル＆検索群の中央寄せレイアウト */
+    .topbar{flex-direction:column; align-items:center; justify-content:center; gap:8px; }
+    .brand{justify-content:center}
+    .brand img{height:36px}
+    .brand h1{font-size:18px;text-align:center;white-space:normal;line-height:1.12}
+    .actions{justify-content:center}
+    .actions .btn{padding:8px 12px;font-size:16px}
     .carticon{width:36px;height:36px}
-    .controls{gap:6px;margin-top:6px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content}
-    .controls .input, .controls select{min-width:0;width:100%;font-size:16px;padding:8px 10px}
-    .controls > :first-child{grid-column:span 2}
-    main{margin:10px auto;padding:0 8px}
-    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+
+    /* 検索群は1列で中央寄せ（カード幅と揃える） */
+    .controls{gap:8px;margin-top:8px;display:grid;grid-template-columns:1fr;justify-items:center}
+    .controls .input, .controls select{min-width:0;width:100%;max-width:520px;font-size:16px;padding:10px 12px}
+    .controls > :first-child{grid-column:auto}
+
+    main{margin:10px auto;padding:0 10px}
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 
     /* ---- カードをコンパクト化 ---- */
     .card{--pad:7px;border-radius:12px}
@@ -63,15 +70,16 @@
     .thumb img{max-width:90%;max-height:90%}
     .body{gap:5px;padding:var(--pad)}
     .title{font-size:13px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+
     /* スマホ向けJAN/価格：ミニバーコード付きで圧縮 */
-    .mobile-janset{display:grid !important;gap:4px}
+    .mobile-janset{display:grid !important;gap:4px;justify-items:start}
     .mobile-janset .digits{font-size:11.5px;color:#0b1220}
     .mobile-janset .prices{display:flex;gap:10px;font-size:12px;flex-wrap:wrap}
     .mobile-janset .barrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
     .mobile-janset .bar{width:100px;height:16px}
     .desk-janset{display:none !important}
 
-    /* iOSフォーカス拡大防止：16px以上を維持しつつ高さはパディングで調整 */
+    /* iOSフォーカス拡大防止：16px以上を維持 */
     .qtyrow{grid-template-columns:86px 1fr;gap:6px}
     .qty, .input, select, button{font-size:16px}
     .qty{padding:9px 10px}
@@ -177,11 +185,13 @@ const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
 
-/* 画像の候補ロード */
+/* 画像候補 */
 function pickImage(imgEl, paths){
   let i=0; const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
   imgEl.onerror=tryNext; tryNext();
 }
+
+/* ファイル名ゆらぎ吸収 */
 const cartCandidates = [`${BASE}/img/KART.PNG`, `${BASE}/img/KART.png`, `${BASE}/img/cart.png`, `${BASE}/img/Cart.png`, `${BASE}/img/KRAT.png`];
 const logoCandidates = [`${BASE}/img/shima_owl.png`, `${BASE}/img/shima_owl.PNG`, `${BASE}/img/shima_owl.jpg`, `${BASE}/img/shima_owl.svg`, `${BASE}/img/シマフクロウロゴ.png`];
 
@@ -213,8 +223,6 @@ function pat(d){const ds=onlyDigits(d); if(ds.length<12) return null; const d12=
 function svg(jan,w=110,h=22){const bits=pat(jan); if(!bits) return ''; const barW=Math.max(1,Math.floor(w/bits.length)); const W=barW*bits.length; const hg=Math.floor(h*0.92);
   let x=0,s=`<svg viewBox='0 0 ${W} ${h}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${W}' height='${h}' fill='#fff'/>`;
   for(let i=0;i<bits.length;i++){ if(bits[i]==='1'){const g=(i<3)||(i>=45&&i<50)||(i>=92); s+=`<rect x='${x}' y='0' width='${barW}' height='${g?h:hg}' fill='${'#0b1220'}'/>`; } x+=barW; } return s+`</svg>`; }
-
-/* ミニバーコード（スマホ用）：幅100×高16に合わせる */
 function miniSvg(jan,w=100,h=16){return svg(jan,w,h)}
 
 let PRODUCTS=[], CART=JSON.parse(localStorage.getItem('cart.v1')||'[]');
