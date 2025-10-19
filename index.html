@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注カタログ | Blue Luxe v28 (compact-mobile)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>発注カタログ | Blue Luxe v29 (mobile-price+headerfix)</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -18,13 +18,15 @@
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
   a{color:var(--accent-2);text-decoration:none}
+  img{max-width:100%;display:block}
+  button{font:inherit}
 
   header{position:sticky;top:0;z-index:50;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
   .wrap{max-width:1280px;margin:0 auto;padding:10px 14px}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
   .brand img{height:46px;width:auto;object-fit:contain}
-  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.03em}
+  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.03em;white-space:nowrap}
   .actions{display:flex;align-items:center;gap:10px}
   .carticon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04);cursor:pointer}
   .carticon img{width:24px;height:24px;object-fit:contain;opacity:.95}
@@ -39,32 +41,36 @@
 
   .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 
-  /* ======= モバイル超コンパクト（〜640px） ======= */
+  /* ======= モバイル（〜640px） ======= */
   @media (max-width:640px){
-    .wrap{padding:8px 10px}
+    header{padding-bottom:4px}
+    .wrap{padding:8px 10px;max-width:680px}
+    .topbar{gap:8px}
     .brand img{height:40px}
-    .brand h1{font-size:20px}
-    .actions .btn{padding:9px 12px}
+    .brand h1{font-size:18px;white-space:normal;line-height:1.15}
+    .actions .btn{padding:9px 12px;font-size:16px}
     .carticon{width:38px;height:38px}
-    .controls{gap:6px;margin-top:6px}
-    .input, select{padding:9px 10px;min-width:160px}
+    .controls{gap:8px;margin-top:6px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content}
+    .controls .input, .controls select{min-width:0;width:100%;font-size:16px}
+    .controls > :first-child{grid-column:span 2}
     main{margin:10px auto;padding:0 10px}
-    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
     .card{--pad:8px;border-radius:12px}
     .badge{font-size:14px;padding:7px 12px 7px 14px}
-    .thumb{min-height:96px}
+    .thumb{min-height:100px}
     .thumb img{max-width:90%;max-height:90%}
     .body{gap:6px;padding:var(--pad)}
     .title{font-size:13px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:1px 0}
-    .mobile-janset{display:block}
+    /* ←スマホで価格とJAN数字を確実に表示 */
+    .mobile-janset{display:grid !important;gap:4px}
+    .mobile-janset .digits{font-size:12px;color:#0b1220}
+    .mobile-janset .prices{display:flex;gap:10px;font-size:12px}
     .desk-janset{display:none !important}
-    .janline{display:flex;align-items:center;justify-content:space-between;gap:6px}
-    .barsvg{display:none !important}
-    .digits{display:block !important;font-size:11.5px;color:#0b1220;margin-top:1px}
-    .prices{display:flex;gap:6px;font-size:12px}
-    .qtyrow{grid-template-columns:70px 1fr;gap:6px}
-    .qty{padding:7px 9px}
-    .btn{padding:8px 10px}
+    /* iOSフォーカス拡大防止：フォント16px以上＋ターゲット幅確保 */
+    .qtyrow{grid-template-columns:90px 1fr;gap:8px}
+    .qty, .input, select, button{font-size:16px}
+    .qty{padding:10px 12px}
+    .btn{padding:10px 12px}
   }
 
   .card{position:relative;background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
@@ -92,6 +98,7 @@
   .muted{color:var(--muted);font-size:13px}
   .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
+  /* 印刷は以前どおり（A4 3x4 / 12） */
   @page { size: A4 portrait; margin: 9mm; }
   @media print{
     header, .actions, .controls, .cart, .qtyrow{ display:none !important; }
@@ -163,25 +170,13 @@
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
+
 function pickImage(imgEl, paths){
-  let i=0;
-  const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
+  let i=0; const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
   imgEl.onerror=tryNext; tryNext();
 }
-const cartCandidates = [
-  `${BASE}/img/KART.PNG`,
-  `${BASE}/img/KART.png`,
-  `${BASE}/img/cart.png`,
-  `${BASE}/img/Cart.png`,
-  `${BASE}/img/KRAT.png`
-];
-const logoCandidates = [
-  `${BASE}/img/shima_owl.png`,
-  `${BASE}/img/shima_owl.PNG`,
-  `${BASE}/img/shima_owl.jpg`,
-  `${BASE}/img/shima_owl.svg`,
-  `${BASE}/img/シマフクロウロゴ.png`
-];
+const cartCandidates = [`${BASE}/img/KART.PNG`, `${BASE}/img/KART.png`, `${BASE}/img/cart.png`, `${BASE}/img/Cart.png`, `${BASE}/img/KRAT.png`];
+const logoCandidates = [`${BASE}/img/shima_owl.png`, `${BASE}/img/shima_owl.PNG`, `${BASE}/img/shima_owl.jpg`, `${BASE}/img/shima_owl.svg`, `${BASE}/img/シマフクロウロゴ.png`];
 
 async function fetchFirstJSON(urls){
   let lastErr=null;
@@ -226,6 +221,7 @@ function renderGrid(list){
       <div class="body">
         <div class="title" title="${p.name||""}">${p.name||""}</div>
 
+        <!-- PC/印刷用 -->
         <div class="desk-janset">
           <div class="janrow">
             <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
@@ -237,13 +233,17 @@ function renderGrid(list){
           </div>
         </div>
 
+        <!-- スマホ用（常に表示） -->
         <div class="mobile-janset">
-          <div class="janline"><div class="digits">${p.jan||""}</div></div>
-          <div class="prices"><div>税抜：${price!=null? price.toLocaleString()+"円":""}</div><div>税込：${gross!=null? gross.toLocaleString()+"円": ""}</div></div>
+          <div class="digits">${p.jan||""}</div>
+          <div class="prices">
+            <div>税抜：${price!=null? price.toLocaleString()+"円":""}</div>
+            <div>税込：${gross!=null? gross.toLocaleString()+"円": ""}</div>
+          </div>
         </div>
 
         <div class="qtyrow">
-          <input type="number" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
+          <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
           <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
       </div>`;
@@ -304,8 +304,8 @@ function filterGrid(){
 }
 
 async function boot(){
-  pickImage(document.getElementById('cartImg'), cartCandidates);
-  pickImage(document.getElementById('logo'), logoCandidates);
+  pickImage(document.getElementById('cartImg'), [`${BASE}/img/KART.PNG`, `${BASE}/img/KART.png`, `${BASE}/img/cart.png`, `${BASE}/img/Cart.png`, `${BASE}/img/KRAT.png`]);
+  pickImage(document.getElementById('logo'), [`${BASE}/img/shima_owl.png`, `${BASE}/img/shima_owl.PNG`, `${BASE}/img/shima_owl.jpg`, `${BASE}/img/shima_owl.svg`, `${BASE}/img/シマフクロウロゴ.png`]);
 
   const here=(new URL('./products.json',location.href)).href;
   const prods=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
