@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>発注カタログ | Blue Luxe v31 (mobile header centered)</title>
+<title>発注カタログ | 完全版</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
@@ -66,9 +66,9 @@
     /* ---- カードをコンパクト化 ---- */
     .card{--pad:7px;border-radius:12px}
     .badge{font-size:15px;padding:6px 12px 6px 13px}
-    .thumb{min-height:92px}
+    .thumb{min-height:96px}
     .thumb img{max-width:90%;max-height:90%}
-    .body{gap:5px;padding:var(--pad)}
+    .body{gap:6px;padding:var(--pad)}
     .title{font-size:13px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
 
     /* スマホ向けJAN/価格：ミニバーコード付きで圧縮 */
@@ -112,7 +112,7 @@
   .muted{color:var(--muted);font-size:13px}
   .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 
-  /* ===== 印刷（A4 3x4 既存踏襲） ===== */
+  /* ===== 印刷（A4 3x4） ===== */
   @page { size: A4 portrait; margin: 9mm; }
   @media print{
     header, .actions, .controls, .cart, .qtyrow{ display:none !important; }
@@ -152,10 +152,16 @@
         </button>
       </div>
     </div>
+
     <div class="controls">
+      <!-- 検索 / カテゴリ -->
       <input id="q" class="input" placeholder="検索（商品名 / ブランド / カテゴリ / JAN）" oninput="filterGrid()">
       <select id="cat" class="input" onchange="filterGrid()"><option value="">すべてのカテゴリ</option></select>
-      <input id="buyerName" class="input" placeholder="発注者名（履歴に保存）" oninput="localStorage.setItem('buyerName', this.value)">
+
+      <!-- 追加：発注者名 / パートナー企業 / 現場名（オートコンプリート） -->
+      <input id="buyerName" class="input" placeholder="発注者名（履歴に保存）" list="list-buyer">
+      <input id="partnerName" class="input" placeholder="パートナー企業（履歴に保存）" list="list-partner">
+      <input id="siteName" class="input" placeholder="現場名（履歴に保存）" list="list-site">
     </div>
   </div>
 </header>
@@ -173,25 +179,26 @@
       <div class="row"><span>消費税</span><span id="tax">0円</span></div>
       <div class="row" style="font-weight:800"><span>税込合計</span><span id="grand">0円</span></div>
       <hr style="border:0;border-top:1px dashed var(--line)">
-      <input id="username" class="input" placeholder="ご担当者名 / 店舗名など（メールに記載）">
-      <input id="note" class="input" placeholder="伝達事項（任意）">
       <button class="btn" id="submit">この内容で発注する</button>
     </div>
   </aside>
 </main>
+
+<!-- datalist 候補 -->
+<datalist id="list-buyer"></datalist>
+<datalist id="list-partner"></datalist>
+<datalist id="list-site"></datalist>
 
 <script>
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
 
-/* 画像候補 */
+/* 画像候補（拡張子ゆらぎ対応） */
 function pickImage(imgEl, paths){
   let i=0; const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
   imgEl.onerror=tryNext; tryNext();
 }
-
-/* ファイル名ゆらぎ吸収 */
 const cartCandidates = [`${BASE}/img/KART.PNG`, `${BASE}/img/KART.png`, `${BASE}/img/cart.png`, `${BASE}/img/Cart.png`, `${BASE}/img/KRAT.png`];
 const logoCandidates = [`${BASE}/img/shima_owl.png`, `${BASE}/img/shima_owl.PNG`, `${BASE}/img/shima_owl.jpg`, `${BASE}/img/shima_owl.svg`, `${BASE}/img/シマフクロウロゴ.png`];
 
@@ -211,7 +218,7 @@ function setBest(img, urls){let i=0; function next(){ if(i>=urls.length){img.src
 function onlyDigits(s){return (s||'').replace(/[^0-9]/g,'');}
 function money(n){return (Number(n)||0).toLocaleString()+'円';}
 
-/* EAN13 → SVG（PC/印刷用） */
+/* EAN-13 → SVG */
 const L=['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
 const G=['0100111','0110011','0011011','0100001','0011101','0111001','0000101','0010001','0001001','0010111'];
 const R=['1110010','1100110','1101100','1000010','1011100','1001110','1010000','1000100','1001000','1110100'];
@@ -325,9 +332,89 @@ function filterGrid(){
   renderGrid(list);
 }
 
+/* ====== 簡易オートコンプリート（localStorage） ====== */
+const KEY_H_B = 'hist.buyer';
+const KEY_H_P = 'hist.partner';
+const KEY_H_S = 'hist.site';
+function loadHist(key){
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e){ return []; }
+}
+function saveHist(key, value, limit=20){
+  const v = (value||'').trim();
+  if(!v) return;
+  let arr = loadHist(key).filter(x=>x!==v);
+  arr.unshift(v);
+  if(arr.length>limit) arr = arr.slice(0, limit);
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+function fillDatalist(listId, items){
+  const dl = document.getElementById(listId);
+  if(!dl) return;
+  dl.innerHTML = '';
+  items.forEach(txt=>{
+    const opt = document.createElement('option');
+    opt.value = txt;
+    dl.appendChild(opt);
+  });
+}
+
+function initAutocompleteBoxes(){
+  const buyerHist   = loadHist(KEY_H_B);
+  const partnerHist = loadHist(KEY_H_P);
+  const siteHist    = loadHist(KEY_H_S);
+
+  fillDatalist('list-buyer',   buyerHist);
+  fillDatalist('list-partner', partnerHist);
+  fillDatalist('list-site',    siteHist);
+
+  const buyer = localStorage.getItem('buyerName') || buyerHist[0] || '';
+  const partner = partnerHist[0] || '';
+  const site = siteHist[0] || '';
+  const bEl = document.getElementById('buyerName');
+  const pEl = document.getElementById('partnerName');
+  const sEl = document.getElementById('siteName');
+  if(bEl) bEl.value = buyer;
+  if(pEl) pEl.value = partner;
+  if(sEl) sEl.value = site;
+
+  ['buyerName','partnerName','siteName'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('change', ()=>{
+      const key = (id==='buyerName') ? KEY_H_B : (id==='partnerName'? KEY_H_P : KEY_H_S);
+      saveHist(key, el.value);
+      if(id==='buyerName') localStorage.setItem('buyerName', el.value);
+      fillDatalist(
+        id==='buyerName' ? 'list-buyer' : (id==='partnerName' ? 'list-partner' : 'list-site'),
+        loadHist(key)
+      );
+    });
+  });
+}
+
+function handleSubmit(){
+  const buyer   = (document.getElementById('buyerName').value || '').trim();
+  const partner = (document.getElementById('partnerName').value || '').trim();
+  const site    = (document.getElementById('siteName').value || '').trim();
+
+  saveHist(KEY_H_B, buyer);
+  saveHist(KEY_H_P, partner);
+  saveHist(KEY_H_S, site);
+
+  const order = {
+    buyerName: buyer,
+    partnerName: partner,
+    siteName: site,
+    items: CART.map(it => ({ jan: it.jan, qty: it.qty }))
+  };
+
+  alert('送信データ\n' + JSON.stringify(order, null, 2));
+}
+
+/* ====== 初期化 ====== */
 async function boot(){
-  pickImage(document.getElementById('cartImg'), [`${BASE}/img/KART.PNG`, `${BASE}/img/KART.png`, `${BASE}/img/cart.png`, `${BASE}/img/Cart.png`, `${BASE}/img/KRAT.png`]);
-  pickImage(document.getElementById('logo'), [`${BASE}/img/shima_owl.png`, `${BASE}/img/shima_owl.PNG`, `${BASE}/img/shima_owl.jpg`, `${BASE}/img/shima_owl.svg`, `${BASE}/img/シマフクロウロゴ.png`]);
+  pickImage(document.getElementById('cartImg'), [`${BASE}/img/KART.PNG`,`/img/KART.PNG`,`/KART.PNG`]);
+  pickImage(document.getElementById('logo'), [`${BASE}/img/shima_owl.png`,`/img/shima_owl.png`]);
 
   const here=(new URL('./products.json',location.href)).href;
   const prods=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
@@ -336,7 +423,12 @@ async function boot(){
   [...set].sort().forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o);});
   renderGrid(PRODUCTS);
   renderCart();
-  document.getElementById('submit').addEventListener('click', ()=>alert('送信先未設定です（GASやメール連携を有効化してください）'));
+
+  initAutocompleteBoxes();
+  const submitBtn = document.getElementById('submit');
+  if(submitBtn){
+    submitBtn.addEventListener('click', handleSubmit);
+  }
 }
 boot().catch(e=>{console.error(e); alert("初期化エラー: "+e.message);});
 </script>
