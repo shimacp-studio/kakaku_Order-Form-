@@ -193,7 +193,8 @@
 const REPO = "kakaku_Order-Form-";
 const BASE = `https://${location.host}/${REPO}`;
 const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";
+  
 /* 画像候補（拡張子ゆらぎ対応） */
 function pickImage(imgEl, paths){
   let i=0; const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
