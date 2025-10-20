@@ -2,436 +2,293 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>発注カタログ | 完全版</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>発注カタログ</title>
 <meta name="color-scheme" content="light">
 <style>
-  :root{
-    --bg:#f6f8ff; --card:#ffffff; --ink:#0b1220; --muted:#5870a3;
-    --line:#e5e7ef; --line-strong:#d7dcf2;
-    --accent:#1e40af; --accent-2:#2563eb;
-    --cta:#2563eb; --cta-text:#ffffff;
-    --chip:#f2f6ff; --qty:#3b82f6;
-    --shadow:0 10px 28px rgba(30,64,175,.08), 0 3px 10px rgba(30,64,175,.06);
-    --radius:14px;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
-  a{color:var(--accent-2);text-decoration:none}
-  img{max-width:100%;display:block}
-  button{font:inherit}
+:root{
+  --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;--bg:#f6f8ff;--card:#fff;
+  --brand:#1e66ff;--brand-ink:#fff;--accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+h1{margin:0;font-size:clamp(18px,3.4vw,28px)}
+a{color:var(--accent);text-decoration:none}
 
-  /* ===== ヘッダ（共通） ===== */
-  header{position:sticky;top:0;z-index:50;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
-  .wrap{max-width:1280px;margin:0 auto;padding:8px 14px}
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px;min-width:0}
-  .brand img{height:44px;width:auto;object-fit:contain}
-  .brand h1{font-size:22px;margin:0;font-weight:900;letter-spacing:.03em;white-space:nowrap}
-  .actions{display:flex;align-items:center;gap:8px}
-  .carticon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.04);cursor:pointer}
-  .carticon img{width:22px;height:22px;object-fit:contain;opacity:.95}
-  .carticon .count{position:absolute;right:-4px;top:-4px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent-2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-  .btn{background:var(--cta);color:var(--cta-text);border:1px solid #1d4fd8;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);white-space:nowrap}
-  .btn.primary{background:var(--accent-2)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
-  .input, select{background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-width:180px;color:var(--ink);outline:none}
+header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
+.wrap{max-width:1200px;margin:0 auto;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.brand{display:flex;gap:10px;align-items:center}
+.brand img{height:34px;width:auto}
+.actions{display:flex;gap:12px;align-items:center}
+.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
+.carticon{position:relative;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:flex;gap:6px;align-items:center;box-shadow:var(--shadow)}
+.carticon img{height:20px}
+.badge{position:absolute;top:-8px;right:-8px;background:#ff5a3c;color:#fff;border-radius:999px;font-weight:700;font-size:12px;line-height:1;padding:4px 7px;border:2px solid #fff}
 
-  /* ===== レイアウト ===== */
-  main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;max-width:1280px;margin:14px auto;padding:0 14px}
-  @media (max-width:1100px){ main{grid-template-columns:1fr} .cart{position:static} }
-  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.controls{max-width:1200px;margin:10px auto 0;display:grid;gap:8px;padding:0 16px;grid-template-columns:1fr 220px 1fr}
+.input,select{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none;min-width:0}
+@media (max-width:720px){
+  .wrap{grid-template-columns:1fr}
+  .controls{grid-template-columns:1fr}
+  .brand{justify-content:center}
+  .actions{justify-content:center}
+}
 
-  /* ======= モバイル（〜640px） ======= */
-  @media (max-width:640px){
-    header{padding-bottom:4px}
-    .wrap{padding:8px 10px;max-width:680px}
-    /* タイトル＆検索群の中央寄せレイアウト */
-    .topbar{flex-direction:column; align-items:center; justify-content:center; gap:8px; }
-    .brand{justify-content:center}
-    .brand img{height:36px}
-    .brand h1{font-size:18px;text-align:center;white-space:normal;line-height:1.12}
-    .actions{justify-content:center}
-    .actions .btn{padding:8px 12px;font-size:16px}
-    .carticon{width:36px;height:36px}
+main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;margin:14px auto;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{position:relative;background:var(--card);border:1px solid #d6e0ff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-height:420px;box-shadow:var(--shadow)}
+.corner{position:absolute;top:0;left:0;background:var(--brand);color:#fff;padding:6px 10px;border-bottom-right-radius:12px;font-weight:800}
+.thumb{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
+.thumb img{max-width:92%;max-height:92%;object-fit:contain}
+.body{padding:10px 12px;display:grid;gap:8px}
+.title{font-weight:800;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{background:#f1f5ff;border:1px solid #d6e0ff;border-radius:999px;padding:3px 8px;color:#1e3a8a;font-size:12px}
+.price{font-weight:800}
+.bar{display:flex;gap:8px;align-items:flex-end}
+.barcode{background:#fff;border:1px solid var(--line);border-radius:8px;padding:2px 6px}
+.barcode svg{height:26px;display:block}
+.bar .p{color:var(--muted);font-size:13px}
+.qtyrow{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center;margin-top:4px}
+.qty{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px}
+.btn.wide{width:100%}
 
-    /* 検索群は1列で中央寄せ（カード幅と揃える） */
-    .controls{gap:8px;margin-top:8px;display:grid;grid-template-columns:1fr;justify-items:center}
-    .controls .input, .controls select{min-width:0;width:100%;max-width:520px;font-size:16px;padding:10px 12px}
-    .controls > :first-child{grid-column:auto}
+.cart{position:sticky;top:84px;height:calc(100dvh - 100px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.cart h2{margin:0 0 6px 0;font-size:16px}
+.cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
+.cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
+.total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
 
-    main{margin:10px auto;padding:0 10px}
-    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:980px){
+  main{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .qty{font-size:16px} /* iOSズーム抑止 */
+}
 
-    /* ---- カードをコンパクト化 ---- */
-    .card{--pad:7px;border-radius:12px}
-    .badge{font-size:15px;padding:6px 12px 6px 13px}
-    .thumb{min-height:96px}
-    .thumb img{max-width:90%;max-height:90%}
-    .body{gap:6px;padding:var(--pad)}
-    .title{font-size:13px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
-
-    /* スマホ向けJAN/価格：ミニバーコード付きで圧縮 */
-    .mobile-janset{display:grid !important;gap:4px;justify-items:start}
-    .mobile-janset .digits{font-size:11.5px;color:#0b1220}
-    .mobile-janset .prices{display:flex;gap:10px;font-size:12px;flex-wrap:wrap}
-    .mobile-janset .barrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-    .mobile-janset .bar{width:100px;height:16px}
-    .desk-janset{display:none !important}
-
-    /* iOSフォーカス拡大防止：16px以上を維持 */
-    .qtyrow{grid-template-columns:86px 1fr;gap:6px}
-    .qty, .input, select, button{font-size:16px}
-    .qty{padding:9px 10px}
-    .btn{padding:10px 10px}
-  }
-
-  /* ===== カード（共通） ===== */
-  .card{position:relative;background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-  .badge{position:absolute;top:0;left:0;background:var(--accent);color:#fff;font-weight:900;font-size:17px;padding:8px 14px 8px 16px;border-bottom-right-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.18)}
-  .thumb{flex:0 0 40%; min-height:150px; display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
-  .thumb img{max-width:92%;max-height:92%}
-  .body{--pad:12px;flex:1 1 auto; display:grid; gap:8px; padding:var(--pad)}
-  .title{font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
-
-  /* PC/印刷用のJAN+価格（従来どおり） */
-  .desk-janset .janrow{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
-  .desk-janset .barsvg svg{max-width:170px; height:26px; display:block}
-  .desk-janset .digits{font-size:11px; letter-spacing:.35px; color:#0b1220}
-  .desk-janset .price{font-weight:800; white-space:nowrap; color:#0b1220}
-  .mobile-janset{display:none}
-
-  .qtyrow{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center;margin-top:auto;min-width:0}
-  .qty{border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;width:100%}
-  .qty:focus{outline:2px solid var(--qty); outline-offset:1px}
-
-  /* ===== カート ===== */
-  .cart{position:sticky;top:86px;max-height:calc(100dvh - 120px);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
-  .cart h2{margin:0 0 4px 0;font-size:16px}
-  .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
-  .muted{color:var(--muted);font-size:13px}
-  .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-
-  /* ===== 印刷（A4 3x4） ===== */
-  @page { size: A4 portrait; margin: 9mm; }
-  @media print{
-    header, .actions, .controls, .cart, .qtyrow{ display:none !important; }
-    body{background:#fff;margin:0;padding:0;color:var(--ink)}
-    main{display:block;margin:0;padding:0}
-    .sheet{width: calc(210mm - 18mm);height: calc(297mm - 18mm);margin: 0 auto;display:grid;grid-template-columns: repeat(3, 1fr);column-gap: 3.6mm; row-gap: 3.6mm;grid-auto-rows: 67mm;}
-    #grid{display:contents}
-    .card{height:67mm;min-height:0;border:1px solid #d1d5db;border-radius:7px;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;page-break-inside:avoid;background:#fff}
-    .badge{position:absolute;top:0;left:0;background:#0b1220;color:#fff;padding:4px 10px;border-bottom-right-radius:8px;box-shadow:none;font-size:13px}
-    .thumb{flex:0 0 25mm; border-bottom:1px solid #d1d5db; display:flex;align-items:center;justify-content:center; background:#fff}
-    .thumb img{max-width:92%;max-height:23.6mm}
-    .body{flex:1 1 auto; padding:0.8mm 1.9mm 0.7mm; display:grid; gap:0.32mm; grid-template-rows:auto auto 1fr; align-content:start}
-    .title{-webkit-line-clamp:2;font-size:10pt;line-height:1.08;min-height:1.75em;margin:0}
-    .desk-janset{display:block}
-    .desk-janset .janrow{gap:1.8mm}
-    .desk-janset .barsvg svg{height:18px; max-width:108px}
-    .desk-janset .digits{font-size:8pt; letter-spacing:.22px; margin-top:0.2mm}
-    .desk-janset .price{font-size:9.2pt; line-height:1}
-    .mobile-janset{display:none !important}
-    .card:nth-of-type(12n){page-break-after:always;break-after:page}
-  }
+@page{size:A4 portrait;margin:10mm}
+@media print{
+  header,.controls,.cart,.btn{display:none!important}
+  body{background:#fff}
+  main{display:block;margin:0;padding:0}
+  .grid{grid-template-columns:repeat(3,1fr);gap:8mm;width:calc(210mm - 20mm);height:calc(297mm - 20mm);margin:0 auto}
+  .card{height:calc((100% - (8mm*3))/4);min-height:0;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid}
+  .thumb{height:44%;aspect-ratio:auto}
+  .title{font-size:12pt;min-height:auto;-webkit-line-clamp:2}
+  .barcode svg{height:22px}
+}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <img id="logo" alt="logo">
-        <h1>発注カタログ</h1>
-      </div>
-      <div class="actions">
-        <button class="btn primary" onclick="window.print()">印刷（カタログ）</button>
-        <button class="carticon" title="カートへ移動" onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">
-          <img id="cartImg" alt="Cart">
-          <span class="count" id="cartCount">0</span>
-        </button>
-      </div>
+    <div class="brand">
+      <img id="logo" src="img/shima_owl.png" alt="logo" onerror="this.src='img/shima_owl.PNG'">
+      <h1>発注カタログ</h1>
     </div>
-
-    <div class="controls">
-      <!-- 検索 / カテゴリ -->
-      <input id="q" class="input" placeholder="検索（商品名 / ブランド / カテゴリ / JAN）" oninput="filterGrid()">
-      <select id="cat" class="input" onchange="filterGrid()"><option value="">すべてのカテゴリ</option></select>
-
-      <!-- 追加：発注者名 / パートナー企業 / 現場名（オートコンプリート） -->
-      <input id="buyerName" class="input" placeholder="発注者名（履歴に保存）" list="list-buyer">
-      <input id="partnerName" class="input" placeholder="パートナー企業（履歴に保存）" list="list-partner">
-      <input id="siteName" class="input" placeholder="現場名（履歴に保存）" list="list-site">
+    <div class="actions">
+      <button class="btn" onclick="window.print()">印刷（カタログ）</button>
+      <div class="carticon">
+        <img src="img/KART.PNG" alt="cart" onerror="this.src='img/cart.png'">
+        <span id="cartBadge" class="badge">0</span>
+      </div>
     </div>
   </div>
 </header>
 
-<main>
-  <section class="sheet">
-    <div class="grid" id="grid"></div>
-  </section>
+<div class="controls">
+  <input id="q" class="input" placeholder="検索（商品名 / ブランド / カテゴリ / JAN）" />
+  <select id="cat" class="input"><option value="">すべてのカテゴリ</option></select>
+  <div style="display:grid;gap:6px;grid-template-columns:1fr 1fr 1fr">
+    <input id="buyerName" class="input" placeholder="発注者名（履歴オート補完）">
+    <input id="partnerName" class="input" placeholder="パートナー企業（履歴オート補完）">
+    <input id="siteName" class="input" placeholder="現場名（履歴オート補完）">
+  </div>
+</div>
 
-  <aside class="cart" id="cart">
+<main>
+  <section><div id="grid" class="grid"></div></section>
+  <aside class="cart">
     <h2>カート</h2>
     <div id="cartlist" class="cartlist"></div>
     <div class="total">
-      <div class="row"><span>小計（税抜）</span><span id="subtotal">0円</span></div>
-      <div class="row"><span>消費税</span><span id="tax">0円</span></div>
-      <div class="row" style="font-weight:800"><span>税込合計</span><span id="grand">0円</span></div>
-      <hr style="border:0;border-top:1px dashed var(--line)">
-      <button class="btn" id="submit">この内容で発注する</button>
+      <div><span class="p">小計（税抜）</span>：<span id="subtotal">-</span></div>
+      <div><span class="p">消費税</span>：<span id="tax">-</span></div>
+      <div style="font-weight:800"><span>税込合計</span>：<span id="grand">-</span></div>
+      <button id="submit" class="btn">この内容で発注する</button>
     </div>
   </aside>
 </main>
 
-<!-- datalist 候補 -->
-<datalist id="list-buyer"></datalist>
-<datalist id="list-partner"></datalist>
-<datalist id="list-site"></datalist>
-
 <script>
-const REPO = "kakaku_Order-Form-";
-const BASE = `https://${location.host}/${REPO}`;
-const CDN  = "https://cdn.jsdelivr.net/gh/shimacp-studio/kakaku_Order-Form-@main";
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";
-  
-/* 画像候補（拡張子ゆらぎ対応） */
-function pickImage(imgEl, paths){
-  let i=0; const tryNext=()=>{ if(i>=paths.length){ imgEl.style.opacity='.35'; imgEl.onerror=null; return; } imgEl.src=paths[i++]; };
-  imgEl.onerror=tryNext; tryNext();
-}
-const cartCandidates = [`${BASE}/img/KART.PNG`, `${BASE}/img/KART.png`, `${BASE}/img/cart.png`, `${BASE}/img/Cart.png`, `${BASE}/img/KRAT.png`];
-const logoCandidates = [`${BASE}/img/shima_owl.png`, `${BASE}/img/shima_owl.PNG`, `${BASE}/img/shima_owl.jpg`, `${BASE}/img/shima_owl.svg`, `${BASE}/img/シマフクロウロゴ.png`];
+// ------------ 設定（★GASのWebApps URL を入れてください） ----------------
+const GAS_ENDPOINT = "https://script.google.com/macros/s/<<PASTE_YOUR_WEBAPPS_URL_ID_HERE>>/exec";
 
+// 画像パス
+const IMAGE_DIRS = ["img/","img/jan/","img/barcode/"];
+const IMAGE_EXTS = ["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
+
+// ------------ データロード --------------
+const REPO = ""; // 同じディレクトリ想定
 async function fetchFirstJSON(urls){
-  let lastErr=null;
   for(const u of urls){
-    try{const r=await fetch(u,{cache:"no-store"}); if(r.ok) return await r.json(); lastErr=new Error(r.status+'@'+u);}catch(e){lastErr=e;}
+    try{ const r = await fetch(u,{cache:"no-store"}); if(r.ok) return await r.json(); }catch(_){}
   }
-  throw lastErr||new Error('load error');
+  throw new Error("products.json を読み込めませんでした");
 }
-function candidates(jan){
-  const exts=['png','jpg','jpeg','webp','jfif','PNG','JPG','JPEG','WEBP','JFIF'];
-  const bases=[`${BASE}/img/`,`${BASE}/img/jan/`,`${BASE}/img/barcode/`];
-  const arr=[]; for(const b of bases){for(const e of exts){arr.push(`${b}${jan}.${e}`)}} return arr;
+
+// ------------ バーコード（EAN-13） --------------
+const L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
+const G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
+const R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
+const PARITY={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
+const onlyDigits = s => (s||"").replace(/[^0-9]/g,"");
+function ean13Checksum12(d12){let s=0;for(let i=0;i<12;i++){const n=+d12[i];s+= (i%2===0)?n:n*3;}return (10-(s%10))%10;}
+function ean13Pattern(digits){
+  const ds = onlyDigits(digits); if(ds.length<12) return null;
+  const d12 = ds.slice(0,12); const cd = ds.length>=13 ? +ds[12] : ean13Checksum12(d12);
+  const first = d12[0], left = d12.slice(1,7), right = d12.slice(7,12)+String(cd);
+  const parity = PARITY[first] || "LLLLLL"; let bits="101";
+  for(let i=0;i<6;i++){ const d=+left[i]; bits += (parity[i]==="L"?L[d]:G[d]); }
+  bits += "01010"; for(let i=0;i<6;i++){ const d=+right[i]; bits += R[d]; } bits += "101"; return bits;
 }
-function setBest(img, urls){let i=0; function next(){ if(i>=urls.length){img.src=''; img.onerror=null; return;} img.src=urls[i++]; } img.onerror=next; next(); }
-function onlyDigits(s){return (s||'').replace(/[^0-9]/g,'');}
-function money(n){return (Number(n)||0).toLocaleString()+'円';}
+function renderEAN13SVG(jan,width=120,height=26){
+  const bits = ean13Pattern(jan); if(!bits) return "";
+  const barW = Math.max(1, Math.floor(width/bits.length)); const W = barW*bits.length;
+  const hGuard = Math.floor(height*.92), hFull=height; let x=0, out=`<svg viewBox='0 0 ${W} ${height}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${W}' height='${height}' fill='#fff'/>`;
+  for(let i=0;i<bits.length;i++){ if(bits[i]==='1'){ const guard=(i<3)||(i>=45&&i<50)||(i>=92); out += `<rect x='${x}' y='0' width='${barW}' height='${guard?hFull:hGuard}' fill='#111827'/>`; } x+=barW; }
+  out += `</svg>`; return out;
+}
 
-/* EAN-13 → SVG */
-const L=['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
-const G=['0100111','0110011','0011011','0100001','0011101','0111001','0000101','0010001','0001001','0010111'];
-const R=['1110010','1100110','1101100','1000010','1011100','1001110','1010000','1000100','1001000','1110100'];
-const PAR={'0':'LLLLLL','1':'LLGLGG','2':'LLGGLG','3':'LLGGGL','4':'LGLLGG','5':'LGGLLG','6':'LGGGLL','7':'LGLGLG','8':'LGLGGL','9':'LGGLGL'};
-function cd12(d){let s=0; for(let i=0;i<12;i++){const n=+d[i]; s+=(i%2===0)?n:n*3;} return (10-(s%10))%10;}
-function pat(d){const ds=onlyDigits(d); if(ds.length<12) return null; const d12=ds.slice(0,12); const cd=(ds.length>=13)?+ds[12]:cd12(d12);
-  const first=d12[0], left=d12.slice(1,7), right=d12.slice(7,12)+String(cd), parity=PAR[first]||'LLLLLL'; let bits='101';
-  for(let i=0;i<6;i++){const n=+left[i]; bits+= (parity[i]==='L'?L[n]:G[n]);} bits+='01010'; for(let i=0;i<6;i++){ bits+=R[+right[i]];} bits+='101'; return bits; }
-function svg(jan,w=110,h=22){const bits=pat(jan); if(!bits) return ''; const barW=Math.max(1,Math.floor(w/bits.length)); const W=barW*bits.length; const hg=Math.floor(h*0.92);
-  let x=0,s=`<svg viewBox='0 0 ${W} ${h}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${W}' height='${h}' fill='#fff'/>`;
-  for(let i=0;i<bits.length;i++){ if(bits[i]==='1'){const g=(i<3)||(i>=45&&i<50)||(i>=92); s+=`<rect x='${x}' y='0' width='${barW}' height='${g?h:hg}' fill='${'#0b1220'}'/>`; } x+=barW; } return s+`</svg>`; }
-function miniSvg(jan,w=100,h=16){return svg(jan,w,h)}
+// ------------ ユーティリティ --------------
+const money = n => isNaN(n)? "-" : `${Number(n).toLocaleString()}円`;
+function buildImageCandidates(jan){ const arr=[]; for(const d of IMAGE_DIRS){ for(const e of IMAGE_EXTS){ arr.push(`${d}${jan}.${e}`); } } return arr; }
+function setBestImage(img, cands){ let i=0; const tryNext=()=>{ if(i>=cands.length){img.src='';img.alt='';img.style.opacity=.6;img.title='NO IMAGE';img.onerror=null;return;} img.src=cands[i++]; }; img.onerror=tryNext; tryNext(); }
+function saveHist(key, val){ if(!val) return; const k=`${key}`; const arr=JSON.parse(localStorage.getItem(k)||"[]"); const i=arr.indexOf(val); if(i>=0) arr.splice(i,1); arr.unshift(val); if(arr.length>20) arr.length=20; localStorage.setItem(k, JSON.stringify(arr)); }
+function attachDatalist(inputId, key){ const el=document.getElementById(inputId); const k=`${key}`; const listId=`dl-${inputId}`; const dl=document.createElement('datalist'); dl.id=listId; document.body.appendChild(dl); el.setAttribute('list', listId);
+  const refresh=()=>{ dl.innerHTML=''; (JSON.parse(localStorage.getItem(k)||"[]")).forEach(v=>{ const o=document.createElement('option'); o.value=v; dl.appendChild(o); }); };
+  refresh(); el.addEventListener('change', ()=>{ saveHist(k, el.value.trim()); refresh(); });
+}
 
-let PRODUCTS=[], CART=JSON.parse(localStorage.getItem('cart.v1')||'[]');
+// ------------ アプリ状態 --------------
+let PRODUCTS=[];
+let CART = JSON.parse(localStorage.getItem('cart.v1')||"[]");
+function persistCart(){ localStorage.setItem('cart.v1', JSON.stringify(CART)); document.getElementById('cartBadge').textContent = CART.reduce((a,c)=>a+Number(c.qty||0),0); }
 
+// ------------ 描画 --------------
 function renderGrid(list){
-  const grid=document.getElementById('grid'); grid.innerHTML='';
+  const grid = document.getElementById('grid'); grid.innerHTML='';
+  if(!list.length){ grid.innerHTML='<div>該当商品がありません</div>'; return; }
   list.forEach((p,idx)=>{
-    const price = (p.price!=null)? Number(p.price)||0 : null;
-    const gross = (price!=null)? Math.round(price*1.1) : null;
-    const el=document.createElement('article');
-    el.className='card';
-    el.innerHTML=`
-      <div class="badge">${idx+1}</div>
-      <div class="thumb"><img alt=""></div>
+    const el = document.createElement('div'); el.className='card';
+    const svg = renderEAN13SVG(p.jan);
+    el.innerHTML = `
+      <div class="corner">${idx+1}</div>
+      <div class="thumb"><img id="img-${p.jan}" alt=""></div>
       <div class="body">
-        <div class="title" title="${p.name||""}">${p.name||""}</div>
-
-        <!-- PC/印刷用 -->
-        <div class="desk-janset">
-          <div class="janrow">
-            <div class="price">税抜：${price!=null? price.toLocaleString()+"円":""}</div>
-            <div class="barsvg">${svg(p.jan)}</div>
-          </div>
-          <div class="janrow">
-            <div class="price">税込：${gross!=null? gross.toLocaleString()+"円": ""}</div>
-            <div class="digits">${p.jan||""}</div>
-          </div>
+        <div class="title">${p.name||''}</div>
+        <div class="row"><span class="chip">${p.brand||'-'}</span><span class="chip">${p.category||''}</span>${p.pack?`<span class="chip">入数 ${p.pack}</span>`:''}</div>
+        <div class="bar">
+          <div class="barcode">${svg}</div>
+          <div class="p">税抜：<span class="price">${money(p.price)}</span></div>
         </div>
-
-        <!-- スマホ用（ミニバーコード付き） -->
-        <div class="mobile-janset">
-          <div class="barrow">
-            <div class="bar">${miniSvg(p.jan)}</div>
-            <div class="digits">${p.jan||""}</div>
-          </div>
-          <div class="prices">
-            <div>税抜：${price!=null? price.toLocaleString()+"円":""}</div>
-            <div>税込：${gross!=null? gross.toLocaleString()+"円": ""}</div>
-          </div>
-        </div>
-
         <div class="qtyrow">
-          <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" step="1" class="qty" id="qty-${p.jan}" placeholder="数量">
-          <button class="btn" onclick="addToCart('${p.jan}')">カートへ</button>
+          <input id="qty-${p.jan}" class="qty" type="number" min="0" step="1" placeholder="数量">
+          <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
         </div>
       </div>`;
     grid.appendChild(el);
-    setBest(el.querySelector('img'), candidates(p.jan));
+    setBestImage(el.querySelector(`#img-${p.jan}`), buildImageCandidates(p.jan));
   });
 }
 
 function renderCart(){
-  const list=document.getElementById('cartlist'); list.innerHTML='';
-  if(CART.length===0){ list.innerHTML='<div class="muted">カートは空です</div>'; }
-  CART.forEach((it)=>{
-    const p=PRODUCTS.find(x=>x.jan===it.jan)||{name:""};
-    const row=document.createElement('div');
-    row.className="cartitem row";
-    row.innerHTML=`
-      <div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name||it.jan}</div>
-      <input type="number" min="0" step="1" value="${it.qty}" oninput="updateQty('${it.jan}', this.value)" style="width:70px">
-      <div style="text-align:right;width:110px">${money((p.price||0)*it.qty)}</div>
-      <button onclick="removeFromCart('${it.jan}')" style="border:0;background:#fff;cursor:pointer">✕</button>`;
+  const list = document.getElementById('cartlist'); list.innerHTML='';
+  if(CART.length===0){ list.innerHTML='<div class="p">カートは空です</div>'; updateTotals(); persistCart(); return; }
+  CART.forEach((it,i)=>{
+    const row = document.createElement('div'); row.className='cartitem';
+    row.innerHTML = `
+      <div>${it.name||it.jan}</div>
+      <input class="qty" type="number" min="0" step="1" value="${it.qty||0}" oninput="changeQty(${i}, this.value)">
+      <div class="p">${money(it.price||0)}</div>
+      <button onclick="removeItem(${i})" style="border:none;background:transparent;color:#ef4444;font-weight:800">×</button>`;
     list.appendChild(row);
   });
-  const subtotal=CART.reduce((s,it)=>{const p=PRODUCTS.find(x=>x.jan===it.jan)||{}; return s + (Number(p.price)||0)*it.qty;},0);
-  const tax=Math.round(subtotal*0.1);
-  const grand=subtotal+tax;
-  document.getElementById('subtotal').textContent=money(subtotal);
-  document.getElementById('tax').textContent=money(tax);
-  document.getElementById('grand').textContent=money(grand);
-  localStorage.setItem('cart.v1', JSON.stringify(CART));
-  updateCartCount();
+  updateTotals(); persistCart();
 }
-function updateCartCount(){ document.getElementById('cartCount').textContent = CART.reduce((s,it)=>s+Number(it.qty||0),0); }
+function updateTotals(){
+  const sub = CART.reduce((a,c)=>a + (Number(c.price||0)*Number(c.qty||0)),0);
+  const tax = Math.round(sub*0.1);
+  const grand = sub+tax;
+  document.getElementById('subtotal').textContent = money(sub);
+  document.getElementById('tax').textContent = money(tax);
+  document.getElementById('grand').textContent = money(grand);
+}
 function addToCart(jan){
-  const qtyEl=document.getElementById(`qty-${jan}`);
-  const q=Math.max(1, Number(qtyEl && qtyEl.value || 1));
-  const ex=CART.find(x=>x.jan===jan);
-  if(ex) ex.qty += q; else CART.push({jan, qty:q});
-  qtyEl && (qtyEl.value = '');
+  const p = PRODUCTS.find(x=>String(x.jan)===String(jan)); if(!p) return;
+  const q = Number(document.getElementById(`qty-${jan}`).value||0); if(q<=0) return;
+  const ex = CART.find(x=>String(x.jan)===String(jan));
+  if(ex){ ex.qty = Number(ex.qty||0) + q; } else { CART.push({jan:p.jan, name:p.name, price:p.price, qty:q}); }
   renderCart();
 }
-function updateQty(jan,val){
-  const it=CART.find(x=>x.jan===jan); if(!it) return;
-  it.qty=Math.max(0, Number(val)||0);
-  if(it.qty===0) CART=CART.filter(x=>x.jan!==jan);
-  renderCart();
-}
-function removeFromCart(jan){ CART=CART.filter(x=>x.jan!==jan); renderCart(); }
+function changeQty(i,v){ CART[i].qty = Number(v||0); renderCart(); }
+function removeItem(i){ CART.splice(i,1); renderCart(); }
 
-function filterGrid(){
-  const q=(document.getElementById('q').value||'').trim().toLowerCase();
-  const cat=document.getElementById('cat').value||'';
-  const list=PRODUCTS.filter(p=>{
-    const hitQ = !q || JSON.stringify(p).toLowerCase().includes(q);
-    const hitC = !cat || (p.category||'')===cat;
-    return hitQ && hitC;
-  });
-  renderGrid(list);
-}
+// ------------ 送信 --------------
+async function handleSubmit(){
+  try{
+    const buyer = (document.getElementById('buyerName').value||'').trim();
+    const partner = (document.getElementById('partnerName').value||'').trim();
+    const site = (document.getElementById('siteName').value||'').trim();
+    if(!buyer){ alert('発注者名を入力してください'); return; }
+    if(CART.length===0){ alert('カートが空です'); return; }
+    const payload = { buyerName:buyer, partnerName:partner, siteName:site, items: CART.map(it=>({jan:it.jan, qty:Number(it.qty)||0})) };
+    const btn = document.getElementById('submit'); btn.disabled=true; btn.textContent='送信中…';
 
-/* ====== 簡易オートコンプリート（localStorage） ====== */
-const KEY_H_B = 'hist.buyer';
-const KEY_H_P = 'hist.partner';
-const KEY_H_S = 'hist.site';
-function loadHist(key){
-  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e){ return []; }
-}
-function saveHist(key, value, limit=20){
-  const v = (value||'').trim();
-  if(!v) return;
-  let arr = loadHist(key).filter(x=>x!==v);
-  arr.unshift(v);
-  if(arr.length>limit) arr = arr.slice(0, limit);
-  localStorage.setItem(key, JSON.stringify(arr));
-}
-function fillDatalist(listId, items){
-  const dl = document.getElementById(listId);
-  if(!dl) return;
-  dl.innerHTML = '';
-  items.forEach(txt=>{
-    const opt = document.createElement('option');
-    opt.value = txt;
-    dl.appendChild(opt);
-  });
-}
+    const res = await fetch(GAS_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    if(!res.ok){ throw new Error('HTTP '+res.status); }
+    const data = await res.json().catch(()=>({ok:false}));
+    if(!data.ok){ throw new Error(data.message||'サーバーエラー'); }
 
-function initAutocompleteBoxes(){
-  const buyerHist   = loadHist(KEY_H_B);
-  const partnerHist = loadHist(KEY_H_P);
-  const siteHist    = loadHist(KEY_H_S);
-
-  fillDatalist('list-buyer',   buyerHist);
-  fillDatalist('list-partner', partnerHist);
-  fillDatalist('list-site',    siteHist);
-
-  const buyer = localStorage.getItem('buyerName') || buyerHist[0] || '';
-  const partner = partnerHist[0] || '';
-  const site = siteHist[0] || '';
-  const bEl = document.getElementById('buyerName');
-  const pEl = document.getElementById('partnerName');
-  const sEl = document.getElementById('siteName');
-  if(bEl) bEl.value = buyer;
-  if(pEl) pEl.value = partner;
-  if(sEl) sEl.value = site;
-
-  ['buyerName','partnerName','siteName'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener('change', ()=>{
-      const key = (id==='buyerName') ? KEY_H_B : (id==='partnerName'? KEY_H_P : KEY_H_S);
-      saveHist(key, el.value);
-      if(id==='buyerName') localStorage.setItem('buyerName', el.value);
-      fillDatalist(
-        id==='buyerName' ? 'list-buyer' : (id==='partnerName' ? 'list-partner' : 'list-site'),
-        loadHist(key)
-      );
-    });
-  });
-}
-
-function handleSubmit(){
-  const buyer   = (document.getElementById('buyerName').value || '').trim();
-  const partner = (document.getElementById('partnerName').value || '').trim();
-  const site    = (document.getElementById('siteName').value || '').trim();
-
-  saveHist(KEY_H_B, buyer);
-  saveHist(KEY_H_P, partner);
-  saveHist(KEY_H_S, site);
-
-  const order = {
-    buyerName: buyer,
-    partnerName: partner,
-    siteName: site,
-    items: CART.map(it => ({ jan: it.jan, qty: it.qty }))
-  };
-
-  alert('送信データ\n' + JSON.stringify(order, null, 2));
-}
-
-/* ====== 初期化 ====== */
-async function boot(){
-  pickImage(document.getElementById('cartImg'), [`${BASE}/img/KART.PNG`,`/img/KART.PNG`,`/KART.PNG`]);
-  pickImage(document.getElementById('logo'), [`${BASE}/img/shima_owl.png`,`/img/shima_owl.png`]);
-
-  const here=(new URL('./products.json',location.href)).href;
-  const prods=await fetchFirstJSON([here,`${BASE}/products.json`,`${CDN}/products.json`]);
-  PRODUCTS=Array.isArray(prods)?prods:[];
-  const set=new Set(PRODUCTS.map(p=>p.category).filter(Boolean)); const sel=document.getElementById('cat');
-  [...set].sort().forEach(c=>{const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o);});
-  renderGrid(PRODUCTS);
-  renderCart();
-
-  initAutocompleteBoxes();
-  const submitBtn = document.getElementById('submit');
-  if(submitBtn){
-    submitBtn.addEventListener('click', handleSubmit);
+    // 履歴に保存
+    saveHist('hist.buyer', buyer); saveHist('hist.partner', partner); saveHist('hist.site', site);
+    CART = []; renderCart(); alert('発注を受け付けました。メールをご確認ください。');
+  }catch(e){
+    console.error(e); alert('送信に失敗しました：'+e.message+'
+GASのURL/公開設定を確認してください。');
+  }finally{
+    const btn = document.getElementById('submit'); btn.disabled=false; btn.textContent='この内容で発注する';
   }
 }
-boot().catch(e=>{console.error(e); alert("初期化エラー: "+e.message);});
+
+// ------------ 起動 --------------
+async function boot(){
+  // オートコンプリート
+  attachDatalist('buyerName','hist.buyer'); attachDatalist('partnerName','hist.partner'); attachDatalist('siteName','hist.site');
+
+  // 商品データ読み込み
+  const here = (new URL('./products.json', location.href)).href;
+  PRODUCTS = await fetchFirstJSON([ here ]);
+  // カテゴリ
+  const cats = [...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))];
+  const catSel = document.getElementById('cat'); cats.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; catSel.appendChild(o); });
+  // 検索・カテゴリフィルタ
+  const run = ()=>{
+    const q=(document.getElementById('q').value||'').toLowerCase();
+    const c=catSel.value||'';
+    const list = PRODUCTS.filter(p=>(!c||p.category===c)&&(!q||`${p.name} ${p.brand} ${p.category} ${p.jan}`.toLowerCase().includes(q)));
+    renderGrid(list);
+  };
+  document.getElementById('q').addEventListener('input', run);
+  catSel.addEventListener('change', run);
+  run();
+
+  // カート描画
+  renderCart();
+
+  // 送信
+  document.getElementById('submit').addEventListener('click', handleSubmit);
+}
+boot();
 </script>
 </body>
 </html>
