@@ -253,8 +253,11 @@ async function handleSubmit(){
     saveHist('hist.buyer', buyer); saveHist('hist.partner', partner); saveHist('hist.site', site);
     CART = []; renderCart(); alert('発注を受け付けました。メールをご確認ください。');
   }catch(e){
-    console.error(e); alert('送信に失敗しました：'+e.message+'
-GASのURL/公開設定を確認してください。');
+    -    console.error(e); alert('送信に失敗しました：'+e.message+'
+-GASのURL/公開設定を確認してください。');
++    console.error(e);
++    alert('送信に失敗しました：' + e.message + '\nGASのURL/公開設定を確認してください。');
+
   }finally{
     const btn = document.getElementById('submit'); btn.disabled=false; btn.textContent='この内容で発注する';
   }
