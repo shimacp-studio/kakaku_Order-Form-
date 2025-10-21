@@ -255,8 +255,8 @@ async function handleSubmit(){
   }catch(e){
     -    console.error(e); alert('送信に失敗しました：'+e.message+'
 -GASのURL/公開設定を確認してください。');
-+    console.error(e);
-+    alert('送信に失敗しました：' + e.message + '\nGASのURL/公開設定を確認してください。');
+    console.error(e);
+    alert('送信に失敗しました：' + e.message + '\nGASのURL/公開設定を確認してください。');
 
   }finally{
     const btn = document.getElementById('submit'); btn.disabled=false; btn.textContent='この内容で発注する';
