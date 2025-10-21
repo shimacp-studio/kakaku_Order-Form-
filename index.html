@@ -200,7 +200,7 @@ async function handleSubmit(){
     const site=(document.getElementById('siteName').value||'').trim();
     if(!buyer){alert('発注者名を入力してください');return;}
     if(CART.length===0){alert('カートが空です');return;}
-    const payload={buyerName:buyer,partnerName:partner,siteName:site,items:CART.map(it=>({jan:it.jan,qty:Number(it.qty)||0}))};
+    
     const btn=document.getElementById('submit');btn.disabled=true;btn.textContent='送信中…';
 
     const res=await fetch(GAS_ENDPOINT,{
@@ -211,6 +211,7 @@ async function handleSubmit(){
     });
     const text=await res.text();let data;try{data=JSON.parse(text);}catch(_){data={ok:false,message:text||('HTTP '+res.status)};}
     if(!res.ok||!data.ok){throw new Error(data.message||('HTTP '+res.status));}
+　　const payload = { buyerName: buyer,  partnerName: partner,  siteName: site,  items: CART.map(it => ({jan:it.jan,name:it.name || "",price: Number(it.price || 0),qty:Number(it.qty || 0)}))};
 
     saveHist('hist.buyer',buyer);saveHist('hist.partner',partner);saveHist('hist.site',site);
     CART=[];renderCart();alert('発注を受け付けました。メールをご確認ください。');
