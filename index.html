@@ -3,78 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>発注カタログ</title>
+<title>発注カタログ | シマコーポレーション</title>
 <meta name="color-scheme" content="light">
 <style>
 :root{
   --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;--bg:#f6f8ff;--card:#fff;
-  --brand:#1e66ff;--brand-ink:#fff;--accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
+  --brand:#1e66ff;--accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+
 h1{margin:0;font-size:clamp(18px,3.4vw,28px)}
 a{color:var(--accent);text-decoration:none}
 
-header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
-.wrap{max-width:1200px;margin:0 auto;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+/* ===== Header ===== */
+header{position:sticky;top:0;z-index:30;background:#ffffffcc;
+  border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
+.wrap{max-width:1200px;margin:0 auto;padding:14px 16px;
+  display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
 .brand{display:flex;gap:10px;align-items:center}
-.brand img{height:34px;width:auto}
+.brand img{height:38px;width:auto}
 .actions{display:flex;gap:12px;align-items:center}
-.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
-.carticon{position:relative;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:flex;gap:6px;align-items:center;box-shadow:var(--shadow)}
+.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
+  border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
+.carticon{position:relative;background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:6px 10px;display:flex;gap:6px;align-items:center;
+  box-shadow:var(--shadow)}
 .carticon img{height:20px}
-.badge{position:absolute;top:-8px;right:-8px;background:#ff5a3c;color:#fff;border-radius:999px;font-weight:700;font-size:12px;line-height:1;padding:4px 7px;border:2px solid #fff}
+.badge{position:absolute;top:-8px;right:-8px;background:#ff5a3c;color:#fff;
+  border-radius:999px;font-weight:700;font-size:12px;line-height:1;
+  padding:4px 7px;border:2px solid #fff}
 
-.controls{max-width:1200px;margin:10px auto 0;display:grid;gap:8px;padding:0 16px;grid-template-columns:1fr 220px 1fr}
-.input,select{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none;min-width:0}
-@media (max-width:720px){
-  .wrap{grid-template-columns:1fr}
-  .controls{grid-template-columns:1fr}
-  .brand{justify-content:center}
-  .actions{justify-content:center}
-}
+/* ===== Controls ===== */
+.controls{max-width:1200px;margin:10px auto 0;display:grid;gap:8px;
+  padding:0 16px;grid-template-columns:1fr 220px 1fr}
+.input,select{background:#fff;border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;outline:none;min-width:0}
 
-main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;margin:14px auto;padding:0 16px}
+/* ===== Layout ===== */
+main{display:grid;grid-template-columns:1fr 340px;gap:16px;
+  max-width:1200px;margin:14px auto;padding:0 16px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{position:relative;background:var(--card);border:1px solid #d6e0ff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-height:420px;box-shadow:var(--shadow)}
-.corner{position:absolute;top:0;left:0;background:var(--brand);color:#fff;padding:6px 10px;border-bottom-right-radius:12px;font-weight:800}
-.thumb{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
+.card{position:relative;background:var(--card);border:1px solid #d6e0ff;
+  border-radius:14px;overflow:hidden;display:flex;flex-direction:column;
+  min-height:420px;box-shadow:var(--shadow)}
+.corner{position:absolute;top:0;left:0;background:var(--brand);color:#fff;
+  padding:6px 10px;border-bottom-right-radius:12px;font-weight:800}
+.thumb{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--line);background:#fff}
 .thumb img{max-width:92%;max-height:92%;object-fit:contain}
 .body{padding:10px 12px;display:grid;gap:8px}
-.title{font-weight:800;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.title{font-weight:800;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.chip{background:#f1f5ff;border:1px solid #d6e0ff;border-radius:999px;padding:3px 8px;color:#1e3a8a;font-size:12px}
+.chip{background:#f1f5ff;border:1px solid #d6e0ff;border-radius:999px;
+  padding:3px 8px;color:#1e3a8a;font-size:12px}
 .price{font-weight:800}
-.bar{display:flex;gap:8px;align-items:flex-end}
-.barcode{background:#fff;border:1px solid var(--line);border-radius:8px;padding:2px 6px}
-.barcode svg{height:26px;display:block}
-.bar .p{color:var(--muted);font-size:13px}
-.qtyrow{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center;margin-top:4px}
-.qty{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px}
-.btn.wide{width:100%}
+.barcode{margin-top:4px;text-align:center}
+.qtyline{border-top:1px solid #e2e8f0;margin-top:6px;padding-top:6px;
+  font-size:14px}
 
-.cart{position:sticky;top:84px;height:calc(100dvh - 100px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+/* ===== Cart ===== */
+.cart{position:sticky;top:84px;height:calc(100dvh - 100px);background:#fff;
+  border:1px solid var(--line);border-radius:14px;padding:12px;
+  display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
 .cart h2{margin:0 0 6px 0;font-size:16px}
 .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
-.cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
+.cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;gap:6px;
+  align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 .total{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:6px}
 
-@media (max-width:980px){
-  main{grid-template-columns:1fr}
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .qty{font-size:16px} /* iOSズーム抑止 */
-}
-
+/* ===== Print ===== */
 @page{size:A4 portrait;margin:10mm}
 @media print{
   header,.controls,.cart,.btn{display:none!important}
   body{background:#fff}
   main{display:block;margin:0;padding:0}
-  .grid{grid-template-columns:repeat(3,1fr);gap:8mm;width:calc(210mm - 20mm);height:calc(297mm - 20mm);margin:0 auto}
-  .card{height:calc((100% - (8mm*3))/4);min-height:0;border:1px solid #cbd5e1;box-shadow:none;page-break-inside:avoid}
-  .thumb{height:44%;aspect-ratio:auto}
-  .title{font-size:12pt;min-height:auto;-webkit-line-clamp:2}
-  .barcode svg{height:22px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:8mm;
+    width:calc(210mm - 20mm);margin:0 auto}
+  .card{height:calc((297mm - 50mm)/5);min-height:0;border:1px solid #cbd5e1;
+    box-shadow:none;page-break-inside:avoid;padding:4mm}
+  .thumb{height:50%;aspect-ratio:auto}
+  .title{font-size:11pt;min-height:auto}
+  .barcode img{height:22px;width:auto}
+  .qtyline{font-size:11pt;border-top:1px solid #ccc;margin-top:2mm;padding-top:2mm}
+  .footer-print{margin-top:8mm;border-top:1px solid #ccc;padding-top:4mm;
+    font-size:12pt;text-align:center;width:90%;margin-left:auto;margin-right:auto}
+  .header-print{text-align:center;margin-bottom:8mm}
+  .header-print img{height:28mm;width:auto;display:block;margin:0 auto 2mm}
+  .header-print h2{margin:0;font-size:18pt;font-weight:800;}
+}
+
+/* Responsive */
+@media (max-width:980px){
+  main{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
@@ -82,13 +106,13 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
 <header>
   <div class="wrap">
     <div class="brand">
-      <img id="logo" src="img/shima_owl.png" alt="logo" onerror="this.src='img/shima_owl.PNG'">
-      <h1>発注カタログ</h1>
+      <img src="img/shima_owl.jpg" alt="logo">
+      <h1>シマコーポレーション 発注カタログ</h1>
     </div>
     <div class="actions">
-      <button class="btn" onclick="window.print()">印刷（カタログ）</button>
+      <button class="btn" onclick="window.print()">印刷（A4縦10件）</button>
       <div class="carticon">
-        <img src="img/KART.PNG" alt="cart" onerror="this.src='img/cart.png'">
+        <img src="img/KART.PNG" alt="cart">
         <span id="cartBadge" class="badge">0</span>
       </div>
     </div>
@@ -99,9 +123,9 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
   <input id="q" class="input" placeholder="検索（商品名 / ブランド / カテゴリ / JAN）" />
   <select id="cat" class="input"><option value="">すべてのカテゴリ</option></select>
   <div style="display:grid;gap:6px;grid-template-columns:1fr 1fr 1fr">
-    <input id="buyerName" class="input" placeholder="発注者名（履歴オート補完）">
-    <input id="partnerName" class="input" placeholder="パートナー企業（履歴オート補完）">
-    <input id="siteName" class="input" placeholder="現場名（履歴オート補完）">
+    <input id="buyerName" class="input" placeholder="発注者名">
+    <input id="partnerName" class="input" placeholder="パートナー企業">
+    <input id="siteName" class="input" placeholder="現場名">
   </div>
 </div>
 
@@ -111,127 +135,115 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     <h2>カート</h2>
     <div id="cartlist" class="cartlist"></div>
     <div class="total">
-      <div><span class="p">小計（税抜）</span>：<span id="subtotal">-</span></div>
-      <div><span class="p">消費税</span>：<span id="tax">-</span></div>
+      <div><span>小計（税抜）</span>：<span id="subtotal">-</span></div>
+      <div><span>消費税</span>：<span id="tax">-</span></div>
       <div style="font-weight:800"><span>税込合計</span>：<span id="grand">-</span></div>
       <button id="submit" class="btn">この内容で発注する</button>
     </div>
   </aside>
 </main>
 
+<!-- 印刷時ヘッダー -->
+<div class="header-print">
+  <img src="img/shima_owl.jpg" alt="logo">
+  <h2>シマコーポレーション 発注カタログ</h2>
+</div>
+
+<!-- 印刷時フッター -->
+<div class="footer-print">
+  発注者名：＿＿＿＿＿＿＿＿＿＿＿　日付：＿＿＿＿＿＿＿＿＿＿＿　備考：＿＿＿＿＿＿＿＿＿＿＿
+</div>
+
 <script>
 const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxENvVA9HBRstHtTFn2NbT8jjtMvV77MhZcBFfa4HK0ZxHxvqSY9BxrL2G2Er91jVrFEw/exec";
-const IMAGE_DIRS = ["img/","img/jan/","img/barcode/"];
-const IMAGE_EXTS = ["png","jpg","jpeg","webp","jfif","PNG","JPG","JPEG","WEBP","JFIF"];
 
-async function fetchFirstJSON(urls){
-  for(const u of urls){ try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok) return await r.json(); }catch(_){ } }
-  throw new Error("products.json を読み込めませんでした");
-}
-
-const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
-const G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
-const R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
-const PARITY={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
-const onlyDigits=s=>(s||"").replace(/[^0-9]/g,"");
-function ean13Checksum12(d12){let s=0;for(let i=0;i<12;i++){const n=+d12[i];s+=(i%2===0)?n:n*3;}return(10-(s%10))%10;}
-function ean13Pattern(d){const ds=onlyDigits(d);if(ds.length<12)return null;const d12=ds.slice(0,12);const cd=ds.length>=13?+ds[12]:ean13Checksum12(d12);const first=d12[0],left=d12.slice(1,7),right=d12.slice(7,12)+String(cd);const parity=PARITY[first]||"LLLLLL";let bits="101";for(let i=0;i<6;i++){const v=+left[i];bits+=(parity[i]==="L"?L[v]:G[v]);}bits+="01010";for(let i=0;i<6;i++){const v=+right[i];bits+=R[v];}bits+="101";return bits;}
-function renderEAN13SVG(jan,width=120,height=26){const bits=ean13Pattern(jan);if(!bits)return"";const barW=Math.max(1,Math.floor(width/bits.length));const W=barW*bits.length;const hG=Math.floor(height*.92),hF=height;let x=0,out=`<svg viewBox='0 0 ${W} ${height}' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${W}' height='${height}' fill='#fff'/>`;for(let i=0;i<bits.length;i++){if(bits[i]==='1'){const g=(i<3)||(i>=45&&i<50)||(i>=92);out+=`<rect x='${x}' y='0' width='${barW}' height='${g?hF:hG}' fill='#111827'/>`;}x+=barW;}out+=`</svg>`;return out;}
-
-const money=n=>isNaN(n)?"-":`${Number(n).toLocaleString()}円`;
-function buildImageCandidates(jan){const arr=[];for(const d of IMAGE_DIRS){for(const e of IMAGE_EXTS){arr.push(`${d}${jan}.${e}`);}}return arr;}
-function setBestImage(img,cands){let i=0;const nxt=()=>{if(i>=cands.length){img.src='';img.alt='';img.style.opacity=.6;img.title='NO IMAGE';img.onerror=null;return;}img.src=cands[i++];};img.onerror=nxt;nxt();}
-function saveHist(key,val){if(!val)return;const k=`${key}`;const arr=JSON.parse(localStorage.getItem(k)||"[]");const i=arr.indexOf(val);if(i>=0)arr.splice(i,1);arr.unshift(val);if(arr.length>20)arr.length=20;localStorage.setItem(k,JSON.stringify(arr));}
-function attachDatalist(inputId,key){const el=document.getElementById(inputId);const k=`${key}`;const listId=`dl-${inputId}`;const dl=document.createElement('datalist');dl.id=listId;document.body.appendChild(dl);el.setAttribute('list',listId);const ref=()=>{dl.innerHTML='';(JSON.parse(localStorage.getItem(k)||"[]")).forEach(v=>{const o=document.createElement('option');o.value=v;dl.appendChild(o);});};ref();el.addEventListener('change',()=>{saveHist(k,el.value.trim());ref();});}
-
-let PRODUCTS=[];
-let CART=JSON.parse(localStorage.getItem('cart.v1')||"[]");
+let PRODUCTS = [];
+let CART = JSON.parse(localStorage.getItem('cart.v1') || "[]");
+function money(n){return isNaN(n)?"-":Number(n).toLocaleString()+"円";}
 function persistCart(){localStorage.setItem('cart.v1',JSON.stringify(CART));document.getElementById('cartBadge').textContent=CART.reduce((a,c)=>a+Number(c.qty||0),0);}
-
 function renderGrid(list){
-  const grid=document.getElementById('grid');grid.innerHTML='';
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
   if(!list.length){grid.innerHTML='<div>該当商品がありません</div>';return;}
   list.forEach((p,idx)=>{
-    const el=document.createElement('div');el.className='card';
-    const svg=renderEAN13SVG(p.jan);
-    el.innerHTML=`
+    grid.innerHTML+=`
+    <div class="card">
       <div class="corner">${idx+1}</div>
-      <div class="thumb"><img id="img-${p.jan}" alt=""></div>
+      <div class="thumb"><img src="img/${p.jan}.jpg" onerror="this.src='img/noimage.jpg'"></div>
       <div class="body">
-        <div class="title">${p.name||''}</div>
-        <div class="row"><span class="chip">${p.brand||'-'}</span><span class="chip">${p.category||''}</span>${p.pack?`<span class="chip">入数 ${p.pack}</span>`:''}</div>
-        <div class="bar">
-          <div class="barcode">${svg}</div>
-          <div class="p">税抜：<span class="price">${money(p.price)}</span></div>
-        </div>
-        <div class="qtyrow">
-          <input id="qty-${p.jan}" class="qty" type="number" min="0" step="1" placeholder="数量">
-          <button class="btn wide" onclick="addToCart('${p.jan}')">カートへ</button>
-        </div>
-      </div>`;
-    grid.appendChild(el);
-    setBestImage(el.querySelector(`#img-${p.jan}`),buildImageCandidates(p.jan));
+        <div class="title">${p.name}</div>
+        <div class="row"><span class="chip">${p.brand||'-'}</span><span class="chip">${p.category||''}</span></div>
+        <div class="price">税抜：${money(p.price)}</div>
+        <div class="barcode"><img src="img/barcode/${p.jan}.jpg" onerror="this.style.display='none'"></div>
+        <div class="qtyline">発注数：＿＿＿＿</div>
+      </div>
+    </div>`;
   });
 }
 
 function renderCart(){
   const list=document.getElementById('cartlist');list.innerHTML='';
-  if(CART.length===0){list.innerHTML='<div class="p">カートは空です</div>';updateTotals();persistCart();return;}
+  if(CART.length===0){list.innerHTML='<div>カートは空です</div>';updateTotals();persistCart();return;}
   CART.forEach((it,i)=>{
-    const row=document.createElement('div');row.className='cartitem';
-    row.innerHTML=`
-      <div>${it.name||it.jan}</div>
-      <input class="qty" type="number" min="0" step="1" value="${it.qty||0}" oninput="changeQty(${i}, this.value)">
-      <div class="p">${money(it.price||0)}</div>
-      <button onclick="removeItem(${i})" style="border:none;background:transparent;color:#ef4444;font-weight:800">×</button>`;
-    list.appendChild(row);
+    list.innerHTML+=`
+      <div class="cartitem">
+        <div>${it.name}</div>
+        <input class="qty" type="number" min="0" step="1" value="${it.qty}" oninput="changeQty(${i}, this.value)">
+        <div>${money(it.price)}</div>
+        <button onclick="removeItem(${i})" style="border:none;background:none;color:red;font-weight:800">×</button>
+      </div>`;
   });
   updateTotals();persistCart();
 }
-function updateTotals(){const sub=CART.reduce((a,c)=>a+(Number(c.price||0)*Number(c.qty||0)),0);const tax=Math.round(sub*0.1);const grand=sub+tax;document.getElementById('subtotal').textContent=money(sub);document.getElementById('tax').textContent=money(tax);document.getElementById('grand').textContent=money(grand);}
-function addToCart(jan){const p=PRODUCTS.find(x=>String(x.jan)===String(jan));if(!p)return;const q=Number(document.getElementById(`qty-${jan}`).value||0);if(q<=0)return;const ex=CART.find(x=>String(x.jan)===String(jan));if(ex){ex.qty=Number(ex.qty||0)+q;}else{CART.push({jan:p.jan,name:p.name,price:p.price,qty:q});}renderCart();}
+function updateTotals(){
+  const sub=CART.reduce((a,c)=>a+(c.price*c.qty),0);
+  const tax=Math.round(sub*0.1);
+  document.getElementById('subtotal').textContent=money(sub);
+  document.getElementById('tax').textContent=money(tax);
+  document.getElementById('grand').textContent=money(sub+tax);
+}
+function addToCart(jan){
+  const p=PRODUCTS.find(x=>x.jan===jan);
+  const q=Number(document.getElementById(`qty-${jan}`).value||0);
+  if(q<=0)return;
+  const ex=CART.find(x=>x.jan===jan);
+  if(ex){ex.qty+=q;}else{CART.push({jan:p.jan,name:p.name,price:p.price,qty:q});}
+  renderCart();
+}
 function changeQty(i,v){CART[i].qty=Number(v||0);renderCart();}
 function removeItem(i){CART.splice(i,1);renderCart();}
-
 async function handleSubmit(){
+  const buyer=document.getElementById('buyerName').value.trim();
+  const partner=document.getElementById('partnerName').value.trim();
+  const site=document.getElementById('siteName').value.trim();
+  if(!buyer){alert('発注者名を入力してください');return;}
+  if(CART.length===0){alert('カートが空です');return;}
+  const payload={buyerName:buyer,partnerName:partner,siteName:site,
+    items:CART.map(it=>({jan:it.jan,name:it.name,price:it.price,qty:it.qty}))};
+  const btn=document.getElementById('submit');
+  btn.disabled=true;btn.textContent='送信中…';
   try{
-    const buyer=(document.getElementById('buyerName').value||'').trim();
-    const partner=(document.getElementById('partnerName').value||'').trim();
-    const site=(document.getElementById('siteName').value||'').trim();
-    if(!buyer){alert('発注者名を入力してください');return;}
-    if(CART.length===0){alert('カートが空です');return;}
-    
-    const btn=document.getElementById('submit');btn.disabled=true;btn.textContent='送信中…';
-
-    const res = await fetch(GAS_ENDPOINT, {
-    method: 'POST',
-    // ← プリフライトを発生させない
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(payload),
-    redirect: 'follow'
-  });
-    const text=await res.text();let data;try{data=JSON.parse(text);}catch(_){data={ok:false,message:text||('HTTP '+res.status)};}
-    if(!res.ok||!data.ok){throw new Error(data.message||('HTTP '+res.status));}
-　　const payload = { buyerName: buyer,  partnerName: partner,  siteName: site,  items: CART.map(it => ({jan:it.jan,name:it.name || "",price: Number(it.price || 0),qty:Number(it.qty || 0)}))};
-
-    saveHist('hist.buyer',buyer);saveHist('hist.partner',partner);saveHist('hist.site',site);
-    CART=[];renderCart();alert('発注を受け付けました。メールをご確認ください。');
-  }catch(e){
-    console.error(e);
-    alert('送信に失敗しました：'+e.message+'\nGASのURL/公開設定を確認してください。');
-  }finally{
-    const btn=document.getElementById('submit');btn.disabled=false;btn.textContent='この内容で発注する';
-  }
+    const res=await fetch(GAS_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!data.ok)throw new Error(data.message);
+    alert('発注を受け付けました');
+    CART=[];renderCart();
+  }catch(e){alert('送信に失敗しました：'+e.message);}
+  finally{btn.disabled=false;btn.textContent='この内容で発注する';}
 }
-
 async function boot(){
-  attachDatalist('buyerName','hist.buyer');attachDatalist('partnerName','hist.partner');attachDatalist('siteName','hist.site');
-  PRODUCTS=await fetchFirstJSON(['./products.json']);
-  const cats=[...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))];
-  const catSel=document.getElementById('cat');cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o);});
-  const run=()=>{const q=(document.getElementById('q').value||'').toLowerCase();const c=catSel.value||'';const list=PRODUCTS.filter(p=>(!c||p.category===c)&&(!q||`${p.name} ${p.brand} ${p.category} ${p.jan}`.toLowerCase().includes(q)));renderGrid(list);};
-  document.getElementById('q').addEventListener('input',run);catSel.addEventListener('change',run);run();
-  renderCart();
+  PRODUCTS=await fetch('./products.json.json').then(r=>r.json());
+  const catSel=document.getElementById('cat');
+  [...new Set(PRODUCTS.map(p=>p.category))].forEach(c=>{
+    const o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o);
+  });
+  const run=()=>{const q=document.getElementById('q').value.toLowerCase();const c=catSel.value;
+    const list=PRODUCTS.filter(p=>(!c||p.category===c)&&(!q||`${p.name}${p.brand}${p.jan}`.toLowerCase().includes(q)));
+    renderGrid(list);
+  };
+  document.getElementById('q').addEventListener('input',run);
+  catSel.addEventListener('change',run);
+  renderCart();run();
   document.getElementById('submit').addEventListener('click',handleSubmit);
 }
 boot();
