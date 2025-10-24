@@ -103,7 +103,7 @@ function updateCart(){const list=document.getElementById('cartlist');list.innerH
 function removeItem(i){cart.splice(i,1);updateCart();}
 
 async function boot(){
-  const PRODUCTS=await fetch('./products.json.json').then(r=>r.json());
+  const PRODUCTS=await fetch('./products.json').then(r=>r.json());
   const grid=document.getElementById('grid');
   PRODUCTS.forEach((p,i)=>{
     const barcode=renderBarcode(p.jan);
