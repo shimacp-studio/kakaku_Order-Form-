@@ -57,6 +57,58 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
 .cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;
 gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
+.hidden{display:none!important;} /* ← 画面切り替え制御用 */
+</style>
+</head>
+
+<body>
+
+<!-- === TOP画面 === -->
+<section id="top-section" class="top-section" style="text-align:center; padding:80px 20px;">
+  <div class="top-container" style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
+    <h1>シマコーポレーション 発注カタログ</h1>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+
+    <div class="top-form" style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
+      <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
+      <input id="partnerName" class="input" placeholder="パートナー企業（任意）">
+      <input id="siteName" class="input" placeholder="現場名（任意）">
+
+      <div class="top-buttons" style="display:flex; justify-content:space-between; margin-top:18px;">
+        <button id="startBtn" class="btn" style="background:#2563eb; border:1px solid #1e40af;">発注カタログへ進む</button>
+        <button id="resetBtn" class="btn" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">リセット</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === 発注画面 === -->
+<main id="order-section" class="hidden">
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <img src="img/shima_owl.jpg" alt="logo">
+        <h1>シマコーポレーション 発注カタログ</h1>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input id="buyerNameDisplay" class="input" readonly>
+    <input id="partnerNameDisplay" class="input" readonly>
+    <input id="siteNameDisplay" class="input" readonly>
+  </div>
+
+  <section>
+    <div id="grid" class="grid"></div>
+  </section>
+</main>
+
+
 @page {
   size: A4 portrait;
   margin: 8mm 8mm 18mm 8mm; /* ← 下余白を広げて印刷エリアを確実に確保 */
@@ -299,7 +351,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
         </div>
       </div>`;
   });
