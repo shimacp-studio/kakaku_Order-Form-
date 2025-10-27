@@ -55,15 +55,14 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     display:flex;
     flex-direction:row;
     align-items:flex-start;
-    gap:4mm;
+    gap:3mm;
     border:1px solid #ccc;
     box-shadow:none;
-    padding:4mm;
-    height:auto;
+    padding:3mm;
     page-break-inside:avoid;
     position:relative;
   }
-  /* 番号デザイン */
+  /* 番号 */
   .card::before{
     counter-increment:item;
     content: counter(item);
@@ -75,58 +74,36 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     background:linear-gradient(135deg,#1e66ff,#0a3cb2);
     color:#fff;
     border-radius:50%;
-    width:8mm;
-    height:8mm;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 1px 3px rgba(0,0,0,0.3);
+    width:8mm;height:8mm;
+    display:flex;align-items:center;justify-content:center;
   }
   body{counter-reset:item;}
 
   .thumb{
-    flex:0 0 45mm;
-    height:auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:none;
+    flex:0 0 40mm; /* ←少し小さく */
+    display:flex;align-items:center;justify-content:center;border:none;
   }
   .thumb img{
-    max-height:40mm;
-    max-width:100%;
-    object-fit:contain;
+    max-height:35mm;max-width:100%;object-fit:contain;
   }
   .body{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    gap:2mm;
-    position:relative;
+    flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:2mm;position:relative;
   }
   .title{
-    font-size:11pt;
-    font-weight:700;
-    overflow:visible !important;
-    white-space:normal !important;
-    line-height:1.4;
+    font-size:10.5pt;font-weight:700;line-height:1.4;white-space:normal;overflow:visible!important;
   }
-  .barcode svg{height:18px;width:80px;}
-  .price{font-size:10.5pt;}
+  .barcode svg{height:16px;width:80px;margin-top:2mm;}
+  .price{font-size:10pt;}
 
-  /* 発注数量欄：左下 */
+  /* 発注数量欄（画像下に） */
   .qty-print{
-    position:absolute;
-    bottom:3mm;
-    left:3mm;
-    font-size:10.5pt;
-    font-weight:600;
+    margin-top:3mm;
     display:flex;
     align-items:center;
     gap:3mm;
+    font-size:10pt;
   }
-  .qty-print label{font-weight:700;color:#222;}
+  .qty-print label{font-weight:700;}
   .qty-print input{
     width:25mm;
     border:1px solid #777;
@@ -137,27 +114,15 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
   }
 
   .header-print{
-    position:fixed;
-    top:5mm;
-    left:0;
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
+    position:fixed;top:5mm;left:0;width:100%;
+    display:flex;align-items:center;justify-content:center;gap:8px;
   }
   .header-print img{height:14mm;width:auto;}
   .header-print h2{font-size:16pt;font-weight:800;margin:0;}
   .footer-print{
-    position:fixed;
-    bottom:3mm;
-    left:0;
-    width:100%;
-    text-align:center;
-    font-size:11pt;
-    border-top:1px solid #ccc;
-    padding-top:3mm;
-    background:#fff;
+    position:fixed;bottom:3mm;left:0;width:100%;
+    text-align:center;font-size:11pt;border-top:1px solid #ccc;
+    padding-top:3mm;background:#fff;
   }
 }
 </style>
@@ -170,7 +135,7 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
       <h1>シマコーポレーション 発注カタログ</h1>
     </div>
     <div class="actions">
-      <button class="btn" onclick="window.print()">印刷</button>
+      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
     </div>
   </div>
 </header>
@@ -202,20 +167,11 @@ let cart=[];
 function updateCart(){
   const list=document.getElementById('cartlist');
   list.innerHTML='';
-  if(!cart.length){
-    list.textContent='カートは空です';
-    document.getElementById('subtotal').textContent='0円';
-    document.getElementById('total').textContent='0円';
-    return;
-  }
+  if(!cart.length){list.textContent='カートは空です';return;}
   let subtotal=0;
   cart.forEach((it,i)=>{
     subtotal+=it.price*it.qty;
-    list.innerHTML+=`<div class='cartitem'>
-      <div>${it.name}</div><div>${it.qty}</div>
-      <div>${(it.price*it.qty).toLocaleString()}円</div>
-      <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
-    </div>`;
+    list.innerHTML+=`<div class='cartitem'><div>${it.name}</div><div>${it.qty}</div><div>${(it.price*it.qty).toLocaleString()}円</div><button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button></div>`;
   });
   document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
   document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
@@ -234,21 +190,10 @@ async function boot(){
         <div class='barcode'>${barcode}</div>
         <div class='price'>税抜：${p.price.toLocaleString()}円</div>
         <div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div>
-      </div>
-      <div class='actions-card'>
-        <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' placeholder='数量'>
-        <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+        <div class='qty-print'><label>数量：</label><input type='text'></div>
       </div>
     </div>`;
   });
-}
-function addToCart(p){
-  const q=document.getElementById(`qty-${p.jan}`).value;
-  if(!q||q<=0)return;
-  const ex=cart.find(x=>x.jan===p.jan);
-  if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}
-  updateCart();
-  document.getElementById(`qty-${p.jan}`).value='';
 }
 
 async function sendOrder(){
@@ -258,25 +203,21 @@ async function sendOrder(){
   const partner=document.getElementById('partnerName').value.trim();
   const site=document.getElementById('siteName').value.trim();
 
-  const payload={
-    buyerName:buyer,
-    partnerName:partner,
-    siteName:site,
-    items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))
-  };
+  const payload={buyerName:buyer,partnerName:partner,siteName:site,items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
 
   const btn=document.getElementById('orderBtn');
   btn.disabled=true;btn.textContent='送信中…';
   try{
-    await fetch(GAS_ENDPOINT,{
-      method:'POST',
+    const res=await fetch(GAS_ENDPOINT,{
+      method:'POST',mode:'cors',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
+    if(!res.ok)throw new Error('HTTP '+res.status);
     alert('✅ 発注を受け付けました（メール送信済み）');
     cart=[];updateCart();
   }catch(e){
-    alert('⚠️ 送信に失敗しました：'+e.message);
+    alert('⚠️ 送信に失敗しました：'+e.message+'\nGASの公開設定を確認してください。');
   }finally{
     btn.disabled=false;btn.textContent='この内容で発注（メール送信）';
   }
@@ -284,7 +225,7 @@ async function sendOrder(){
 
 document.getElementById('orderBtn').onclick=sendOrder;
 
-/* === バーコード生成 === */
+function addToCart(p){const q=document.getElementById(`qty-${p.jan}`).value;if(!q||q<=0)return;const ex=cart.find(x=>x.jan===p.jan);if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}updateCart();document.getElementById(`qty-${p.jan}`).value='';}
 function ean13Pattern(d){const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};const s=(d||"").replace(/[^0-9]/g,"");if(s.length<12)return null;const d12=s.slice(0,12),cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;const first=d12[0],left=d12.slice(1,7),right=d12.slice(7,12)+cd;let bits="101",par=P[first];for(let i=0;i<6;i++){bits+=(par[i]==="L"?L[left[i]]:G[left[i]]);}bits+="01010";for(let i=0;i<6;i++){bits+=R[right[i]];}return bits+"101";}
 function renderBarcode(jan){const bits=ean13Pattern(jan);if(!bits)return"";let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;for(let i=0;i<bits.length;i++)if(bits[i]==="1")out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;out+="</svg>";return out;}
 
