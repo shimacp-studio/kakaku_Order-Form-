@@ -63,20 +63,17 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 }
 
 @media print {
-  /* ==== 全体設定 ==== */
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; margin: 0; padding: 0; }
-  main { display: block; margin: 0; padding: 0; }
-
-  /* ==== グリッド（現状サイズ維持・上下微調整） ==== */
+  body { background: #fff; counter-reset: item; position: relative !important; }
+  main { display: block; margin: 0; padding: 0; position: relative !important; min-height: 245mm !important; }
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6mm;
     width: calc(210mm - 20mm);
-    margin: 35mm auto 0; /* ← タイトル位置に余白確保 */
+    margin: 35mm auto 0;
   }
 
-  /* ==== カード設定（前回サイズ維持） ==== */
+  /* ==== カード設定 ==== */
   .card {
     position: relative;
     flex-direction: row;
@@ -85,41 +82,92 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 1px solid #d9e1f2;
     box-shadow: none;
     padding: 3.5mm;
-    height: calc((297mm - 70mm) / 5); /* ← 元の高さ維持 */
+    height: calc((297mm - 95mm) / 5);
     page-break-inside: avoid;
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
   }
 
-  /* ==== 番号タグ（現状デザイン維持） ==== */
+  /* ==== 番号タグ（小型・近未来風） ==== */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
     position: absolute;
-    bottom: 2mm;
-    right: 3mm;
-    padding: 0.8mm 2.5mm;
-    border-radius: 8mm;
-    background: linear-gradient(145deg, #f8fafc 0%, #cbd5e1 40%, #94a3b8 100%);
-    border: 0.3mm solid #94a3b8;
-    color: #0f172a;
+    bottom: 1.8mm;
+    right: 2.2mm;
+    padding: 1.4mm 3mm;
+    font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
     font-weight: 700;
-    font-size: 8.5pt;
-    font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+    font-size: 7.3pt;
+    letter-spacing: 0.4px;
+    color: #fff;
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
+    border-radius: 12px;
+    box-shadow: 0 0 3px rgba(14,165,233,0.8), inset 0 0 2px rgba(255,255,255,0.3);
+    text-shadow: 0 0 2px rgba(255,255,255,0.4);
+  }
+
+  /* ==== 商品画像 ==== */
+  .thumb {
+    flex: 0 0 33mm;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow:
-      inset 0 1px 2px rgba(255,255,255,0.8),
-      0 1px 3px rgba(0,0,0,0.2);
-    z-index: 5;
+    border: none;
+  }
+  .thumb img {
+    max-height: 27mm;
+    max-width: 100%;
+    object-fit: contain;
   }
 
-  /* ==== ヘッダ（ロゴ+タイトルを確実に表示） ==== */
+  /* ==== 商品情報 ==== */
+  .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2mm;
+    padding-right: 3mm;
+  }
+
+  .title {
+    font-size: 9.3pt !important;
+    line-height: 1.4 !important;
+    max-height: 22mm !important;
+    overflow: hidden !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    font-weight: 700 !important;
+  }
+
+  .barcode svg { height: 16px; width: 70px; }
+  .price { font-size: 9.3pt; }
+
+  /* ==== 発注数量欄 ==== */
+  .qty-print {
+    position: absolute !important;
+    bottom: 3mm !important;
+    left: 4mm !important;
+    display: flex;
+    align-items: center;
+    gap: 1.2mm;
+    font-size: 9pt;
+    font-weight: 600;
+  }
+  .qty-print input {
+    width: 20mm !important;
+    height: 6mm !important;
+    border: 1px solid #bbb;
+    border-radius: 3mm;
+  }
+
+  /* ==== ヘッダ ==== */
   .header-print {
     position: fixed;
-    top: 8mm !important; /* ← 印刷領域に確実に入る高さに */
+    top: 5mm;
     left: 0;
     width: 100%;
     display: flex;
@@ -127,19 +175,14 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     justify-content: center;
     gap: 8px;
     background: #fff;
-    z-index: 9999 !important;
   }
   .header-print img { height: 14mm; width: auto; }
-  .header-print h2 {
-    font-size: 16pt;
-    font-weight: 800;
-    margin: 0;
-  }
+  .header-print h2 { font-size: 16pt; font-weight: 800; margin: 0; }
 
-  /* ==== フッター（空白除去・下ギリギリに） ==== */
+  /* ==== フッター（下端固定） ==== */
   .footer-print {
     position: fixed !important;
-    bottom: 0mm !important; /* ← 下ギリギリに配置 */
+    bottom: 3mm !important; /* ← スクショ赤枠の高さに一致させる */
     left: 0;
     width: 100%;
     text-align: center;
@@ -148,11 +191,12 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     color: #0f172a;
     border-top: 1px solid #bbb;
     padding-top: 2mm;
-    padding-bottom: 1.5mm;
     background: #fff;
-    z-index: 10000 !important;
-    box-shadow: 0 -0.2mm 0.3mm rgba(0,0,0,0.08);
+    box-shadow: 0 -0.3mm 0.4mm rgba(0,0,0,0.08);
+    z-index: 9999;
   }
+}
+
 
   /* ==== 他要素より上に出す ==== */
   main, .grid, .card {
@@ -256,7 +300,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
         </div>
       </div>`;
   });
