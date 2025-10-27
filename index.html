@@ -182,7 +182,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   /* ==== フッター（下端固定） ==== */
   .footer-print {
     position: fixed !important;
-    bottom: 1mm !important; /* ← スクショ赤枠の高さに一致させる */
+    bottom: 0mm !important; /* ← スクショ赤枠の高さに一致させる */
     left: 0;
     width: 100%;
     text-align: center;
@@ -299,7 +299,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
