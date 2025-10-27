@@ -59,21 +59,21 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 @page {
   size: A4 portrait;
-  margin: 15mm 10mm 40mm 10mm; /* ← 下余白を広げて印刷エリアを確実に確保 */
+  margin: 8mm 8mm 18mm 8mm; /* ← 余白最小モードに近いデフォルト */
 }
 
 @media print {
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; position: relative !important; }
-  main { display: block; margin: 0; padding: 0; position: relative !important; min-height: 245mm !important; }
+  body { background: #fff; counter-reset: item; }
+  main { display: block; margin: 0; padding: 0; min-height: 245mm !important; }
+
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6mm;
-    width: calc(210mm - 20mm);
-    margin: 35mm auto 0;
+    width: calc(210mm - 16mm);
+    margin: 30mm auto 0;
   }
 
-  /* ==== カード設定 ==== */
   .card {
     position: relative;
     flex-direction: row;
@@ -82,14 +82,14 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 1px solid #d9e1f2;
     box-shadow: none;
     padding: 3.5mm;
-    height: calc((297mm - 95mm) / 5);
+    height: calc((297mm - 85mm) / 5);
     page-break-inside: avoid;
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
   }
 
-  /* ==== 番号タグ（小型・近未来風） ==== */
+  /* ==== 番号タグ ==== */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
@@ -100,7 +100,6 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
     font-weight: 700;
     font-size: 7.3pt;
-    letter-spacing: 0.4px;
     color: #fff;
     background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
     border-radius: 12px;
@@ -108,97 +107,23 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     text-shadow: 0 0 2px rgba(255,255,255,0.4);
   }
 
-  /* ==== 商品画像 ==== */
-  .thumb {
-    flex: 0 0 33mm;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-  }
-  .thumb img {
-    max-height: 27mm;
-    max-width: 100%;
-    object-fit: contain;
-  }
-
-  /* ==== 商品情報 ==== */
-  .body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 2mm;
-    padding-right: 3mm;
-  }
-
-  .title {
-    font-size: 9.3pt !important;
-    line-height: 1.4 !important;
-    max-height: 22mm !important;
-    overflow: hidden !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-    font-weight: 700 !important;
-  }
-
-  .barcode svg { height: 16px; width: 70px; }
-  .price { font-size: 9.3pt; }
-
-  /* ==== 発注数量欄 ==== */
-  .qty-print {
-    position: absolute !important;
-    bottom: 3mm !important;
-    left: 4mm !important;
-    display: flex;
-    align-items: center;
-    gap: 1.2mm;
-    font-size: 9pt;
-    font-weight: 600;
-  }
-  .qty-print input {
-    width: 20mm !important;
-    height: 6mm !important;
-    border: 1px solid #bbb;
-    border-radius: 3mm;
-  }
-
-  /* ==== ヘッダ ==== */
-  .header-print {
-    position: fixed;
-    top: 5mm;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #fff;
-  }
-  .header-print img { height: 14mm; width: auto; }
-  .header-print h2 { font-size: 16pt; font-weight: 800; margin: 0; }
-
-  /* ==== フッター（下端固定） ==== */
+  /* ==== フッター ==== */
   .footer-print {
     position: fixed !important;
-    bottom: 3mm !important; /* ← スクショ赤枠の高さに一致させる */
+    bottom: 2mm !important;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: 11pt;
     font-family: "Noto Sans JP", "Segoe UI", sans-serif;
     color: #0f172a;
-    border-top: 1px solid #bbb;
+    border-top: none; /* ← 線を削除！ */
     padding-top: 2mm;
     background: #fff;
-    box-shadow: 0 -0.3mm 0.4mm rgba(0,0,0,0.08);
+    box-shadow: none; /* ← 下の影も削除 */
     z-index: 9999;
   }
-}
 
-
-  /* ==== 他要素より上に出す ==== */
   main, .grid, .card {
     position: relative !important;
     z-index: 1 !important;
@@ -300,7 +225,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
