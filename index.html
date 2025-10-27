@@ -60,45 +60,127 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 @page{size:A4 portrait;margin:10mm}
 
 /* === 印刷専用 === */
+/* === 印刷専用 === */
 @media print {
   header,.actions,.cart,.actions-card,.controls{display:none!important}
   body{background:#fff;counter-reset:item;}
   main{display:block;margin:0;padding:0}
-  .grid{grid-template-columns:repeat(2,1fr)!important;
-    gap:6mm;width:calc(210mm - 20mm);margin:35mm auto 0;}
-  .card{display:flex;flex-direction:row;align-items:flex-start;
-    gap:3mm;border:1px solid #ccc;box-shadow:none;
-    padding:4mm;page-break-inside:avoid;position:relative;}
-  /* ▲番号マーク */
+  .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:6mm;
+    width:calc(210mm - 20mm);
+    margin:35mm auto 0;
+  }
+  .card{
+    display:flex;
+    flex-direction:row;
+    align-items:flex-start;
+    gap:3mm;
+    border:1px solid #ccc;
+    box-shadow:none;
+    padding:4mm;
+    page-break-inside:avoid;
+    position:relative;
+  }
+
+  /* ★ 番号（A1, A2…）を左上外側に三角形で表示 */
   .card::before{
     counter-increment:item;
-    content:"▲" counter(item);
-    position:absolute;top:3mm;left:4mm;
-    font-size:10pt;font-weight:700;color:#fff;
-    background:linear-gradient(135deg,#1e66ff,#0a3cb2);
-    border-radius:3mm;padding:1mm 3mm;
-    box-shadow:0 1px 3px rgba(0,0,0,0.3);
+    content:"A" counter(item);
+    position:absolute;
+    top:-4mm;
+    left:-5mm;
+    background:#4f46e5;
+    color:#fff;
+    font-weight:700;
+    font-size:10pt;
+    width:10mm;
+    height:10mm;
+    clip-path:polygon(0 0,100% 0,0 100%);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding-top:1.2mm;
   }
-  .thumb{flex:0 0 38mm;display:flex;align-items:center;justify-content:center;border:none;}
-  .thumb img{max-height:32mm;max-width:95%;object-fit:contain;}
-  .body{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:2mm;}
-  .title{font-size:10.5pt;font-weight:700;line-height:1.4;white-space:normal;}
+
+  .thumb{
+    flex:0 0 38mm;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+  }
+  .thumb img{
+    max-height:32mm;
+    max-width:95%;
+    object-fit:contain;
+  }
+
+  .body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:2mm;
+    position:relative;
+  }
+
+  .title{
+    font-size:10.5pt;
+    font-weight:700;
+    line-height:1.4;
+    white-space:normal;
+  }
   .barcode svg{height:16px;width:80px;margin-top:2mm;}
   .price{font-size:10pt;}
-  /* 発注数量欄（カード左下） */
-  .qty-print{margin-top:auto;display:flex;align-items:center;gap:2mm;
-    font-size:10pt;font-weight:600;}
-  .qty-print label{font-weight:700;}
-  .qty-print input{width:25mm;border:1px solid #777;
-    border-radius:2mm;text-align:center;height:6mm;font-size:10pt;}
-  .header-print{position:fixed;top:5mm;left:0;width:100%;
-    display:flex;align-items:center;justify-content:center;gap:8px;}
+
+  /* ★ 発注数量欄（カード左下に） */
+  .qty-print{
+    margin-top:auto;
+    display:flex;
+    align-items:center;
+    gap:2mm;
+    font-size:10pt;
+    font-weight:600;
+    justify-content:flex-start;
+  }
+  .qty-print label{
+    font-weight:700;
+  }
+  .qty-print input{
+    width:25mm;
+    border:1px solid #777;
+    border-radius:2mm;
+    text-align:center;
+    height:6mm;
+    font-size:10pt;
+  }
+
+  .header-print{
+    position:fixed;
+    top:5mm;
+    left:0;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
   .header-print img{height:14mm;width:auto;}
   .header-print h2{font-size:16pt;font-weight:800;margin:0;}
-  .footer-print{position:fixed;bottom:3mm;left:0;width:100%;
-    text-align:center;font-size:11pt;border-top:1px solid #ccc;
-    padding-top:3mm;background:#fff;}
+  .footer-print{
+    position:fixed;
+    bottom:3mm;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:11pt;
+    border-top:1px solid #ccc;
+    padding-top:3mm;
+    background:#fff;
+  }
 }
+
 </style>
 </head>
 <body>
