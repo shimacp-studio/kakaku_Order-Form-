@@ -6,124 +6,98 @@
 <title>シマコーポレーション 発注カタログ</title>
 <style>
 :root{
-  --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;--bg:#f6f8ff;--card:#fff;--brand:#1e66ff;--accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
+  --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;
+  --bg:#f6f8ff;--card:#fff;--brand:#1e66ff;
+  --accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 h1{margin:0;font-size:clamp(18px,3.4vw,26px);font-weight:800}
-header{position:sticky;top:0;z-index:30;background:#ffffffcc;border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
-.wrap{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+header{position:sticky;top:0;z-index:30;background:#ffffffcc;
+border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
+.wrap{max-width:1200px;margin:0 auto;padding:10px 16px;
+display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand img{height:38px;width:auto}
 .actions{display:flex;gap:12px;align-items:center}
-.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
+.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
+border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
-.controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;padding:0 16px;grid-template-columns:repeat(3,1fr);}
-.input{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;}
+.controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
+padding:0 16px;grid-template-columns:repeat(3,1fr);}
+.input{background:#fff;border:1px solid var(--line);
+border-radius:8px;padding:8px 10px;font-size:14px;}
 
-main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;margin:14px auto;padding:0 16px}
+main{display:grid;grid-template-columns:1fr 340px;gap:16px;
+max-width:1200px;margin:14px auto;padding:0 16px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{position:relative;background:var(--card);border:1px solid #d6e0ff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-bottom:10px}
-.thumb{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:#fff}
+.card{position:relative;background:var(--card);border:1px solid #d6e0ff;
+border-radius:14px;overflow:hidden;display:flex;flex-direction:column;
+box-shadow:var(--shadow);padding-bottom:10px}
+.thumb{aspect-ratio:3/2;display:flex;align-items:center;
+justify-content:center;border-bottom:1px solid var(--line);background:#fff}
 .thumb img{max-width:92%;max-height:92%;object-fit:contain}
 .body{padding:10px 12px;display:grid;gap:6px}
-.title{font-weight:700;font-size:12px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.title{font-weight:700;font-size:12px;line-height:1.35;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+overflow:hidden;min-height:2.6em}
 .barcode svg{height:18px;width:80px;}
 .price{font-weight:800;font-size:13px}
-.actions-card{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding:0 10px}
-.qtyinput{width:70px;text-align:center;border:1px solid var(--line);border-radius:8px;padding:4px}
+.actions-card{display:flex;align-items:center;
+justify-content:space-between;margin-top:auto;padding:0 10px}
+.qtyinput{width:70px;text-align:center;border:1px solid var(--line);
+border-radius:8px;padding:4px}
 
-.cart{position:sticky;top:84px;height:calc(100dvh - 100px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.cart{position:sticky;top:84px;height:calc(100dvh - 100px);
+background:#fff;border:1px solid var(--line);border-radius:14px;
+padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
 .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
-.cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
+.cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;
+gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 @page{size:A4 portrait;margin:10mm}
 
 /* === 印刷専用 === */
 @media print {
   header,.actions,.cart,.actions-card,.controls{display:none!important}
-  body{background:#fff}
+  body{background:#fff;counter-reset:item;}
   main{display:block;margin:0;padding:0}
-  .grid{
-    grid-template-columns:repeat(2,1fr)!important;
-    gap:6mm;
-    width:calc(210mm - 20mm);
-    margin:35mm auto 0;
-  }
-  .card{
-    display:flex;
-    flex-direction:row;
-    align-items:flex-start;
-    gap:3mm;
-    border:1px solid #ccc;
-    box-shadow:none;
-    padding:3mm;
-    page-break-inside:avoid;
-    position:relative;
-  }
-  /* 番号 */
+  .grid{grid-template-columns:repeat(2,1fr)!important;
+    gap:6mm;width:calc(210mm - 20mm);margin:35mm auto 0;}
+  .card{display:flex;flex-direction:row;align-items:flex-start;
+    gap:3mm;border:1px solid #ccc;box-shadow:none;
+    padding:4mm;page-break-inside:avoid;position:relative;}
+  /* ▲番号マーク */
   .card::before{
     counter-increment:item;
-    content: counter(item);
-    position:absolute;
-    top:3mm;
-    left:3mm;
-    font-size:11pt;
-    font-weight:700;
+    content:"▲" counter(item);
+    position:absolute;top:3mm;left:4mm;
+    font-size:10pt;font-weight:700;color:#fff;
     background:linear-gradient(135deg,#1e66ff,#0a3cb2);
-    color:#fff;
-    border-radius:50%;
-    width:8mm;height:8mm;
-    display:flex;align-items:center;justify-content:center;
+    border-radius:3mm;padding:1mm 3mm;
+    box-shadow:0 1px 3px rgba(0,0,0,0.3);
   }
-  body{counter-reset:item;}
-
-  .thumb{
-    flex:0 0 40mm; /* ←少し小さく */
-    display:flex;align-items:center;justify-content:center;border:none;
-  }
-  .thumb img{
-    max-height:35mm;max-width:100%;object-fit:contain;
-  }
-  .body{
-    flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:2mm;position:relative;
-  }
-  .title{
-    font-size:10.5pt;font-weight:700;line-height:1.4;white-space:normal;overflow:visible!important;
-  }
+  .thumb{flex:0 0 38mm;display:flex;align-items:center;justify-content:center;border:none;}
+  .thumb img{max-height:32mm;max-width:95%;object-fit:contain;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:2mm;}
+  .title{font-size:10.5pt;font-weight:700;line-height:1.4;white-space:normal;}
   .barcode svg{height:16px;width:80px;margin-top:2mm;}
   .price{font-size:10pt;}
-
-  /* 発注数量欄（画像下に） */
-  .qty-print{
-    margin-top:3mm;
-    display:flex;
-    align-items:center;
-    gap:3mm;
-    font-size:10pt;
-  }
+  /* 発注数量欄（カード左下） */
+  .qty-print{margin-top:auto;display:flex;align-items:center;gap:2mm;
+    font-size:10pt;font-weight:600;}
   .qty-print label{font-weight:700;}
-  .qty-print input{
-    width:25mm;
-    border:1px solid #777;
-    border-radius:2mm;
-    text-align:center;
-    height:6mm;
-    font-size:10pt;
-  }
-
-  .header-print{
-    position:fixed;top:5mm;left:0;width:100%;
-    display:flex;align-items:center;justify-content:center;gap:8px;
-  }
+  .qty-print input{width:25mm;border:1px solid #777;
+    border-radius:2mm;text-align:center;height:6mm;font-size:10pt;}
+  .header-print{position:fixed;top:5mm;left:0;width:100%;
+    display:flex;align-items:center;justify-content:center;gap:8px;}
   .header-print img{height:14mm;width:auto;}
   .header-print h2{font-size:16pt;font-weight:800;margin:0;}
-  .footer-print{
-    position:fixed;bottom:3mm;left:0;width:100%;
+  .footer-print{position:fixed;bottom:3mm;left:0;width:100%;
     text-align:center;font-size:11pt;border-top:1px solid #ccc;
-    padding-top:3mm;background:#fff;
-  }
+    padding-top:3mm;background:#fff;}
 }
 </style>
 </head>
@@ -139,20 +113,24 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     </div>
   </div>
 </header>
+
 <div class="controls">
   <input id="buyerName" class="input" placeholder="発注者名">
   <input id="partnerName" class="input" placeholder="パートナー企業">
   <input id="siteName" class="input" placeholder="現場名">
 </div>
+
 <main>
   <section><div id="grid" class="grid"></div></section>
   <aside class="cart">
     <h2>カート</h2>
     <div id="cartlist" class="cartlist"></div>
-    <div><strong>小計：</strong><span id="subtotal">0円</span><br><strong>税込：</strong><span id="total">0円</span></div>
+    <div><strong>小計：</strong><span id="subtotal">0円</span><br>
+      <strong>税込：</strong><span id="total">0円</span></div>
     <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
   </aside>
 </main>
+
 <div class="header-print">
   <img src="img/shima_owl.jpg" alt="logo">
   <h2>シマコーポレーション 発注カタログ</h2>
@@ -160,6 +138,7 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
 <div class="footer-print">
   発注者名：＿＿＿＿＿＿＿＿＿＿＿　日付：＿＿＿＿＿＿＿＿＿＿＿　備考：＿＿＿＿＿＿＿＿＿＿＿
 </div>
+
 <script>
 const GAS_ENDPOINT="https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
 
@@ -167,11 +146,20 @@ let cart=[];
 function updateCart(){
   const list=document.getElementById('cartlist');
   list.innerHTML='';
-  if(!cart.length){list.textContent='カートは空です';return;}
+  if(!cart.length){
+    list.textContent='カートは空です';
+    document.getElementById('subtotal').textContent='0円';
+    document.getElementById('total').textContent='0円';
+    return;
+  }
   let subtotal=0;
   cart.forEach((it,i)=>{
     subtotal+=it.price*it.qty;
-    list.innerHTML+=`<div class='cartitem'><div>${it.name}</div><div>${it.qty}</div><div>${(it.price*it.qty).toLocaleString()}円</div><button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button></div>`;
+    list.innerHTML+=`<div class='cartitem'>
+      <div>${it.name}</div><div>${it.qty}</div>
+      <div>${(it.price*it.qty).toLocaleString()}円</div>
+      <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
+    </div>`;
   });
   document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
   document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
@@ -192,8 +180,20 @@ async function boot(){
         <div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div>
         <div class='qty-print'><label>数量：</label><input type='text'></div>
       </div>
+      <div class='actions-card'>
+        <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' placeholder='数量'>
+        <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+      </div>
     </div>`;
   });
+}
+
+function addToCart(p){
+  const q=document.getElementById(`qty-${p.jan}`).value;
+  if(!q||q<=0)return;
+  const ex=cart.find(x=>x.jan===p.jan);
+  if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}
+  updateCart();document.getElementById(`qty-${p.jan}`).value='';
 }
 
 async function sendOrder(){
@@ -208,16 +208,15 @@ async function sendOrder(){
   const btn=document.getElementById('orderBtn');
   btn.disabled=true;btn.textContent='送信中…';
   try{
-    const res=await fetch(GAS_ENDPOINT,{
+    await fetch(GAS_ENDPOINT,{
       method:'POST',mode:'no-cors',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
-    if(!res.ok)throw new Error('HTTP '+res.status);
     alert('✅ 発注を受け付けました（メール送信済み）');
     cart=[];updateCart();
   }catch(e){
-    alert('⚠️ 送信に失敗しました：'+e.message+'\nGASの公開設定を確認してください。');
+    alert('⚠️ 送信に失敗しました：'+e.message);
   }finally{
     btn.disabled=false;btn.textContent='この内容で発注（メール送信）';
   }
@@ -225,7 +224,6 @@ async function sendOrder(){
 
 document.getElementById('orderBtn').onclick=sendOrder;
 
-function addToCart(p){const q=document.getElementById(`qty-${p.jan}`).value;if(!q||q<=0)return;const ex=cart.find(x=>x.jan===p.jan);if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}updateCart();document.getElementById(`qty-${p.jan}`).value='';}
 function ean13Pattern(d){const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};const s=(d||"").replace(/[^0-9]/g,"");if(s.length<12)return null;const d12=s.slice(0,12),cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;const first=d12[0],left=d12.slice(1,7),right=d12.slice(7,12)+cd;let bits="101",par=P[first];for(let i=0;i<6;i++){bits+=(par[i]==="L"?L[left[i]]:G[left[i]]);}bits+="01010";for(let i=0;i<6;i++){bits+=R[right[i]];}return bits+"101";}
 function renderBarcode(jan){const bits=ean13Pattern(jan);if(!bits)return"";let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;for(let i=0;i<bits.length;i++)if(bits[i]==="1")out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;out+="</svg>";return out;}
 
