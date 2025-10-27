@@ -70,7 +70,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6mm;
     width: calc(210mm - 20mm);
-    margin: 35mm auto 0;
+    margin: 30mm auto 0;
   }
 
   /* ==== カード設定 ==== */
@@ -143,7 +143,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-weight: 700 !important;
   }
 
-  .barcode svg { height: 16px; width: 70px; }
+  .barcode svg { height: 20px; width: 70px; }
   .price { font-size: 9.3pt; }
 
   /* ==== 発注数量欄 ==== */
@@ -299,7 +299,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
