@@ -59,7 +59,6 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 @page{size:A4 portrait;margin:10mm}
 
-/* === 印刷専用 === */
 @media print {
   header,.actions,.cart,.actions-card,.controls{display:none!important}
   body{background:#fff;counter-reset:item;}
@@ -82,7 +81,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     position:relative;
   }
 
-  /* ▲ 番号表示（左上外側に紫三角） */
+  /* ★ 番号（三角形＋A1形式） */
   .card::before{
     counter-increment:item;
     content:"A" counter(item);
@@ -104,38 +103,15 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     box-shadow:0 1px 3px rgba(0,0,0,0.4);
   }
 
-  .thumb{
-    flex:0 0 38mm;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:none;
-  }
-  .thumb img{
-    max-height:32mm;
-    max-width:95%;
-    object-fit:contain;
-  }
+  .thumb{flex:0 0 38mm;display:flex;align-items:center;justify-content:center;border:none;}
+  .thumb img{max-height:32mm;max-width:95%;object-fit:contain;}
 
-  .body{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    gap:2mm;
-    position:relative;
-  }
-
-  .title{
-    font-size:10.5pt;
-    font-weight:700;
-    line-height:1.4;
-    white-space:normal;
-  }
+  .body{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:2mm;position:relative;}
+  .title{font-size:10.5pt;font-weight:700;line-height:1.4;white-space:normal;}
   .barcode svg{height:16px;width:80px;margin-top:2mm;}
   .price{font-size:10pt;}
 
-  /* ★ 発注数量欄（カード左下に固定） */
+  /* ★ 発注数量欄 左下 */
   .qty-print{
     position:absolute;
     bottom:3mm;
@@ -146,9 +122,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-size:10pt;
     font-weight:600;
   }
-  .qty-print label{
-    font-weight:700;
-  }
+  .qty-print label{font-weight:700;}
   .qty-print input{
     width:25mm;
     border:1px solid #777;
@@ -158,75 +132,12 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-size:10pt;
   }
 
-  .header-print{
-    position:fixed;
-    top:5mm;
-    left:0;
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-  }
+  .header-print{position:fixed;top:5mm;left:0;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;}
   .header-print img{height:14mm;width:auto;}
   .header-print h2{font-size:16pt;font-weight:800;margin:0;}
-  .footer-print{
-    position:fixed;
-    bottom:3mm;
-    left:0;
-    width:100%;
-    text-align:center;
-    font-size:11pt;
-    border-top:1px solid #ccc;
-    padding-top:3mm;
-    background:#fff;
-  }
+  .footer-print{position:fixed;bottom:3mm;left:0;width:100%;text-align:center;font-size:11pt;border-top:1px solid #ccc;padding-top:3mm;background:#fff;}
 }
-@media print {
-  .qty-print {
-    position: absolute !important;
-    bottom: 3mm !important;
-    left: 5mm !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 2mm !important;
-    font-size: 10pt !important;
-    font-weight: 600 !important;
-    justify-content: flex-start !important;
-  }
-  .qty-print label {
-    font-weight: 700 !important;
-  }
-  .qty-print input {
-    width: 25mm !important;
-    border: 1px solid #777 !important;
-    border-radius: 2mm !important;
-    text-align: center !important;
-    height: 6mm !important;
-    font-size: 10pt !important;
-  }
 
-  .card::before {
-    counter-increment: item !important;
-    content: "A" counter(item) !important;
-    position: absolute !important;
-    top: -4.5mm !important;
-    left: -5mm !important;
-    background: #4f46e5 !important;
-    color: #fff !important;
-    font-weight: 700 !important;
-    font-size: 9.5pt !important;
-    width: 11mm !important;
-    height: 11mm !important;
-    clip-path: polygon(0 0, 100% 0, 0 100%) !important;
-    display: flex !important;
-    align-items: flex-start !important;
-    justify-content: center !important;
-    padding-top: 1mm !important;
-    z-index: 10 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
-  }
-}
 
 
 </style>
@@ -301,20 +212,25 @@ async function boot(){
   const grid=document.getElementById('grid');
   PRODUCTS.forEach((p)=>{
     const barcode=renderBarcode(p.jan);
-    grid.innerHTML+=`<div class='card'>
-      <div class='thumb'><img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'"></div>
-      <div class='body'>
-        <div class='title'>${p.name}</div>
-        <div class='barcode'>${barcode}</div>
-        <div class='price'>税抜：${p.price.toLocaleString()}円</div>
-        <div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div>
-        <div class='qty-print'><label>数量：</label><input type='text'></div>
+   grid.innerHTML+=`
+  <div class='card'>
+    <div class='thumb'><img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'"></div>
+    <div class='body'>
+      <div class='title'>${p.name}</div>
+      <div class='barcode'>${barcode}</div>
+      <div class='price'>税抜：${p.price.toLocaleString()}円</div>
+      <div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div>
+      <!-- ★ 印刷専用数量欄（印刷時のみ表示） -->
+      <div class='qty-print'>
+        <label>数量：</label><input type='text'>
       </div>
-      <div class='actions-card'>
-        <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' placeholder='数量'>
-        <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
-      </div>
-    </div>`;
+    </div>
+    <div class='actions-card'>
+      <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
+      <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+    </div>
+  </div>`;
+
   });
 }
 
