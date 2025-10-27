@@ -208,31 +208,37 @@ function updateCart(){
 function removeItem(i){cart.splice(i,1);updateCart();}
 
 async function boot(){
-  const PRODUCTS=await fetch('./products.json').then(r=>r.json());
-  const grid=document.getElementById('grid');
-  PRODUCTS.forEach((p)=>{
-    const barcode=renderBarcode(p.jan);
-   grid.innerHTML+=`
-  <div class='card'>
-    <div class='thumb'><img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'"></div>
-    <div class='body'>
-      <div class='title'>${p.name}</div>
-      <div class='barcode'>${barcode}</div>
-      <div class='price'>税抜：${p.price.toLocaleString()}円</div>
-      <div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div>
-      <!-- ★ 印刷専用数量欄（印刷時のみ表示） -->
-      <div class='qty-print'>
-        <label>数量：</label><input type='text'>
-      </div>
-    </div>
-    <div class='actions-card'>
-      <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-      <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
-    </div>
-  </div>`;
+  const PRODUCTS = await fetch('./products.json').then(r => r.json());
+  const grid = document.getElementById('grid');
+  PRODUCTS.forEach((p,i)=>{
+    const barcode = renderBarcode(p.jan);
+    grid.innerHTML += `
+      <div class='card'>
+        <div class='thumb'>
+          <img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'">
+        </div>
+        <div class='body'>
+          <div class='title'>${p.name}</div>
+          <div class='barcode'>${barcode}</div>
+          <div class='price'>税抜：${p.price.toLocaleString()}円</div>
+          <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
 
+          <!-- ✅ 印刷専用 数量欄 -->
+          <div class="qty-print">
+            <label>数量：</label>
+            <input type="text" placeholder="">
+          </div>
+        </div>
+
+        <!-- 通常画面用 数量・カート -->
+        <div class='actions-card'>
+          <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+        </div>
+      </div>`;
   });
 }
+
 
 function addToCart(p){
   const q=document.getElementById(`qty-${p.jan}`).value;
