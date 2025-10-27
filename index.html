@@ -60,155 +60,131 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 @page{size:A4 portrait;margin:10mm}
 
 @media print {
-  header,.actions,.cart,.actions-card,.controls{display:none!important}
-  body{background:#fff;counter-reset:item;}
-  main{display:block;margin:0;padding:0}
-  .grid{
-    grid-template-columns:repeat(2,1fr)!important;
-    gap:6mm;
-    width:calc(210mm - 20mm);
-    margin:35mm auto 0;
+  /* ==== 印刷レイアウト全体設定 ==== */
+  header, .actions, .cart, .actions-card, .controls { display: none !important; }
+  body { background: #fff; }
+  main { display: block; margin: 0; padding: 0; }
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm;
+    width: calc(210mm - 20mm);
+    margin: 35mm auto 0;
   }
 
-  .card{
-    display:flex;
-    flex-direction:row;
-    align-items:flex-start;
-    gap:3mm;
-    border:1px solid #ccc;
-    box-shadow:none;
-    padding:4mm;
-    page-break-inside:avoid;
-    position:relative;
+  /* ==== カード全体設定 ==== */
+  .card {
+    position: relative;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 4mm;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    padding: 4mm;
+    height: calc((297mm - 70mm) / 5);
+    page-break-inside: avoid;
+    background: #fff;
+    border-radius: 6px;
   }
 
-  /* ▲ 番号表示（左上の三角） */
-  .card::before{
-    counter-increment:item;
-    content:"A" counter(item);
-    position:absolute;
-    top:-4mm;
-    left:-5mm;
-    background:#4f46e5;
-    color:#fff;
-    font-weight:700;
-    font-size:10pt;
-    width:11mm;
-    height:11mm;
-    clip-path:polygon(0 0,100% 0,0 100%);
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-    padding-top:1mm;
-    z-index:10;
-    box-shadow:0 1px 3px rgba(0,0,0,0.4);
+  /* ==== カード番号（三角バッジ） ==== */
+  .card::before {
+    counter-increment: item;
+    content: "▲" counter(item);
+    position: absolute;
+    top: -3mm;
+    left: -3mm;
+    background: #1e40af;
+    color: #fff;
+    font-weight: 700;
+    font-size: 9pt;
+    padding: 1mm 2.5mm;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
 
-  .thumb{
-    flex:0 0 38mm;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:none;
+  /* ==== 画像（左側に配置） ==== */
+  .thumb {
+    flex: 0 0 45mm;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+  .thumb img {
+    max-height: 40mm;
+    max-width: 100%;
+    object-fit: contain;
   }
 
-  .thumb img{
-    max-height:32mm;
-    max-width:95%;
-    object-fit:contain;
+  /* ==== 商品情報（右側） ==== */
+  .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2mm;
+    padding-right: 6mm;
   }
 
-  .body{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    gap:1.5mm;
-    position:relative;
+  /* ==== 商品名（見切れ防止・折り返し） ==== */
+  .title {
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    font-weight: 700 !important;
   }
 
-  /* ✅ 商品名が見切れないように自動高さ調整 */
-  .title{
-    font-size:10.5pt;
-    font-weight:700;
-    line-height:1.3;
-    overflow-wrap:break-word;
-    white-space:normal;
-    word-break:break-all;
-    min-height:auto!important;
+  .barcode svg { height: 18px; width: 80px; }
+  .price { font-size: 10.5pt; }
+
+  /* ==== 発注数量欄（カード左下） ==== */
+  .qty-print {
+    position: absolute !important;
+    bottom: 4mm !important;
+    left: 6mm !important;
+    transform: none !important;
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    font-size: 10pt;
+    font-weight: 600;
   }
 
-  .barcode svg{
-    height:16px;
-    width:80px;
-    margin-top:2mm;
+  /* ==== ヘッダ・フッタ ==== */
+  .header-print {
+    position: fixed;
+    top: 5mm;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .header-print img { height: 14mm; width: auto; }
+  .header-print h2 {
+    font-size: 16pt;
+    font-weight: 800;
+    margin: 0;
   }
 
-  .price{
-    font-size:10pt;
-  }
-
-    /* ✅ 発注数量欄をカード左下に固定配置 */
-  .qty-print{
-    position:absolute;
-    bottom:3mm;
-    left:5mm;
-    display:flex;
-    align-items:center;
-    gap:2mm;
-    font-size:10pt;
-    font-weight:600;
-    transform:translateY(4mm); /* ← ★ これで画像やバーコード下に下げる */
-  }
-
-
-  .qty-print label{
-    font-weight:700;
-  }
-
-  .qty-print input{
-    width:25mm;
-    border:1px solid #777;
-    border-radius:2mm;
-    text-align:center;
-    height:6mm;
-    font-size:10pt;
-  }
-
-  .header-print{
-    position:fixed;
-    top:5mm;
-    left:0;
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-  }
-
-  .header-print img{
-    height:14mm;
-    width:auto;
-  }
-
-  .header-print h2{
-    font-size:16pt;
-    font-weight:800;
-    margin:0;
-  }
-
-  .footer-print{
-    position:fixed;
-    bottom:3mm;
-    left:0;
-    width:100%;
-    text-align:center;
-    font-size:11pt;
-    border-top:1px solid #ccc;
-    padding-top:3mm;
-    background:#fff;
+  .footer-print {
+    position: fixed;
+    bottom: 5mm;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 11pt;
+    border-top: 1px solid #ccc;
+    padding-top: 3mm;
+    background: #fff;
   }
 }
+
 
 
 </style>
@@ -304,7 +280,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
