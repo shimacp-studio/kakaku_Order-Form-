@@ -62,7 +62,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 @media print {
   /* ==== 全体設定 ==== */
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; } /* ← ここで連番リセット */
+  body { background: #fff; counter-reset: item; }
   main { display: block; margin: 0; padding: 0; }
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -71,7 +71,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 35mm auto 0;
   }
 
-  /* ==== カード ==== */
+  /* ==== カード設定 ==== */
   .card {
     position: relative;
     flex-direction: row;
@@ -87,26 +87,32 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     overflow: hidden;
   }
 
-  /* ==== 近未来スタイル番号タグ ==== */
+  /* ==== 番号タグ（近未来ラウンドメタル ver） ==== */
   .card::before {
     counter-increment: item;
     content: counter(item);
     position: absolute;
-    top: 1.5mm;
-    left: 1.5mm;
-    width: 9mm;
-    height: 9mm;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #334155 100%);
-    color: #00ffff;
+    top: 2mm;
+    left: 2mm;
+    width: 10mm;
+    height: 10mm;
+    background: radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 70%, #1e293b 100%);
+    border: 0.4mm solid rgba(255,255,255,0.9);
+    border-radius: 50%;
+    color: #ffffff;
     font-weight: 700;
+    font-family: "Segoe UI", "Roboto", sans-serif;
     font-size: 8.5pt;
-    border-radius: 2mm 4mm 2mm 0;
+    text-shadow:
+      0 0 3px rgba(173,216,230,0.9),
+      0 0 6px rgba(0,170,255,0.6);
+    box-shadow:
+      0 0 3px rgba(0,0,0,0.2),
+      0 2px 4px rgba(0,0,0,0.15),
+      inset 0 0 3px rgba(255,255,255,0.6);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 3px rgba(0,255,255,0.6), inset 0 0 2px rgba(255,255,255,0.2);
-    border: 0.3mm solid rgba(0,255,255,0.6);
-    text-shadow: 0 0 3px rgba(0,255,255,0.9);
     z-index: 10;
   }
 
@@ -197,6 +203,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     background: #fff;
   }
 }
+
 
 
 
@@ -294,7 +301,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
