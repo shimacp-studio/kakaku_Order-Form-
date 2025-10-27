@@ -40,7 +40,7 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
 
 @page{size:A4 portrait;margin:10mm}
 
-/* === 印刷モード（紙カタログ用） === */
+/* === 印刷専用 === */
 @media print {
   header,.actions,.cart,.actions-card,.controls{display:none!important}
   body{background:#fff}
@@ -61,7 +61,27 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     padding:4mm;
     height:auto;
     page-break-inside:avoid;
+    position:relative;
   }
+  /* 番号ボックス */
+  .card::before{
+    counter-increment:item;
+    content: counter(item);
+    position:absolute;
+    top:3mm;
+    left:3mm;
+    font-size:12pt;
+    font-weight:700;
+    border:1px solid #444;
+    border-radius:3mm;
+    width:6mm;
+    height:6mm;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  body{counter-reset:item;}
+
   .thumb{
     flex:0 0 45mm;
     height:auto;
@@ -81,6 +101,7 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     flex-direction:column;
     justify-content:flex-start;
     gap:2mm;
+    position:relative;
   }
   .title{
     font-size:11pt;
@@ -88,10 +109,26 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
     overflow:visible !important;
     white-space:normal !important;
     line-height:1.4;
-    display:block;
   }
   .barcode svg{height:18px;width:80px;}
   .price{font-size:10.5pt;}
+
+  /* 発注数量欄（右下に配置） */
+  .qty-print{
+    position:absolute;
+    bottom:3mm;
+    right:3mm;
+    font-size:10.5pt;
+  }
+  .qty-print input{
+    width:25mm;
+    border:1px solid #999;
+    border-radius:2mm;
+    text-align:center;
+    height:6mm;
+    font-size:10pt;
+  }
+
   .header-print{
     position:fixed;
     top:5mm;
@@ -106,7 +143,7 @@ main{display:grid;grid-template-columns:1fr 340px;gap:16px;max-width:1200px;marg
   .header-print h2{font-size:16pt;font-weight:800;margin:0;}
   .footer-print{
     position:fixed;
-    bottom:5mm;
+    bottom:3mm;
     left:0;
     width:100%;
     text-align:center;
@@ -173,42 +210,11 @@ async function boot(){
         <div class='barcode'>${barcode}</div>
         <div class='price'>税抜：${p.price.toLocaleString()}円</div>
         <div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div>
-      </div>
-      <div class='actions-card'>
-        <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-        <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+        <div class='qty-print'>数量：<input type='text'></div>
       </div>
     </div>`;
   });
 }
-function addToCart(p){const q=document.getElementById(`qty-${p.jan}`).value;if(!q||q<=0)return;const ex=cart.find(x=>x.jan===p.jan);if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}updateCart();document.getElementById(`qty-${p.jan}`).value='';}
-
-async function sendOrder(){
-  if(!cart.length)return alert('カートが空です');
-  const buyer=document.getElementById('buyerName').value.trim();
-  const partner=document.getElementById('partnerName').value.trim();
-  const site=document.getElementById('siteName').value.trim();
-  if(!buyer)return alert('発注者名を入力してください');
-  const payload={buyerName:buyer,partnerName:partner,siteName:site,items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
-  const btn=document.getElementById('orderBtn');
-  btn.disabled=true;btn.textContent='送信中…';
-  try{
-    await fetch(GAS_ENDPOINT,{
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
-    });
-    alert('✅ 発注を受け付けました\nありがとうございます。');
-    cart=[];updateCart();
-  }catch(e){
-    alert('送信に失敗しました：'+e.message+'\nGASが全員アクセス可になっているか確認してください。');
-  }finally{
-    btn.disabled=false;btn.textContent='この内容で発注';
-  }
-}
-
-document.getElementById('orderBtn').onclick=sendOrder;
 boot();
 </script>
 </body>
