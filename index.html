@@ -188,23 +188,30 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 0;
   }
 
-  /* ==== フッタ（発注者名・日付・備考） ==== */
+    /* ==== フッター固定（発注者名・日付・備考） ==== */
   .footer-print {
-    position: fixed;
-    bottom: 8mm;
+    position: fixed !important;
+    bottom: 6mm !important;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: 11pt;
     font-family: "Noto Sans JP", "Segoe UI", sans-serif;
     color: #0f172a;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #bbb;
     padding-top: 3mm;
     padding-bottom: 2mm;
     background: #fff;
-    z-index: 50;
-    box-shadow: 0 -1px 1px rgba(0,0,0,0.05);
+    z-index: 9999 !important;  /* ←これでカードより上にくる */
+    box-shadow: 0 -0.3mm 0.4mm rgba(0,0,0,0.08);
   }
+
+  /* 念のため main や grid に z-index 下げを指定 */
+  main, .grid, .card {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
 
   
 }
@@ -303,7 +310,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
