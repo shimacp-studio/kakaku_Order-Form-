@@ -60,9 +60,9 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 @page{size:A4 portrait;margin:10mm}
 
 @media print {
-  /* ==== 印刷レイアウト全体設定 ==== */
+  /* ==== 全体設定 ==== */
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; }
+  body { background: #fff; counter-reset: item; } /* ← ここで連番リセット */
   main { display: block; margin: 0; padding: 0; }
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -71,7 +71,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 35mm auto 0;
   }
 
-  /* ==== カード全体設定 ==== */
+  /* ==== カード ==== */
   .card {
     position: relative;
     flex-direction: row;
@@ -87,30 +87,32 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     overflow: hidden;
   }
 
-  /* ==== Google風カード番号（見切れ防止＋余白調整） ==== */
+  /* ==== 近未来スタイル番号タグ ==== */
   .card::before {
     counter-increment: item;
     content: counter(item);
     position: absolute;
-    top: 2mm;
-    left: 2mm;
-    width: 8mm;
-    height: 8mm;
-    background: #4285f4; /* Googleブルー */
-    color: #fff;
+    top: 1.5mm;
+    left: 1.5mm;
+    width: 9mm;
+    height: 9mm;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #334155 100%);
+    color: #00ffff;
     font-weight: 700;
-    font-size: 8pt;
-    border-radius: 50%;
+    font-size: 8.5pt;
+    border-radius: 2mm 4mm 2mm 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    box-shadow: 0 0 3px rgba(0,255,255,0.6), inset 0 0 2px rgba(255,255,255,0.2);
+    border: 0.3mm solid rgba(0,255,255,0.6);
+    text-shadow: 0 0 3px rgba(0,255,255,0.9);
     z-index: 10;
   }
 
-  /* ==== 画像サイズをさらに小さく（かぶり防止） ==== */
+  /* ==== 商品画像 ==== */
   .thumb {
-    flex: 0 0 34mm;  /* ← 38mm → 34mm に変更 */
+    flex: 0 0 33mm;
     height: auto;
     display: flex;
     align-items: center;
@@ -118,12 +120,12 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: none;
   }
   .thumb img {
-    max-height: 30mm; /* ← 34mm → 30mm に変更 */
+    max-height: 29mm;
     max-width: 100%;
     object-fit: contain;
   }
 
-  /* ==== 商品情報（右側） ==== */
+  /* ==== 商品情報 ==== */
   .body {
     flex: 1;
     display: flex;
@@ -133,11 +135,11 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     padding-right: 3mm;
   }
 
-  /* ==== 商品名（改良版：見切れ完全防止） ==== */
+  /* ==== 商品名 ==== */
   .title {
     font-size: 9.3pt !important;
     line-height: 1.4 !important;
-    max-height: 24mm !important; /* 商品名欄に高さ上限を確保 */
+    max-height: 24mm !important;
     overflow: hidden !important;
     white-space: normal !important;
     word-break: break-word !important;
@@ -147,7 +149,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .barcode svg { height: 16px; width: 70px; }
   .price { font-size: 9.3pt; }
 
-  /* ==== 発注数量欄（左下・幅さらに小さく） ==== */
+  /* ==== 発注数量欄 ==== */
   .qty-print {
     position: absolute !important;
     bottom: 3mm !important;
@@ -159,7 +161,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-weight: 600;
   }
   .qty-print input {
-    width: 22mm !important;  /* ← 25mm → 22mm に変更 */
+    width: 22mm !important;
     height: 6mm !important;
     border: 1px solid #ccc;
     border-radius: 3mm;
@@ -292,7 +294,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
         </div>
       </div>`;
   });
