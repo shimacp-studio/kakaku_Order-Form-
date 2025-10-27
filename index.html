@@ -299,6 +299,40 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 </div>
 
 <script>
+// === TOP画面 → 発注画面 切り替え制御 ===
+document.getElementById("startBtn").addEventListener("click", () => {
+  const buyer = document.getElementById("buyerName").value.trim();
+  const partner = document.getElementById("partnerName").value.trim();
+  const site = document.getElementById("siteName").value.trim();
+
+  if (!buyer) {
+    alert("発注者名を入力してください");
+    return;
+  }
+
+  // 入力内容を表示用に反映
+  document.getElementById("buyerNameDisplay").value = "発注者名：" + buyer;
+  document.getElementById("partnerNameDisplay").value = partner ? "パートナー企業：" + partner : "";
+  document.getElementById("siteNameDisplay").value = site ? "現場名：" + site : "";
+
+  // 画面切り替え
+  document.getElementById("top-section").classList.add("hidden");
+  document.getElementById("order-section").classList.remove("hidden");
+
+  // 発注画面をロード（商品一覧読み込みなど）
+  boot();
+});
+
+// === リセットボタン ===
+document.getElementById("resetBtn").addEventListener("click", () => {
+  document.getElementById("buyerName").value = "";
+  document.getElementById("partnerName").value = "";
+  document.getElementById("siteName").value = "";
+});
+</script>
+
+  
+<script>
 const GAS_ENDPOINT="https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
 
 let cart=[];
@@ -351,7 +385,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
       </div>`;
   });
