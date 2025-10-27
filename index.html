@@ -123,7 +123,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: none;
   }
   .thumb img {
-    max-height: 29mm;
+    max-height: 28mm;
     max-width: 100%;
     object-fit: contain;
   }
@@ -142,7 +142,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .title {
     font-size: 9.3pt !important;
     line-height: 1.4 !important;
-    max-height: 24mm !important;
+    max-height: 22mm !important;
     overflow: hidden !important;
     white-space: normal !important;
     word-break: break-word !important;
@@ -169,6 +169,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 1px solid #ccc;
     border-radius: 3mm;
   }
+
   /* ==== ヘッダ ==== */
   .header-print {
     position: fixed;
@@ -180,6 +181,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     justify-content: center;
     gap: 8px;
     background: #fff;
+    z-index: 9999;
   }
   .header-print img { height: 14mm; width: auto; }
   .header-print h2 {
@@ -188,10 +190,10 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 0;
   }
 
-    /* ==== フッター固定（発注者名・日付・備考） ==== */
+  /* ==== フッター ==== */
   .footer-print {
     position: fixed !important;
-    bottom: 6mm !important;
+    bottom: 12mm !important; /* ← 下余白を確保 */
     left: 0;
     width: 100%;
     text-align: center;
@@ -202,16 +204,16 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     padding-top: 3mm;
     padding-bottom: 2mm;
     background: #fff;
-    z-index: 9999 !important;  /* ←これでカードより上にくる */
+    z-index: 10000 !important;
     box-shadow: 0 -0.3mm 0.4mm rgba(0,0,0,0.08);
   }
 
-  /* 念のため main や grid に z-index 下げを指定 */
+  /* ==== 他要素より上に出す ==== */
   main, .grid, .card {
     position: relative !important;
     z-index: 1 !important;
   }
-
+}
 
   
 }
@@ -310,7 +312,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
         </div>
       </div>`;
   });
