@@ -69,6 +69,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     width:calc(210mm - 20mm);
     margin:35mm auto 0;
   }
+
   .card{
     display:flex;
     flex-direction:row;
@@ -81,17 +82,17 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     position:relative;
   }
 
-  /* ★ 番号（三角形＋A1形式） */
+  /* ▲ 番号表示（左上の三角） */
   .card::before{
     counter-increment:item;
     content:"A" counter(item);
     position:absolute;
-    top:-4.5mm;
+    top:-4mm;
     left:-5mm;
     background:#4f46e5;
     color:#fff;
     font-weight:700;
-    font-size:9.5pt;
+    font-size:10pt;
     width:11mm;
     height:11mm;
     clip-path:polygon(0 0,100% 0,0 100%);
@@ -103,15 +104,51 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     box-shadow:0 1px 3px rgba(0,0,0,0.4);
   }
 
-  .thumb{flex:0 0 38mm;display:flex;align-items:center;justify-content:center;border:none;}
-  .thumb img{max-height:32mm;max-width:95%;object-fit:contain;}
+  .thumb{
+    flex:0 0 38mm;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+  }
 
-  .body{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:2mm;position:relative;}
-  .title{font-size:10.5pt;font-weight:700;line-height:1.4;white-space:normal;}
-  .barcode svg{height:16px;width:80px;margin-top:2mm;}
-  .price{font-size:10pt;}
+  .thumb img{
+    max-height:32mm;
+    max-width:95%;
+    object-fit:contain;
+  }
 
-  /* ★ 発注数量欄 左下 */
+  .body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:1.5mm;
+    position:relative;
+  }
+
+  /* ✅ 商品名が見切れないように自動高さ調整 */
+  .title{
+    font-size:10.5pt;
+    font-weight:700;
+    line-height:1.3;
+    overflow-wrap:break-word;
+    white-space:normal;
+    word-break:break-all;
+    min-height:auto!important;
+  }
+
+  .barcode svg{
+    height:16px;
+    width:80px;
+    margin-top:2mm;
+  }
+
+  .price{
+    font-size:10pt;
+  }
+
+  /* ✅ 発注数量欄 左下配置 */
   .qty-print{
     position:absolute;
     bottom:3mm;
@@ -122,7 +159,11 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-size:10pt;
     font-weight:600;
   }
-  .qty-print label{font-weight:700;}
+
+  .qty-print label{
+    font-weight:700;
+  }
+
   .qty-print input{
     width:25mm;
     border:1px solid #777;
@@ -132,12 +173,40 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-size:10pt;
   }
 
-  .header-print{position:fixed;top:5mm;left:0;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;}
-  .header-print img{height:14mm;width:auto;}
-  .header-print h2{font-size:16pt;font-weight:800;margin:0;}
-  .footer-print{position:fixed;bottom:3mm;left:0;width:100%;text-align:center;font-size:11pt;border-top:1px solid #ccc;padding-top:3mm;background:#fff;}
-}
+  .header-print{
+    position:fixed;
+    top:5mm;
+    left:0;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
 
+  .header-print img{
+    height:14mm;
+    width:auto;
+  }
+
+  .header-print h2{
+    font-size:16pt;
+    font-weight:800;
+    margin:0;
+  }
+
+  .footer-print{
+    position:fixed;
+    bottom:3mm;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:11pt;
+    border-top:1px solid #ccc;
+    padding-top:3mm;
+    background:#fff;
+  }
+}
 
 
 </style>
