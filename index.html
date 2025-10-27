@@ -59,7 +59,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 @page {
   size: A4 portrait;
-  margin: 15mm 10mm 35mm 10mm; /* ← 下余白をさらに広げて 35mm に */
+  margin: 15mm 10mm 32mm 10mm; /* 下余白を 32mm にして印刷領域ギリギリを狙う */
 }
 
 @media print {
@@ -82,33 +82,30 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 1px solid #d9e1f2;
     box-shadow: none;
     padding: 3.5mm;
-    height: calc((297mm - 95mm) / 5); /* ← 少し下げて余裕をもたせる */
+    height: calc((297mm - 92mm) / 5);
     page-break-inside: avoid;
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
   }
 
-  /* ==== 番号タグ（右下配置・近未来スタイル） ==== */
+  /* ==== 番号タグ（右下配置・小型化） ==== */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
     position: absolute;
     bottom: 1.5mm;
     right: 2mm;
-    padding: 2mm 4mm;
+    padding: 1.6mm 3mm;
     font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
-    font-weight: 800;
-    font-size: 8.5pt;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 7.6pt; /* ← 少し小さく */
+    letter-spacing: 0.3px;
     color: #fff;
-    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 40%, #1e3a8a 100%);
-    border-radius: 20px;
-    box-shadow:
-      0 0 3px rgba(14,165,233,0.8),
-      inset 0 0 2px rgba(255,255,255,0.4);
-    text-shadow: 0 0 3px rgba(255,255,255,0.4);
-    transform: translateY(1mm);
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
+    border-radius: 14px;
+    box-shadow: 0 0 3px rgba(14,165,233,0.8), inset 0 0 2px rgba(255,255,255,0.3);
+    text-shadow: 0 0 2px rgba(255,255,255,0.4);
   }
 
   /* ==== 商品画像 ==== */
@@ -185,7 +182,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   /* ==== フッター ==== */
   .footer-print {
     position: absolute !important;
-    bottom: -5mm !important; /* ← さらに下へ押し下げ */
+    bottom: -2mm !important; /* ← この位置調整で赤枠あたりにくる */
     left: 0;
     width: 100%;
     text-align: center;
@@ -198,6 +195,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     box-shadow: 0 -0.3mm 0.4mm rgba(0,0,0,0.08);
   }
 }
+
 
 
 
@@ -303,7 +301,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
         </div>
       </div>`;
   });
