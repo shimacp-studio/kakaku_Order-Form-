@@ -182,6 +182,51 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     background:#fff;
   }
 }
+@media print {
+  .qty-print {
+    position: absolute !important;
+    bottom: 3mm !important;
+    left: 5mm !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 2mm !important;
+    font-size: 10pt !important;
+    font-weight: 600 !important;
+    justify-content: flex-start !important;
+  }
+  .qty-print label {
+    font-weight: 700 !important;
+  }
+  .qty-print input {
+    width: 25mm !important;
+    border: 1px solid #777 !important;
+    border-radius: 2mm !important;
+    text-align: center !important;
+    height: 6mm !important;
+    font-size: 10pt !important;
+  }
+
+  .card::before {
+    counter-increment: item !important;
+    content: "A" counter(item) !important;
+    position: absolute !important;
+    top: -4.5mm !important;
+    left: -5mm !important;
+    background: #4f46e5 !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    font-size: 9.5pt !important;
+    width: 11mm !important;
+    height: 11mm !important;
+    clip-path: polygon(0 0, 100% 0, 0 100%) !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding-top: 1mm !important;
+    z-index: 10 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  }
+}
 
 
 </style>
