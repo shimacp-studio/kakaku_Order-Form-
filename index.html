@@ -169,8 +169,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 1px solid #ccc;
     border-radius: 3mm;
   }
-
-  /* ==== ヘッダ・フッタ ==== */
+  /* ==== ヘッダ ==== */
   .header-print {
     position: fixed;
     top: 5mm;
@@ -180,6 +179,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     align-items: center;
     justify-content: center;
     gap: 8px;
+    background: #fff;
   }
   .header-print img { height: 14mm; width: auto; }
   .header-print h2 {
@@ -188,17 +188,25 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 0;
   }
 
+  /* ==== フッタ（発注者名・日付・備考） ==== */
   .footer-print {
     position: fixed;
-    bottom: 5mm;
+    bottom: 8mm;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: 11pt;
+    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+    color: #0f172a;
     border-top: 1px solid #ccc;
     padding-top: 3mm;
+    padding-bottom: 2mm;
     background: #fff;
+    z-index: 50;
+    box-shadow: 0 -1px 1px rgba(0,0,0,0.05);
   }
+
+  
 }
 
 
