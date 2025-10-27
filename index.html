@@ -63,11 +63,15 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   margin: 15mm 10mm 20mm 10mm;
 }
 
+@page {
+  size: A4 portrait;
+  margin: 15mm 10mm 30mm 10mm; /* ← 下に30mm確保 */
+}
+
 @media print {
-  /* ==== 全体設定 ==== */
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; }
-  main { display: block; margin: 0; padding: 0; }
+  body { background: #fff; counter-reset: item; position: relative !important; }
+  main { display: block; margin: 0; padding: 0; position: relative !important; min-height: 240mm !important; }
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6mm;
@@ -84,14 +88,14 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 1px solid #d9e1f2;
     box-shadow: none;
     padding: 3.5mm;
-    height: calc((297mm - 90mm) / 5); /* ← 下余白分を考慮 */
+    height: calc((297mm - 90mm) / 5);
     page-break-inside: avoid;
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
   }
 
-  /* ==== 番号タグ ==== */
+  /* ==== 番号 ==== */
   .card::before {
     counter-increment: item;
     content: counter(item);
@@ -101,22 +105,19 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     width: 9mm;
     height: 9mm;
     border-radius: 50%;
-    background: linear-gradient(145deg, #f8fafc 0%, #cbd5e1 40%, #94a3b8 100%);
+    background: linear-gradient(145deg,#f8fafc 0%,#cbd5e1 40%,#94a3b8 100%);
     border: 0.3mm solid #94a3b8;
     color: #0f172a;
     font-weight: 700;
-    font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+    font-family: "Segoe UI","Noto Sans JP",sans-serif;
     font-size: 9pt;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 1px 3px rgba(0,0,0,0.2);
-    text-shadow: 0 0 2px rgba(255,255,255,0.5);
-    z-index: 5;
   }
 
   /* ==== 商品画像 ==== */
-  .thumb { flex: 0 0 33mm; height: auto; display: flex; align-items: center; justify-content: center; border: none; }
+  .thumb { flex: 0 0 33mm; display: flex; align-items: center; justify-content: center; }
   .thumb img { max-height: 28mm; max-width: 100%; object-fit: contain; }
 
   /* ==== 商品情報 ==== */
@@ -126,10 +127,8 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     flex-direction: column;
     justify-content: flex-start;
     gap: 2mm;
-    padding-right: 3mm;
   }
 
-  /* ==== 商品名 ==== */
   .title {
     font-size: 9.3pt !important;
     line-height: 1.4 !important;
@@ -143,7 +142,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .barcode svg { height: 16px; width: 70px; }
   .price { font-size: 9.3pt; }
 
-  /* ==== 数量欄 ==== */
+  /* ==== 発注数量欄 ==== */
   .qty-print {
     position: absolute !important;
     bottom: 3mm !important;
@@ -172,28 +171,28 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     justify-content: center;
     gap: 8px;
     background: #fff;
-    z-index: 9999;
   }
   .header-print img { height: 14mm; width: auto; }
   .header-print h2 { font-size: 16pt; font-weight: 800; margin: 0; }
 
   /* ==== フッター（確実表示版） ==== */
   .footer-print {
-    position: fixed !important;
+    position: absolute !important;
     bottom: 0 !important;
     left: 0;
     width: 100%;
-    height: 12mm;
     text-align: center;
     font-size: 11pt;
-    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+    font-family: "Noto Sans JP","Segoe UI",sans-serif;
     color: #0f172a;
     border-top: 1px solid #bbb;
     padding-top: 3mm;
+    padding-bottom: 2mm;
     background: #fff;
-    z-index: 10000 !important;
     box-shadow: 0 -0.3mm 0.4mm rgba(0,0,0,0.08);
   }
+}
+
 
   /* ==== 他要素を奥に ==== */
   main, .grid, .card { position: relative !important; z-index: 1 !important; }
@@ -297,7 +296,7 @@ async function boot(){
         <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートへ追加</button>
         </div>
       </div>`;
   });
