@@ -63,19 +63,20 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 }
 
 @media print {
+  /* ==== 全体設定 ==== */
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; }
+  body { background: #fff; counter-reset: item; margin: 0; padding: 0; }
   main { display: block; margin: 0; padding: 0; }
 
-  /* === グリッド設定（A4縦100%用）=== */
+  /* ==== グリッド（現状サイズ維持・上下微調整） ==== */
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 5.5mm; /* ← 少しだけ詰めた */
+    gap: 6mm;
     width: calc(210mm - 20mm);
-    margin: 30mm auto 0; /* ← 上を5mm詰め */
+    margin: 35mm auto 0; /* ← タイトル位置に余白確保 */
   }
 
-  /* === カード設定 === */
+  /* ==== カード設定（前回サイズ維持） ==== */
   .card {
     position: relative;
     flex-direction: row;
@@ -83,15 +84,15 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     gap: 4mm;
     border: 1px solid #d9e1f2;
     box-shadow: none;
-    padding: 3mm;
-    height: calc((297mm - 65mm) / 5); /* ← 高さを少し小さく */
+    padding: 3.5mm;
+    height: calc((297mm - 70mm) / 5); /* ← 元の高さ維持 */
     page-break-inside: avoid;
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
   }
 
-  /* === 番号タグ（小さく＆メタル風）=== */
+  /* ==== 番号タグ（現状デザイン維持） ==== */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
@@ -104,20 +105,41 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border: 0.3mm solid #94a3b8;
     color: #0f172a;
     font-weight: 700;
-    font-size: 8pt; /* ← 少し小さく */
+    font-size: 8.5pt;
     font-family: "Segoe UI", "Noto Sans JP", sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.8),
-                0 1px 3px rgba(0,0,0,0.2);
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      0 1px 3px rgba(0,0,0,0.2);
     z-index: 5;
   }
 
-  /* === フッター === */
+  /* ==== ヘッダ（ロゴ+タイトルを確実に表示） ==== */
+  .header-print {
+    position: fixed;
+    top: 8mm !important; /* ← 印刷領域に確実に入る高さに */
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #fff;
+    z-index: 9999 !important;
+  }
+  .header-print img { height: 14mm; width: auto; }
+  .header-print h2 {
+    font-size: 16pt;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* ==== フッター（空白除去・下ギリギリに） ==== */
   .footer-print {
     position: fixed !important;
-    bottom: 5mm !important; /* ← 余白を大幅に詰めた */
+    bottom: 0mm !important; /* ← 下ギリギリに配置 */
     left: 0;
     width: 100%;
     text-align: center;
@@ -126,16 +148,19 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     color: #0f172a;
     border-top: 1px solid #bbb;
     padding-top: 2mm;
+    padding-bottom: 1.5mm;
     background: #fff;
     z-index: 10000 !important;
     box-shadow: 0 -0.2mm 0.3mm rgba(0,0,0,0.08);
   }
 
+  /* ==== 他要素より上に出す ==== */
   main, .grid, .card {
     position: relative !important;
     z-index: 1 !important;
   }
 }
+
 
 
 </style>
