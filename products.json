@@ -1,66 +1,82 @@
 [
   {
-    "jan": "4996112297666",
+    "jan": 4996112297666,
     "name": "(台)ﾌﾟﾗｽﾁｯｸｽｹﾙﾄﾝｶﾞﾝ",
     "price": 380,
     "pack": 1,
-    "brand": "",
-    "category": "コーキング用品"
+    "category": "コーキング用品",
+    "brand": ""
   },
   {
-    "jan": "4963041150041",
-    "name": "［Z］ｾﾞｯﾄｿｰ265 替刃",
+    "jan": 4963041150041,
+    "name": "<Z>ｾﾞｯﾄｿｰ265 替刃",
     "price": 450,
     "pack": 1,
-    "brand": "",
-    "category": "のこぎり類"
+    "category": "のこぎり類",
+    "brand": ""
   },
   {
-    "jan": "4548623578736",
+    "jan": 4548623578736,
     "name": "3Mﾏｽｷﾝｸﾞﾃｰﾌﾟ 18mm×18m No.2479H※",
     "price": 600,
-    "pack": 1,
-    "brand": "3M",
-    "category": "マスキングテープ"
+    "pack": "※10",
+    "category": "マスキングテープ",
+    "brand": ""
   },
   {
-    "jan": "4962485398439",
+    "jan": 4962485398439,
     "name": "ANEX 黒龍靭ﾋﾞｯﾄ段付2P/#2×100",
     "price": 510,
     "pack": 1,
-    "brand": "ANEX",
-    "category": "プラスビット"
+    "category": "プラスビット",
+    "brand": ""
   },
   {
-    "jan": "4962485399931",
+    "jan": 4962485399931,
     "name": "ANEX 黒龍靭ｽﾘﾑ5P/#2×110 ABRS5-2110",
     "price": 1150,
     "pack": 1,
-    "brand": "ANEX",
-    "category": "プラスビット"
+    "category": "プラスビット",
+    "brand": ""
   },
   {
-    "jan": "4986362551656",
-    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ",
+    "jan": 4986362551656,
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ ",
     "price": 2550,
     "pack": 1,
-    "brand": "BM",
-    "category": "ホールソー"
+    "category": "ホールソー",
+    "brand": ""
   },
   {
-    "jan": "4986362542548",
+    "jan": 4986362542548,
     "name": "BM 職人技銀次郎ﾁｯﾌﾟｿｰ 125×40P",
     "price": 880,
     "pack": 1,
-    "brand": "BM",
-    "category": "木工チップソー"
+    "category": "木工チップソー",
+    "brand": ""
   },
   {
-    "jan": "4986362550956",
-    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ",
+    "jan": 4986362550956,
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ ",
     "price": 2150,
     "pack": 1,
-    "brand": "BM",
-    "category": "ホールソー"
+    "category": "ホールソー",
+    "brand": ""
+  },
+  {
+    "jan": 4530545100706,
+    "name": "INOUE Yﾍﾗ15mm",
+    "price": 170,
+    "pack": 1,
+    "category": "ヘラ",
+    "brand": ""
+  },
+  {
+    "jan": 4957787999019,
+    "name": "isｺｰｷﾝｸﾞﾍﾗ 4本組",
+    "price": 360,
+    "pack": 1,
+    "category": "ヘラ",
+    "brand": ""
   }
 ]
