@@ -276,45 +276,35 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   </div>
 </section>
 
-<<header class="order-header">
-  <div class="wrap">
-    <div class="brand">
-      <img src="img/shima_owl.jpg" alt="logo">
-      <h1>シマコーポレーション 発注カタログ</h1>
+<!-- === 発注画面 === -->
+<main id="order-section" class="hidden">
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <img src="img/shima_owl.jpg" alt="logo">
+        <h1>シマコーポレーション 発注カタログ</h1>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+      </div>
     </div>
-    <div class="actions">
-      <button class="btn print-btn" onclick="window.print()">🖨 印刷（A4縦）</button>
-      <button class="btn order-btn" id="orderBtnTop">📩 発注（メール送信）</button>
-    </div>
-  </div>
-</header>
+  </header>
 
-<div class="controls">
-  <div class="info-group">
-    <span class="label">発注者名：</span><input id="buyerNameDisplay" class="input readonly" readonly>
+  <div class="controls">
+    <input id="buyerNameDisplay" class="input" readonly>
+    <input id="partnerNameDisplay" class="input" readonly>
+    <input id="siteNameDisplay" class="input" readonly>
   </div>
-  <div class="info-group">
-    <span class="label">パートナー企業：</span><input id="partnerNameDisplay" class="input readonly" readonly>
-  </div>
-  <div class="info-group">
-    <span class="label">現場名：</span><input id="siteNameDisplay" class="input readonly" readonly>
-  </div>
-</div>
 
-<section>
-  <div id="grid" class="grid"></div>
-</section>
+  <section><div id="grid" class="grid"></div></section>
 
-<aside class="cart">
-  <h2>🛒 カート内容</h2>
-  <div id="cartlist" class="cartlist"></div>
-  <div class="cart-summary">
-    <p><strong>小計：</strong><span id="subtotal">0円</span></p>
-    <p><strong>税込：</strong><span id="total">0円</span></p>
-  </div>
-  <button id="orderBtnBottom" class="btn order-btn">📩 発注（メール送信）</button>
-</aside>
-
+  <aside class="cart">
+    <h2>カート</h2>
+    <div id="cartlist" class="cartlist"></div>
+    <div><strong>小計：</strong><span id="subtotal">0円</span><br>
+      <strong>税込：</strong><span id="total">0円</span></div>
+    <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
+  </aside>
 </main>
 
   <!-- ✅ ここに追加します -->
