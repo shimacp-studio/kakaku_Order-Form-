@@ -60,6 +60,12 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
 gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 /* ====== 印刷設定 ====== */
+
+/* ==== フッターを通常時は非表示に ==== */
+.footer-print {
+  display: none;
+}
+
 @page {
   size: A4 portrait;
   margin: 8mm 8mm 18mm 8mm; /* ← 下余白を広げて印刷エリアを確実に確保 */
@@ -92,7 +98,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     overflow: hidden;
   }
 
-  /* ==== 番号タグ（小型・近未来風） ==== */
+  /* ==== 番号タグ ==== */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
@@ -103,18 +109,14 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
     font-weight: 700;
     font-size: 7.3pt;
-    letter-spacing: 0.4px;
     color: #fff;
     background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
     border-radius: 12px;
-    box-shadow: 0 0 3px rgba(14,165,233,0.8), inset 0 0 2px rgba(255,255,255,0.3);
-    text-shadow: 0 0 2px rgba(255,255,255,0.4);
   }
 
   /* ==== 商品画像 ==== */
   .thumb {
     flex: 0 0 33mm;
-    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,19 +133,15 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     gap: 2mm;
     padding-right: 3mm;
   }
 
   .title {
     font-size: 9.3pt !important;
+    font-weight: 700 !important;
     line-height: 1.4 !important;
     max-height: 22mm !important;
-    overflow: hidden !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-    font-weight: 700 !important;
   }
 
   .barcode svg { height: 20px; width: 70px; }
@@ -167,25 +165,11 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border-radius: 3mm;
   }
 
-  /* ==== ヘッダ ==== */
-  .header-print {
-    position: fixed;
-    top: 5mm;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #fff;
-  }
-  .header-print img { height: 14mm; width: auto; }
-  .header-print h2 { font-size: 16pt; font-weight: 800; margin: 0; }
-
-  /* ==== フッター（下端固定） ==== */
+  /* ==== フッター ==== */
   .footer-print {
+    display: block !important;
     position: fixed !important;
-    bottom: 0mm !important; /* ← スクショ赤枠の高さに一致させる */
+    bottom: 0mm !important;
     left: 0;
     width: 100%;
     text-align: center;
@@ -197,6 +181,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     z-index: 9999;
   }
 }
+
 
 
   /* ==== 他要素より上に出す ==== */
