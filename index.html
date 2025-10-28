@@ -231,28 +231,43 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
       <input id="partnerName" class="input" placeholder="パートナー企業（任意）">
       <input id="siteName" class="input" placeholder="現場名（任意）">
 
-      <!-- ✅ ボタン配置を中央揃えで美しく修正 -->
+      <!-- ✅ ボタンレイアウト -->
       <div style="
         display:flex;
         justify-content:center;
-        align-items:center;
+        align-items:flex-start;
         gap:12px;
-        flex-wrap:wrap;
         margin-top:20px;">
-        <button id="startBtn" class="btn" style="background:#2563eb; border:1px solid #1e40af;">発注カタログへ進む</button>
-        <button id="resetBtn" class="btn" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">入力リセット</button>
-        <button id="clearHistoryBtn" class="btn" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca;">履歴リセット</button>
+        
+        <!-- 左：発注ボタン -->
+        <button id="startBtn" class="btn"
+          style="background:#2563eb; border:1px solid #1e40af; height:42px;">
+          発注カタログへ進む
+        </button>
+
+        <!-- 右：上下2段のリセットボタン -->
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button id="resetBtn" class="btn"
+            style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; height:42px;">
+            入力リセット
+          </button>
+          <button id="clearHistoryBtn" class="btn"
+            style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; height:38px;">
+            履歴リセット
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 
 
     </div>
