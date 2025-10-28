@@ -236,10 +236,12 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
       <input id="partnerName" class="input" placeholder="パートナー企業（任意）">
       <input id="siteName" class="input" placeholder="現場名（任意）">
-      <div style="display:flex; justify-content:space-between; margin-top:18px;">
-        <button id="startBtn" class="btn" style="background:#2563eb; border:1px solid #1e40af;">発注カタログへ進む</button>
-        <button id="resetBtn" class="btn" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">リセット</button>
-      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:18px; flex-wrap:wrap; gap:8px;">
+  <button id="startBtn" class="btn" style="background:#2563eb; border:1px solid #1e40af;">発注カタログへ進む</button>
+  <button id="resetBtn" class="btn" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">入力リセット</button>
+  <button id="clearHistoryBtn" class="btn" style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca;">履歴リセット</button>
+</div>
+
     </div>
   </div>
 </section>
@@ -393,7 +395,23 @@ window.addEventListener("DOMContentLoaded", () => {
   setupAutocomplete("buyerName", "history_buyerName");
   setupAutocomplete("partnerName", "history_partnerName");
   setupAutocomplete("siteName", "history_siteName");
+
+  // 🔹 入力リセット（既存ボタン）
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    document.getElementById("buyerName").value = "";
+    document.getElementById("partnerName").value = "";
+    document.getElementById("siteName").value = "";
+  });
+
+  // 🔹 履歴リセット（新ボタン）
+  document.getElementById("clearHistoryBtn").addEventListener("click", () => {
+    localStorage.removeItem("history_buyerName");
+    localStorage.removeItem("history_partnerName");
+    localStorage.removeItem("history_siteName");
+    alert("✅ 入力履歴をすべて削除しました。");
+  });
 });
+
   
 </script>
 </body>
