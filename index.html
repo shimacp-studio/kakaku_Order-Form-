@@ -185,7 +185,7 @@ border-radius:8px;padding:8px 10px;font-size:14px;}
 /* === 商品3列レイアウト固定（美しいカード間隔） === */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)) !important;
+  grid-template-columns: repeat(3, 1fr); /* ← 修正ポイント */
   gap: 24px;
   margin: 24px auto;
   max-width: 1280px;
@@ -480,6 +480,20 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   }
 }
 
+@media print {
+  .body {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 25mm !important;
+  }
+  .card, .thumb, .title, .price, .barcode {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+  
 /* ==== 常に最前面に出す要素 ==== */
 main, .grid, .card {
   position: relative !important;
@@ -499,7 +513,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
