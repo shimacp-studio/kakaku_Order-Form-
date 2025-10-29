@@ -32,23 +32,131 @@ border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13p
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
 .input{background:#fff;border:1px solid var(--line);
 border-radius:8px;padding:8px 10px;font-size:14px;}
-/* === 検索バー === */
+
+  /* === 検索バー === */
 .controls-search {
   max-width: 1200px;
-  margin: 10px auto 0;
-  display: grid;
-  gap: 8px;
+  margin: 12px auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 16px;
-  grid-template-columns: 2fr 1fr;
+}
+.controls-search .input {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 15px;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.controls-search .input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #93c5fd;
+  border-color: #2563eb;
+}
+#searchInput {
+  flex: 1;
+}
+#categorySelect {
+  width: 260px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
 }
 
-/* === 商品3列レイアウト固定 === */
+/* === 商品3列レイアウト固定（美しいカード間隔） === */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 20px;
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)) !important;
+  gap: 24px;
+  margin: 24px auto;
+  max-width: 1200px;
+  padding: 0 16px;
 }
+
+/* === 商品カード（Amazon＋Apple風） === */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(37,99,235,0.15);
+}
+.thumb {
+  background: linear-gradient(180deg, #f9fafb, #f3f4f6);
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumb img {
+  max-width: 90%;
+  max-height: 180px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+.card:hover .thumb img {
+  transform: scale(1.07);
+}
+.body {
+  padding: 14px 16px 18px;
+  display: grid;
+  gap: 8px;
+}
+.title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1e293b;
+  line-height: 1.4;
+  min-height: 42px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #2563eb;
+}
+.actions-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px 14px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+.qtyinput {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 6px;
+  width: 70px;
+  font-size: 14px;
+}
+.actions-card .btn {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(37,99,235,0.2);
+  transition: all 0.2s ease;
+}
+.actions-card .btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+  transform: translateY(-2px);
+}
+
 
 main{display:grid;grid-template-columns:1fr 340px;gap:16px;
 max-width:1200px;margin:14px auto;padding:0 16px}
@@ -408,7 +516,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
