@@ -635,7 +635,7 @@ main, .grid, .card {
 <main id="order-section" class="hidden">
  <header>
   <div class="wrap">
-    <!-- 左側ロゴとタイトル -->
+    <!-- 🔹 左側ロゴ・タイトル・発注者名 -->
     <div class="brand">
       <img src="img/shima_owl.jpg" alt="logo">
       <div class="title-group">
@@ -644,22 +644,23 @@ main, .grid, .card {
       </div>
     </div>
 
-    <!-- 右側：検索バー・印刷ボタン・カート -->
+    <!-- 🔹 右側：検索・カテゴリ・印刷・カート -->
     <div class="search-actions">
       <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
-      <select id="categorySelect" class="input"></select>
+      <select id="categorySelect" class="input">
+        <option value="">すべてのカテゴリ</option>
+      </select>
 
       <button class="btn" onclick="window.print()">印刷（A4縦）</button>
 
-      <!-- ✅ カートアイコン -->
-      <div id="cartIcon" class="cart-icon">
+      <!-- 🛒 カートアイコン -->
+      <div id="cartIcon" class="cart-icon" title="カートを見る">
         <img src="img/KART.png" alt="カート">
         <span id="cartBadge" class="cart-badge"></span>
       </div>
     </div>
   </div>
 </header>
-
 
 
   <div class="controls">
