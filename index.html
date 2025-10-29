@@ -480,36 +480,51 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   }
 }
 
-/* === 印刷時の .body 非表示バグ修正 === */
+/* === 印刷ページを2列×5段・10アイテム固定 === */
 @media print {
-  .card {
+  .grid {
     display: grid !important;
-    grid-template-columns: 35mm 1fr !important; /* 左に画像・右に情報 */
-    align-items: center !important;
-    height: auto !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm !important;
+    width: calc(210mm - 20mm);
+    margin: 30mm auto 0;
+    page-break-after: always;
+  }
+
+  .card {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 35mm 1fr !important; /* 左画像・右情報 */
+    align-items: start !important;
+    gap: 4mm !important;
     border: 1px solid #d9e1f2 !important;
     background: #fff !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    padding: 3mm !important;
+    height: calc((297mm - 95mm) / 5) !important; /* ←5段分に分割 */
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
   }
 
   .thumb {
+    flex: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border: none !important;
     background: #fff !important;
+    border: none !important;
   }
 
   .thumb img {
-    max-height: 27mm !important;
     max-width: 100% !important;
+    max-height: 27mm !important;
     object-fit: contain !important;
   }
 
   .body {
     display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    padding: 2mm 3mm 1mm 3mm !important;
+    padding-right: 3mm !important;
     font-size: 9pt !important;
     line-height: 1.4 !important;
   }
@@ -517,8 +532,8 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   .body .title {
     font-size: 9.2pt !important;
     font-weight: 700 !important;
-    margin-bottom: 2mm !important;
     color: #000 !important;
+    margin-bottom: 2mm !important;
   }
 
   .body .price {
@@ -532,7 +547,13 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     height: 18px !important;
     width: 70px !important;
   }
+
+  /* ページ分割を美しく処理 */
+  .card:nth-child(10n) {
+    page-break-after: always !important;
+  }
 }
+
 
 
   
@@ -555,7 +576,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
