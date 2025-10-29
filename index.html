@@ -303,7 +303,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 /* ====== 印刷設定 ====== */
 
-  /* ==== 印刷専用ヘッダーを通常時は非表示 ==== */
+/* ==== 印刷専用ヘッダーを通常時は非表示 ==== */
 .header-print {
   display: none;
 }
@@ -385,6 +385,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     justify-content: center;
     border: none;
   }
+
   .thumb img {
     max-height: 27mm;
     max-width: 100%;
@@ -407,7 +408,10 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     max-height: 22mm !important;
   }
 
-  .barcode svg { height: 20px; width: 70px; }
+  .barcode svg {
+    height: 20px;
+    width: 70px;
+  }
 
   .price {
     font-size: 9.3pt;
@@ -426,6 +430,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-size: 9pt;
     font-weight: 600;
   }
+
   .qty-print input {
     width: 18mm !important;
     height: 5mm !important;
@@ -475,15 +480,12 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   }
 }
 
-
 /* ==== 常に最前面に出す要素 ==== */
 main, .grid, .card {
   position: relative !important;
   z-index: 1 !important;
 }
 
-
-}
 
 
   
@@ -497,7 +499,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
