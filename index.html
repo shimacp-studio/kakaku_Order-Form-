@@ -17,33 +17,78 @@ h1{margin:0;font-size:clamp(18px,3.4vw,26px);font-weight:800}
 .hidden{display:none!important;}
 
 /* ====== 通常デザイン ====== */
-header{position:sticky;top:0;z-index:30;background:#ffffffcc;
-border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
-.wrap{max-width:1200px;margin:0 auto;padding:10px 16px;
-display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.brand{display:flex;align-items:center;gap:10px;}
-.brand img{height:38px;width:auto}
-.actions{display:flex;gap:12px;align-items:center}
-.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
-border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-/* ここ ↓ に追加してください */
-  /* ==== ヘッダー新デザイン ==== */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    background: #ffffffcc;
-    border-bottom: 1px solid #e2e8f0;
-    backdrop-filter: saturate(140%) blur(6px);
-  }
+header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: #ffffffcc;
+  border-bottom: 1px solid #e2e8f0; /* ←こちらの色指定に統一でOK */
+  backdrop-filter: saturate(140%) blur(6px);
+}
 
-  /* ロゴとタイトル */
-  .title-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand img { height: 38px; width: auto; }
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.btn {
+  background: var(--brand);
+  color: #fff;
+  border: 1px solid #1243c1;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* === ヘッダー2段構成 === */
+.header-2rows {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.search-inline {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.search-inline .input {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+.search-inline select {
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+  cursor: pointer;
+}
+
+/* ロゴとタイトル */
+.title-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
   .title-group h1 {
     font-size: 18px;
     font-weight: 800;
@@ -566,6 +611,25 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     transform: translateY(-1px);
   }
 }
+  /* === 通常画面 === */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+/* === 印刷画面 === */
+@media print {
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm !important;
+    width: calc(210mm - 20mm);
+    margin: 30mm auto 0;
+  }
+}
 
 /* ==== 常に最前面に出す要素 ==== */
 main, .grid, .card {
@@ -588,7 +652,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
@@ -633,35 +697,37 @@ main, .grid, .card {
 
 <!-- === 発注画面 === -->
 <main id="order-section" class="hidden">
+
   <header>
-    <div class="wrap">
-      <!-- 🔹 左側ロゴ・タイトル・発注者名 -->
-      <div class="brand">
-        <img src="img/shima_owl.jpg" alt="logo">
-        <div class="title-group">
-          <h1>シマコーポレーション 発注カタログ</h1>
-          <!-- ✅ buyerNameDisplay はここだけ -->
-          <p id="buyerNameDisplay" class="buyer-name-display"></p>
-        </div>
-      </div>
+  <div class="wrap header-2rows">
+    <!-- 左側：ロゴとタイトル -->
+    <div class="brand">
+      <img src="img/shima_owl.jpg" alt="logo">
+      <div class="title-group">
+        <h1>シマコーポレーション 発注カタログ</h1>
+        <p id="buyerNameDisplay" class="buyer-name-display"></p>
 
-      <!-- 🔹 右側：検索・カテゴリ・印刷・カート -->
-      <div class="search-actions">
-        <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
-        <select id="categorySelect" class="input">
-          <option value="">すべてのカテゴリ</option>
-        </select>
-
-        <button class="btn" onclick="window.print()">印刷（A4縦）</button>
-
-        <!-- 🛒 カートアイコン -->
-        <div id="cartIcon" class="cart-icon" title="カートを見る">
-          <img src="img/KART.png" alt="カート">
-          <span id="cartBadge" class="cart-badge"></span>
+        <!-- 🔍 タイトルの下に検索ボックス -->
+        <div class="search-inline">
+          <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
+          <select id="categorySelect" class="input">
+            <option value="">すべてのカテゴリ</option>
+          </select>
         </div>
       </div>
     </div>
-  </header>
+
+    <!-- 右側：印刷・カート -->
+    <div class="actions">
+      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+      <div id="cartIcon" class="cart-icon" title="カートを見る">
+        <img src="img/KART.png" alt="カート">
+        <span id="cartBadge" class="cart-badge"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
 
   <!-- ✅ ここから下だけ残す -->
   <section>
