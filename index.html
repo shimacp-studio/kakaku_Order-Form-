@@ -197,21 +197,41 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 0;
   }
 
-  /* ==== フッター ==== */
-  .footer-print {
-    display: block !important;
-    position: fixed !important;
-    bottom: 0mm !important;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 11pt;
-    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
-    color: #0f172a;
-    padding-top: 2mm;
-    background: #fff;
-    z-index: 9999;
+ /* ==== フッター ==== */
+.footer-print {
+  display: block !important;
+  position: fixed !important;
+  bottom: 0mm !important;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 11pt;
+  font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+  color: #0f172a;
+  padding-top: 2mm;
+  background: #fff;
+  z-index: 9999;
   }
+}
+
+/* === カートアイコンのバッジ表示 === */
+.actions {
+  position: relative;
+}
+#cartIcon {
+  position: relative;
+}
+#cartBadge {
+  position: absolute;
+  top: 2px;
+  right: -4px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 9999px;
+  display: none;
 }
 
 /* === 通常画面（プロ仕様） === */
@@ -278,19 +298,20 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     color: #2563eb;
   }
 
-  /* ===== カートパネル ===== */
   .cart {
-    position: sticky;
-    top: 90px;
-    height: calc(100vh - 110px);
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-  }
+  display: none !important; /* ✅ この1行を追加 */
+  position: sticky;
+  top: 90px;
+  height: calc(100vh - 110px);
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
   .cart h2 {
     font-size: 16px;
     margin-bottom: 8px;
@@ -416,16 +437,40 @@ main, .grid, .card {
 <!-- === 発注画面 === -->
 <main id="order-section" class="hidden">
   <header>
-    <div class="wrap">
-      <div class="brand">
-        <img src="img/shima_owl.jpg" alt="logo">
-        <h1>シマコーポレーション 発注カタログ</h1>
-      </div>
-      <div class="actions">
-        <button class="btn" onclick="window.print()">印刷（A4縦）</button>
-      </div>
+  <div class="wrap">
+    <div class="brand">
+      <img src="img/shima_owl.jpg" alt="logo">
+      <h1>シマコーポレーション 発注カタログ</h1>
     </div>
-  </header>
+    <div class="actions">
+      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+      <!-- ✅ カートアイコン追加 -->
+<div id="cartIcon">
+  <img src="img/KART.png" alt="カート" style="width:40px; height:auto;">
+  <span id="cartBadge"></span>
+</div>
+
+      <!-- ✅ ここを追加 -->
+      <div style="position: relative; display: inline-block;">
+        <img id="cartIcon" src="img/KART.png" alt="cart"
+             style="height:34px;width:auto;cursor:pointer;">
+        <span id="cartBadge" style="
+          position:absolute;
+          top:2px;
+          right:-4px;
+          background:#ef4444;
+          color:#fff;
+          font-size:10px;
+          font-weight:700;
+          padding:2px 5px;
+          border-radius:9999px;
+          display:none;">0</span>
+      </div>
+      <!-- ✅ 追加ここまで -->
+    </div>
+  </div>
+</header>
+
 
   <div class="controls">
     <input id="buyerNameDisplay" class="input" readonly>
@@ -492,29 +537,34 @@ function updateCart(){
   document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
 }
 function removeItem(i){cart.splice(i,1);updateCart();}
-async function boot(){
+async function boot() {
   const PRODUCTS = await fetch('./products.json').then(r => r.json());
   const grid = document.getElementById('grid');
-  grid.innerHTML="";
-  PRODUCTS.forEach(p=>{
+  grid.innerHTML = "";
+
+  PRODUCTS.forEach(p => {
     const barcode = renderBarcode(p.jan);
     grid.innerHTML += `
       <div class='card'>
-        <div class='thumb'><img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'"></div>
+        <div class='thumb'>
+          <img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'">
+        </div>
         <div class='body'>
           <div class='title'>${p.name}</div>
           <div class='barcode'>${barcode}</div>
           <div class='price'>税抜：${p.price.toLocaleString()}円</div>
           <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
-          <div class="qty-print"><label>数量：</label><input type="text"></div>
         </div>
         <div class='actions-card'>
-          <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>
+            カートに追加
+          </button>
         </div>
       </div>`;
   });
 }
+
+
 function addToCart(p){const q=document.getElementById(`qty-${p.jan}`).value;if(!q||q<=0)return;const ex=cart.find(x=>x.jan===p.jan);if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}updateCart();document.getElementById(`qty-${p.jan}`).value='';}
 async function sendOrder() {
   if (!cart.length) return alert('カートが空です');
