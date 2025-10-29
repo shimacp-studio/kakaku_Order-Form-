@@ -602,11 +602,14 @@ main, .grid, .card {
     <input id="partnerNameDisplay" class="input" readonly>
     <input id="siteNameDisplay" class="input" readonly>
   </div>
-<!-- ✅ 検索バー（カテゴリ＆キーワード検索） -->
-<div class="controls-search">
+
+  <!-- ==== 情報入力欄 & 検索バー統合 ==== -->
+<div class="controls-search" style="grid-template-columns: 1fr 2fr 1fr;">
+  <input id="buyerNameDisplay" class="input" readonly placeholder="発注者名">
   <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
   <select id="categorySelect" class="input"></select>
 </div>
+
 
   <section><div id="grid" class="grid"></div></section>
 
