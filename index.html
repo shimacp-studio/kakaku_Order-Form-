@@ -728,16 +728,45 @@ let cart=[];
 function updateCart(){
   const list=document.getElementById('cartlist');
   list.innerHTML='';
-  if(!cart.length){list.textContent='カートは空です';document.getElementById('subtotal').textContent='0円';document.getElementById('total').textContent='0円';return;}
+  if(!cart.length){
+    list.textContent='カートは空です';
+    document.getElementById('subtotal').textContent='0円';
+    document.getElementById('total').textContent='0円';
+    updateCartBadge(); // ← 空のときもバッジ更新
+    return;
+  }
   let subtotal=0;
-  cart.forEach((it,i)=>{subtotal+=it.price*it.qty;list.innerHTML+=`<div class='cartitem'><div>${it.name}</div><div>${it.qty}</div><div>${(it.price*it.qty).toLocaleString()}円</div><button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button></div>`;});
+  cart.forEach((it,i)=>{
+    subtotal+=it.price*it.qty;
+    list.innerHTML+=`
+      <div class='cartitem'>
+        <div>${it.name}</div>
+        <div>${it.qty}</div>
+        <div>${(it.price*it.qty).toLocaleString()}円</div>
+        <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
+      </div>`;
+  });
   document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
   document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
 
-　updateCartBadge(); // ✅ ← この行を末尾に追加
-  
+  updateCartBadge(); // ✅ ← この行を末尾に追加
 }
-function removeItem(i){cart.splice(i,1);updateCart();}
+
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
+
+// === カートバッジ更新 ===
+function updateCartBadge() {
+  const badge = document.getElementById("cartBadge");
+  if (cart.length > 0) {
+    badge.textContent = cart.length;
+    badge.style.display = "inline-block";
+  } else {
+    badge.style.display = "none";
+  }
+}
 let PRODUCTS_ALL = [];
 
 /** ====== 初期ロード ====== **/
