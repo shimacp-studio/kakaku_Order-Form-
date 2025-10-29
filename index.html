@@ -317,37 +317,103 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   margin: 8mm 8mm 18mm 8mm; /* 下余白を広げて印刷エリアを確保 */
 }
 
-/* === 印刷用レイアウト === */
+/* === 印刷用レイアウト（統合済） === */
+@page {
+  size: A4 portrait;
+  margin: 8mm 8mm 18mm 8mm;
+}
+
 @media print {
-  header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; position: relative !important; }
-  main { display: block; margin: 0; padding: 0; position: relative !important; min-height: 245mm !important; }
-
-  .grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6mm;
-    width: calc(210mm - 20mm);
-    margin: 30mm auto 0;
+  /* 印刷時に非表示にする要素 */
+  header, .actions, .cart, .actions-card, .controls, .search-actions {
+    display: none !important;
   }
 
-  /* ==== カード設定 ==== */
-  .card {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 4mm;
-    border: 1px solid #d9e1f2;
-    box-shadow: none;
-    padding: 3.5mm;
-    height: calc((297mm - 95mm) / 5);
-    page-break-inside: avoid;
+  body {
     background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+    counter-reset: item;
+    position: relative !important;
   }
 
-  /* ==== 番号タグ ==== */
+  main {
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: relative !important;
+    min-height: 245mm !important;
+  }
+
+  /* === 2列グリッド === */
+  .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm !important;
+    width: calc(210mm - 20mm);
+    margin: 30mm auto 0 !important;
+  }
+
+  /* === 商品カード === */
+  .card {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 4mm !important;
+    border: 1px solid #d9e1f2 !important;
+    background: #fff !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    padding: 3.5mm !important;
+    height: calc((297mm - 95mm) / 5) !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+  }
+
+  /* === 商品画像 === */
+  .thumb {
+    flex: 0 0 33mm !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+  }
+
+  .thumb img {
+    max-height: 27mm !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+  }
+
+  /* === 商品情報 === */
+  .body {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 2mm !important;
+    padding-right: 3mm !important;
+  }
+
+  .title {
+    font-size: 9.5pt !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    color: #111 !important;
+    max-height: 22mm !important;
+  }
+
+  .barcode svg {
+    height: 20px !important;
+    width: 70px !important;
+  }
+
+  .price {
+    font-size: 9pt !important;
+    color: #2563eb !important;
+    font-weight: 700 !important;
+  }
+
+  /* === 番号タグ === */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
@@ -363,273 +429,58 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     border-radius: 12px;
   }
 
-  /* ==== 商品画像 ==== */
-  .thumb {
-    flex: 0 0 33mm;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-  }
-  .thumb img {
-    max-height: 27mm;
-    max-width: 100%;
-    object-fit: contain;
-  }
-
-  /* ==== 商品情報 ==== */
-  .body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2mm;
-    padding-right: 3mm;
-  }
-
-  .title {
-    font-size: 9.3pt !important;
-    font-weight: 700 !important;
-    line-height: 1.4 !important;
-    max-height: 22mm !important;
-  }
-
-  .barcode svg { height: 20px; width: 70px; }
-  .price { font-size: 9.3pt; }
-
-  /* ==== 発注数量欄 ==== */
-  .qty-print {
-    position: absolute !important;
-    bottom: 3mm !important;
-    left: 4mm !important;
-    display: flex;
-    align-items: center;
-    gap: 1.2mm;
-    font-size: 9pt;
-    font-weight: 600;
-  }
-  .qty-print input {
-    width: 18mm !important;
-    height: 5mm !important;
-    border: 1px solid #bbb;
-    border-radius: 2.5mm;
-  }
-
-  /* ==== 印刷専用ヘッダー ==== */
+  /* === 印刷用ヘッダー・フッター === */
   .header-print {
     display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
     position: fixed !important;
     top: 5mm !important;
     left: 0;
     width: 100%;
-    background: #fff;
-    z-index: 9999;
+    background: #fff !important;
+    z-index: 9999 !important;
   }
 
   .header-print img {
-    height: 14mm;
-    width: auto;
+    height: 14mm !important;
+    width: auto !important;
   }
 
   .header-print h2 {
-    font-size: 16pt;
-    font-weight: 800;
-    margin: 0;
+    font-size: 16pt !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
   }
 
- /* ==== フッター ==== */
-.footer-print {
-  display: block !important;
-  position: fixed !important;
-  bottom: 0mm !important;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 11pt;
-  font-family: "Noto Sans JP", "Segoe UI", sans-serif;
-  color: #0f172a;
-  padding-top: 2mm;
-  background: #fff;
-  z-index: 9999;
-  }
-}
-
-/* === カートアイコンのバッジ表示 === */
-.actions {
-  position: relative;
-}
-#cartIcon {
-  position: relative;
-}
-#cartBadge {
-  position: absolute;
-  top: 2px;
-  right: -4px;
-  background: #ef4444;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 5px;
-  border-radius: 9999px;
-  display: none;
-}
-
-/* === 通常画面（プロ仕様） === */
-@media screen {
-  /* ===== 商品一覧 ===== */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
-    overflow: hidden;
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  }
-
-  .thumb {
-    background: #f8fafc;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid #f1f5f9;
-  }
-  .thumb img {
-    max-width: 90%;
-    max-height: 160px;
-    object-fit: contain;
-    transition: transform 0.3s ease;
-  }
-  .card:hover .thumb img {
-    transform: scale(1.05);
-  }
-
-  .body {
-    padding: 12px 14px;
-    display: grid;
-    gap: 6px;
-  }
-  .title {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #1e293b;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .price {
-    font-weight: 800;
-    font-size: 15px;
-    color: #2563eb;
-  }
-
-  .cart {
-  display: none !important; /* ✅ この1行を追加 */
-  position: sticky;
-  top: 90px;
-  height: calc(100vh - 110px);
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-  .cart h2 {
-    font-size: 16px;
-    margin-bottom: 8px;
-    color: #1e293b;
-  }
-  .cartlist {
-    flex: 1;
-    overflow-y: auto;
-    border-top: 1px dashed #cbd5e1;
-    margin-top: 8px;
-    padding-top: 8px;
-  }
-  .cartitem {
-    display: grid;
-    grid-template-columns: 1fr 50px 70px 20px;
-    gap: 8px;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px dashed #e5e7eb;
-    font-size: 13px;
-  }
-  .cart-summary {
-    margin-top: 8px;
-    border-top: 1px dashed #cbd5e1;
-    padding-top: 8px;
-    font-weight: 600;
-  }
-  .qtyinput {
-    width: 70px;
+  .footer-print {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0mm !important;
+    left: 0;
+    width: 100%;
     text-align: center;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 6px;
+    font-size: 11pt !important;
+    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+    color: #0f172a !important;
+    background: #fff !important;
+    z-index: 9999 !important;
   }
-  .actions-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px 12px;
-    border-top: 1px solid #f1f5f9;
-    background: #fafafa;
-  }
-  .actions-card .btn {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    border: none;
-    color: #fff;
-    font-weight: 700;
-    padding: 8px 14px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(37,99,235,0.2);
-    transition: all 0.2s ease;
-  }
-  .actions-card .btn:hover {
-    background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
-    transform: translateY(-1px);
-  }
-}
-  /* === 通常画面 === */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 16px;
 }
 
-/* === 印刷画面 === */
-@media print {
+/* === 通常画面：3列固定 === */
+@media screen {
   .grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6mm !important;
-    width: calc(210mm - 20mm);
-    margin: 30mm auto 0;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 24px !important;
+    max-width: 1200px !important;
+    margin: 24px auto !important;
+    padding: 0 16px !important;
   }
 }
+
 
 /* ==== 常に最前面に出す要素 ==== */
 main, .grid, .card {
@@ -652,7 +503,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
