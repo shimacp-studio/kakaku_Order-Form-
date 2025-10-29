@@ -312,41 +312,103 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   display: none;
 }
 
-
-
+/* === 印刷用レイアウト（統合済） === */
 @page {
   size: A4 portrait;
-  margin: 8mm 8mm 18mm 8mm; /* ← 余白最小モードに近いデフォルト */
+  margin: 8mm 8mm 18mm 8mm;
 }
 
 @media print {
-  header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; }
-  main { display: block; margin: 0; padding: 0; min-height: 245mm !important; }
-
-  .grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6mm;
-    width: calc(210mm - 16mm);
-    margin: 30mm auto 0;
+  /* 印刷時に非表示にする要素 */
+  header, .actions, .cart, .actions-card, .controls, .search-actions {
+    display: none !important;
   }
 
-  .card {
-    position: relative;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 4mm;
-    border: 1px solid #d9e1f2;
-    box-shadow: none;
-    padding: 3.5mm;
-    height: calc((297mm - 85mm) / 5);
-    page-break-inside: avoid;
+  body {
     background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+    counter-reset: item;
+    position: relative !important;
   }
 
-  /* ==== 番号タグ ==== */
+  main {
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: relative !important;
+    min-height: 245mm !important;
+  }
+
+  /* === 2列グリッド === */
+  .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm !important;
+    width: calc(210mm - 20mm);
+    margin: 30mm auto 0 !important;
+  }
+
+  /* === 商品カード === */
+  .card {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 4mm !important;
+    border: 1px solid #d9e1f2 !important;
+    background: #fff !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    padding: 3.5mm !important;
+    height: calc((297mm - 95mm) / 5) !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+  }
+
+  /* === 商品画像 === */
+  .thumb {
+    flex: 0 0 33mm !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+  }
+
+  .thumb img {
+    max-height: 27mm !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+  }
+
+  /* === 商品情報 === */
+  .body {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 2mm !important;
+    padding-right: 3mm !important;
+  }
+
+  .title {
+    font-size: 9.5pt !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    color: #111 !important;
+    max-height: 22mm !important;
+  }
+
+  .barcode svg {
+    height: 20px !important;
+    width: 70px !important;
+  }
+
+  .price {
+    font-size: 9pt !important;
+    color: #2563eb !important;
+    font-weight: 700 !important;
+  }
+
+  /* === 番号タグ === */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
@@ -360,33 +422,47 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     color: #fff;
     background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
     border-radius: 12px;
-    box-shadow: 0 0 3px rgba(14,165,233,0.8), inset 0 0 2px rgba(255,255,255,0.3);
-    text-shadow: 0 0 2px rgba(255,255,255,0.4);
   }
 
-  /* ==== フッター ==== */
-  .footer-print {
+  /* === 印刷用ヘッダー・フッター === */
+  .header-print {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
     position: fixed !important;
-    bottom: 2mm !important;
+    top: 5mm !important;
+    left: 0;
+    width: 100%;
+    background: #fff !important;
+    z-index: 9999 !important;
+  }
+
+  .header-print img {
+    height: 14mm !important;
+    width: auto !important;
+  }
+
+  .header-print h2 {
+    font-size: 16pt !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+  }
+
+  .footer-print {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0mm !important;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 11pt;
+    font-size: 11pt !important;
     font-family: "Noto Sans JP", "Segoe UI", sans-serif;
-    color: #0f172a;
-    border-top: none; /* ← 線を削除！ */
-    padding-top: 2mm;
-    background: #fff;
-    box-shadow: none; /* ← 下の影も削除 */
-    z-index: 9999;
-  }
-
-  main, .grid, .card {
-    position: relative !important;
-    z-index: 1 !important;
+    color: #0f172a !important;
+    background: #fff !important;
+    z-index: 9999 !important;
   }
 }
-
 
 /* === 通常画面：3列固定 === */
 @media screen {
@@ -399,6 +475,9 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     padding: 0 16px !important;
   }
 }
+
+
+
 
 
 /* ==== 常に最前面に出す要素 ==== */
