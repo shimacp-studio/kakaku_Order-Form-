@@ -72,13 +72,15 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 @page {
   size: A4 portrait;
-  margin: 8mm 8mm 18mm 8mm; /* ← 下余白を広げて印刷エリアを確実に確保 */
+  margin: 8mm 8mm 18mm 8mm; /* 下余白を広げて印刷エリアを確保 */
 }
 
+/* === 印刷用レイアウト === */
 @media print {
   header, .actions, .cart, .actions-card, .controls { display: none !important; }
   body { background: #fff; counter-reset: item; position: relative !important; }
   main { display: block; margin: 0; padding: 0; position: relative !important; min-height: 245mm !important; }
+
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6mm;
@@ -89,6 +91,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   /* ==== カード設定 ==== */
   .card {
     position: relative;
+    display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 4mm;
@@ -209,147 +212,149 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     background: #fff;
     z-index: 9999;
   }
-}  /* ← ここで印刷モード終了 */
-
-/* === 発注画面（通常表示）プロ仕様 === */
-
-/* ===== 商品一覧（カード） ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
 }
 
-.card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
-  overflow: hidden;
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+/* === 通常画面（プロ仕様） === */
+@media screen {
+  /* ===== 商品一覧 ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    overflow: hidden;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  .thumb {
+    background: #f8fafc;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .thumb img {
+    max-width: 90%;
+    max-height: 160px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  .card:hover .thumb img {
+    transform: scale(1.05);
+  }
+
+  .body {
+    padding: 12px 14px;
+    display: grid;
+    gap: 6px;
+  }
+  .title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #1e293b;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .price {
+    font-weight: 800;
+    font-size: 15px;
+    color: #2563eb;
+  }
+
+  /* ===== カートパネル ===== */
+  .cart {
+    position: sticky;
+    top: 90px;
+    height: calc(100vh - 110px);
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .cart h2 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #1e293b;
+  }
+  .cartlist {
+    flex: 1;
+    overflow-y: auto;
+    border-top: 1px dashed #cbd5e1;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+  .cartitem {
+    display: grid;
+    grid-template-columns: 1fr 50px 70px 20px;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px dashed #e5e7eb;
+    font-size: 13px;
+  }
+  .cart-summary {
+    margin-top: 8px;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 8px;
+    font-weight: 600;
+  }
+  .qtyinput {
+    width: 70px;
+    text-align: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px;
+  }
+  .actions-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px 12px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafafa;
+  }
+  .actions-card .btn {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(37,99,235,0.2);
+    transition: all 0.2s ease;
+  }
+  .actions-card .btn:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+    transform: translateY(-1px);
+  }
 }
 
-.thumb {
-  background: #f8fafc;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid #f1f5f9;
-}
-.thumb img {
-  max-width: 90%;
-  max-height: 160px;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-}
-.card:hover .thumb img {
-  transform: scale(1.05);
-}
-
-.body {
-  padding: 12px 14px;
-  display: grid;
-  gap: 6px;
-}
-.title {
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 1.4;
-  color: #1e293b;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.price {
-  font-weight: 800;
-  font-size: 15px;
-  color: #2563eb;
-}
-
-/* ===== カート部分（右側パネル） ===== */
-.cart {
-  position: sticky;
-  top: 90px;
-  height: calc(100vh - 110px);
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
-.cart h2 {
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #1e293b;
-}
-.cartlist {
-  flex: 1;
-  overflow-y: auto;
-  border-top: 1px dashed #cbd5e1;
-  margin-top: 8px;
-  padding-top: 8px;
-}
-.cartitem {
-  display: grid;
-  grid-template-columns: 1fr 50px 70px 20px;
-  gap: 8px;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px dashed #e5e7eb;
-  font-size: 13px;
-}
-.cart-summary {
-  margin-top: 8px;
-  border-top: 1px dashed #cbd5e1;
-  padding-top: 8px;
-  font-weight: 600;
-}
-.qtyinput {
-  width: 70px;
-  text-align: center;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 6px;
-}
-.actions-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px 12px;
-  border-top: 1px solid #f1f5f9;
-  background: #fafafa;
-}
-.actions-card .btn {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  border: none;
-  color: #fff;
-  font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(37,99,235,0.2);
-  transition: all 0.2s ease;
-}
-.actions-card .btn:hover {
-  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
-  transform: translateY(-1px);
-}
-
-/* ==== 他要素より上に出す ==== */
+/* ==== 常に最前面に出す要素 ==== */
 main, .grid, .card {
   position: relative !important;
   z-index: 1 !important;
 }
+
 
 }
 
