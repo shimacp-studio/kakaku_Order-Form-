@@ -588,7 +588,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
@@ -633,60 +633,52 @@ main, .grid, .card {
 
 <!-- === 発注画面 === -->
 <main id="order-section" class="hidden">
- <header>
-  <div class="wrap">
-    <!-- 🔹 左側ロゴ・タイトル・発注者名 -->
-    <div class="brand">
-      <img src="img/shima_owl.jpg" alt="logo">
-      <div class="title-group">
-        <h1>シマコーポレーション 発注カタログ</h1>
-        <p id="buyerNameDisplay" class="buyer-name-display"></p>
+  <header>
+    <div class="wrap">
+      <!-- 🔹 左側ロゴ・タイトル・発注者名 -->
+      <div class="brand">
+        <img src="img/shima_owl.jpg" alt="logo">
+        <div class="title-group">
+          <h1>シマコーポレーション 発注カタログ</h1>
+          <!-- ✅ buyerNameDisplay はここだけ -->
+          <p id="buyerNameDisplay" class="buyer-name-display"></p>
+        </div>
+      </div>
+
+      <!-- 🔹 右側：検索・カテゴリ・印刷・カート -->
+      <div class="search-actions">
+        <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
+        <select id="categorySelect" class="input">
+          <option value="">すべてのカテゴリ</option>
+        </select>
+
+        <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+
+        <!-- 🛒 カートアイコン -->
+        <div id="cartIcon" class="cart-icon" title="カートを見る">
+          <img src="img/KART.png" alt="カート">
+          <span id="cartBadge" class="cart-badge"></span>
+        </div>
       </div>
     </div>
+  </header>
 
-    <!-- 🔹 右側：検索・カテゴリ・印刷・カート -->
-    <div class="search-actions">
-      <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
-      <select id="categorySelect" class="input">
-        <option value="">すべてのカテゴリ</option>
-      </select>
-
-      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
-
-      <!-- 🛒 カートアイコン -->
-      <div id="cartIcon" class="cart-icon" title="カートを見る">
-        <img src="img/KART.png" alt="カート">
-        <span id="cartBadge" class="cart-badge"></span>
-      </div>
-    </div>
-  </div>
-</header>
-
-
-  <div class="controls">
-    <input id="buyerNameDisplay" class="input" readonly>
-    <input id="partnerNameDisplay" class="input" readonly>
-    <input id="siteNameDisplay" class="input" readonly>
-  </div>
-
-  <!-- ==== 情報入力欄 & 検索バー統合 ==== -->
-<div class="controls-search" style="grid-template-columns: 1fr 2fr 1fr;">
-  <input id="buyerNameDisplay" class="input" readonly placeholder="発注者名">
-  <input id="searchInput" class="input" placeholder="商品名やJANコードで検索">
-  <select id="categorySelect" class="input"></select>
-</div>
-
-
-  <section><div id="grid" class="grid"></div></section>
+  <!-- ✅ ここから下だけ残す -->
+  <section>
+    <div id="grid" class="grid"></div>
+  </section>
 
   <aside class="cart">
     <h2>カート</h2>
     <div id="cartlist" class="cartlist"></div>
-    <div><strong>小計：</strong><span id="subtotal">0円</span><br>
-      <strong>税込：</strong><span id="total">0円</span></div>
+    <div>
+      <strong>小計：</strong><span id="subtotal">0円</span><br>
+      <strong>税込：</strong><span id="total">0円</span>
+    </div>
     <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
   </aside>
 </main>
+
 
   <!-- ✅ ここに追加します -->
 <div class="header-print">
@@ -707,7 +699,7 @@ document.getElementById("startBtn").addEventListener("click", () => {
   const site = document.getElementById("siteName").value.trim();
   if (!buyer) return alert("発注者名を入力してください");
 
-  document.getElementById("buyerNameDisplay").value = "発注者名：" + buyer;
+  document.getElementById("buyerNameDisplay").textContent = "発注者名：" + buyer;
   document.getElementById("partnerNameDisplay").value = partner ? "パートナー企業：" + partner : "";
   document.getElementById("siteNameDisplay").value = site ? "現場名：" + site : "";
 
