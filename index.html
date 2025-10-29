@@ -588,7 +588,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
@@ -699,15 +699,20 @@ document.getElementById("startBtn").addEventListener("click", () => {
   const site = document.getElementById("siteName").value.trim();
   if (!buyer) return alert("発注者名を入力してください");
 
+  // ✅ buyerNameDisplay は <p>タグ用
   document.getElementById("buyerNameDisplay").textContent = "発注者名：" + buyer;
-  document.getElementById("partnerNameDisplay").value = partner ? "パートナー企業：" + partner : "";
-  document.getElementById("siteNameDisplay").value = site ? "現場名：" + site : "";
 
+  // ✅ partner / site は今回は発注画面に出さないので削除（不要）
+  // document.getElementById("partnerNameDisplay").value = partner ? "パートナー企業：" + partner : "";
+  // document.getElementById("siteNameDisplay").value = site ? "現場名：" + site : "";
+
+  // ✅ 画面切り替え
   document.getElementById("top-section").classList.add("hidden");
   document.getElementById("order-section").classList.remove("hidden");
 
   boot();
 });
+
 document.getElementById("resetBtn").addEventListener("click", () => {
   document.getElementById("buyerName").value = "";
   document.getElementById("partnerName").value = "";
