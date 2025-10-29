@@ -317,7 +317,12 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   margin: 8mm 8mm 18mm 8mm; /* 下余白を広げて印刷エリアを確保 */
 }
 
-/* === 印刷用レイアウト（完全復旧版）=== */
+@page {
+  size: A4 portrait;
+  margin: 8mm 8mm 18mm 8mm;
+}
+
+/* === 印刷用レイアウト（完全安定版）=== */
 @media print {
   header, .actions, .cart, .actions-card, .controls {
     display: none !important;
@@ -337,154 +342,22 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     min-height: 245mm !important;
   }
 
+  /* ==== 2列×5段・10アイテム ==== */
   .grid {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6mm;
+    gap: 6mm !important;
     width: calc(210mm - 20mm);
     margin: 30mm auto 0;
   }
-
-  /* ==== カード設定 ==== */
-  .card {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 4mm;
-    border: 1px solid #d9e1f2;
-    box-shadow: none;
-    padding: 3.5mm;
-    height: calc((297mm - 95mm) / 5);
-    page-break-inside: avoid;
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+  .card:nth-child(10n) {
+    page-break-after: always !important;
   }
 
-  /* ==== 番号タグ ==== */
-  .card::before {
-    counter-increment: item;
-    content: "No." counter(item);
-    position: absolute;
-    bottom: 1.8mm;
-    right: 2.2mm;
-    padding: 1.4mm 3mm;
-    font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
-    font-weight: 700;
-    font-size: 7.3pt;
-    color: #fff;
-    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
-    border-radius: 12px;
-  }
-
-  /* ==== 商品画像 ==== */
-  .thumb {
-    flex: 0 0 33mm;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-  }
-
-  .thumb img {
-    max-height: 27mm;
-    max-width: 100%;
-    object-fit: contain;
-  }
-
-  /* ==== 商品情報 ==== */
-  .body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2mm;
-    padding-right: 3mm;
-  }
-
-  .title {
-    font-size: 9.3pt !important;
-    font-weight: 700 !important;
-    line-height: 1.4 !important;
-    max-height: 22mm !important;
-  }
-
-  .barcode svg {
-    height: 20px;
-    width: 70px;
-  }
-
-  .price {
-    font-size: 9.3pt;
-    color: #2563eb;
-    font-weight: 700;
-  }
-
-  /* ==== 発注数量欄 ==== */
-  .qty-print {
-    position: absolute !important;
-    bottom: 3mm !important;
-    left: 4mm !important;
-    display: flex;
-    align-items: center;
-    gap: 1.2mm;
-    font-size: 9pt;
-    font-weight: 600;
-  }
-
-  .qty-print input {
-    width: 18mm !important;
-    height: 5mm !important;
-    border: 1px solid #bbb;
-    border-radius: 2.5mm;
-  }
-
-  /* ==== 印刷専用ヘッダー ==== */
-  .header-print {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    position: fixed !important;
-    top: 5mm !important;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 9999;
-  }
-
-  .header-print img {
-    height: 14mm;
-    width: auto;
-  }
-
-  .header-print h2 {
-    font-size: 16pt;
-    font-weight: 800;
-    margin: 0;
-  }
-
-  /* ==== フッター ==== */
-  .footer-print {
-    display: block !important;
-    position: fixed !important;
-    bottom: 0mm !important;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 11pt;
-    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
-    color: #0f172a;
-    padding-top: 2mm;
-    background: #fff;
-    z-index: 9999;
-  }
-}
-
-/* === 印刷時：商品画像を上・数量欄を下に配置 === */
-@media print {
+  /* ==== カード設定（縦配置） ==== */
   .card {
     display: flex !important;
-    flex-direction: column !important; /* ←縦並び */
+    flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
     height: calc((297mm - 95mm) / 5) !important;
@@ -563,10 +436,50 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
   /* ==== No.タグ ==== */
   .card::before {
+    counter-increment: item;
+    content: "No." counter(item);
+    position: absolute;
     bottom: 2mm !important;
     right: 2mm !important;
-    font-size: 7pt !important;
+    font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    color: #fff;
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
+    border-radius: 12px;
+    padding: 1mm 2.5mm;
   }
+
+  /* ==== ヘッダー＆フッター ==== */
+  .header-print,
+  .footer-print {
+    display: block !important;
+    position: fixed !important;
+    width: 100%;
+    background: #fff;
+    z-index: 9999;
+  }
+  .header-print {
+    top: 5mm !important;
+    text-align: center;
+  }
+  .header-print img {
+    height: 14mm;
+  }
+  .header-print h2 {
+    font-size: 16pt;
+    font-weight: 800;
+  }
+  .footer-print {
+    bottom: 0mm !important;
+    text-align: center;
+    font-size: 11pt;
+    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+    color: #0f172a;
+    padding-top: 2mm;
+  }
+}
+
 
   /* 10アイテムごとに改ページ */
   .card:nth-child(10n) {
@@ -596,7 +509,7 @@ main, .grid, .card {
   <div style="background:#fff; display:inline-block; padding:40px 60px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
     <img src="img/shima_owl.jpg" alt="logo" style="width:80px; height:auto; margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始してください</p>
+    <p style="color:#475569; font-size:14px; margin-bottom:20px;">発注者名を入力して開始</p>
 
     <div style="display:flex; flex-direction:column; gap:12px; max-width:320px; margin:auto;">
       <input id="buyerName" class="input" placeholder="発注者名（必須）" required>
