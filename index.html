@@ -321,7 +321,17 @@ function updateCart(){
 function removeItem(i){cart.splice(i,1);updateCart();}
 
 async function boot(){
-  const PRODUCTS = await fetch('./products.json').then(r => r.json());
+  const PRODUCTS = await fetch('products.json', { cache: "no-store" })
+  .then(r => {
+    if (!r.ok) throw new Error("products.jsonが読み込めませんでした");
+    return r.json();
+  })
+  .catch(err => {
+    console.error(err);
+    alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
+    return [];
+  });
+
   const grid = document.getElementById('grid');
   PRODUCTS.forEach(p=>{
     const barcode = renderBarcode(p.jan);
