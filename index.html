@@ -231,7 +231,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 <div id="topPage">
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
-    <h1>シマコーポレーション 発注カタログ</h1>
+    <h1>シマコーポレーション 発注カタログ2</h1>
     <p style="margin-top:4px;font-size:14px;color:#334155;">以下を入力してカタログを開いてください</p>
 
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
@@ -287,26 +287,36 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
 
   // === TOP→カタログ画面 切替 ===
-  const startBtn = document.getElementById("startBtn");
-  if (startBtn) {
-    startBtn.onclick = () => {
-      const buyer = document.getElementById("buyerName").value.trim();
-      if (!buyer) return alert("発注者名を入力してください。");
+const startBtn = document.getElementById("startBtn");
+if (startBtn) {
+  startBtn.onclick = () => {
+    const buyer = document.getElementById("buyerName").value.trim();
+    if (!buyer) return alert("発注者名を入力してください。");
 
-      sessionStorage.setItem("buyerName", buyer);
-      sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
-      sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
+    sessionStorage.setItem("buyerName", buyer);
+    sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
+    sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
 
-      // TOPを隠して main を表示
-      document.getElementById("topPage").style.display = "none";
-      const mainEl = document.querySelector("main");
-      mainEl.style.display = "grid";
-      mainEl.style.visibility = "visible";
+    // ✅ TOP画面を完全に非表示に
+    const topPage = document.getElementById("topPage");
+    topPage.style.display = "none";
+    topPage.style.visibility = "hidden";
+    topPage.style.opacity = "0";
+    topPage.style.zIndex = "-1";
 
-      console.log("✅ 発注カタログを開くクリックOK");
-      boot(); // ← 商品カード生成
-    };
-  }
+    // ✅ main（カタログ）を最前面に表示
+    const mainEl = document.querySelector("main");
+    mainEl.style.display = "grid";
+    mainEl.style.visibility = "visible";
+    mainEl.style.opacity = "1";
+    mainEl.style.position = "relative";
+    mainEl.style.zIndex = "999";
+
+    console.log("✅ 発注カタログを開くクリックOK");
+    boot(); // 商品一覧生成
+  };
+}
+
 
   // === 「この内容で発注」ボタン ===
   const orderBtn = document.getElementById("orderBtn");
