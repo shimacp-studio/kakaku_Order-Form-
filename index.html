@@ -297,25 +297,30 @@ if (startBtn) {
     sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
     sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
 
-    // ✅ TOP画面を完全に非表示に
     const topPage = document.getElementById("topPage");
-    topPage.style.display = "none";
-    topPage.style.visibility = "hidden";
-    topPage.style.opacity = "0";
-    topPage.style.zIndex = "-1";
-
-    // ✅ main（カタログ）を最前面に表示
     const mainEl = document.querySelector("main");
+
+    // ✅ TOPページをフェードアウトしてから完全に隠す
+    topPage.style.transition = "opacity 0.4s ease";
+    topPage.style.opacity = "0";
+    setTimeout(() => {
+      topPage.style.display = "none";
+      topPage.style.visibility = "hidden";
+      topPage.style.zIndex = "-1";
+    }, 400);
+
+    // ✅ main（カタログ画面）を最前面に
     mainEl.style.display = "grid";
     mainEl.style.visibility = "visible";
     mainEl.style.opacity = "1";
+    mainEl.style.zIndex = "10";
     mainEl.style.position = "relative";
-    mainEl.style.zIndex = "999";
 
     console.log("✅ 発注カタログを開くクリックOK");
     boot(); // 商品一覧生成
   };
 }
+
 
 
   // === 「この内容で発注」ボタン ===
