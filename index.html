@@ -62,138 +62,196 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   margin: 8mm 8mm 18mm 8mm; /* ← 下余白を広げて印刷エリアを確実に確保 */
 }
 
+/* === 印刷専用レイアウト（完全安定版・2025-10-30）=== */
 @media print {
-  header, .actions, .cart, .actions-card, .controls { display: none !important; }
-  body { background: #fff; counter-reset: item; position: relative !important; }
-  main { display: block; margin: 0; padding: 0; position: relative !important; min-height: 245mm !important; }
+
+  /* --- 用紙設定 --- */
+  @page {
+    size: A4 portrait;
+    margin: 8mm 8mm 18mm 8mm;
+  }
+
+  /* --- 通常UI・操作系を非表示 --- */
+  header, .actions, .cart, .actions-card, .controls {
+    display: none !important;
+  }
+
+  /* --- 印刷専用ヘッダー・フッターを表示 --- */
+  .header-print,
+  .footer-print {
+    display: block !important;
+  }
+
+  body {
+    background: #fff !important;
+    counter-reset: item;
+    position: relative !important;
+  }
+
+  main {
+    display: block !important;
+    margin: 0;
+    padding: 0;
+    position: relative !important;
+    min-height: 245mm !important;
+  }
+
+  /* === グリッド設定（2列×5段＝10件） === */
   .grid {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6mm;
+    gap: 6mm !important;
     width: calc(210mm - 20mm);
-    margin: 30mm auto 0;
+    margin: 30mm auto 0 !important;
   }
 
-  /* ==== カード設定 ==== */
+  /* === 10件ごとに改ページ === */
+  .card:nth-child(10n) {
+    page-break-after: always !important;
+  }
+
+  /* === カード全体 === */
   .card {
-    position: relative;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 4mm;
-    border: 1px solid #d9e1f2;
-    box-shadow: none;
-    padding: 3.5mm;
-    height: calc((297mm - 95mm) / 5);
-    page-break-inside: avoid;
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: row !important; /* 左＝画像、右＝情報 */
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4mm !important;
+    border: 1px solid #d9e1f2 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    padding: 3mm 4mm !important;
+    height: calc((297mm - 95mm) / 5) !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
   }
 
-  /* ==== 番号タグ（小型・近未来風） ==== */
+  /* === 左：画像＋数量欄 === */
+  .thumb {
+    flex: 0 0 36mm !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    border: none !important;
+    gap: 2mm !important;
+  }
+
+  .thumb img {
+    max-width: 33mm !important;
+    max-height: 25mm !important;
+    object-fit: contain !important;
+  }
+
+  /* --- 画像の下に発注数量欄 --- */
+  .qty-print {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2mm !important;
+    margin-top: 1mm !important;
+    font-size: 9pt !important;
+    font-weight: 600 !important;
+  }
+  .qty-print input {
+    width: 22mm !important;
+    height: 6mm !important;
+    border: 1px solid #bbb !important;
+    border-radius: 3mm !important;
+    text-align: center !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* === 右：商品情報 === */
+  .body {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 1.5mm !important;
+    padding-right: 3mm !important;
+  }
+
+  .title {
+    font-size: 9pt !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important; /* 2行で切る */
+    overflow: hidden !important;
+  }
+
+  .price {
+    font-size: 9pt !important;
+    font-weight: 600 !important;
+    color: #2563eb !important;
+    text-align: left !important;
+  }
+
+  .barcode {
+    text-align: left !important;
+  }
+
+  .barcode svg {
+    height: 16px !important;
+    width: 70px !important;
+  }
+
+  /* === No.タグ === */
   .card::before {
     counter-increment: item;
     content: "No." counter(item);
     position: absolute;
-    bottom: 1.8mm;
-    right: 2.2mm;
-    padding: 1.4mm 3mm;
+    bottom: 2mm;
+    right: 3mm;
     font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
     font-weight: 700;
-    font-size: 7.3pt;
-    letter-spacing: 0.4px;
+    font-size: 7pt;
     color: #fff;
     background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
     border-radius: 12px;
-    box-shadow: 0 0 3px rgba(14,165,233,0.8), inset 0 0 2px rgba(255,255,255,0.3);
-    text-shadow: 0 0 2px rgba(255,255,255,0.4);
+    padding: 1mm 3mm;
   }
 
-  /* ==== 商品画像 ==== */
-  .thumb {
-    flex: 0 0 33mm;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-  }
-  .thumb img {
-    max-height: 27mm;
-    max-width: 100%;
-    object-fit: contain;
-  }
-
-  /* ==== 商品情報 ==== */
-  .body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 2mm;
-    padding-right: 3mm;
-  }
-
-  .title {
-    font-size: 9.3pt !important;
-    line-height: 1.4 !important;
-    max-height: 22mm !important;
-    overflow: hidden !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-    font-weight: 700 !important;
-  }
-
-  .barcode svg { height: 20px; width: 70px; }
-  .price { font-size: 9.3pt; }
-
-  /* ==== 発注数量欄 ==== */
-  .qty-print {
-    position: absolute !important;
-    bottom: 3mm !important;
-    left: 4mm !important;
-    display: flex;
-    align-items: center;
-    gap: 1.2mm;
-    font-size: 9pt;
-    font-weight: 600;
-  }
-  .qty-print input {
-    width: 20mm !important;
-    height: 6mm !important;
-    border: 1px solid #bbb;
-    border-radius: 3mm;
-  }
-
-  /* ==== ヘッダ ==== */
+  /* === ヘッダー・フッター === */
   .header-print {
-    position: fixed;
-    top: 5mm;
+    position: fixed !important;
+    top: 5mm !important;
     left: 0;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    text-align: center;
     background: #fff;
   }
-  .header-print img { height: 14mm; width: auto; }
-  .header-print h2 { font-size: 16pt; font-weight: 800; margin: 0; }
 
-  /* ==== フッター（下端固定） ==== */
+  .header-print img {
+    height: 14mm;
+  }
+
+  .header-print h2 {
+    font-size: 16pt;
+    font-weight: 800;
+  }
+
   .footer-print {
     position: fixed !important;
-    bottom: 0mm !important; /* ← スクショ赤枠の高さに一致させる */
+    bottom: 0mm !important;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: 11pt;
     font-family: "Noto Sans JP", "Segoe UI", sans-serif;
     color: #0f172a;
-    padding-top: 2mm;
     background: #fff;
-    z-index: 9999;
+    padding-top: 2mm;
   }
 }
+
 
 
   /* ==== 他要素より上に出す ==== */
@@ -213,7 +271,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   <div class="wrap">
     <div class="brand">
       <img src="img/shima_owl.jpg" alt="logo">
-      <h1>シマコーポレーション 発注カタログ</h1>
+      <h1>シマコーポレーション 発注カタログ２</h1>
     </div>
     <div class="actions">
       <button class="btn" onclick="window.print()">印刷（A4縦）</button>
