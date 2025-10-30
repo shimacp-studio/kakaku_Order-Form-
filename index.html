@@ -28,7 +28,10 @@ h1{margin:0;font-weight:800}
   height: 100dvh;
   width: 100%;
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #93c5fd 100%);
+  transition: opacity 0.4s ease;
+  opacity: 1; /* ←追加 */
 }
+
 .top-card {
   text-align: center;
   background: rgba(255,255,255,0.9);
@@ -286,7 +289,7 @@ let cart = [];
 window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
 
-  // === TOP→カタログ画面 切替 ===
+// === TOP→カタログ画面 切替 ===
 const startBtn = document.getElementById("startBtn");
 if (startBtn) {
   startBtn.onclick = () => {
@@ -300,8 +303,7 @@ if (startBtn) {
     const topPage = document.getElementById("topPage");
     const mainEl = document.querySelector("main");
 
-    // ✅ TOPページをフェードアウトしてから完全に隠す
-    topPage.style.transition = "opacity 0.4s ease";
+    // ✅ フェードアウトしてから完全に非表示にする
     topPage.style.opacity = "0";
     setTimeout(() => {
       topPage.style.display = "none";
@@ -309,18 +311,17 @@ if (startBtn) {
       topPage.style.zIndex = "-1";
     }, 400);
 
-    // ✅ main（カタログ画面）を最前面に
+    // ✅ main（カタログ画面）を表示して最前面に
     mainEl.style.display = "grid";
     mainEl.style.visibility = "visible";
     mainEl.style.opacity = "1";
-    mainEl.style.zIndex = "10";
     mainEl.style.position = "relative";
+    mainEl.style.zIndex = "10";
 
     console.log("✅ 発注カタログを開くクリックOK");
     boot(); // 商品一覧生成
   };
 }
-
 
 
   // === 「この内容で発注」ボタン ===
