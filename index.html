@@ -228,27 +228,21 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 <body>
 
 <!-- === TOPページ === -->
-<div id="topPage" class="top-page">
+<div id="topPage">
   <div class="top-card">
-    <img src="img/shima_owl.jpg" class="logo" alt="logo">
-    <h1>シマコーポレーション<br>発注システム</h1>
+    <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
+    <h1>シマコーポレーション 発注カタログ</h1>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">以下を入力してカタログを開いてください</p>
 
-    <div class="form-group">
-      <label>発注者名</label>
-      <input id="buyerName" type="text" placeholder="例：じゅん">
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+      <input id="buyerName" class="input" placeholder="発注者名" />
+      <input id="partnerName" class="input" placeholder="パートナー企業" />
+      <input id="siteName" class="input" placeholder="現場名" />
+      <button id="startBtn" class="btn" style="margin-top:10px;">発注カタログを開く</button>
     </div>
-    <div class="form-group">
-      <label>パートナー企業</label>
-      <input id="partnerName" type="text" placeholder="例：シマ法人営業課">
-    </div>
-    <div class="form-group">
-      <label>現場名</label>
-      <input id="siteName" type="text" placeholder="例：門真倉庫B区画">
-    </div>
-
-    <button id="startBtn">🚀 発注カタログを開く</button>
   </div>
 </div>
+
 
 <!-- === 発注カタログ画面 === -->
 <header>
