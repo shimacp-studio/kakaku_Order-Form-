@@ -5,15 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>シマコーポレーション 発注カタログ</title>
 <style>
-:root{
+:root {
   --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;
   --bg:#f6f8ff;--card:#fff;--brand:#1e66ff;
   --accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);
-font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-h1{margin:0;font-size:clamp(18px,3.4vw,26px);font-weight:800}
+html,body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif
+}
+h1{margin:0;font-weight:800}
+
+/* === TOPページ === */
+.top-page {
+  display:flex;align-items:center;justify-content:center;
+  height:100dvh;
+  background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 50%,#93c5fd 100%);
+}
+.top-card {
+  text-align:center;
+  background:rgba(255,255,255,0.85);
+  border:1px solid #dbeafe;
+  border-radius:20px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  padding:40px 60px;
+  backdrop-filter:blur(10px);
+  max-width:420px;
+  width:90%;
+}
+.top-card .logo {
+  height:70px;margin-bottom:12px;
+}
+.top-card h1 {
+  font-size:22px;font-weight:800;color:#1e3a8a;
+  margin-bottom:30px;line-height:1.4;
+}
+.form-group{text-align:left;margin-bottom:18px;}
+.form-group label{
+  font-weight:600;font-size:13px;color:#334155;
+  display:block;margin-bottom:4px;
+}
+.form-group input{
+  width:100%;padding:10px 12px;border-radius:8px;
+  border:1px solid #cbd5e1;font-size:14px;
+}
+#startBtn{
+  margin-top:18px;
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:#fff;font-size:15px;font-weight:700;
+  padding:12px 24px;border:none;border-radius:10px;
+  cursor:pointer;transition:0.25s;
+}
+#startBtn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 12px rgba(37,99,235,0.3);
+}
+
+/* === カタログ画面 === */
 header{position:sticky;top:0;z-index:30;background:#ffffffcc;
 border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
 .wrap{max-width:1200px;margin:0 auto;padding:10px 16px;
@@ -24,13 +73,11 @@ display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
 border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
 .input{background:#fff;border:1px solid var(--line);
 border-radius:8px;padding:8px 10px;font-size:14px;}
-
-main{display:grid;grid-template-columns:1fr 340px;gap:16px;
+main{display:none;grid-template-columns:1fr 340px;gap:16px;
 max-width:1200px;margin:14px auto;padding:0 16px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .card{position:relative;background:var(--card);border:1px solid #d6e0ff;
@@ -49,7 +96,6 @@ overflow:hidden;min-height:2.6em}
 justify-content:space-between;margin-top:auto;padding:0 10px}
 .qtyinput{width:70px;text-align:center;border:1px solid var(--line);
 border-radius:8px;padding:4px}
-
 .cart{position:sticky;top:84px;height:calc(100dvh - 100px);
 background:#fff;border:1px solid var(--line);border-radius:14px;
 padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
@@ -57,219 +103,150 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
 .cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;
 gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
-/* === 印刷専用レイアウト（商品名3行・左寄せ 2025-10-30 v6）=== */
+/* === 印刷設定（前回の安定版をそのまま保持） === */
+@page {
+  size: A4 portrait;
+  margin: 8mm 8mm 18mm 8mm;
+}
 @media print {
-
-  @page {
-    size: A4 portrait;
-    margin: 8mm 8mm 18mm 8mm;
+  #topPage, header, .actions, .cart, .actions-card, .controls {
+    display:none!important;
   }
-
-  header, .actions, .cart, .actions-card, .controls {
-    display: none !important;
-  }
-
   body {
-    background: #fff !important;
-    counter-reset: item;
-    position: relative !important;
+    background:#fff!important;
+    counter-reset:item;
+    position:relative!important;
   }
-
   main {
-    display: block !important;
-    margin: 0;
-    padding: 0;
-    position: relative !important;
-    min-height: 245mm !important;
+    display:block!important;
+    margin:0;
+    padding:0;
+    position:relative!important;
+    min-height:245mm!important;
   }
-
-  /* === グリッド（A4縦2列×5段）=== */
   .grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6mm !important;
-    width: calc(210mm - 20mm);
-    margin: 34mm auto 0 !important;
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:6mm;
+    width:calc(210mm - 20mm);
+    margin:30mm auto 0;
   }
-
-  .card:nth-child(10n) {
-    page-break-after: always !important;
-  }
-
-  /* === カード === */
   .card {
-    position: relative !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 4mm !important;
-    border: 1px solid #d9e1f2 !important;
-    border-radius: 8px !important;
-    background: #fff !important;
-    padding: 3mm 4mm !important;
-    height: calc((297mm - 95mm) / 5) !important;
-    page-break-inside: avoid !important;
-    box-shadow: none !important;
+    position:relative;
+    flex-direction:row;
+    align-items:flex-start;
+    gap:4mm;
+    border:1px solid #d9e1f2;
+    box-shadow:none;
+    padding:3.5mm;
+    height:calc((297mm - 95mm)/5);
+    page-break-inside:avoid;
+    background:#fff;
+    border-radius:8px;
+    overflow:hidden;
   }
-
-  /* === 左：画像＋数量欄 === */
-  .thumb {
-    flex: 0 0 30mm !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    border: none !important;
-    gap: 2mm !important;
-    height: 100% !important;
-    position: relative !important;
-  }
-
-  .thumb img {
-    max-width: 28mm !important;
-    max-height: 23mm !important;
-    object-fit: contain !important;
-    margin-top: 2mm !important;
-  }
-
-  /* === 発注数量欄 === */
-  .qty-print {
-    position: absolute !important;
-    bottom: 3mm !important;
-    left: 2.5mm !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 2mm !important;
-    font-size: 9pt !important;
-    font-weight: 600 !important;
-  }
-
-  .qty-print input {
-    width: 22mm !important;
-    height: 6mm !important;
-    border: 1px solid #bbb !important;
-    border-radius: 3mm !important;
-    text-align: center !important;
-    background: #fff !important;
-    color: #000 !important;
-  }
-
-  /* === 右：商品情報 === */
-  .body {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    gap: 1.5mm !important;
-    padding-left: 1mm !important;   /* ← 少し左へ寄せる */
-    padding-right: 3mm !important;
-  }
-
-  .title {
-    font-size: 9pt !important;
-    font-weight: 700 !important;
-    line-height: 1.4 !important;
-    text-align: left !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-    display: -webkit-box !important;
-    -webkit-box-orient: vertical !important;
-    -webkit-line-clamp: 3 !important; /* ← 3行に変更 */
-    overflow: hidden !important;
-    max-height: 14mm !important;     /* ← 高さを拡張 */
-  }
-
-  .price {
-    font-size: 9pt !important;
-    font-weight: 600 !important;
-    color: #2563eb !important;
-    text-align: left !important;
-  }
-
-  .barcode {
-    text-align: left !important;
-  }
-
-  .barcode svg {
-    height: 16px !important;
-    width: 70px !important;
-  }
-
   .card::before {
-    counter-increment: item;
-    content: "No." counter(item);
-    position: absolute;
-    bottom: 2mm;
-    right: 3mm;
-    font-family: "Orbitron", "Segoe UI", "Noto Sans JP", sans-serif;
-    font-weight: 700;
-    font-size: 7pt;
-    color: #fff;
-    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 50%, #1e3a8a 100%);
-    border-radius: 12px;
-    padding: 1mm 3mm;
+    counter-increment:item;
+    content:"No." counter(item);
+    position:absolute;
+    bottom:1.8mm;
+    right:2.2mm;
+    padding:1.4mm 3mm;
+    font-family:"Orbitron","Segoe UI","Noto Sans JP",sans-serif;
+    font-weight:700;
+    font-size:7.3pt;
+    color:#fff;
+    background:linear-gradient(135deg,#0ea5e9 0%,#2563eb 50%,#1e3a8a 100%);
+    border-radius:12px;
   }
-
-  /* === ヘッダー === */
+  .thumb {
+    flex:0 0 33mm;
+    height:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+  }
+  .thumb img {
+    max-height:27mm;
+    max-width:100%;
+    object-fit:contain;
+  }
+  .body {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:2mm;
+    padding-right:3mm;
+  }
+  .title {
+    font-size:9.3pt!important;
+    line-height:1.4!important;
+    max-height:22mm!important;
+    overflow:hidden!important;
+    white-space:normal!important;
+    word-break:break-word!important;
+    font-weight:700!important;
+  }
+  .barcode svg {height:20px;width:70px;}
+  .price {font-size:9.3pt;}
+  .qty-print {
+    position:absolute!important;
+    bottom:3mm!important;
+    left:4mm!important;
+    display:flex;
+    align-items:center;
+    gap:1.2mm;
+    font-size:9pt;
+    font-weight:600;
+  }
+  .qty-print input {
+    width:20mm!important;
+    height:6mm!important;
+    border:1px solid #bbb;
+    border-radius:3mm;
+  }
   .header-print {
-    position: fixed !important;
-    top: 6mm !important;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    background: #fff;
-    padding-bottom: 4mm !important;
-    z-index: 999;
+    position:fixed;top:5mm;left:0;width:100%;
+    display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;
   }
-
-  .header-print img {
-    height: 14mm;
-    vertical-align: middle;
-  }
-
-  .header-print h2 {
-    font-size: 16pt;
-    font-weight: 800;
-    margin: 0;
-    display: inline-block;
-    vertical-align: middle;
-  }
-
-  /* === フッター === */
+  .header-print img{height:14mm;width:auto;}
+  .header-print h2{font-size:16pt;font-weight:800;margin:0;}
   .footer-print {
-    position: fixed !important;
-    bottom: 0mm !important;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 11pt;
-    font-family: "Noto Sans JP", "Segoe UI", sans-serif;
-    color: #0f172a;
-    background: #fff;
-    padding-top: 2mm;
-    z-index: 999;
+    position:fixed!important;bottom:0mm!important;left:0;width:100%;
+    text-align:center;font-size:11pt;
+    font-family:"Noto Sans JP","Segoe UI",sans-serif;color:#0f172a;
+    padding-top:2mm;background:#fff;z-index:9999;
   }
 }
-
-
-
-
-
-  /* ==== 他要素より上に出す ==== */
-  main, .grid, .card {
-    position: relative !important;
-    z-index: 1 !important;
-  }
-}
-
-
-
-
 </style>
 </head>
 <body>
+
+<!-- === TOPページ === -->
+<div id="topPage" class="top-page">
+  <div class="top-card">
+    <img src="img/shima_owl.jpg" class="logo" alt="logo">
+    <h1>シマコーポレーション<br>発注システム</h1>
+
+    <div class="form-group">
+      <label>発注者名</label>
+      <input id="buyerName" type="text" placeholder="例：じゅん">
+    </div>
+    <div class="form-group">
+      <label>パートナー企業</label>
+      <input id="partnerName" type="text" placeholder="例：シマ法人営業課">
+    </div>
+    <div class="form-group">
+      <label>現場名</label>
+      <input id="siteName" type="text" placeholder="例：門真倉庫B区画">
+    </div>
+
+    <button id="startBtn">🚀 発注カタログを開く</button>
+  </div>
+</div>
+
+<!-- === 発注カタログ画面 === -->
 <header>
   <div class="wrap">
     <div class="brand">
@@ -281,12 +258,6 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     </div>
   </div>
 </header>
-
-<div class="controls">
-  <input id="buyerName" class="input" placeholder="発注者名">
-  <input id="partnerName" class="input" placeholder="パートナー企業">
-  <input id="siteName" class="input" placeholder="現場名">
-</div>
 
 <main>
   <section><div id="grid" class="grid"></div></section>
@@ -308,9 +279,10 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 </div>
 
 <script>
-const GAS_ENDPOINT="https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
 
-let cart=[];
+let cart = [];
+
 function updateCart(){
   const list=document.getElementById('cartlist');
   list.innerHTML='';
@@ -323,21 +295,23 @@ function updateCart(){
   let subtotal=0;
   cart.forEach((it,i)=>{
     subtotal+=it.price*it.qty;
-    list.innerHTML+=`<div class='cartitem'>
-      <div>${it.name}</div><div>${it.qty}</div>
-      <div>${(it.price*it.qty).toLocaleString()}円</div>
-      <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
-    </div>`;
+    list.innerHTML+=`
+      <div class='cartitem'>
+        <div>${it.name}</div><div>${it.qty}</div>
+        <div>${(it.price*it.qty).toLocaleString()}円</div>
+        <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
+      </div>`;
   });
   document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
   document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
 }
+
 function removeItem(i){cart.splice(i,1);updateCart();}
 
 async function boot(){
   const PRODUCTS = await fetch('./products.json').then(r => r.json());
   const grid = document.getElementById('grid');
-  PRODUCTS.forEach((p,i)=>{
+  PRODUCTS.forEach(p=>{
     const barcode = renderBarcode(p.jan);
     grid.innerHTML += `
       <div class='card'>
@@ -346,18 +320,11 @@ async function boot(){
         </div>
         <div class='body'>
           <div class='title'>${p.name}</div>
-          <div class='barcode'>${barcode}</div>
           <div class='price'>税抜：${p.price.toLocaleString()}円</div>
           <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
-
-          <!-- ✅ 印刷専用 数量欄 -->
-          <div class="qty-print">
-            <label>数量：</label>
-            <input type="text" placeholder="">
-          </div>
+          <div class='barcode'>${barcode}</div>
+          <div class='qty-print'><label>数量：</label><input type='text'></div>
         </div>
-
-        <!-- 通常画面用 数量・カート -->
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
           <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
@@ -366,13 +333,13 @@ async function boot(){
   });
 }
 
-
 function addToCart(p){
   const q=document.getElementById(`qty-${p.jan}`).value;
   if(!q||q<=0)return;
   const ex=cart.find(x=>x.jan===p.jan);
   if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}
-  updateCart();document.getElementById(`qty-${p.jan}`).value='';
+  updateCart();
+  document.getElementById(`qty-${p.jan}`).value='';
 }
 
 async function sendOrder(){
@@ -382,7 +349,8 @@ async function sendOrder(){
   const partner=document.getElementById('partnerName').value.trim();
   const site=document.getElementById('siteName').value.trim();
 
-  const payload={buyerName:buyer,partnerName:partner,siteName:site,items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
+  const payload={buyerName:buyer,partnerName:partner,siteName:site,
+    items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
 
   const btn=document.getElementById('orderBtn');
   btn.disabled=true;btn.textContent='送信中…';
