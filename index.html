@@ -357,18 +357,42 @@ function updateCart(){
 function removeItem(i){cart.splice(i,1);updateCart();}
 
 async function boot(){
-  // 👇この1行にすれば、確実＆安全
-const PRODUCTS = await fetch(`products.json?ts=${Date.now()}`, { cache: "no-store" });
+  // ✅ この1ブロックを丸ごとこの形に
+  const PRODUCTS = await fetch(`products.json?ts=${Date.now()}`, { cache: "no-store" })
+    .then(r => {
+      if (!r.ok) throw new Error("products.jsonが読み込めませんでした");
+      return r.json();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
+      return [];
+    });
 
-  .then(r => {
-    if (!r.ok) throw new Error("products.jsonが読み込めませんでした");
-    return r.json();
-  })
-  .catch(err => {
-    console.error(err);
-    alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
-    return [];
+  const grid = document.getElementById('grid');
+  grid.innerHTML = ""; // ← 既存の要素を一度リセット（推奨）
+  PRODUCTS.forEach(p => {
+    const barcode = renderBarcode(p.jan);
+    grid.innerHTML += `
+      <div class='card'>
+        <div class='thumb'>
+          <img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'">
+        </div>
+        <div class='body'>
+          <div class='title'>${p.name}</div>
+          <div class='price'>税抜：${p.price.toLocaleString()}円</div>
+          <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
+          <div class='barcode'>${barcode}</div>
+          <div class='qty-print'><label>数量：</label><input type='text'></div>
+        </div>
+        <div class='actions-card'>
+          <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+        </div>
+      </div>`;
   });
+}
+
 
   const grid = document.getElementById('grid');
   PRODUCTS.forEach(p=>{
