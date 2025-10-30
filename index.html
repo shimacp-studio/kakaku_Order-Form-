@@ -57,7 +57,7 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
 .cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;
 gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
-/* === 印刷専用レイアウト（完全安定版 2025-10-30 v3）=== */
+/* === 印刷専用レイアウト（左下配置・完全安定版 2025-10-30 v4）=== */
 @media print {
 
   @page {
@@ -65,7 +65,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     margin: 8mm 8mm 18mm 8mm;
   }
 
-  /* --- 通常UI・非表示 --- */
+  /* --- 通常UIを非表示 --- */
   header, .actions, .cart, .actions-card, .controls {
     display: none !important;
   }
@@ -90,7 +90,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 6mm !important;
     width: calc(210mm - 20mm);
-    margin: 38mm auto 0 !important; /* ← タイトルと被らないように下げた */
+    margin: 38mm auto 0 !important;
   }
 
   .card:nth-child(10n) {
@@ -121,25 +121,30 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 2mm !important;
     border: none !important;
+    gap: 2mm !important;
+    height: 100% !important;
+    position: relative !important;
   }
 
   .thumb img {
     max-width: 33mm !important;
     max-height: 25mm !important;
     object-fit: contain !important;
+    margin-top: 2mm !important;
   }
 
-  /* ✅ 発注数量欄（画像の下） */
+  /* ✅ 発注数量欄（カード左下固定配置） */
   .qty-print {
+    position: absolute !important;
+    bottom: 3mm !important;     /* ← 左下 */
+    left: 3mm !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     gap: 2mm !important;
     font-size: 9pt !important;
     font-weight: 600 !important;
-    margin-top: 2mm !important;
   }
 
   .qty-print input {
@@ -171,7 +176,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     word-break: break-word !important;
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
-    -webkit-line-clamp: 2 !important; /* ← 2行まで */
+    -webkit-line-clamp: 2 !important; /* 2行まで */
     overflow: hidden !important;
     max-height: 9.5mm !important;
   }
@@ -208,7 +213,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     padding: 1mm 3mm;
   }
 
-  /* === ヘッダー（タイトル） === */
+  /* === ヘッダー === */
   .header-print {
     position: fixed !important;
     top: 6mm !important;
@@ -252,6 +257,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
 
 
+
   /* ==== 他要素より上に出す ==== */
   main, .grid, .card {
     position: relative !important;
@@ -269,7 +275,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   <div class="wrap">
     <div class="brand">
       <img src="img/shima_owl.jpg" alt="logo">
-      <h1>シマコーポレーション 発注カタログ</h1>
+      <h1>シマコーポレーション 発注カタログ2</h1>
     </div>
     <div class="actions">
       <button class="btn" onclick="window.print()">印刷（A4縦）</button>
