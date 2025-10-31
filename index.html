@@ -29,8 +29,9 @@ h1{margin:0;font-weight:800}
   width: 100%;
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #93c5fd 100%);
   transition: opacity 0.4s ease;
-  opacity: 1;
+  opacity: 1; /* ←追加 */
 }
+
 .top-card {
   text-align: center;
   background: rgba(255,255,255,0.9);
@@ -42,11 +43,20 @@ h1{margin:0;font-weight:800}
   max-width: 420px;
   width: 90%;
 }
+
 .top-card h1 {
   font-size:22px;font-weight:800;color:#1e3a8a;
   margin-bottom:30px;line-height:1.4;
 }
-.input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #cbd5e1;font-size:14px;}
+.form-group{text-align:left;margin-bottom:18px;}
+.form-group label{
+  font-weight:600;font-size:13px;color:#334155;
+  display:block;margin-bottom:4px;
+}
+.form-group input{
+  width:100%;padding:10px 12px;border-radius:8px;
+  border:1px solid #cbd5e1;font-size:14px;
+}
 #startBtn{
   margin-top:18px;
   background:linear-gradient(135deg,#2563eb,#1e40af);
@@ -59,27 +69,7 @@ h1{margin:0;font-weight:800}
   box-shadow:0 6px 12px rgba(37,99,235,0.3);
 }
 
-/* === オートコンプリート候補 === */
-.autolist {
-  position:absolute;
-  z-index:10000;
-  background:#fff;
-  border:1px solid #cbd5e1;
-  border-radius:8px;
-  width:calc(100% - 2px);
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
-  max-height:180px;
-  overflow-y:auto;
-}
-.autolist div {
-  padding:8px 10px;
-  cursor:pointer;
-}
-.autolist div:hover {
-  background:#e0ebff;
-}
-
-/* === カタログ・印刷CSS（省略せずそのまま保持） === */
+/* === カタログ画面 === */
 header{position:sticky;top:0;z-index:30;background:#ffffffcc;
 border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
 .wrap{max-width:1200px;margin:0 auto;padding:10px 16px;
@@ -90,6 +80,10 @@ display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
 border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
 .btn:disabled{opacity:.5;cursor:not-allowed}
+.controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
+padding:0 16px;grid-template-columns:repeat(3,1fr);}
+.input{background:#fff;border:1px solid var(--line);
+border-radius:8px;padding:8px 10px;font-size:14px;}
 main{display:none;grid-template-columns:1fr 340px;gap:16px;
 max-width:1200px;margin:14px auto;padding:0 16px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -103,25 +97,134 @@ justify-content:center;border-bottom:1px solid var(--line);background:#fff}
 .title{font-weight:700;font-size:12px;line-height:1.35;
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
 overflow:hidden;min-height:2.6em}
+.barcode svg{height:18px;width:80px;}
 .price{font-weight:800;font-size:13px}
+.actions-card{display:flex;align-items:center;
+justify-content:space-between;margin-top:auto;padding:0 10px}
+.qtyinput{width:70px;text-align:center;border:1px solid var(--line);
+border-radius:8px;padding:4px}
 .cart{position:sticky;top:84px;height:calc(100dvh - 100px);
 background:#fff;border:1px solid var(--line);border-radius:14px;
 padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
 .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
+.cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;
+gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 
-/* 印刷設定（前回のまま保持） */
-@page { size: A4 portrait; margin: 8mm 8mm 18mm 8mm; }
+/* === 印刷設定（前回の安定版をそのまま保持） === */
+@page {
+  size: A4 portrait;
+  margin: 8mm 8mm 18mm 8mm;
+}
 @media print {
-  #topPage, header, .actions, .cart, .actions-card, .controls { display:none!important; }
-  body { background:#fff!important; }
-  main { display:block!important; margin:0; padding:0; }
-  .grid { grid-template-columns:repeat(2,1fr)!important; gap:6mm; width:calc(210mm - 20mm); margin:30mm auto 0; }
-  .card { position:relative; flex-direction:row; align-items:flex-start; gap:4mm;
-    border:1px solid #d9e1f2; box-shadow:none; padding:3.5mm; page-break-inside:avoid;
-    background:#fff; border-radius:8px; overflow:hidden; }
-  .thumb { flex:0 0 33mm; display:flex; align-items:center; justify-content:center; border:none; }
-  .thumb img { max-height:27mm; object-fit:contain; }
-  .qty-print { position:absolute; bottom:3mm; left:4mm; font-size:9pt; }
+  #topPage, header, .actions, .cart, .actions-card, .controls {
+    display:none!important;
+  }
+  body {
+    background:#fff!important;
+    counter-reset:item;
+    position:relative!important;
+  }
+  main {
+    display:block!important;
+    margin:0;
+    padding:0;
+    position:relative!important;
+    min-height:245mm!important;
+  }
+  .grid {
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:6mm;
+    width:calc(210mm - 20mm);
+    margin:30mm auto 0;
+  }
+  .card {
+    position:relative;
+    flex-direction:row;
+    align-items:flex-start;
+    gap:4mm;
+    border:1px solid #d9e1f2;
+    box-shadow:none;
+    padding:3.5mm;
+    height:calc((297mm - 95mm)/5);
+    page-break-inside:avoid;
+    background:#fff;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .card::before {
+    counter-increment:item;
+    content:"No." counter(item);
+    position:absolute;
+    bottom:1.8mm;
+    right:2.2mm;
+    padding:1.4mm 3mm;
+    font-family:"Orbitron","Segoe UI","Noto Sans JP",sans-serif;
+    font-weight:700;
+    font-size:7.3pt;
+    color:#fff;
+    background:linear-gradient(135deg,#0ea5e9 0%,#2563eb 50%,#1e3a8a 100%);
+    border-radius:12px;
+  }
+  .thumb {
+    flex:0 0 33mm;
+    height:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+  }
+  .thumb img {
+    max-height:27mm;
+    max-width:100%;
+    object-fit:contain;
+  }
+  .body {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:2mm;
+    padding-right:3mm;
+  }
+  .title {
+    font-size:9.3pt!important;
+    line-height:1.4!important;
+    max-height:22mm!important;
+    overflow:hidden!important;
+    white-space:normal!important;
+    word-break:break-word!important;
+    font-weight:700!important;
+  }
+  .barcode svg {height:20px;width:70px;}
+  .price {font-size:9.3pt;}
+  .qty-print {
+    position:absolute!important;
+    bottom:3mm!important;
+    left:4mm!important;
+    display:flex;
+    align-items:center;
+    gap:1.2mm;
+    font-size:9pt;
+    font-weight:600;
+  }
+  .qty-print input {
+    width:20mm!important;
+    height:6mm!important;
+    border:1px solid #bbb;
+    border-radius:3mm;
+  }
+  .header-print {
+    position:fixed;top:5mm;left:0;width:100%;
+    display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;
+  }
+  .header-print img{height:14mm;width:auto;}
+  .header-print h2{font-size:16pt;font-weight:800;margin:0;}
+  .footer-print {
+    position:fixed!important;bottom:0mm!important;left:0;width:100%;
+    text-align:center;font-size:11pt;
+    font-family:"Noto Sans JP","Segoe UI",sans-serif;color:#0f172a;
+    padding-top:2mm;background:#fff;z-index:9999;
+  }
 }
 </style>
 </head>
@@ -133,16 +236,18 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
     <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;position:relative;">
-      <input id="buyerName" class="input" placeholder="発注者名" autocomplete="off" />
-      <input id="partnerName" class="input" placeholder="パートナー企業" autocomplete="off" />
-      <input id="siteName" class="input" placeholder="現場名" autocomplete="off" />
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+      <input id="buyerName" class="input" placeholder="発注者名" />
+      <input id="partnerName" class="input" placeholder="パートナー企業" />
+      <input id="siteName" class="input" placeholder="現場名" />
       <button id="startBtn" class="btn" style="margin-top:10px;">発注カタログを開く</button>
     </div>
   </div>
 </div>
 
-<!-- === カタログ画面 === -->
+
+<!-- === 発注カタログ画面 === -->
 <header>
   <div class="wrap">
     <div class="brand">
@@ -175,92 +280,162 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
 </div>
 
 <script>
-// === オートコンプリート機能 ===
-const candidates = {
-  buyerName: ["じゅん","田中一郎","山田花子","北野幹人","筒井悠","中村修"],
-  partnerName: ["シマCP法人営業課","株式会社おたふく手袋","株式会社ユニワールド","BURTLE","I’Z FRONTIER","ワークウェアジャパン"],
-  siteName: ["守口店","茨木店","八尾店","豊中店","伏見店","高槻店","右京店","尼崎店"]
-};
-function enableAutoComplete(inputId){
-  const input = document.getElementById(inputId);
-  const list = document.createElement("div");
-  list.className = "autolist";
-  input.parentNode.appendChild(list);
-
-  input.addEventListener("input", () => {
-    const val = input.value.trim();
-    list.innerHTML = "";
-    if (!val) return;
-    const matches = candidates[inputId].filter(v => v.includes(val));
-    matches.forEach(m => {
-      const item = document.createElement("div");
-      item.textContent = m;
-      item.onclick = () => {
-        input.value = m;
-        list.innerHTML = "";
-      };
-      list.appendChild(item);
-    });
-  });
-  document.addEventListener("click", e => {
-    if (!list.contains(e.target) && e.target !== input) list.innerHTML = "";
-  });
-}
-["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
-</script>
-
-<!-- === 既存のスクリプトは完全保持（印刷・メールOK） === -->
-<script>
 console.log("✅ script loaded");
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
-let cart = [];
 
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
+
+let cart = [];
+// === DOM読み込み後に初期化 ===
 window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
-  const startBtn = document.getElementById("startBtn");
-  if (startBtn) startBtn.onclick = () => {
+
+// === TOP→カタログ画面 切替 ===
+const startBtn = document.getElementById("startBtn");
+if (startBtn) {
+  startBtn.onclick = () => {
     const buyer = document.getElementById("buyerName").value.trim();
     if (!buyer) return alert("発注者名を入力してください。");
+
     sessionStorage.setItem("buyerName", buyer);
     sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
     sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
+
     const topPage = document.getElementById("topPage");
     const mainEl = document.querySelector("main");
+
+    // ✅ フェードアウトしてから完全に非表示にする
     topPage.style.opacity = "0";
     setTimeout(() => {
       topPage.style.display = "none";
-      mainEl.style.display = "grid";
+      topPage.style.visibility = "hidden";
+      topPage.style.zIndex = "-1";
     }, 400);
-    boot();
+
+    // ✅ main（カタログ画面）を表示して最前面に
+    mainEl.style.display = "grid";
+    mainEl.style.visibility = "visible";
+    mainEl.style.opacity = "1";
+    mainEl.style.position = "relative";
+    mainEl.style.zIndex = "10";
+
+    console.log("✅ 発注カタログを開くクリックOK");
+    boot(); // 商品一覧生成
   };
+}
+
+
+  // === 「この内容で発注」ボタン ===
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 });
 
-function updateCart(){const list=document.getElementById('cartlist');list.innerHTML='';if(!cart.length){list.textContent='カートは空です';document.getElementById('subtotal').textContent='0円';document.getElementById('total').textContent='0円';return;}
-let subtotal=0;cart.forEach((it,i)=>{subtotal+=it.price*it.qty;list.innerHTML+=`<div class='cartitem'><div>${it.name}</div><div>${it.qty}</div><div>${(it.price*it.qty).toLocaleString()}円</div><button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button></div>`;});
-document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
-document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";}
+
+  
+function updateCart(){
+  const list=document.getElementById('cartlist');
+  list.innerHTML='';
+  if(!cart.length){
+    list.textContent='カートは空です';
+    document.getElementById('subtotal').textContent='0円';
+    document.getElementById('total').textContent='0円';
+    return;
+  }
+  let subtotal=0;
+  cart.forEach((it,i)=>{
+    subtotal+=it.price*it.qty;
+    list.innerHTML+=`
+      <div class='cartitem'>
+        <div>${it.name}</div><div>${it.qty}</div>
+        <div>${(it.price*it.qty).toLocaleString()}円</div>
+        <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
+      </div>`;
+  });
+  document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
+  document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
+}
+
 function removeItem(i){cart.splice(i,1);updateCart();}
+
 async function boot(){
-  const PRODUCTS = await fetch('products.json', { cache: "no-store" }).then(r=>r.json()).catch(()=>[]);
-  const grid=document.getElementById('grid');grid.innerHTML="";
+  const PRODUCTS = await fetch('products.json', { cache: "no-store" })
+  .then(r => {
+    if (!r.ok) throw new Error("products.jsonが読み込めませんでした");
+    return r.json();
+  })
+  .catch(err => {
+    console.error(err);
+    alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
+    return [];
+  });
+
+  const grid = document.getElementById('grid');
   PRODUCTS.forEach(p=>{
-    const barcode=renderBarcode(p.jan);
-    grid.innerHTML+=`<div class='card'><div class='thumb'><img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'"></div><div class='body'><div class='title'>${p.name}</div><div class='price'>税抜：${p.price.toLocaleString()}円</div><div class='price'>税込：${Math.round(p.price*1.1).toLocaleString()}円</div><div class='barcode'>${barcode}</div><div class='qty-print'><label>数量：</label><input type='text'></div></div><div class='actions-card'><input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'><button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button></div></div>`;
+    const barcode = renderBarcode(p.jan);
+    grid.innerHTML += `
+      <div class='card'>
+        <div class='thumb'>
+          <img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'">
+        </div>
+        <div class='body'>
+          <div class='title'>${p.name}</div>
+          <div class='price'>税抜：${p.price.toLocaleString()}円</div>
+          <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
+          <div class='barcode'>${barcode}</div>
+          <div class='qty-print'><label>数量：</label><input type='text'></div>
+        </div>
+        <div class='actions-card'>
+          <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+        </div>
+      </div>`;
   });
 }
-function addToCart(p){const q=document.getElementById(`qty-${p.jan}`).value;if(!q||q<=0)return;const ex=cart.find(x=>x.jan===p.jan);if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}updateCart();document.getElementById(`qty-${p.jan}`).value='';}
-async function sendOrder(){if(!cart.length)return alert('カートが空です');const buyer=document.getElementById('buyerName').value.trim();if(!buyer)return alert('発注者名を入力してください');
-const partner=document.getElementById('partnerName').value.trim();const site=document.getElementById('siteName').value.trim();
-const payload={buyerName:buyer,partnerName:partner,siteName:site,items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
-const btn=document.getElementById('orderBtn');btn.disabled=true;btn.textContent='送信中…';try{await fetch(GAS_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});alert('✅ 発注を受け付けました（メール送信済み）');cart=[];updateCart();}catch(e){alert('⚠️ 送信に失敗しました：'+e.message);}finally{btn.disabled=false;btn.textContent='この内容で発注（メール送信）';}}
-function ean13Pattern(d){const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};const s=(d||"").replace(/[^0-9]/g,"");if(s.length<12)return null;const d12=s.slice(0,12),cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;const first=d12[0],left=d12.slice(1,7),right=d12.slice(7,12)+cd;let bits="101",par=P[first];for(let i=0;i<6;i++){bits+=(par[i]==="L"?L[left[i]]:G[left[i]]);}bits+="01010";for(let i=0;i<6
+
+function addToCart(p){
+  const q=document.getElementById(`qty-${p.jan}`).value;
+  if(!q||q<=0)return;
+  const ex=cart.find(x=>x.jan===p.jan);
+  if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}
+  updateCart();
+  document.getElementById(`qty-${p.jan}`).value='';
+}
+
+async function sendOrder(){
+  if(!cart.length)return alert('カートが空です');
+  const buyer=document.getElementById('buyerName').value.trim();
+  if(!buyer)return alert('発注者名を入力してください');
+  const partner=document.getElementById('partnerName').value.trim();
+  const site=document.getElementById('siteName').value.trim();
+
+  const payload={buyerName:buyer,partnerName:partner,siteName:site,
+    items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
+
+  const btn=document.getElementById('orderBtn');
+  btn.disabled=true;btn.textContent='送信中…';
+  try{
+    await fetch(GAS_ENDPOINT,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    alert('✅ 発注を受け付けました（メール送信済み）');
+    cart=[];updateCart();
+  }catch(e){
+    alert('⚠️ 送信に失敗しました：'+e.message);
+  }finally{
+    btn.disabled=false;btn.textContent='この内容で発注（メール送信）';
+  }
+}
+
+document.getElementById('orderBtn').onclick=sendOrder;
+
+function ean13Pattern(d){const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};const s=(d||"").replace(/[^0-9]/g,"");if(s.length<12)return null;const d12=s.slice(0,12),cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;const first=d12[0],left=d12.slice(1,7),right=d12.slice(7,12)+cd;let bits="101",par=P[first];for(let i=0;i<6;i++){bits+=(par[i]==="L"?L[left[i]]:G[left[i]]);}bits+="01010";for(let i=0;i<6;i++){bits+=R[right[i]];}return bits+"101";}
 function renderBarcode(jan){const bits=ean13Pattern(jan);if(!bits)return"";let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;for(let i=0;i<bits.length;i++)if(bits[i]==="1")out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;out+="</svg>";return out;}
 
 
 </script>
 </body>
 </html>
+
 
 
