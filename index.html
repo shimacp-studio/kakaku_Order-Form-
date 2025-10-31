@@ -355,11 +355,10 @@ function showList(input, list, saved) {
   });
 }
 
+// === オートコンプリート初期化 ===
 window.addEventListener("DOMContentLoaded", () => {
   ["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
 });
-
-</script>
 
 console.log("✅ script loaded");
 
@@ -370,45 +369,45 @@ let cart = [];
 window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
 
-// === TOP→カタログ画面 切替 ===
-const startBtn = document.getElementById("startBtn");
-if (startBtn) {
-  startBtn.onclick = () => {
-    const buyer = document.getElementById("buyerName").value.trim();
-    if (!buyer) return alert("発注者名を入力してください。");
+  // === TOP→カタログ画面 切替 ===
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn) {
+    startBtn.onclick = () => {
+      const buyer = document.getElementById("buyerName").value.trim();
+      if (!buyer) return alert("発注者名を入力してください。");
 
-    sessionStorage.setItem("buyerName", buyer);
-    sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
-    sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
+      sessionStorage.setItem("buyerName", buyer);
+      sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
+      sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
 
-    const topPage = document.getElementById("topPage");
-    const mainEl = document.querySelector("main");
+      const topPage = document.getElementById("topPage");
+      const mainEl = document.querySelector("main");
 
-    // ✅ フェードアウトしてから完全に非表示にする
-    topPage.style.opacity = "0";
-    setTimeout(() => {
-      topPage.style.display = "none";
-      topPage.style.visibility = "hidden";
-      topPage.style.zIndex = "-1";
-    }, 400);
+      // ✅ フェードアウトしてから完全に非表示にする
+      topPage.style.opacity = "0";
+      setTimeout(() => {
+        topPage.style.display = "none";
+        topPage.style.visibility = "hidden";
+        topPage.style.zIndex = "-1";
+      }, 400);
 
-    // ✅ main（カタログ画面）を表示して最前面に
-    mainEl.style.display = "grid";
-    mainEl.style.visibility = "visible";
-    mainEl.style.opacity = "1";
-    mainEl.style.position = "relative";
-    mainEl.style.zIndex = "10";
+      // ✅ main（カタログ画面）を表示して最前面に
+      mainEl.style.display = "grid";
+      mainEl.style.visibility = "visible";
+      mainEl.style.opacity = "1";
+      mainEl.style.position = "relative";
+      mainEl.style.zIndex = "10";
 
-    console.log("✅ 発注カタログを開くクリックOK");
-    boot(); // 商品一覧生成
-  };
-}
-
+      console.log("✅ 発注カタログを開くクリックOK");
+      boot(); // 商品一覧生成
+    };
+  }
 
   // === 「この内容で発注」ボタン ===
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 });
+
 
 
   
