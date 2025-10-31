@@ -225,25 +225,28 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
     font-family:"Noto Sans JP","Segoe UI",sans-serif;color:#0f172a;
     padding-top:2mm;background:#fff;z-index:9999;
   }
-/* === オートコンプリート候補 === */
+/* === オートコンプリート候補の見た目 === */
 .autolist {
-  position:absolute;
-  z-index:10000;
-  background:#fff;
-  border:1px solid #cbd5e1;
-  border-radius:8px;
-  width:100%;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
-  max-height:180px;
-  overflow-y:auto;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 2px;
+  width: 100%;
+  z-index: 9999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 14px;
 }
 .autolist div {
-  padding:8px 10px;
-  cursor:pointer;
+  padding: 6px 10px;
+  cursor: pointer;
 }
 .autolist div:hover {
-  background:#e0ebff;
+  background: #e0edff;
 }
+
 
 
   
