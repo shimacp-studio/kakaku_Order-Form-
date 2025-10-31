@@ -303,7 +303,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 </div>
 
 <script>
-
+// === オートコンプリート機能（履歴のみ） ===
 function enableAutoComplete(inputId){
   const input = document.getElementById(inputId);
   const list = document.createElement("div");
@@ -317,10 +317,7 @@ function enableAutoComplete(inputId){
     const val = input.value.trim();
     list.innerHTML = "";
     if (!val) return;
-
-    const merged = [...new Set([...saved, ...staticCandidates[inputId]])];
-    const matches = merged.filter(v => v.includes(val));
-
+    const matches = saved.filter(v => v.includes(val));
     matches.forEach(m => {
       const item = document.createElement("div");
       item.textContent = m;
@@ -332,7 +329,7 @@ function enableAutoComplete(inputId){
     });
   });
 
-  // ✅ 保存（確定時）
+  // ✅ 入力確定時に履歴を保存
   input.addEventListener("change", () => {
     const val = input.value.trim();
     if (!val) return;
@@ -353,7 +350,7 @@ window.addEventListener("DOMContentLoaded", () => {
   ["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
 });
 </script>
-  
+
 <script>
 console.log("✅ script loaded");
 
