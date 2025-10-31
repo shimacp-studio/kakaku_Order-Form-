@@ -305,22 +305,23 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   発注者名：＿＿＿＿＿＿＿＿＿＿＿　日付：＿＿＿＿＿＿＿＿＿＿＿　備考：＿＿＿＿＿＿＿＿＿＿＿
 </div>
 
-<!-- ✅ ここに履歴付きオートコンプリート -->
 <script>
-// === オートコンプリート機能（履歴のみ） ===
+// === オートコンプリート機能（クリックで履歴表示） ===
 function enableAutoComplete(inputId){
   const input = document.getElementById(inputId);
   const list = document.createElement("div");
   list.className = "autolist";
+  input.parentNode.style.position = "relative"; // ← 入力欄下にリスト出すため
   input.parentNode.appendChild(list);
 
+  // 履歴データを取得
   const saved = JSON.parse(localStorage.getItem(`history_${inputId}`) || "[]");
 
-  input.addEventListener("input", () => {
-    const val = input.value.trim();
+  // 候補リストを表示する共通関数
+  function showList(filter = "") {
     list.innerHTML = "";
-    if (!val) return;
-    const matches = saved.filter(v => v.includes(val));
+    const matches = saved.filter(v => v.includes(filter));
+    if (matches.length === 0) return;
     matches.forEach(m => {
       const item = document.createElement("div");
       item.textContent = m;
@@ -330,8 +331,20 @@ function enableAutoComplete(inputId){
       };
       list.appendChild(item);
     });
+  }
+
+  // ✅ 入力時に絞り込み
+  input.addEventListener("input", () => {
+    const val = input.value.trim();
+    showList(val);
   });
 
+  // ✅ クリック時（フォーカス時）に全履歴表示
+  input.addEventListener("focus", () => {
+    showList("");
+  });
+
+  // ✅ 入力確定時に履歴を保存
   input.addEventListener("change", () => {
     const val = input.value.trim();
     if (!val) return;
@@ -342,17 +355,18 @@ function enableAutoComplete(inputId){
     }
   });
 
+  // ✅ フォーカス外れたら候補を消す
   document.addEventListener("click", e => {
     if (!list.contains(e.target) && e.target !== input) list.innerHTML = "";
   });
 }
 
+// 初期化
 window.addEventListener("DOMContentLoaded", () => {
   ["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
 });
 </script>
 
-<script>
 console.log("✅ script loaded");
 
 const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
