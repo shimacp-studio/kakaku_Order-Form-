@@ -306,45 +306,25 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 </div>
 
 <script>
-// === オートコンプリート機能（クリックで履歴表示） ===
+// === オートコンプリート機能（履歴のみ） ===
 function enableAutoComplete(inputId){
   const input = document.getElementById(inputId);
   const list = document.createElement("div");
   list.className = "autolist";
-  input.parentNode.style.position = "relative"; // ← 入力欄下にリスト出すため
   input.parentNode.appendChild(list);
 
-  // 履歴データを取得
   const saved = JSON.parse(localStorage.getItem(`history_${inputId}`) || "[]");
 
-  // 候補リストを表示する共通関数
-  function showList(filter = "") {
-    list.innerHTML = "";
-    const matches = saved.filter(v => v.includes(filter));
-    if (matches.length === 0) return;
-    matches.forEach(m => {
-      const item = document.createElement("div");
-      item.textContent = m;
-      item.onclick = () => {
-        input.value = m;
-        list.innerHTML = "";
-      };
-      list.appendChild(item);
-    });
-  }
-
-  // ✅ 入力時に絞り込み
+  // ✅ 入力時に候補表示
   input.addEventListener("input", () => {
-    const val = input.value.trim();
-    showList(val);
+    showList(input, list, saved);
   });
 
-  // ✅ クリック時（フォーカス時）に全履歴表示
+  // ✅ ⬇️これを追加（クリックでも候補表示される）
   input.addEventListener("focus", () => {
-    showList("");
+    showList(input, list, saved);
   });
 
-  // ✅ 入力確定時に履歴を保存
   input.addEventListener("change", () => {
     const val = input.value.trim();
     if (!val) return;
@@ -355,16 +335,30 @@ function enableAutoComplete(inputId){
     }
   });
 
-  // ✅ フォーカス外れたら候補を消す
   document.addEventListener("click", e => {
     if (!list.contains(e.target) && e.target !== input) list.innerHTML = "";
   });
 }
 
-// 初期化
+function showList(input, list, saved) {
+  const val = input.value.trim();
+  list.innerHTML = "";
+  const matches = val ? saved.filter(v => v.includes(val)) : saved; // ← valが空でも全履歴出す
+  matches.forEach(m => {
+    const item = document.createElement("div");
+    item.textContent = m;
+    item.onclick = () => {
+      input.value = m;
+      list.innerHTML = "";
+    };
+    list.appendChild(item);
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   ["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
 });
+
 </script>
 
 console.log("✅ script loaded");
