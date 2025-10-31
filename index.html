@@ -303,12 +303,6 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
 </div>
 
 <script>
-// === オートコンプリート機能 ===
-const candidates = {
-  buyerName: ["田中一郎","山田花子","北野幹人","筒井悠","中村修","じゅん"],
-  partnerName: ["シマCP法人営業課","株式会社おたふく手袋","株式会社ユニワールド","BURTLE","I’Z FRONTIER","ワークウェアジャパン"],
-  siteName: ["守口店","茨木店","八尾店","豊中店","伏見店","高槻店","右京店","尼崎店"]
-};
 
 function enableAutoComplete(inputId){
   const input = document.getElementById(inputId);
@@ -316,11 +310,17 @@ function enableAutoComplete(inputId){
   list.className = "autolist";
   input.parentNode.appendChild(list);
 
+  // ✅ 履歴を読み込み
+  const saved = JSON.parse(localStorage.getItem(`history_${inputId}`) || "[]");
+
   input.addEventListener("input", () => {
     const val = input.value.trim();
     list.innerHTML = "";
     if (!val) return;
-    const matches = candidates[inputId].filter(v => v.includes(val));
+
+    const merged = [...new Set([...saved, ...staticCandidates[inputId]])];
+    const matches = merged.filter(v => v.includes(val));
+
     matches.forEach(m => {
       const item = document.createElement("div");
       item.textContent = m;
@@ -330,6 +330,17 @@ function enableAutoComplete(inputId){
       };
       list.appendChild(item);
     });
+  });
+
+  // ✅ 保存（確定時）
+  input.addEventListener("change", () => {
+    const val = input.value.trim();
+    if (!val) return;
+    if (!saved.includes(val)) {
+      saved.unshift(val);
+      if (saved.length > 20) saved.pop();
+      localStorage.setItem(`history_${inputId}`, JSON.stringify(saved));
+    }
   });
 
   document.addEventListener("click", e => {
@@ -342,7 +353,6 @@ window.addEventListener("DOMContentLoaded", () => {
   ["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
 });
 </script>
-
   
 <script>
 console.log("✅ script loaded");
