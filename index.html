@@ -100,15 +100,12 @@ border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13p
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
 /* TOPページの入力ボックス（カタログ側とは分けておく） */
-.top-card .input{
-  background:#eff4ff;          /* 薄いブルー */
-  border:none;                 /* 枠線なし */
-  border-radius:10px;
-  padding:10px 14px;
-  font-size:14px;
-  outline:none;
+.top-card input.input{
+  border:none !important;
+  background:#eff4ff;
   box-shadow:none;
 }
+
 
 /* デフォルトの下線を完全に打ち消す保険（type関係なく） */
 .top-card input{
@@ -306,7 +303,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
 
     <div class="top-form">
       <div class="autowrap">
