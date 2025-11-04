@@ -99,33 +99,39 @@ border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13p
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
-/* TOPページの入力ボックス（カタログ側とは分けておく） */
-.top-card input.input{
-  border:none !important;
-  background:#eff4ff;
+/* TOPページ専用の入力ボックス */
+.top-input{
+  width:100%;
+  background:#eff4ff;          /* 薄いブルー */
+  border:none;                 /* 枠線・下線を消す */
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:14px;
+  outline:none;
   box-shadow:none;
 }
 
-
-/* デフォルトの下線を完全に打ち消す保険（type関係なく） */
+/* 念のため：TOPのカード内 input には一切線を出さない */
 .top-card input{
   border:none !important;
   border-bottom:none !important;
+  outline:none !important;
   box-shadow:none !important;
 }
 
 /* フォーカス時だけふんわり青い枠を出す */
-.top-card input:focus{
+.top-input:focus{
   outline:none;
   box-shadow:0 0 0 2px rgba(37,99,235,0.35);
 }
 
 /* オートフィル時も同じ薄いブルーにする（Chrome対策） */
-.top-card .input:-webkit-autofill{
+.top-input:-webkit-autofill{
   -webkit-box-shadow:0 0 0 30px #eff4ff inset !important;
           box-shadow:0 0 0 30px #eff4ff inset !important;
   -webkit-text-fill-color:#0f172a !important;
 }
+
 
 
 main{display:none;grid-template-columns:1fr 340px;gap:16px;
@@ -303,20 +309,21 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
 
     <div class="top-form">
-      <div class="autowrap">
-        <input id="buyerName" class="input" placeholder="発注者名" autocomplete="off" />
-      </div>
-      <div class="autowrap">
-        <input id="partnerName" class="input" placeholder="パートナー企業" autocomplete="off" />
-      </div>
-      <div class="autowrap">
-        <input id="siteName" class="input" placeholder="現場名" autocomplete="off" />
-      </div>
-      <button id="startBtn" class="btn">発注カタログを開く</button>
-    </div>
+  <div class="autowrap">
+    <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off" />
+  </div>
+  <div class="autowrap">
+    <input id="partnerName" class="top-input" placeholder="パートナー企業"   autocomplete="off" />
+  </div>
+  <div class="autowrap">
+    <input id="siteName"    class="top-input" placeholder="現場名"         autocomplete="off" />
+  </div>
+  <button id="startBtn" class="btn" style="margin-top:10px;">発注カタログを開く</button>
+</div>
+
   </div>
 </div>
 
@@ -401,10 +408,22 @@ function showList(input, list, saved) {
   });
 }
 
-// === オートコンプリート初期化 ===
+// === オートコンプリート初期化 + 入力欄クリア ===
 window.addEventListener("DOMContentLoaded", () => {
-  ["buyerName","partnerName","siteName"].forEach(enableAutoComplete);
+  const ids = ["buyerName","partnerName","siteName"];
+
+  // ページ読み込み時に毎回まっさらにする
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.value = "";
+    }
+  });
+
+  // その上でオートコンプリート機能を有効化
+  ids.forEach(enableAutoComplete);
 });
+
 
 console.log("✅ script loaded");
 
