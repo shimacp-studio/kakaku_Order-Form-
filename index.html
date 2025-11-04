@@ -99,8 +99,22 @@ border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13p
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
-.input{background:#fff;border:1px solid var(--line);
-border-radius:8px;padding:8px 10px;font-size:14px;}
+/* 入力ボックス（グレーの下線が出ないように調整） */
+.input{
+  background:#fff;
+  border:1px solid transparent;   /* ← 通常時は枠を透明に */
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:14px;
+  outline:none;
+}
+
+/* フォーカス時だけ青く光る枠にする */
+.input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 1px rgba(37,99,235,0.25);
+}
+
 main{display:none;grid-template-columns:1fr 340px;gap:16px;
 max-width:1200px;margin:14px auto;padding:0 16px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
