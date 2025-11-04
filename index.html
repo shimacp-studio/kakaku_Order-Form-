@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>シマコーポレーション 
-  _発注カタログ</title>
+<title>シマコーポレーション 発注カタログ</title>
 <style>
 :root {
   --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;
@@ -100,18 +99,35 @@ border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13p
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
-/* TOPページ用 入力ボックス */
-.input{
-  background:#eff4ff;              /* ← 薄いブルーの背景 */
+/* TOPページの入力ボックス（カタログ側とは分けておく） */
+.top-card .input{
+  background:#eff4ff;          /* 薄いブルー */
+  border:none;                 /* 枠線なし */
+  border-radius:10px;
   padding:10px 14px;
   font-size:14px;
   outline:none;
   box-shadow:none;
 }
 
+/* デフォルトの下線を完全に打ち消す保険（type関係なく） */
+.top-card input{
+  border:none !important;
+  border-bottom:none !important;
+  box-shadow:none !important;
+}
+
 /* フォーカス時だけふんわり青い枠を出す */
-.input:focus{
+.top-card input:focus{
+  outline:none;
   box-shadow:0 0 0 2px rgba(37,99,235,0.35);
+}
+
+/* オートフィル時も同じ薄いブルーにする（Chrome対策） */
+.top-card .input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 30px #eff4ff inset !important;
+          box-shadow:0 0 0 30px #eff4ff inset !important;
+  -webkit-text-fill-color:#0f172a !important;
 }
 
 
@@ -290,7 +306,7 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
 
     <div class="top-form">
       <div class="autowrap">
@@ -520,15 +536,38 @@ async function sendOrder(){
 
   const btn=document.getElementById('orderBtn');
   btn.disabled=true;btn.textContent='送信中…';
-  try{
+    try{
     await fetch(GAS_ENDPOINT,{
       method:'POST',mode:'no-cors',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
+
     alert('✅ 発注を受け付けました（メール送信済み）');
-    cart=[];updateCart();
+
+    // カートを空にする
+    cart = [];
+    updateCart();
+
+    // ★ TOPページに戻す ★
+    const topPage = document.getElementById('topPage');
+    const mainEl  = document.querySelector('main');
+
+    if (topPage && mainEl){
+      // main（カタログ画面）を隠す
+      mainEl.style.display   = 'none';
+      mainEl.style.opacity   = '0';
+      mainEl.style.visibility= 'hidden';
+      mainEl.style.zIndex    = '0';
+
+      // TOPページを再表示
+      topPage.style.display   = 'flex';
+      topPage.style.opacity   = '1';
+      topPage.style.visibility= 'visible';
+      topPage.style.zIndex    = '9999';
+    }
   }catch(e){
+
     alert('⚠️ 送信に失敗しました：'+e.message);
   }finally{
     btn.disabled=false;btn.textContent='この内容で発注（メール送信）';
