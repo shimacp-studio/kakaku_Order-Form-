@@ -167,10 +167,29 @@ gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
   size: A4 portrait;
   margin: 8mm 8mm 18mm 8mm;
 }
+
+/* 画面表示のときはヘッダー／フッターを隠す */
+.header-print,
+.footer-print{
+  display:none;
+}
+
+  
 @media print {
   #topPage, header, .actions, .cart, .actions-card, .controls {
     display:none!important;
   }
+
+/* ここから追加 */
+  .header-print{
+    display:flex !important;
+  }
+  .footer-print{
+    display:block !important;
+  }
+  /* ここまで追加 */
+
+  
   body {
     background:#fff!important;
     counter-reset:item;
