@@ -526,9 +526,7 @@ async function boot(){
           <div class='price'>税抜：${p.price.toLocaleString()}円</div>
           <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
           <div class='barcode'>${barcode}</div>
-          <div class='qty-print'><label>数量：</label><input type='text'></div>
-        </div>
-        <div class='actions-card'>
+          <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
           <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
         </div>
