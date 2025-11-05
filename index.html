@@ -61,8 +61,6 @@ h1{margin:0;font-weight:800}
 .autowrap{
   position:relative;
   width:100%;
-  border:none;          /* 念のため下線を完全に消す */
-  border-bottom:none;
 }
 
 /* 既存のフォーム用クラス（今はほぼ未使用だけど残しておく） */
@@ -112,14 +110,13 @@ padding:0 16px;grid-template-columns:repeat(3,1fr);}
   font-size:14px;
   outline:none;
   box-shadow:none;
-  -webkit-appearance:none; /* ブラウザ標準の線を殺す */
+  -webkit-appearance:none;
   appearance:none;
 }
 
 /* 念のため：TOPのカード内 input には一切線を出さない */
 .top-card input{
   border:0 !important;
-  border-bottom:0 !important;
   outline:none !important;
   box-shadow:none !important;
 }
@@ -162,6 +159,7 @@ padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)
 .cartlist{flex:1;overflow:auto;border-top:1px dashed var(--line);padding-top:8px}
 .cartitem{display:grid;grid-template-columns:1fr 62px 70px 24px;
 gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed #e5e7eb}
+
 
 
 /* === 印刷設定（前回の安定版をそのまま保持） === */
@@ -316,7 +314,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
 
     <div class="top-form">
   <div class="autowrap">
