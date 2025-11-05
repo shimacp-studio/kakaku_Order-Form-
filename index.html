@@ -547,14 +547,21 @@ async function sendOrder(){
   const partner=document.getElementById('partnerName').value.trim();
   const site=document.getElementById('siteName').value.trim();
 
-  const payload={buyerName:buyer,partnerName:partner,siteName:site,
-    items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))};
+  const payload={
+    buyerName:buyer,
+    partnerName:partner,
+    siteName:site,
+    items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))
+  };
 
   const btn=document.getElementById('orderBtn');
-  btn.disabled=true;btn.textContent='送信中…';
-    try{
+  btn.disabled=true;
+  btn.textContent='送信中…';
+
+  try{
     await fetch(GAS_ENDPOINT,{
-      method:'POST',mode:'no-cors',
+      method:'POST',
+      mode:'no-cors',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
@@ -570,25 +577,33 @@ async function sendOrder(){
     const mainEl  = document.querySelector('main');
 
     if (topPage && mainEl){
-      // main（カタログ画面）を隠す
-      mainEl.style.display   = 'none';
-      mainEl.style.opacity   = '0';
-      mainEl.style.visibility= 'hidden';
-      mainEl.style.zIndex    = '0';
+      // カタログ画面を隠す
+      mainEl.style.display    = 'none';
+      mainEl.style.opacity    = '0';
+      mainEl.style.visibility = 'hidden';
+      mainEl.style.zIndex     = '0';
 
       // TOPページを再表示
-      topPage.style.display   = 'flex';
-      topPage.style.opacity   = '1';
-      topPage.style.visibility= 'visible';
-      topPage.style.zIndex    = '9999';
-    }
-  }catch(e){
+      topPage.style.display    = 'flex';
+      topPage.style.opacity    = '1';
+      topPage.style.visibility = 'visible';
+      topPage.style.zIndex     = '9999';
 
+      // ★ TOPページに戻ったときに入力ボックスをまっさらにする
+      ['buyerName','partnerName','siteName'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+    }
+
+  }catch(e){
     alert('⚠️ 送信に失敗しました：'+e.message);
   }finally{
-    btn.disabled=false;btn.textContent='この内容で発注（メール送信）';
+    btn.disabled=false;
+    btn.textContent='この内容で発注（メール送信）';
   }
 }
+
 
 document.getElementById('orderBtn').onclick=sendOrder;
 
