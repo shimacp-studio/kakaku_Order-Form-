@@ -140,9 +140,26 @@ max-width:1200px;margin:14px auto;padding:0 16px}
 .card{position:relative;background:var(--card);border:1px solid #d6e0ff;
 border-radius:14px;overflow:hidden;display:flex;flex-direction:column;
 box-shadow:var(--shadow);padding-bottom:10px}
-.thumb{aspect-ratio:3/2;display:flex;align-items:center;
-justify-content:center;border-bottom:1px solid var(--line);background:#fff}
-.thumb img{max-width:92%;max-height:92%;object-fit:contain}
+  
+/* 発注画面の商品画像の高さを揃える */
+.thumb{
+  height:180px;                 /* ★ 高さを固定：好みで 160〜220px くらいに調整OK */
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+  overflow:hidden;              /* 大きすぎる画像のはみ出し防止 */
+}
+
+.thumb img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;           /* 画像を切り取らずに収める */
+  display:block;
+}
+
 .body{padding:10px 12px;display:grid;gap:6px}
 .title{font-weight:700;font-size:12px;line-height:1.35;
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
@@ -333,7 +350,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
 
     <div class="top-form">
   <div class="autowrap">
