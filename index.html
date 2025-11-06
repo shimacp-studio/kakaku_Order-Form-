@@ -328,17 +328,20 @@ main{
   border-color:#15803d;
 }
 
-/* レスポンシブ：幅が狭いときはカートを下に配置 */
+/* レスポンシブ：幅が狭いときはメインを1カラムにするだけ */
 @media (max-width: 960px){
   main{
     grid-template-columns:1fr;
   }
+
+  /* 狭い時はカートを少し小さめにする程度の調整だけにする */
   .cart{
-    position:static;
-    height:auto;
-    margin-top:12px;
+    width:280px;
+    right:12px;
+    top:72px;
   }
 }
+
 
 
 
@@ -514,7 +517,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
 
     <div class="top-form">
   <div class="autowrap">
