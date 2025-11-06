@@ -328,6 +328,47 @@ main{
   border-color:#15803d;
 }
 
+/* === ヘッダ右上の KART ボタン === */
+.cart-toggle{
+  position:relative;
+  border:none;
+  background:transparent;
+  padding:0;
+  margin-right:8px;
+  cursor:pointer;
+}
+
+/* ここが大事：サイズを固定しておく */
+.cart-toggle img{
+  height:32px;
+  width:auto;
+  max-width:none;
+  display:block;
+}
+
+/* 件数バッジ */
+.cart-badge{
+  position:absolute;
+  right:-4px;
+  top:-4px;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:999px;
+  background:#ef4444;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 0 2px #f9fafb;
+}
+.cart-badge.is-empty{
+  display:none;    /* 件数0のときは非表示 */
+}
+
+  
 /* レスポンシブ：幅が狭いときはメインを1カラムにするだけ */
 @media (max-width: 960px){
   main{
@@ -687,27 +728,55 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function updateCart(){
-  const list=document.getElementById('cartlist');
-  list.innerHTML='';
-  if(!cart.length){
-    list.textContent='カートは空です';
-    document.getElementById('subtotal').textContent='0円';
-    document.getElementById('total').textContent='0円';
+  const list = document.getElementById('cartlist');
+  list.innerHTML = '';
+
+  if (!cart.length){
+    list.textContent = 'カートは空です';
+    document.getElementById('subtotal').textContent = '0円';
+    document.getElementById('total').textContent    = '0円';
+
+    // ★ カートが空のときのバッジ
+    const badge = document.getElementById('cartBadge');
+    if (badge){
+      badge.textContent = '0';
+      badge.classList.add('is-empty');
+    }
     return;
   }
-  let subtotal=0;
+
+  let subtotal = 0;
   cart.forEach((it,i)=>{
-    subtotal+=it.price*it.qty;
-    list.innerHTML+=`
+    subtotal += it.price * it.qty;
+    list.innerHTML += `
       <div class='cartitem'>
-        <div>${it.name}</div><div>${it.qty}</div>
-        <div>${(it.price*it.qty).toLocaleString()}円</div>
-        <button onclick='removeItem(${i})' style='color:red;border:none;background:none;font-weight:800'>×</button>
+        <div>${it.name}</div>
+        <div>${it.qty}</div>
+        <div>${(it.price * it.qty).toLocaleString()}円</div>
+        <button onclick='removeItem(${i})'
+                style='color:red;border:none;background:none;font-weight:800'>×</button>
       </div>`;
   });
-  document.getElementById('subtotal').textContent=subtotal.toLocaleString()+"円";
-  document.getElementById('total').textContent=Math.round(subtotal*1.1).toLocaleString()+"円";
+
+  document.getElementById('subtotal').textContent =
+    subtotal.toLocaleString() + '円';
+  document.getElementById('total').textContent =
+    Math.round(subtotal * 1.1).toLocaleString() + '円';
+
+  // ★ ここでバッジ更新 ★
+  const badge = document.getElementById('cartBadge');
+  if (badge){
+    const totalQty = cart.reduce((sum, it) => sum + it.qty, 0);
+    if (totalQty > 0){
+      badge.textContent = totalQty;
+      badge.classList.remove('is-empty');
+    }else{
+      badge.textContent = '0';
+      badge.classList.add('is-empty');
+    }
+  }
 }
+
 
 function removeItem(i){cart.splice(i,1);updateCart();}
 
