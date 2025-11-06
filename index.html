@@ -259,11 +259,14 @@ main{
   padding:8px 10px;
 }
 
-/* === カート側 === */
+/* === カート側（KARTボタンで開閉するドロワー版） === */
 .cart{
-  position:sticky;
-  top:84px;
-  height:calc(100dvh - 100px);
+  position:fixed;
+  top:80px;
+  right:16px;
+  width:320px;
+  max-height:calc(100dvh - 120px);
+
   background:#0f172a;
   border-radius:18px;
   padding:14px 14px 12px;
@@ -273,7 +276,22 @@ main{
   box-shadow:0 10px 30px rgba(15,23,42,.35);
   border:1px solid rgba(148,163,184,.4);
   color:#e5e7eb;
+  z-index:60;
+
+  /* ← 初期状態は画面の外に隠す */
+  transform:translateX(110%);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .25s ease, opacity .25s ease;
 }
+
+/* KART.png クリックで .open を付けてスライドイン */
+.cart.open{
+  transform:translateX(0);
+  opacity:1;
+  pointer-events:auto;
+}
+
 .cart h2{
   margin:0 0 4px;
   font-size:15px;
@@ -496,7 +514,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
 
     <div class="top-form">
   <div class="autowrap">
