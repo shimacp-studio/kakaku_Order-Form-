@@ -176,21 +176,22 @@ main{
 
 /* 商品画像エリア */
 .thumb{
-  height:150px;
+  height:140px;      /* ちょっと小さめ */
   width:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-bottom:1px solid var(--line);
-  background:
-    radial-gradient(circle at 0 0,#e0edff,#ffffff 55%);
+  border-bottom:none;          /* 線を消す */
+  background:#ffffff;          /* 真っ白にして商品だけ浮かせる */
   overflow:hidden;
 }
+
 .thumb img{
   max-width:90%;
   max-height:90%;
   object-fit:contain;
   display:block;
+  background:transparent;      /* PNGの場合はちゃんと透過される */
 }
 
 /* カード本文（商品情報） */
