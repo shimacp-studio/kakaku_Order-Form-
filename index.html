@@ -517,7 +517,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
 
     <div class="top-form">
   <div class="autowrap">
@@ -543,8 +543,16 @@ autolist:empty {
       <h1>シマコーポレーション 発注カタログ</h1>
     </div>
     <div class="actions">
-      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
-    </div>
+  <!-- ★ カートトグルボタン（KART.png） -->
+  <button id="cartToggle" class="cart-toggle" type="button">
+    <img src="img/KART.png" alt="カート">
+    <span id="cartBadge" class="cart-badge is-empty">0</span>
+  </button>
+
+  <!-- 既存の印刷ボタンはそのまま -->
+  <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+</div>
+
   </div>
 </header>
 
