@@ -32,7 +32,7 @@ h1{margin:0;font-weight:800}
   opacity:1;
 }
 
-/* 中央の大きな白カード（全体の土台） */
+/* 全体の白い土台カード */
 .top-shell{
   width:100%;
   max-width:1120px;
@@ -71,67 +71,70 @@ h1{margin:0;font-weight:800}
   font-weight:800;
   letter-spacing:.08em;
   font-size:14px;
-  color:#1f2937;
+  color:#111827;
 }
 .top-ship{
   font-size:12px;
   color:#6b7280;
 }
 
-/* 下側：1枚のヒーローカード（中にフォームを重ねる） */
+/* 下側：ヒーローカード全体 */
 .top-hero-row{
   position:relative;
   margin-top:12px;
 }
-
-/* 背景＋うっすらフクロウ画像 */
 .top-hero{
-  width:100%;
-  min-height:360px;
-  border-radius:22px;
-  overflow:hidden;
   position:relative;
-  background:radial-gradient(circle at 0% 0%,#fefce8 0,#f9fafb 45%,#e5ecff 100%);
+  max-width:1100px;
+  width:calc(100% - 48px);
+  margin:40px auto 0;
+  height:280px;
+  border-radius:26px;
+  background:#ffffff;
+  box-shadow:0 20px 45px rgba(15,23,42,.18);
+  overflow:hidden;
 }
+
+/* ロゴ背景：横に広げて濃くする */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  /* ロゴを左寄せ＆ちょっと大きめに表示 */
-  background:url("img/shima_owl.jpg") left center / auto 130% no-repeat;
-  opacity:0.32;              /* 濃さアップ（0.18 → 0.32） */
-  filter:grayscale(.05);     /* ほぼフルカラー寄りに */
+  /* 横方向 1.7 倍くらいにして左寄せ */
+  background:url("img/shima_owl.jpg") left center / 170% auto no-repeat;
+  opacity:0.55;          /* ロゴの濃さ */
+  filter:grayscale(0.05);
   pointer-events:none;
 }
 
-
+/* 上に白グラデを被せて読みやすく */
 .top-hero::after{
   content:"";
   position:absolute;
   inset:0;
   background:linear-gradient(
     90deg,
-    rgba(255,255,255,0.82) 0%,
-    rgba(255,255,255,0.70) 40%,
-    rgba(255,255,255,0.15) 100%
+    rgba(255,255,255,0.96) 0%,
+    rgba(255,255,255,0.72) 40%,
+    rgba(255,255,255,0.25) 100%
   );
   pointer-events:none;
 }
 
-/* 左側コピー */
 .top-hero-copy{
-  position:absolute;
-  left:40px;
-  top:50%;
-  transform:translateY(-50%);
-  max-width:320px;
-  font-size:22px;
-  line-height:1.7;
-  font-weight:700;
-  color:#111827;
-  text-align:left;
+  position:relative;
+  z-index:1;
+  margin:0;
+  padding-left:56px;
+  padding-top:80px;
+  font-size:18px;
+  line-height:1.9;
+  color:#1e293b;
+  font-weight:600;
 }
 
+
+/* 右側のフォームカード（ロゴカードの上に重ねる） */
 .top-card{
   position:absolute;
   right:32px;
@@ -139,15 +142,14 @@ h1{margin:0;font-weight:800}
   transform:translateY(-50%);
   width:320px;
   max-width:40%;
-  background:rgba(255,255,255,0.82);   /* ← 透過を強める (0.96 → 0.82 くらい) */
+  background:rgba(255,255,255,0.82);   /* 少し透過させてガラス風 */
   border-radius:20px;
   border:1px solid rgba(226,232,240,0.9);
   box-shadow:0 18px 40px rgba(15,23,42,.22);
   padding:22px 22px 24px;
   text-align:left;
-  backdrop-filter:blur(12px);          /* ガラスっぽさアップ */
+  backdrop-filter:blur(12px);
 }
-
 
 .top-eyebrow{
   font-size:11px;
@@ -169,7 +171,7 @@ h1{margin:0;font-weight:800}
   color:#6b7280;
 }
 
-/* 入力フォームの縦並び（IDやクラスは今まで通り） */
+/* 入力フォームの縦並び（HTML は今のままでOK） */
 .top-form{
   display:flex;
   flex-direction:column;
@@ -180,7 +182,7 @@ h1{margin:0;font-weight:800}
   width:100%;
 }
 
-/* TOPボタンを少しWixっぽく */
+/* TOP ボタンを少し Wix っぽく */
 .top-start-btn{
   margin-top:8px;
   width:100%;
@@ -193,6 +195,7 @@ h1{margin:0;font-weight:800}
   transform:translateY(-1px);
   box-shadow:0 8px 18px rgba(37,99,235,.35);
 }
+
 
 /* スマホ・タブレットでは縦積み */
 @media (max-width:900px){
@@ -708,30 +711,40 @@ autolist:empty {
         </p>
       </div>
 
-      <!-- 右側のフォームカード（ID・クラスはそのまま） -->
+      <div id="topPage">
+  <div class="top-shell">
+    <!-- 大きなカード（ロゴ＋フォームをまとめた器） -->
+    <div class="top-hero">
+      <!-- 左側のコピー（お好みで） -->
+      <p class="top-hero-copy">
+        必要な消耗品を、<br>いつもの現場からまとめて注文。
+      </p>
+
+      <!-- 右側のフォームカード（中身は今の top-card と同じ） -->
       <div class="top-card">
         <p class="top-eyebrow">ORDER FORM</p>
         <h1>発注情報を入力して<br>カタログを開いてください</h1>
-        <p class="top-lead">一度入力すると、次回から履歴として自動候補に表示されます。</p>
+        <p class="top-lead">
+          一度入力すると、次回から履歴として自動候補に表示されます。
+        </p>
 
         <div class="top-form">
           <div class="autowrap">
-            <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off" />
+            <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off">
           </div>
           <div class="autowrap">
-            <input id="partnerName" class="top-input" placeholder="パートナー企業" autocomplete="off" />
+            <input id="partnerName" class="top-input" placeholder="パートナー企業" autocomplete="off">
           </div>
           <div class="autowrap">
-            <input id="siteName"    class="top-input" placeholder="現場名"         autocomplete="off" />
+            <input id="siteName"    class="top-input" placeholder="現場名"         autocomplete="off">
           </div>
-          <button id="startBtn" class="btn top-start-btn">
-            発注カタログを開く
-          </button>
+          <button id="startBtn" class="btn top-start-btn">発注カタログを開く</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 
 <!-- === 発注カタログ画面 === -->
