@@ -140,10 +140,7 @@ main{
   max-width:1200px;
   margin:18px auto 24px;
   padding:0 16px;
-  grid-template-columns:minmax(0,3fr) minmax(280px,1.2fr);
-  gap:20px;
-  align-items:flex-start;
-}
+  }
 
 /* 商品一覧グリッド（レスポンシブ） */
 .grid{
@@ -372,10 +369,7 @@ main{
   
 /* レスポンシブ：幅が狭いときはメインを1カラムにするだけ */
 @media (max-width: 960px){
-  main{
-    grid-template-columns:1fr;
-  }
-
+  
   /* 狭い時はカートを少し小さめにする程度の調整だけにする */
   .cart{
     width:280px;
@@ -559,7 +553,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
 
     <div class="top-form">
   <div class="autowrap">
