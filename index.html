@@ -721,7 +721,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 
-  // --- カートアイコン（KART.png）クリックでカートパネルを開く ---
+　  // --- カートアイコン（KART.png）クリックでカートパネルを開く ---
   const cartToggle = document.getElementById("cartToggle");
   const cartPanel  = document.querySelector(".cart");
   if (cartToggle && cartPanel){
@@ -734,6 +734,8 @@ window.addEventListener("DOMContentLoaded", () => {
       cartPanel.classList.toggle("open");
     });
   }
+
+  
 });
 
 function updateCart(){
