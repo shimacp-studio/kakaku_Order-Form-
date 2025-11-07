@@ -247,10 +247,29 @@ border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
 display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand img{height:38px;width:auto}
-.actions{display:flex;gap:12px;align-items:center}
-.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
-border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+/* ← これが「元の」ボタンデザイン（TOPもカタログも共通） */
+.btn{
+  background:var(--brand);
+  color:#fff;
+  border:1px solid #1243c1;
+  border-radius:10px;
+  padding:8px 14px;
+  font-weight:700;
+  cursor:pointer;
+  font-size:13px;
+  transition:0.3s;
+}
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
 
