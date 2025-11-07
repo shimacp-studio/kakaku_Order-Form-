@@ -93,15 +93,20 @@ h1{margin:0;font-weight:800}
   position:relative;
   background:radial-gradient(circle at 0% 0%,#fefce8 0,#f9fafb 45%,#e5ecff 100%);
 }
-.top-hero::before{
+.top-hero::after{
   content:"";
   position:absolute;
   inset:0;
-  background:url("img/shima_owl.jpg") center center / contain no-repeat;
-  opacity:0.18;              /* ロゴを「うっすら」にする */
-  filter:grayscale(.15);
+  /* 右に行くほど透けるグラデーションを少し弱める */
+  background:linear-gradient(
+    90deg,
+    rgba(255,255,255,0.90) 0%,
+    rgba(255,255,255,0.65) 40%,
+    rgba(255,255,255,0.18) 100%
+  );
   pointer-events:none;
 }
+
 .top-hero::after{
   content:"";
   position:absolute;
@@ -129,7 +134,6 @@ h1{margin:0;font-weight:800}
   text-align:left;
 }
 
-/* 右側のフォームカード（ヒーローの上に浮かせる） */
 .top-card{
   position:absolute;
   right:32px;
@@ -137,14 +141,15 @@ h1{margin:0;font-weight:800}
   transform:translateY(-50%);
   width:320px;
   max-width:40%;
-  background:rgba(249,250,251,0.96);
+  background:rgba(255,255,255,0.82);   /* ← 透過を強める (0.96 → 0.82 くらい) */
   border-radius:20px;
-  border:1px solid #e5e7eb;
-  box-shadow:0 14px 30px rgba(15,23,42,.18);
+  border:1px solid rgba(226,232,240,0.9);
+  box-shadow:0 18px 40px rgba(15,23,42,.22);
   padding:22px 22px 24px;
   text-align:left;
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(12px);          /* ガラスっぽさアップ */
 }
+
 
 .top-eyebrow{
   font-size:11px;
