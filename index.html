@@ -17,228 +17,74 @@ html,body{
 }
 h1{margin:0;font-weight:800}
 
-/* === TOPページ（Wix風・1枚のヒーローカード） === */
-#topPage{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100dvh;
-  width:100%;
-  background:linear-gradient(135deg,#f5f5f5 0%,#e5ecff 45%,#dbeafe 100%);
-  transition:opacity .4s ease;
-  opacity:1;
+/* === TOPページ === */
+#topPage {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  width: 100%;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #93c5fd 100%);
+  transition: opacity 0.4s ease;
+  opacity: 1;
 }
 
-/* 中央の大きな白カード（全体の土台） */
-.top-shell{
-  width:100%;
-  max-width:1120px;
-  margin:32px auto;
-  background:#ffffff;
-  border-radius:28px;
-  box-shadow:0 18px 45px rgba(15,23,42,.20);
-  padding:28px 32px 32px;
-  display:flex;
-  flex-direction:column;
-  gap:24px;
+.top-card {
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #dbeafe;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding: 40px 60px;
+  backdrop-filter: blur(10px);
+  max-width: 420px;
+  width: 90%;
 }
 
-/* 上のバー（ロゴ＋キャッチ） */
-.top-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:16px;
-  padding-bottom:12px;
-  border-bottom:1px solid #e5e7eb;
+.top-card h1 {　
+  font-size:22px;font-weight:800;color:#1e3a8a;
+  margin-bottom:30px;line-height:1.4;
 }
 
-.top-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.top-logo{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  box-shadow:0 4px 12px rgba(15,23,42,.25);
-  object-fit:cover;
-}
-
-.top-brand-text{
-  font-weight:800;
-  letter-spacing:.08em;
-  font-size:14px;
-  color:#1f2937;
-}
-
-.top-ship{
-  font-size:12px;
-  color:#6b7280;
-}
-
-/* 下側：1枚のヒーローカード（中にフォームを重ねる） */
-.top-hero-row{
-  position:relative;
-  margin-top:12px;
-}
-
-/* ヒーローエリア全体（背景＋うっすらフクロウ） */
-.top-hero{
-  width:100%;
-  min-height:360px;
-  border-radius:22px;
-  overflow:hidden;
-  position:relative;
-  background:radial-gradient(circle at 0% 0%,#fefce8 0,#f9fafb 45%,#e5ecff 100%);
-}
-
-/* うっすら表示の shima_owl.jpg */
-.top-hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:url("img/shima_owl.jpg") center center / contain no-repeat;
-  opacity:0.18;               /* ← ここで「うっすら」に調整 */
-  filter:grayscale(.15);
-  pointer-events:none;
-}
-
-/* 軽くグラデのベールをかけて、文字を読みやすくする */
-.top-hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    90deg,
-    rgba(255,255,255,0.82) 0%,
-    rgba(255,255,255,0.70) 40%,
-    rgba(255,255,255,0.15) 100%
-  );
-  pointer-events:none;
-}
-
-/* 左寄りに置くキャッチコピー（Wix っぽい余白多め） */
-.top-hero-copy{
-  position:absolute;
-  left:40px;
-  top:50%;
-  transform:translateY(-50%);
-  max-width:320px;
-  font-size:22px;
-  line-height:1.7;
-  font-weight:700;
-  color:#111827;
-  text-align:left;
-}
-
-/* 右側に重ねるフォームカード（見た目は1枚の中のパネル） */
-.top-card{
-  position:absolute;
-  right:32px;
-  top:50%;
-  transform:translateY(-50%);
-  width:320px;
-  max-width:40%;
-  background:rgba(249,250,251,0.96);
-  border-radius:20px;
-  border:1px solid #e5e7eb;
-  box-shadow:0 14px 30px rgba(15,23,42,.18);
-  padding:22px 22px 24px;
-  text-align:left;
-  backdrop-filter:blur(8px);
-}
-
-.top-eyebrow{
-  font-size:11px;
-  letter-spacing:.2em;
-  font-weight:700;
-  color:#9ca3af;
-  margin:0 0 6px;
-}
-
-.top-card h1{
-  font-size:18px;
-  line-height:1.6;
-  font-weight:800;
-  color:#111827;
-  margin:0 0 10px;
-}
-
-.top-lead{
-  margin:0 0 16px;
-  font-size:13px;
-  color:#6b7280;
-}
-
-/* 入力フォーム縦並び（ID やクラスはそのまま） */
+/* 入力欄ブロック（縦並び） */
 .top-form{
   display:flex;
   flex-direction:column;
   gap:10px;
+  margin-top:20px;
 }
 
+/* 各入力欄 + 候補リストのラッパー */
 .autowrap{
   position:relative;
   width:100%;
 }
 
-/* 「発注カタログを開く」ボタンを Wix っぽく */
-.top-start-btn{
-  margin-top:8px;
-  width:100%;
-  background:linear-gradient(135deg,#2563eb,#1d4ed8);
-  border-color:#1d4ed8;
-  font-size:14px;
-  padding:11px 18px;
+/* 既存のフォーム用クラス（今はほぼ未使用だけど残しておく） */
+.form-group{text-align:left;margin-bottom:18px;}
+.form-group label{
+  font-weight:600;font-size:13px;color:#334155;
+  display:block;margin-bottom:4px;
+}
+.form-group input{
+  width:100%;padding:10px 12px;border-radius:8px;
+  border:1px solid #cbd5e1;font-size:14px;
 }
 
-.top-start-btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 8px 18px rgba(37,99,235,.35);
+#startBtn{
+  margin-top:4px;
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:#fff;font-size:15px;font-weight:700;
+  padding:12px 24px;border:none;border-radius:10px;
+  cursor:pointer;transition:0.25s;
 }
-
-/* スマホ・タブレットでは縦積み（フォームは下に） */
-@media (max-width:900px){
-  .top-shell{
-    margin:16px;
-    padding:18px 18px 22px;
-    border-radius:20px;
-  }
-
-  .top-hero{
-    min-height:260px;
-  }
-
-  .top-hero-copy{
-    left:20px;
-    top:24px;
-    transform:none;
-    font-size:18px;
-    max-width:none;
-  }
-
-  .top-card{
-    position:static;
-    transform:none;
-    width:100%;
-    max-width:none;
-    margin-top:16px;
-    box-shadow:0 10px 24px rgba(15,23,42,.18);
-  }
-
-  .top-hero-row{
-    display:flex;
-    flex-direction:column;
-    gap:0;
-  }
+#startBtn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 12px rgba(37,99,235,0.3);
 }
-
 
 /* === カタログ画面 === */
 header{position:sticky;top:0;z-index:30;background:#ffffffcc;
@@ -247,29 +93,10 @@ border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
 display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .brand{display:flex;align-items:center;gap:10px;}
 .brand img{height:38px;width:auto}
-.actions{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-
-/* ← これが「元の」ボタンデザイン（TOPもカタログも共通） */
-.btn{
-  background:var(--brand);
-  color:#fff;
-  border:1px solid #1243c1;
-  border-radius:10px;
-  padding:8px 14px;
-  font-weight:700;
-  cursor:pointer;
-  font-size:13px;
-  transition:0.3s;
-}
-.btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
+.actions{display:flex;gap:12px;align-items:center}
+.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
+border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
 padding:0 16px;grid-template-columns:repeat(3,1fr);}
 
