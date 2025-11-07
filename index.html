@@ -17,74 +17,180 @@ html,body{
 }
 h1{margin:0;font-weight:800}
 
-/* === TOPページ === */
-#topPage {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100dvh;
-  width: 100%;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #93c5fd 100%);
-  transition: opacity 0.4s ease;
-  opacity: 1;
+/* === TOPページ（Wix風レイアウト） === */
+#topPage{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  background:#f3f4ff;
+  font-size:14px;
 }
 
-.top-card {
-  text-align: center;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid #dbeafe;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 40px 60px;
-  backdrop-filter: blur(10px);
-  max-width: 420px;
-  width: 90%;
+/* 中央の 1200px コンテナ */
+.top-shell{
+  width:min(1200px,100%);
+  margin:auto;
+  padding:32px 20px 40px;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
 }
 
-.top-card h1 {
-  font-size:22px;font-weight:800;color:#1e3a8a;
-  margin-bottom:30px;line-height:1.4;
+/* 上部バー */
+.top-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.top-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  color:#111827;
+  letter-spacing:.12em;
+}
+.top-logo{
+  height:40px;
+  width:auto;
+  border-radius:999px;
+}
+.top-brand-text{
+  font-size:16px;
+}
+.top-ship{
+  font-size:12px;
+  color:#6b7280;
 }
 
-/* 入力欄ブロック（縦並び） */
+/* 下の２カラムエリア（左：ヒーロー / 右：フォーム） */
+.top-hero-row{
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(320px,1fr);
+  gap:32px;
+  align-items:stretch;
+}
+
+/* 左側ヒーロー */
+.top-hero{
+  border-radius:24px;
+  min-height:340px;
+  background:
+    linear-gradient(120deg,#e5f0ff 0%,#f9fafb 50%,#fee2e2 100%);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  padding:32px 32px 40px;
+}
+
+/* 背景にうっすらカートのイメージ（画像はお好みで差し替えOK） */
+.top-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("img/KART.png") right bottom / 360px auto no-repeat;
+  opacity:0.10;
+  pointer-events:none;
+}
+
+.top-hero-copy{
+  position:relative;
+  margin:0;
+  font-size:26px;
+  font-weight:700;
+  line-height:1.5;
+  color:#111827;
+  white-space:pre-line;
+}
+
+/* 右側カード（フォーム） */
+.top-card{
+  align-self:stretch;
+  background:rgba(255,255,255,0.96);
+  border-radius:20px;
+  border:1px solid #e5e7eb;
+  box-shadow:0 18px 40px rgba(15,23,42,.12);
+  padding:28px 26px 26px;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.top-eyebrow{
+  font-size:11px;
+  letter-spacing:.24em;
+  color:#9ca3af;
+  font-weight:700;
+  margin:0;
+}
+.top-card h1{
+  font-size:20px;
+  line-height:1.5;
+  margin:4px 0 4px;
+  color:#111827;
+}
+.top-lead{
+  font-size:13px;
+  color:#6b7280;
+  margin:0 0 4px;
+}
+
+/* 既存と同じ：入力群を縦に並べる */
 .top-form{
+  margin-top:6px;
   display:flex;
   flex-direction:column;
   gap:10px;
-  margin-top:20px;
 }
 
-/* 各入力欄 + 候補リストのラッパー */
+/* autolist を載せるラッパー */
 .autowrap{
   position:relative;
   width:100%;
 }
 
-/* 既存のフォーム用クラス（今はほぼ未使用だけど残しておく） */
-.form-group{text-align:left;margin-bottom:18px;}
-.form-group label{
-  font-weight:600;font-size:13px;color:#334155;
-  display:block;margin-bottom:4px;
+/* 既存の .top-input のスタイルはそのままでOK */
+
+/* スタートボタン（TOP専用の見た目だけ強めに） */
+.top-start-btn{
+  align-self:stretch;
+  margin-top:6px;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  padding:12px 24px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;
 }
-.form-group input{
-  width:100%;padding:10px 12px;border-radius:8px;
-  border:1px solid #cbd5e1;font-size:14px;
+.top-start-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 20px rgba(37,99,235,.35);
 }
 
-#startBtn{
-  margin-top:4px;
-  background:linear-gradient(135deg,#2563eb,#1e40af);
-  color:#fff;font-size:15px;font-weight:700;
-  padding:12px 24px;border:none;border-radius:10px;
-  cursor:pointer;transition:0.25s;
+/* スマホ時は縦並びに */
+@media(max-width:900px){
+  .top-shell{
+    padding:20px 12px 24px;
+  }
+  .top-hero-row{
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+  .top-hero{
+    min-height:220px;
+    padding:24px 20px 28px;
+  }
 }
-#startBtn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 12px rgba(37,99,235,0.3);
-}
+
+
 
 /* === カタログ画面 === */
 header{position:sticky;top:0;z-index:30;background:#ffffffcc;
@@ -548,26 +654,49 @@ autolist:empty {
 
 <!-- === TOPページ === -->
 <div id="topPage">
-  <div class="top-card">
-    <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
-    <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
+  <div class="top-shell">
+    <!-- 上部バー（ロゴ＋キャッチ） -->
+    <header class="top-header">
+      <div class="top-brand">
+        <img src="img/shima_owl.jpg" alt="シマコーポレーション ロゴ" class="top-logo">
+        <span class="top-brand-text">シマコーポレーション 発注カタログ</span>
+      </div>
+      <div class="top-ship">現場からカンタン Web 発注</div>
+    </header>
 
-    <div class="top-form">
-  <div class="autowrap">
-    <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off" />
+    <!-- ヒーローエリア（左：イメージ / 右：入力フォーム） -->
+    <div class="top-hero-row">
+      <!-- 左側のヒーロービュー -->
+      <div class="top-hero">
+        <p class="top-hero-copy">
+          必要な消耗品を、
+          <br>いつもの現場からまとめて注文。
+        </p>
+      </div>
+
+      <!-- 右側の入力カード（ID や input はそのまま） -->
+      <div class="top-card">
+        <p class="top-eyebrow">ORDER FORM</p>
+        <h1>発注情報を入力して<br>カタログを開いてください</h1>
+        <p class="top-lead">一度入力すると、次回から履歴として自動候補に表示されます。</p>
+
+        <div class="top-form">
+          <div class="autowrap">
+            <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off" />
+          </div>
+          <div class="autowrap">
+            <input id="partnerName" class="top-input" placeholder="パートナー企業" autocomplete="off" />
+          </div>
+          <div class="autowrap">
+            <input id="siteName"    class="top-input" placeholder="現場名"         autocomplete="off" />
+          </div>
+          <button id="startBtn" class="btn top-start-btn">発注カタログを開く</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="autowrap">
-    <input id="partnerName" class="top-input" placeholder="パートナー企業"   autocomplete="off" />
-  </div>
-  <div class="autowrap">
-    <input id="siteName"    class="top-input" placeholder="現場名"         autocomplete="off" />
-  </div>
-  <button id="startBtn" class="btn" style="margin-top:10px;">発注カタログを開く</button>
 </div>
 
-  </div>
-</div>
 
 <!-- === 発注カタログ画面 === -->
 <header>
