@@ -93,19 +93,17 @@ h1{margin:0;font-weight:800}
   position:relative;
   background:radial-gradient(circle at 0% 0%,#fefce8 0,#f9fafb 45%,#e5ecff 100%);
 }
-.top-hero::after{
+.top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  /* 右に行くほど透けるグラデーションを少し弱める */
-  background:linear-gradient(
-    90deg,
-    rgba(255,255,255,0.90) 0%,
-    rgba(255,255,255,0.65) 40%,
-    rgba(255,255,255,0.18) 100%
-  );
+  /* ロゴを左寄せ＆ちょっと大きめに表示 */
+  background:url("img/shima_owl.jpg") left center / auto 130% no-repeat;
+  opacity:0.32;              /* 濃さアップ（0.18 → 0.32） */
+  filter:grayscale(.05);     /* ほぼフルカラー寄りに */
   pointer-events:none;
 }
+
 
 .top-hero::after{
   content:"";
