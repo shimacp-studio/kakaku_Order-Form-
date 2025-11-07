@@ -380,8 +380,6 @@ main{
 
 
 
-
-
 /* === 印刷設定（前回の安定版をそのまま保持） === */
 @page {
   size: A4 portrait;
@@ -553,7 +551,7 @@ autolist:empty {
   <div class="top-card">
     <img src="img/shima_owl.jpg" alt="logo" style="height:80px;margin-bottom:10px;">
     <h1>シマコーポレーション 発注カタログ</h1>
-    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください。</p>
+    <p style="margin-top:4px;font-size:14px;color:#334155;">入力してカタログを開いてください</p>
 
     <div class="top-form">
   <div class="autowrap">
@@ -687,43 +685,61 @@ let cart = [];
 window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
 
+  // --- TOPページ → カタログ画面 ---
   const startBtn = document.getElementById("startBtn");
   if (startBtn) {
     startBtn.onclick = () => {
       const buyer = document.getElementById("buyerName").value.trim();
       if (!buyer) return alert("発注者名を入力してください。");
 
-      sessionStorage.setItem("buyerName", buyer);
+      sessionStorage.setItem("buyerName",   buyer);
       sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
-      sessionStorage.setItem("siteName", document.getElementById("siteName").value.trim());
+      sessionStorage.setItem("siteName",    document.getElementById("siteName").value.trim());
 
       const topPage = document.getElementById("topPage");
-      const mainEl = document.querySelector("main");
+      const mainEl  = document.querySelector("main");
 
       topPage.style.opacity = "0";
       setTimeout(() => {
-        topPage.style.display = "none";
-        topPage.style.visibility = "hidden";
-        topPage.style.zIndex = "-1";
+        topPage.style.display   = "none";
+        topPage.style.visibility= "hidden";
+        topPage.style.zIndex    = "-1";
       }, 400);
 
-      mainEl.style.display = "grid";
+      mainEl.style.display  = "grid";
       mainEl.style.visibility = "visible";
-      mainEl.style.opacity = "1";
-      mainEl.style.position = "relative";
-      mainEl.style.zIndex = "10";
+      mainEl.style.opacity    = "1";
+      mainEl.style.position   = "relative";
+      mainEl.style.zIndex     = "10";
 
       console.log("✅ 発注カタログを開くクリックOK");
       boot();
     };
   }
 
+  // --- メール送信ボタン ---
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
+
+  // --- カートアイコン（KART.png）クリックでカートパネルを開く ---
+  const cartToggle = document.getElementById("cartToggle");
+  const cartPanel  = document.querySelector(".cart");
+  if (cartToggle && cartPanel){
+    cartToggle.addEventListener("click", () => {
+      if (!cart.length){
+        alert("カートに商品がありません");
+        return;
+      }
+      // 1回目クリックで開く／もう一度クリックで閉じる
+      cartPanel.classList.toggle("open");
+    });
+  }
 });
 
 function updateCart(){
-  const list = document.getElementById('cartlist');
+  const list  = document.getElementById('cartlist');
+  const badge = document.getElementById('cartBadge');
+
   list.innerHTML = '';
 
   if (!cart.length){
@@ -732,10 +748,9 @@ function updateCart(){
     document.getElementById('total').textContent    = '0円';
 
     // ★ カートが空のときのバッジ
-    const badge = document.getElementById('cartBadge');
     if (badge){
       badge.textContent = '0';
-      badge.classList.add('is-empty');
+      badge.classList.add('is-empty');   // .cart-badge.is-empty { display:none; } で非表示
     }
     return;
   }
@@ -758,8 +773,7 @@ function updateCart(){
   document.getElementById('total').textContent =
     Math.round(subtotal * 1.1).toLocaleString() + '円';
 
-  // ★ ここでバッジ更新 ★
-  const badge = document.getElementById('cartBadge');
+  // ★ バッジ更新（合計数量）
   if (badge){
     const totalQty = cart.reduce((sum, it) => sum + it.qty, 0);
     if (totalQty > 0){
@@ -772,8 +786,10 @@ function updateCart(){
   }
 }
 
-
-function removeItem(i){cart.splice(i,1);updateCart();}
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
 
 async function boot(){
   const PRODUCTS = await fetch('products.json', { cache: "no-store" })
@@ -789,6 +805,7 @@ async function boot(){
 
   const grid = document.getElementById('grid');
   grid.innerHTML = ""; // 念のためクリア
+
   PRODUCTS.forEach(p=>{
     const barcode = renderBarcode(p.jan);
     grid.innerHTML += `
@@ -801,22 +818,32 @@ async function boot(){
           <div class='price'>税抜：${p.price.toLocaleString()}円</div>
           <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
           <div class='barcode'>${barcode}</div>
-          <div class='actions-card'>
-          <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+        </div>
+        <div class='actions-card'>
+          <input id='qty-${p.jan}' type='number' class='qtyinput'
+                 min='0' step='1' placeholder='数量'>
+          <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>
+            カートに追加
+          </button>
         </div>
       </div>`;
   });
 }
 
 function addToCart(p){
-  const q=document.getElementById(`qty-${p.jan}`).value;
-  if(!q||q<=0)return;
-  const ex=cart.find(x=>x.jan===p.jan);
-  if(ex){ex.qty+=Number(q);}else{cart.push({...p,qty:Number(q)});}
+  const q = document.getElementById(`qty-${p.jan}`).value;
+  if (!q || q <= 0) return;
+
+  const ex = cart.find(x => x.jan === p.jan);
+  if (ex){
+    ex.qty += Number(q);
+  }else{
+    cart.push({...p, qty:Number(q)});
+  }
   updateCart();
-  document.getElementById(`qty-${p.jan}`).value='';
+  document.getElementById(`qty-${p.jan}`).value = '';
 }
+
 
 async function sendOrder(){
   if(!cart.length)return alert('カートが空です');
