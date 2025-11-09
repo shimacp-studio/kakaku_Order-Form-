@@ -83,6 +83,8 @@ h1{margin:0;font-weight:800}
   position:relative;
   margin-top:12px;
 }
+
+/* 大きなヒーローカード（土台） */
 .top-hero{
   position:relative;
   max-width:1100px;
@@ -93,6 +95,7 @@ h1{margin:0;font-weight:800}
   background:#ffffff;
   box-shadow:0 20px 45px rgba(15,23,42,.18);
   overflow:hidden;
+  z-index:0;              /* ★ 背景レイヤー */
 }
 
 /* ロゴ背景：横に広げて濃くする */
@@ -100,11 +103,11 @@ h1{margin:0;font-weight:800}
   content:"";
   position:absolute;
   inset:0;
-  /* 横方向 1.7 倍くらいにして左寄せ */
   background:url("img/shima_owl.jpg") left center / 170% auto no-repeat;
-  opacity:0.55;          /* ロゴの濃さ */
+  opacity:0.55;
   filter:grayscale(0.05);
-  pointer-events:none;
+  pointer-events:none;    /* ★ クリックを邪魔しない */
+  z-index:0;
 }
 
 /* 上に白グラデを被せて読みやすく */
@@ -118,23 +121,25 @@ h1{margin:0;font-weight:800}
     rgba(255,255,255,0.72) 40%,
     rgba(255,255,255,0.25) 100%
   );
-  pointer-events:none;
+  pointer-events:none;    /* ★ これもクリックを通す */
+  z-index:0;
 }
 
+/* 左側コピー */
 .top-hero-copy{
-  position:relative;
-  z-index:1;
-  margin:0;
-  padding-left:56px;
-  padding-top:80px;
+  position:absolute;
+  left:56px;
+  top:50%;
+  transform:translateY(-50%);
+  max-width:320px;
   font-size:18px;
   line-height:1.9;
   color:#1e293b;
   font-weight:600;
+  z-index:2;              /* ★ 背景より手前 */
 }
 
-
-/* 右側のフォームカード（ロゴカードの上に重ねる） */
+/* 右側のフォームカード */
 .top-card{
   position:absolute;
   right:32px;
@@ -142,14 +147,16 @@ h1{margin:0;font-weight:800}
   transform:translateY(-50%);
   width:320px;
   max-width:40%;
-  background:rgba(255,255,255,0.82);   /* 少し透過させてガラス風 */
+  background:rgba(255,255,255,0.86);
   border-radius:20px;
   border:1px solid rgba(226,232,240,0.9);
   box-shadow:0 18px 40px rgba(15,23,42,.22);
   padding:22px 22px 24px;
   text-align:left;
   backdrop-filter:blur(12px);
+  z-index:3;              /* ★ 一番手前：入力可能にする */
 }
+
 
 .top-eyebrow{
   font-size:11px;
