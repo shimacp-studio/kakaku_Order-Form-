@@ -98,15 +98,16 @@ h1{margin:0;font-weight:800}
   z-index:0;              /* ★ 背景レイヤー */
 }
 
-/* ロゴ背景：横に広げて濃くする */
+/* ロゴ背景：少しだけ拡大して、全部見えるように */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  background:url("img/shima_owl.jpg") left center / 170% auto no-repeat;
-  opacity:0.55;
+  /* ★ 幅を少しだけ拡大（135％）＆左寄せ。contain に近い感じ */
+  background:url("img/shima_owl.jpg") 8% center / auto 135% no-repeat;
+  opacity:0.6;            /* ちょっと濃いめにしてもOK */
   filter:grayscale(0.05);
-  pointer-events:none;    /* ★ クリックを邪魔しない */
+  pointer-events:none;
   z-index:0;
 }
 
