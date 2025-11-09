@@ -78,25 +78,23 @@ h1{margin:0;font-weight:800}
   color:#6b7280;
 }
 
-/* 下側：ヒーローカード全体 */
+/* 下側：ヒーロー全体（外側カードと一体化させる） */
 .top-hero-row{
   position:relative;
-  margin-top:12px;
+  margin-top:16px;
 }
 
-/* 大きなヒーローカード（土台） */
 .top-hero{
   position:relative;
-  max-width:1100px;
-  width:calc(100% - 48px);
-  margin:40px auto 0;
+  width:100%;       /* ← calc(100% - 48px) はやめて全幅に */
+  margin:0;         /* ← 余計な余白もナシにして 1 枚のカード感に */
   height:280px;
-  border-radius:26px;
-  background:#ffffff;
-  box-shadow:0 20px 45px rgba(15,23,42,.18);
+  border-radius:20px;
+  background:transparent;  /* ← 自前の白背景を消す */
+  box-shadow:none;         /* ← 影も消して外側カードと一体化 */
   overflow:hidden;
-  z-index:0;              /* ★ 背景レイヤー */
 }
+
 
 /* ロゴ背景：少しだけ拡大して、全部見えるように */
 .top-hero::before{
@@ -140,7 +138,7 @@ h1{margin:0;font-weight:800}
   z-index:2;              /* ★ 背景より手前 */
 }
 
-/* 右側のフォームカード */
+/* 右側のフォームカード（ガラスっぽく / 枠線ナシ） */
 .top-card{
   position:absolute;
   right:32px;
@@ -148,15 +146,15 @@ h1{margin:0;font-weight:800}
   transform:translateY(-50%);
   width:320px;
   max-width:40%;
-  background:rgba(255,255,255,0.86);
+  background:rgba(255,255,255,0.9);  /* ちょい透過 */
   border-radius:20px;
-  border:1px solid rgba(226,232,240,0.9);
+  border:none;                       /* ★ 枠線いらない */
   box-shadow:0 18px 40px rgba(15,23,42,.22);
   padding:22px 22px 24px;
   text-align:left;
   backdrop-filter:blur(12px);
-  z-index:3;              /* ★ 一番手前：入力可能にする */
 }
+
 
 
 .top-eyebrow{
