@@ -366,106 +366,153 @@ padding:0 16px;grid-template-columns:repeat(3,1fr);}
   -webkit-text-fill-color:#0f172a !important;
 }
 
-/* === 商品一覧グリッド（発注画面） === */
+/* === 発注カタログ画面レイアウト === */
 main{
   display:none; /* JSで grid に変更される前は非表示 */
   max-width:1200px;
   margin:24px auto 32px;
   padding:0 24px 32px;
+  background:#f3f4f6;         /* ← うすいグレーで面を作る */
+  border-radius:24px;
 }
 
-/* 商品一覧グリッド（レスポンシブ） */
+
+/* === 商品カード（発注画面用：ECサイト風） === */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:24px;
 }
 
-/* === 商品カード（Wix っぽいフラットカード） === */
+/* 1商品カード */
 .card{
   position:relative;
+  display:flex;
+  flex-direction:column;
   background:#ffffff;
   border-radius:18px;
   border:1px solid #e5e7eb;
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 10px 30px rgba(15,23,42,.06);
-  padding-bottom:10px;
+  box-shadow:0 8px 20px rgba(15,23,42,.06);
   transition:
-    transform .16s ease,
-    box-shadow .16s ease,
-    border-color .16s ease;
+    transform .15s ease,
+    box-shadow .15s ease,
+    border-color .15s ease;
 }
 .card:hover{
   transform:translateY(-3px);
-  box-shadow:0 18px 40px rgba(15,23,42,.16);
+  box-shadow:0 16px 32px rgba(15,23,42,.14);
   border-color:#bfdbfe;
 }
 
-/* 商品画像エリア */
+/* 画像エリア（正方形に近い比率でそろえる） */
 .thumb{
-  height:160px;
   width:100%;
+  aspect-ratio:4/3;
+  background:linear-gradient(135deg,#eff6ff,#e0f2fe);
   display:flex;
   align-items:center;
   justify-content:center;
-  border-bottom:1px solid #edf2ff;
-  background:#f9fafb;
   overflow:hidden;
 }
 .thumb img{
-  max-width:90%;
-  max-height:90%;
+  max-width:88%;
+  max-height:88%;
   object-fit:contain;
   display:block;
 }
 
-/* カード本文（商品情報） */
+/* テキストエリア */
 .body{
-  padding:12px 14px 8px;
+  padding:12px 14px 14px;
   display:flex;
   flex-direction:column;
-  gap:6px;
-  min-height:150px;
+  gap:4px;
+  flex:1;
 }
 
 /* 商品名 */
 .title{
   font-weight:700;
-  font-size:13px;
+  font-size:14px;
   line-height:1.6;
+  min-height:3.2em;     /* 2行分確保して高さをそろえる */
   display:-webkit-box;
   -webkit-line-clamp:2;
   -webkit-box-orient:vertical;
   overflow:hidden;
-  min-height:3.0em;
 }
 
-/* 価格 */
+/* 価格行（Amazon ぽく税込価格を強調） */
+.price-row{
+  margin-top:4px;
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+.price-main{
+  font-size:16px;
+  font-weight:800;
+  color:#b91c1c;
+}
+.price-sub{
+  font-size:11px;
+  color:#6b7280;
+}
+
+/* 既存の .price を潰さないように軽くだけ残しておく（印刷用でも使う） */
 .price{
-  font-weight:700;
   font-size:13px;
+  font-weight:700;
   color:#111827;
 }
 
-/* JANバーコード */
+/* JANバーコード（今のまま） */
 .barcode svg{
   height:20px;
   width:90px;
 }
 
-/* カード下部の操作エリア（数量＋カート） */
+/* 下部の数量＋カートボタン */
 .actions-card{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:8px;
   margin-top:auto;
-  padding:10px 12px 8px;
+  padding:10px 12px;
   border-top:1px solid #e5e7eb;
   background:#f9fafb;
 }
+
+/* 数量入力 */
+.qtyinput{
+  flex:0 0 78px;
+  text-align:center;
+  border:1px solid #d1d5db;
+  border-radius:999px;
+  padding:6px 8px;
+  font-size:13px;
+  background:#ffffff;
+}
+
+/* カートボタン（丸み＋Amazon 風の目立つボタン） */
+.actions-card .btn{
+  flex:1;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  font-size:13px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  border-color:#1d4ed8;
+}
+.actions-card .btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 16px rgba(37,99,235,.35);
+}
+
 
 /* 数量入力 */
 .qtyinput{
@@ -1054,12 +1101,20 @@ async function boot(){
         <div class='thumb'>
           <img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'">
         </div>
-        <div class='body'>
-          <div class='title'>${p.name}</div>
-          <div class='price'>税抜：${p.price.toLocaleString()}円</div>
-          <div class='price'>税込：${Math.round(p.price * 1.1).toLocaleString()}円</div>
-          <div class='barcode'>${barcode}</div>
-        </div>
+        // もとの price 表示部分を置き換え
+<div class='body'>
+  <div class='title'>${p.name}</div>
+  <div class="price-row">
+    <span class="price-main">
+      ￥${Math.round(p.price * 1.1).toLocaleString()}
+    </span>
+    <span class="price-sub">
+      （税抜 ￥${p.price.toLocaleString()}）
+    </span>
+  </div>
+  <div class='barcode'>${barcode}</div>
+</div>
+
         <div class='actions-card'>
           <input id='qty-${p.jan}' type='number' class='qtyinput'
                  min='0' step='1' placeholder='数量'>
