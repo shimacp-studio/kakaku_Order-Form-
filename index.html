@@ -38,7 +38,7 @@ h1{margin:0;font-weight:800}
   max-width:1120px;
   margin:32px auto;
   background:#ffffff;
-  border-radius:28px; 
+  border-radius:28px;
   box-shadow:0 18px 45px rgba(15,23,42,.20);
   padding:28px 32px 32px;
   display:flex;
@@ -78,54 +78,53 @@ h1{margin:0;font-weight:800}
   color:#6b7280;
 }
 
-/* 下側：ヒーロー全体（外側カードと一体化させる） */
+/* 下側：ヒーロー全体（外側カードと一体化） */
 .top-hero-row{
   position:relative;
   margin-top:16px;
 }
 
-/* ロゴの土台（少し横長に見せたいので高さを低めに） */
+/* ロゴエリア（横長に見えるように高さ低め） */
 .top-hero{
   position:relative;
   width:100%;
   margin:0;
-  height:240px;              /* ★ 280px → 240px にして横長感アップ */
+  height:240px;              /* 横長感を出す高さ */
   border-radius:20px;
-  background:transparent;    /* ★ 中の白カード感は消す */
-  box-shadow:none;           /* ★ 影も消す（枠っぽさ防止） */
+  background:transparent;
+  box-shadow:none;
   overflow:hidden;
 }
 
-/* ロゴ背景：濃く・小さく・見切れないように */
+/* ロゴ背景：小さめ＋濃いめ＋見切れない */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  /* ★ 画像全体が切れないように contain */
-  background:url("img/shima_owl.jpg") center center / contain no-repeat;
-  opacity:0.9;               /* ★ ちょっと濃くする（0.9くらい） */
-  filter:none;               /* ★ 色もそのまま活かす */
-  pointer-events:none;       /* ★ 入力欄のクリックを邪魔しない */
+  /* ロゴ全体が見えるように小さめ＆左寄せ気味に配置 */
+  background:url("img/shima_owl.jpg") 10% center / 80% auto no-repeat;
+  opacity:0.95;              /* ロゴをしっかり濃く */
+  filter:none;               /* 色はそのまま */
+  pointer-events:none;       /* 入力操作の邪魔をしない */
   z-index:0;
 }
 
-/* 上に白グラデを被せて読みやすく（ここはそのままでOK） */
+/* 上に白グラデを被せて WIX っぽく */
 .top-hero::after{
   content:"";
   position:absolute;
   inset:0;
   background:linear-gradient(
     90deg,
-    rgba(255,255,255,0.96) 0%,
-    rgba(255,255,255,0.72) 40%,
-    rgba(255,255,255,0.25) 100%
+    rgba(255,255,255,0.98) 0%,
+    rgba(255,255,255,0.80) 42%,
+    rgba(255,255,255,0.30) 100%
   );
   pointer-events:none;
   z-index:0;
 }
 
-
-/* 左側コピー */
+/* 左側コピー（ロゴの上に乗るテキスト） */
 .top-hero-copy{
   position:absolute;
   left:56px;
@@ -136,23 +135,26 @@ h1{margin:0;font-weight:800}
   line-height:1.9;
   color:#1e293b;
   font-weight:600;
-  z-index:2;              /* ★ 背景より手前 */
+  z-index:2;              /* 背景より手前 */
 }
 
-/* 右側のフォームカード（ガラスっぽく / 枠線ナシ） */
+/* 右側のフォームカード（ガラスっぽい 1 カード） */
 .top-card{
   position:absolute;
   right:32px;
   top:50%;
   transform:translateY(-50%);
-  width:200px;
+  width:260px;                        /* 200 → 少し広げて余裕を持たせる */
   max-width:40%;
   padding:22px 22px 24px;
   text-align:left;
+  background:rgba(255,255,255,0.86);  /* うっすら透過でガラス感 */
+  border-radius:20px;
+  border:1px solid rgba(226,232,240,0.6);
+  box-shadow:0 18px 40px rgba(15,23,42,.22);
   backdrop-filter:blur(12px);
+  z-index:2;
 }
-
-
 
 .top-eyebrow{
   font-size:11px;
@@ -198,6 +200,7 @@ h1{margin:0;font-weight:800}
   transform:translateY(-1px);
   box-shadow:0 8px 18px rgba(37,99,235,.35);
 }
+
 
 
 /* スマホ・タブレットでは縦積み */
