@@ -86,32 +86,40 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
+/* ヒーロー全体：ロゴを全面背景に */
 .top-hero{
   position:relative;
   width:100%;
-  height:420px;
+  height:420px;                 /* 右のフォームが全部入る高さ */
   border-radius:22px;
   overflow:hidden;
-  background:linear-gradient(115deg,#cfe7ff 0%,#dbeafe 50%,#eff6ff 100%);
+  /* ★ フクロウロゴをカードいっぱいに敷く */
+  background:url("img/shima_owl.jpg") center center / cover no-repeat;
 }
 
-/* 背景ロゴ */
-.top-hero::before{
+/* 上から淡い青グラデーションをかけて、Wixっぽく & 文字を読みやすくする */
+.top-hero::after{
   content:"";
   position:absolute;
   inset:0;
-  background:url("img/shima_owl.jpg") left center / auto 80% no-repeat;
-  opacity:0.25;          /* ← 薄さ調整 */
+  background:linear-gradient(
+    90deg,
+    rgba(239,246,255,0.96) 0%,
+    rgba(239,246,255,0.80) 35%,
+    rgba(239,246,255,0.45) 65%,
+    rgba(239,246,255,0.10) 100%
+  );
   pointer-events:none;
   z-index:0;
 }
 
-/* テキストはロゴより前へ */
+/* コピーとフォームは背景より前に出す */
 .top-hero-copy,
 .top-card{
   position:relative;
   z-index:1;
 }
+
 
 /* 小さいコメント用（任意） */
 .top-hero-sub{
@@ -152,7 +160,6 @@ h1{margin:0;font-weight:800}
   z-index:1;
 }
 
-/* 右側のフォームカード（白いパネル） */
 .top-card{
   position:absolute;
   right:56px;
@@ -161,9 +168,12 @@ h1{margin:0;font-weight:800}
   width:320px;
   max-width:38%;
   padding:22px 22px 24px;
-  border-radius:18px;
-  background:rgba(255,255,255,0.96);
-  box-shadow:0 16px 36px rgba(15,23,42,.24);
+
+  /* ★ ここを変更（白パネルをやめる） */
+  background:transparent;        /* ← 白い背景をやめる */
+  box-shadow:none;               /* ← 影も消す */
+  border-radius:0;               /* ← 角丸も不要なら 0 に */
+
   text-align:left;
   z-index:1;
 }
