@@ -84,30 +84,32 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
+/* ロゴの土台（少し横長に見せたいので高さを低めに） */
 .top-hero{
   position:relative;
   width:100%;
   margin:0;
-  height:280px;
+  height:240px;              /* ★ 280px → 240px にして横長感アップ */
   border-radius:20px;
-  background:transparent;             /* ★ 白い内側カードをやめる */
-  box-shadow:none;                    /* ★ 影も消す */
+  background:transparent;    /* ★ 中の白カード感は消す */
+  box-shadow:none;           /* ★ 影も消す（枠っぽさ防止） */
   overflow:hidden;
 }
 
-/* ロゴ背景：少しだけ拡大して全部入るように */
+/* ロゴ背景：濃く・小さく・見切れないように */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  background:url("img/shima_owl.jpg") 15% center / auto 120% no-repeat;
-  opacity:1;
-  filter:grayscale(0.05);
-  pointer-events:none;
+  /* ★ 画像全体が切れないように contain */
+  background:url("img/shima_owl.jpg") center center / contain no-repeat;
+  opacity:0.9;               /* ★ ちょっと濃くする（0.9くらい） */
+  filter:none;               /* ★ 色もそのまま活かす */
+  pointer-events:none;       /* ★ 入力欄のクリックを邪魔しない */
   z-index:0;
 }
 
-/* 上に白グラデを被せて読みやすく */
+/* 上に白グラデを被せて読みやすく（ここはそのままでOK） */
 .top-hero::after{
   content:"";
   position:absolute;
