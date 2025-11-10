@@ -289,16 +289,23 @@ padding:0 16px;grid-template-columns:repeat(3,1fr);}
 /* TOPページ専用の入力ボックス */
 .top-input{
   width:100%;
-  background:#eff4ff;     /* 薄いブルー */
-  border:0;               /* 枠線・下線を完全に消す */
+  /* ★ 背景色 ＋ ロゴ画像をまとめて指定 */
+  background:
+    #eff4ff
+    url("img/shima_owl.jpg") no-repeat 12px center;
+  background-size:20px 20px;   /* ロゴの大きさ */
+
+  border:0;                    /* 枠線・下線を完全に消す */
   border-radius:10px;
   padding:10px 14px;
+  padding-left:44px;           /* ★ ロゴ分だけ左の余白を広げる */
   font-size:14px;
   outline:none;
   box-shadow:none;
   -webkit-appearance:none;
   appearance:none;
 }
+
 
 /* 念のため：TOPのカード内 input には一切線を出さない */
 .top-card input{
