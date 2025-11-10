@@ -93,17 +93,23 @@ h1{margin:0;font-weight:800}
   height:420px;  /* ★ 右のフォームが全部収まる高さ */
   border-radius:22px;
   overflow:hidden;
-  /* オレンジグラデ背景 */
-  background:linear-gradient(115deg,#ff8a3d 0%,#ff9f4d 30%,#ffd3a0 65%,#ffe9cf 100%);
+  /* 淡いブルーのグラデ背景 */
+  background:linear-gradient(
+    115deg,
+    #e0f2fe 0%,   /* すごく淡い水色 */
+    #dbeafe 35%, /* うすいブルー */
+    #bfdbfe 70%, /* ちょっと濃いめ */
+    #93c5fd 100% /* 右側に向かって少し強く */
+  );
 }
 
-/* 右側の商品写真風のエリア（画像ファイルはお好みで差し替え） */
+/* 右側の商品写真風のエリア（ここではフクロウロゴを表示） */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
   background:
-    url("shima_owl.jpg") right bottom / auto 90% no-repeat; /* ← ここを実際の画像に差し替え */
+    url("img/shima_owl.jpg") right bottom / auto 90% no-repeat;
   opacity:1;
   pointer-events:none;
   z-index:0;
