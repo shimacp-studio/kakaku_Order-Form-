@@ -86,39 +86,52 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
-/* ヒーロー全体：ロゴを全面背景に */
+/* ヒーロー全体：淡い青グラデだけにする */
 .top-hero{
   position:relative;
   width:100%;
-  height:420px;                 /* 右のフォームが全部入る高さ */
+  height:420px;
   border-radius:22px;
   overflow:hidden;
-  /* ★ フクロウロゴをカードいっぱいに敷く */
-  background:url("img/shima_owl.jpg") center center / cover no-repeat;
+  /* ★ ロゴは消して、背景は淡い青グラデだけ */
+  background:linear-gradient(115deg,#dbeafe 0%,#e5f0ff 40%,#c7ddff 100%);
 }
 
-/* 上から淡い青グラデーションをかけて、Wixっぽく & 文字を読みやすくする */
+/* ロゴ層：少し小さく＆薄く */
+.top-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    url("img/shima_owl.jpg") left center / 65% auto no-repeat;
+    /* ↑ 65% を 50〜80% くらいで調整するとサイズ変えられます */
+  opacity:0.25;           /* ★ 薄さ：0.25 ぐらい。もっと薄くしたければ 0.15 とかに */
+  pointer-events:none;
+  z-index:0;
+}
+
+/* 必要なら、さらに全体をふんわりさせる薄いホワイトグラデ（任意） */
 .top-hero::after{
   content:"";
   position:absolute;
   inset:0;
   background:linear-gradient(
     90deg,
-    rgba(239,246,255,0.96) 0%,
-    rgba(239,246,255,0.80) 35%,
-    rgba(239,246,255,0.45) 65%,
-    rgba(239,246,255,0.10) 100%
+    rgba(255,255,255,0.75) 0%,
+    rgba(255,255,255,0.55) 40%,
+    rgba(255,255,255,0.25) 100%
   );
   pointer-events:none;
   z-index:0;
 }
 
-/* コピーとフォームは背景より前に出す */
+/* コピーとフォームは前面に */
 .top-hero-copy,
 .top-card{
   position:relative;
   z-index:1;
 }
+
 
 
 /* 小さいコメント用（任意） */
