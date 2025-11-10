@@ -84,17 +84,17 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
-/* ▼ ヒーロー帯（横長の 1 枚カード） */
+/* ▼ ヒーロー帯（高さを広げる） */
 .top-hero{
   position:relative;
   width:100%;
   margin:0;
-  height:260px;  /* 横長っぽく見える高さ */
+  height:320px;  /* ★ 240px → 320px に変更：カードがすっぽり入る高さ */
   border-radius:20px;
-  overflow:hidden;
-  /* 左があたたかい色、右が白に溶けていく帯 */
   background:linear-gradient(120deg,#fee2e2 0%,#dbeafe 55%,#f9fafb 100%);
+  overflow:hidden;
 }
+
 
 /* ▼ フクロウロゴ：左寄せ・小さめ・切れない */
 .top-hero::before{
@@ -130,24 +130,23 @@ h1{margin:0;font-weight:800}
   z-index:2;
 }
 
-/* ▼ 右側フォームカード：帯の中に浮かせるガラスカード */
 .top-card{
   position:absolute;
   right:32px;
   top:50%;
   transform:translateY(-50%);
-  width:280px;                        /* 少し広めに */
-  max-width:40%;
+  width:300px;     /* ★ 280 → 300 */
+  max-width:42%;   /* ちょい広め */
   padding:22px 22px 24px;
   text-align:left;
-
-  background:rgba(255,255,255,0.92);  /* うっすら透過で背景の帯がなじむ */
+  background:rgba(255,255,255,0.92);
   border-radius:20px;
   border:1px solid rgba(226,232,240,0.6);
   box-shadow:0 16px 36px rgba(15,23,42,.18);
   backdrop-filter:blur(12px);
   z-index:2;
 }
+
 
 
 .top-eyebrow{
