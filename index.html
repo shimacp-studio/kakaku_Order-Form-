@@ -106,7 +106,7 @@ h1{margin:0;font-weight:800}
 /* 右側の商品写真風のエリア（ここではフクロウロゴを表示） */
 .top-hero::before{
   content:"";
-  position:absolute;
+  position:left;
   inset:0;
   background:
     url("img/shima_owl.jpg") right bottom / auto 90% no-repeat;
@@ -191,19 +191,26 @@ h1{margin:0;font-weight:800}
   width:100%;
 }
 
-/* 入力ボックス */
+/* TOPページ専用の入力ボックス（ロゴ＋淡い青グラデ） */
 .top-input{
   width:100%;
-  background:#f3f4ff;
+
+  /* 1枚目: ロゴ / 2枚目: 淡い青グラデーション */
+  background:
+    url("img/shima_owl.jpg") 12px center / 20px 20px no-repeat,
+    linear-gradient(120deg,#dbeafe 0%,#e0f2fe 40%,#bfdbfe 100%);
+
   border:0;
   border-radius:10px;
   padding:10px 14px;
+  padding-left:44px;          /* ロゴぶん左の余白を広げる */
   font-size:14px;
   outline:none;
   box-shadow:none;
   -webkit-appearance:none;
   appearance:none;
 }
+
 .top-input:focus{
   outline:none;
   box-shadow:0 0 0 2px rgba(37,99,235,0.35);
