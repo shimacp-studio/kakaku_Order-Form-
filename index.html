@@ -103,17 +103,21 @@ h1{margin:0;font-weight:800}
   );
 }
 
-/* 右側の商品写真風のエリア（ここではフクロウロゴを表示） */
+/* 右側の商品写真風 → 左側にロゴを置く */
 .top-hero::before{
   content:"";
-  position:center;
+  position:absolute;        /* ★ ここを absolute に */
   inset:0;
+
+  /* 位置を right bottom → left center に変更 */
   background:
-    url("img/shima_owl.jpg") right bottom / auto 90% no-repeat;
+    url("img/shima_owl.jpg") left center / auto 90% no-repeat;
+
   opacity:1;
   pointer-events:none;
   z-index:0;
 }
+
 
 /* 軽く縦のグラデで奥行きを出す */
 .top-hero::after{
