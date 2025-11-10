@@ -90,6 +90,8 @@ h1{margin:0;font-weight:800}
   margin:0;         /* ← 余計な余白もナシにして 1 枚のカード感に */
   height:280px;
   border-radius:20px;
+  background:#ffffff;         /* ← この白背景が“枠”っぽく見える */
+  box-shadow:0 20px 45px rgba(15,23,42,.18);  /* ← この影も枠の印象 */
   overflow:hidden;
 }
 
@@ -121,6 +123,13 @@ h1{margin:0;font-weight:800}
   pointer-events:none;    /* ★ これもクリックを通す */
   z-index:0;
 }
+
+/* ロゴ背景を一旦オフ（枠っぽさを消す） */
+.top-hero::before,
+.top-hero::after{
+  display:none !important;
+}
+
 
 /* 左側コピー */
 .top-hero-copy{
