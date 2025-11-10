@@ -84,77 +84,71 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
-/* ロゴエリア（横長に見えるように高さ低め） */
+/* ▼ ヒーロー帯（横長の 1 枚カード） */
 .top-hero{
   position:relative;
   width:100%;
   margin:0;
-  height:240px;              /* 横長感を出す高さ */
+  height:260px;  /* 横長っぽく見える高さ */
   border-radius:20px;
-  background:transparent;
-  box-shadow:none;
   overflow:hidden;
+  /* 左があたたかい色、右が白に溶けていく帯 */
+  background:linear-gradient(120deg,#fee2e2 0%,#dbeafe 55%,#f9fafb 100%);
 }
 
-/* ロゴ背景：小さめ＋濃いめ＋見切れない */
+/* ▼ フクロウロゴ：左寄せ・小さめ・切れない */
 .top-hero::before{
   content:"";
   position:absolute;
-  inset:0;
-  /* ロゴ全体が見えるように小さめ＆左寄せ気味に配置 */
-  background:url("img/shima_owl.jpg") 10% center / 80% auto no-repeat;
-  opacity:0.95;              /* ロゴをしっかり濃く */
-  filter:none;               /* 色はそのまま */
-  pointer-events:none;       /* 入力操作の邪魔をしない */
-  z-index:0;
-}
-
-/* 上に白グラデを被せて WIX っぽく */
-.top-hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    90deg,
-    rgba(255,255,255,0.98) 0%,
-    rgba(255,255,255,0.80) 42%,
-    rgba(255,255,255,0.30) 100%
-  );
+  top:24px;
+  left:18%;                  /* 少し右寄りに配置（お好みで 15〜25% 調整OK） */
+  width:260px;               /* ロゴの“横幅”イメージ */
+  height:210px;
+  background:url("img/shima_owl.jpg") center center / contain no-repeat;
+  opacity:0.95;              /* 濃くはっきり */
+  filter:none;
   pointer-events:none;
   z-index:0;
 }
 
-/* 左側コピー（ロゴの上に乗るテキスト） */
+/* 追加の白グラデは不要なので off（もし残ってたら無効化） */
+.top-hero::after{
+  content:none;
+}
+
+/* ▼ 左側コピー（フクロウより少し左側） */
 .top-hero-copy{
   position:absolute;
   left:56px;
   top:50%;
   transform:translateY(-50%);
-  max-width:320px;
+  max-width:260px;
   font-size:18px;
   line-height:1.9;
   color:#1e293b;
   font-weight:600;
-  z-index:2;              /* 背景より手前 */
+  z-index:2;
 }
 
-/* 右側のフォームカード（ガラスっぽい 1 カード） */
+/* ▼ 右側フォームカード：帯の中に浮かせるガラスカード */
 .top-card{
   position:absolute;
   right:32px;
   top:50%;
   transform:translateY(-50%);
-  width:260px;                        /* 200 → 少し広げて余裕を持たせる */
+  width:280px;                        /* 少し広めに */
   max-width:40%;
   padding:22px 22px 24px;
   text-align:left;
-  background:rgba(255,255,255,0.86);  /* うっすら透過でガラス感 */
+
+  background:rgba(255,255,255,0.92);  /* うっすら透過で背景の帯がなじむ */
   border-radius:20px;
   border:1px solid rgba(226,232,240,0.6);
-  box-shadow:0 18px 40px rgba(15,23,42,.22);
+  box-shadow:0 16px 36px rgba(15,23,42,.18);
   backdrop-filter:blur(12px);
   z-index:2;
 }
+
 
 .top-eyebrow{
   font-size:11px;
