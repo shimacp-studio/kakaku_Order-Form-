@@ -86,24 +86,22 @@ h1{margin:0;font-weight:800}
 
 .top-hero{
   position:relative;
-  width:100%;       /* ← calc(100% - 48px) はやめて全幅に */
-  margin:0;         /* ← 余計な余白もナシにして 1 枚のカード感に */
+  width:100%;
+  margin:0;
   height:280px;
   border-radius:20px;
-  background:#ffffff;         /* ← この白背景が“枠”っぽく見える */
-  box-shadow:0 20px 45px rgba(15,23,42,.18);  /* ← この影も枠の印象 */
+  background:transparent;             /* ★ 白い内側カードをやめる */
+  box-shadow:none;                    /* ★ 影も消す */
   overflow:hidden;
 }
 
-
-/* ロゴ背景：少しだけ拡大して、全部見えるように */
+/* ロゴ背景：少しだけ拡大して全部入るように */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  /* ★ 幅を少しだけ拡大（135％）＆左寄せ。contain に近い感じ */
   background:url("img/shima_owl.jpg") 15% center / auto 120% no-repeat;
-  opacity:1;            /* ちょっと濃いめにしてもOK */
+  opacity:1;
   filter:grayscale(0.05);
   pointer-events:none;
   z-index:0;
@@ -120,16 +118,9 @@ h1{margin:0;font-weight:800}
     rgba(255,255,255,0.72) 40%,
     rgba(255,255,255,0.25) 100%
   );
-  pointer-events:none;    /* ★ これもクリックを通す */
+  pointer-events:none;
   z-index:0;
 }
-
-/* ロゴ背景を一旦オフ（枠っぽさを消す） */
-.top-hero::before,
-.top-hero::after{
-  display:none !important;
-}
-
 
 /* 左側コピー */
 .top-hero-copy{
