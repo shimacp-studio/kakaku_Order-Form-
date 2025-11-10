@@ -23,27 +23,29 @@ h1{margin:0;font-weight:800}
   inset:0;
   z-index:9999;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
   height:100dvh;
   width:100%;
-  background:linear-gradient(135deg,#f5f5f5 0%,#e5ecff 45%,#dbeafe 100%);
+  background:#f3f4f6;
+  padding:24px 0;
+  box-sizing:border-box;
   transition:opacity .4s ease;
   opacity:1;
 }
 
-/* 全体の白い土台カード */
+/* 白い大きなカード（1枚だけ） */
 .top-shell{
   width:100%;
-  max-width:1120px;
-  margin:32px auto;
+  max-width:1200px;
+  margin:0 auto;
   background:#ffffff;
   border-radius:28px;
   box-shadow:0 18px 45px rgba(15,23,42,.20);
-  padding:28px 32px 32px;
+  padding:20px 32px 32px;
   display:flex;
   flex-direction:column;
-  gap:24px;
+  gap:20px;
 }
 
 /* 上のバー（ロゴ＋タイトル） */
@@ -52,7 +54,7 @@ h1{margin:0;font-weight:800}
   justify-content:space-between;
   align-items:center;
   gap:16px;
-  padding-bottom:12px;
+  padding-bottom:10px;
   border-bottom:1px solid #e5e7eb;
 }
 .top-brand{
@@ -78,80 +80,83 @@ h1{margin:0;font-weight:800}
   color:#6b7280;
 }
 
-/* 下側：ヒーロー全体（外側カードと一体化） */
+/* 下側：ヒーロー（背景＋左コピー＋右フォーム） */
 .top-hero-row{
   position:relative;
   margin-top:16px;
 }
 
-/* ▼ ヒーロー帯（高さを広げる） */
+/* オレンジのヒーローバー（1枚もの） */
 .top-hero{
   position:relative;
   width:100%;
-  margin:0;
-  height:400px;  /* ★ 240px → 320px に変更：カードがすっぽり入る高さ */
-  border-radius:20px;
-  background:linear-gradient(120deg,#fee2e2 0%,#dbeafe 55%,#f9fafb 100%);
+  height:420px;  /* ★ 右のフォームが全部収まる高さ */
+  border-radius:22px;
   overflow:hidden;
+  /* オレンジグラデ背景 */
+  background:linear-gradient(115deg,#ff8a3d 0%,#ff9f4d 30%,#ffd3a0 65%,#ffe9cf 100%);
 }
 
-
-/* ▼ フクロウロゴ：左寄せ・小さめ・切れない */
+/* 右側の商品写真風のエリア（画像ファイルはお好みで差し替え） */
 .top-hero::before{
   content:"";
   position:absolute;
-  top:24px;
-  left:18%;                  /* 少し右寄りに配置（お好みで 15〜25% 調整OK） */
-  width:260px;               /* ロゴの“横幅”イメージ */
-  height:210px;
-  background:url("img/shima_owl.jpg") center center / contain no-repeat;
-  opacity:0.95;              /* 濃くはっきり */
-  filter:none;
+  inset:0;
+  background:
+    url("img/hero_box.jpg") right bottom / auto 90% no-repeat; /* ← ここを実際の画像に差し替え */
+  opacity:1;
   pointer-events:none;
   z-index:0;
 }
 
-/* 追加の白グラデは不要なので off（もし残ってたら無効化） */
+/* 軽く縦のグラデで奥行きを出す */
 .top-hero::after{
-  content:none;
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.00) 40%,
+    rgba(0,0,0,0.12) 100%
+  );
+  pointer-events:none;
+  z-index:0;
 }
 
-/* ▼ 左側コピー（フクロウより少し左側） */
+/* 左側キャッチコピー（大きな黒文字） */
 .top-hero-copy{
   position:absolute;
   left:56px;
   top:50%;
   transform:translateY(-50%);
-  max-width:260px;
-  font-size:18px;
-  line-height:1.9;
-  color:#1e293b;
-  font-weight:600;
-  z-index:2;
+  max-width:520px;
+  font-size:32px;
+  line-height:1.5;
+  color:#111827;
+  font-weight:800;
+  z-index:1;
 }
 
+/* 右側のフォームカード（白いパネル） */
 .top-card{
   position:absolute;
-  right:32px;
+  right:56px;
   top:50%;
   transform:translateY(-50%);
-  width:300px;     /* ★ 280 → 300 */
-  max-width:42%;   /* ちょい広め */
+  width:320px;
+  max-width:38%;
   padding:22px 22px 24px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.96);
+  box-shadow:0 16px 36px rgba(15,23,42,.24);
   text-align:left;
-  background:rgba(255,255,255,0.92);
-  border-radius:20px;
-  border:1px solid rgba(226,232,240,0.6);
-  box-shadow:0 16px 36px rgba(15,23,42,.18);
-  backdrop-filter:blur(12px);
-  z-index:2;
+  z-index:1;
 }
-
-
 
 .top-eyebrow{
   font-size:11px;
-  letter-spacing:.2em;
+  letter-spacing:.18em;
   font-weight:700;
   color:#9ca3af;
   margin:0 0 6px;
@@ -161,15 +166,15 @@ h1{margin:0;font-weight:800}
   line-height:1.6;
   font-weight:800;
   color:#111827;
-  margin:0 0 10px;
+  margin:0 0 8px;
 }
 .top-lead{
-  margin:0 0 16px;
+  margin:0 0 14px;
   font-size:13px;
   color:#6b7280;
 }
 
-/* 入力フォームの縦並び（HTML は今のままでOK） */
+/* 入力フォーム（縦並び） */
 .top-form{
   display:flex;
   flex-direction:column;
@@ -180,7 +185,35 @@ h1{margin:0;font-weight:800}
   width:100%;
 }
 
-/* TOP ボタンを少し Wix っぽく */
+/* 入力ボックス */
+.top-input{
+  width:100%;
+  background:#f3f4ff;
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:14px;
+  outline:none;
+  box-shadow:none;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.top-input:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(37,99,235,0.35);
+}
+.top-card input{
+  border:0 !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+.top-input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 30px #f3f4ff inset !important;
+          box-shadow:0 0 0 30px #f3f4ff inset !important;
+  -webkit-text-fill-color:#0f172a !important;
+}
+
+/* 開くボタン（Wix っぽい青） */
 .top-start-btn{
   margin-top:8px;
   width:100%;
@@ -194,23 +227,32 @@ h1{margin:0;font-weight:800}
   box-shadow:0 8px 18px rgba(37,99,235,.35);
 }
 
-
-
 /* スマホ・タブレットでは縦積み */
 @media (max-width:900px){
+  #topPage{
+    align-items:flex-start;
+    padding:8px 0;
+  }
   .top-shell{
-    margin:16px;
-    padding:18px 18px 22px;
+    margin:0 12px;
+    padding:16px 14px 18px;
     border-radius:20px;
   }
   .top-hero{
-    min-height:260px;
+    height:auto;
+    padding:32px 18px 18px;
+    border-radius:18px;
+  }
+  .top-hero::before{
+    background-position:center bottom;
+    background-size:auto 70%;
+    opacity:0.6;
   }
   .top-hero-copy{
-    left:20px;
-    top:24px;
+    position:static;
     transform:none;
-    font-size:18px;
+    margin-bottom:18px;
+    font-size:22px;
     max-width:none;
   }
   .top-card{
@@ -218,15 +260,10 @@ h1{margin:0;font-weight:800}
     transform:none;
     width:100%;
     max-width:none;
-    margin-top:16px;
-    box-shadow:0 10px 24px rgba(15,23,42,.18);
-  }
-  .top-hero-row{
-    display:flex;
-    flex-direction:column;
-    gap:0;
+    margin-top:8px;
   }
 }
+
 
 
 /* === カタログ画面 === */
