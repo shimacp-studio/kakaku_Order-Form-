@@ -294,385 +294,324 @@ h1{margin:0;font-weight:800}
   }
 }
 
+/* ========= 画面表示専用オーバーライド（North/Electro風） ========= */
+@media screen {
 
-/* =========================================================
-   発注カタログ画面：North/Electro テンプレ風のミニマルテーマ
-   （TOPページ・印刷・JSは変更しない／上書きしない）
-   ======================================================== */
-
-/* ===== カタログ用ヘッダー（ロゴ + KART + 印刷ボタン） ===== */
-header:not(.top-header){
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: rgba(255,255,255,0.98);
-  backdrop-filter: blur(14px) saturate(140%);
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 10px 30px rgba(15,23,42,0.04);
-}
-
-.wrap{
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.brand{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand img{
-  width: 32px;
-  height: 32px;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(15,23,42,0.25);
-}
-
-.brand h1{
-  font-size: 13px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: #111827;
-}
-
-/* 右側（KART + 印刷ボタン） */
-.actions{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* 共通ボタン（印刷・カート内ボタン・送信ボタン・カード内ボタン） */
-.btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background: #111827;
-  color: #f9fafb;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 10px 24px rgba(15,23,42,0.30);
-  transition:
-    transform .12s ease,
-    box-shadow .12s ease,
-    background .12s ease,
-    border-color .12s ease,
-    opacity .12s ease;
-}
-.btn:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 14px 30px rgba(15,23,42,0.45);
-}
-.btn:active{
-  transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(15,23,42,0.35);
-}
-.btn:disabled{
-  opacity: .55;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* ===== KART トグルボタン（右上） ===== */
-.cart-toggle{
-  position: relative;
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-}
-
-.cart-toggle img{
-  width: 28px;
-  height: 28px;
-  display: block;
-}
-
-/* 件数バッジ（0 のときは is-empty で非表示） */
-.cart-badge{
-  position: absolute;
-  right: -4px;
-  top: -4px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: 999px;
-  background: #ef4444;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 2px #f9fafb;
-}
-.cart-badge.is-empty{
-  display: none;
-}
-
-/* ===== カタログ画面全体レイアウト ===== */
-main{
-  /* JS で display を切り替える挙動はそのまま */
-  max-width: 1120px;
-  margin: 28px auto 48px;
-  padding: 0 20px 40px;
-}
-
-/* 商品グリッド：North/Electro テンプレの「整ったブロック」イメージ */
-.grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px 20px;
-}
-
-/* ===== 商品カード ===== */
-.card{
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(15,23,42,0.04);
-  transition:
-    transform .14s ease,
-    box-shadow .14s ease,
-    border-color .14s ease,
-    background .14s ease;
-}
-.card:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(15,23,42,0.10);
-  border-color: #c7d2fe;
-}
-
-/* 画像エリア：明るいグラデに商品画像を中央配置 */
-.thumb{
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background:
-    radial-gradient(circle at top, #eff6ff 0%, #e5f0ff 40%, #dbeafe 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.thumb img{
-  width: 85%;
-  max-height: 85%;
-  object-fit: contain;
-  display: block;
-}
-
-/* テキストエリア */
-.body{
-  padding: 10px 14px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* 商品名 */
-.title{
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.5;
-  color: #111827;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 3em; /* 2行分の高さを揃える */
-}
-
-/* 価格行：税込を太字、税抜を控えめに */
-.price-row{
-  margin-top: 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.price-main{
-  font-size: 16px;
-  font-weight: 800;
-  color: #b91c1c;
-}
-
-.price-sub{
-  font-size: 11px;
-  color: #6b7280;
-}
-
-/* 互換のため残す（別のところで .price を参照していても崩さない） */
-.price{
-  font-size: 13px;
-  font-weight: 700;
-  color: #111827;
-}
-
-/* JANバーコード表示（renderBarcode の出力をそのまま細めに） */
-.barcode{
-  margin-top: 6px;
-  font-size: 10px;
-  color: #9ca3af;
-}
-
-/* 下部：数量入力＋カートに追加 */
-.actions-card{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: auto;
-  padding: 9px 12px 10px;
-  border-top: 1px solid #e5e7eb;
-  background: #f9fafb;
-}
-
-/* 数量入力 */
-.qtyinput{
-  flex: 0 0 76px;
-  padding: 6px 8px;
-  border-radius: 999px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  font-size: 13px;
-  text-align: center;
-}
-
-/* カード内の「カートに追加」ボタン */
-.actions-card .btn{
-  flex: 1;
-  font-size: 11px;
-  padding-inline: 10px;
-  box-shadow: none;
-}
-
-/* ===== カート（右側スライドパネル） ===== */
-.cart{
-  position: fixed;
-  top: 86px;
-  right: 24px;
-  width: 320px;
-  max-height: calc(100dvh - 140px);
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 14px 16px 14px;
-
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 18px 40px rgba(15,23,42,0.20);
-  color: #111827;
-  z-index: 60;
-
-  /* 初期状態は画面外に */
-  transform: translateX(110%);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform .25s ease, opacity .25s ease;
-}
-
-.cart.open{
-  transform: translateX(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.cart h2{
-  margin: 0 0 4px;
-  font-size: 12px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: #6b7280;
-}
-
-/* カート内リスト */
-.cartlist{
-  flex: 1;
-  overflow: auto;
-  padding-right: 2px;
-  font-size: 12px;
-}
-
-.cartitem{
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-.cartitem:last-child{
-  border-bottom: none;
-}
-.cartitem div:nth-child(1){
-  font-weight: 500;
-}
-.cartitem div:nth-child(2),
-.cartitem div:nth-child(3){
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  color: #4b5563;
-}
-
-/* 削除ボタン（×） */
-.cartitem button{
-  border: none;
-  background: none;
-  color: #ef4444;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-/* 小計／税込の表示 */
-.cart strong{
-  font-weight: 700;
-}
-
-/* カート内の送信ボタン */
-.cart .btn{
-  margin-top: 6px;
-  width: 100%;
-  justify-content: center;
-}
-
-/* ===== レスポンシブ調整（発注画面のみ） ===== */
-@media (max-width: 960px){
-  main{
-    margin: 20px auto 32px;
-    padding: 0 12px 32px;
+  /* 発注画面ヘッダー：白くてフラットなバーに寄せる */
+  header:not(.top-header){
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(255,255,255,0.98);
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(15,23,42,0.04);
+    backdrop-filter: blur(14px) saturate(140%);
   }
+
   .wrap{
-    padding-inline: 12px;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
   }
+
+  .brand{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand img{
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+    box-shadow: 0 10px 22px rgba(15,23,42,0.25);
+  }
+
+  .brand h1{
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .actions{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* 共通ボタン（印刷ボタン・カード内ボタン・カート内ボタン） */
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #111827;
+    color: #f9fafb;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(15,23,42,0.30);
+    transition:
+      transform .12s ease,
+      box-shadow .12s ease,
+      background .12s ease,
+      border-color .12s ease,
+      opacity .12s ease;
+  }
+  .btn:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(15,23,42,0.45);
+  }
+  .btn:active{
+    transform: translateY(0);
+    box-shadow: 0 8px 18px rgba(15,23,42,0.35);
+  }
+  .btn:disabled{
+    opacity: .55;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* ===== 発注カタログ領域（Electroの「白カード on グレー面」風） ===== */
+  main{
+    max-width: 1120px;
+    margin: 28px auto 48px;
+    padding: 0 24px 48px;
+    background: #f3f4f6;
+    border-radius: 28px;
+  }
+
   .grid{
-    gap: 18px 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px 22px;
   }
+
+  /* 商品カード：白くて角丸、影は控えめ */
+  .card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(15,23,42,0.06);
+    transition:
+      transform .14s ease,
+      box-shadow .14s ease,
+      border-color .14s ease,
+      background .14s ease;
+  }
+
+  .card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 20px 44px rgba(15,23,42,0.10);
+    border-color: #c7d2fe;
+  }
+
+  /* 画像エリア：明るいグラデに中央配置 */
+  .thumb{
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background:
+      radial-gradient(circle at top, #f9fafb 0%, #e5f0ff 45%, #dbeafe 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .thumb img{
+    width: 86%;
+    max-height: 86%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* テキスト部分 */
+  .body{
+    padding: 12px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .title{
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #111827;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3em; /* 2行ぶん高さを揃える */
+  }
+
+  .price-row{
+    margin-top: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .price-main{
+    font-size: 16px;
+    font-weight: 800;
+    color: #b91c1c;
+  }
+
+  .price-sub{
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  /* 既存 .price は印刷などもあるので軽く維持 */
+  .price{
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  /* ===== JANバーコード：かなり小さく、中央寄せ ===== */
+  .barcode{
+    margin-top: 6px;
+    padding: 6px 0 4px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .barcode svg{
+    height: 14px;   /* ★ここでぐっと小さくする */
+    width: 120px;
+  }
+
+  /* 下部：数量＋カートボタン */
+  .actions-card{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding: 10px 14px 12px;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .qtyinput{
+    flex: 0 0 86px;
+    padding: 6px 8px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .actions-card .btn{
+    flex: 1;
+    font-size: 11px;
+    padding: 8px 10px;
+    box-shadow: none;
+  }
+
+  /* カート：右側ドロワーをElectro風の白いパネルに */
   .cart{
-    right: 12px;
-    top: 78px;
-    width: min(340px, calc(100% - 24px));
+    position: fixed;
+    top: 90px;
+    right: 24px;
+    width: 320px;
+    max-height: calc(100dvh - 150px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px 14px;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 18px 40px rgba(15,23,42,0.20);
+    color: #111827;
+    z-index: 60;
+
+    transform: translateX(110%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .25s ease, opacity .25s ease;
+  }
+
+  .cart.open{
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .cart h2{
+    margin: 0 0 4px;
+    font-size: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  .cart-items{
+    flex: 1;
+    overflow: auto;
+    font-size: 12px;
+  }
+
+  .cart-item{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px;
+    padding: 6px 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .cart-item:last-child{
+    border-bottom:none;
+  }
+
+  .cart-summary{
+    font-size: 12px;
+  }
+
+  .cart-actions .btn{
+    width: 100%;
+  }
+
+  /* スマホ時は少しだけ詰める */
+  @media (max-width: 960px){
+    main{
+      margin: 20px auto 32px;
+      padding: 0 12px 32px;
+      border-radius: 0;
+    }
+    .wrap{
+      padding-inline: 12px;
+    }
+    .grid{
+      gap: 20px 12px;
+    }
+    .cart{
+      right: 12px;
+      top: 80px;
+      width: min(340px, calc(100% - 24px));
+    }
   }
 }
+
+
 
 
 
