@@ -111,21 +111,6 @@ h1{margin:0;font-weight:800}
   z-index:0;
 }
 
-/* 必要なら、さらに全体をふんわりさせる薄いホワイトグラデ（任意） */
-.top-hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    90deg,
-    rgba(255,255,255,0.75) 0%,
-    rgba(255,255,255,0.55) 40%,
-    rgba(255,255,255,0.25) 100%
-  );
-  pointer-events:none;
-  z-index:0;
-}
-
 /* コピーとフォームは前面に */
 .top-hero-copy,
 .top-card{
@@ -312,7 +297,7 @@ h1{margin:0;font-weight:800}
 
 
 /* === カタログ画面 === */
-header{position:sticky;top:0;z-index:30;background:#ffffffcc;
+header:not(.top-header){position:sticky;top:0;z-index:30;background:#ffffffcc;
 border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
 .wrap{max-width:1200px;margin:0 auto;padding:10px 16px;
 display:flex;justify-content:space-between;align-items:center;gap:10px;}
