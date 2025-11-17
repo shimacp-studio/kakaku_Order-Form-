@@ -1100,36 +1100,44 @@ async function boot(){
   const grid = document.getElementById('grid');
   grid.innerHTML = ""; // 念のためクリア
 
-  PRODUCTS.forEach(p => {
-  const barcode = renderBarcode(p.jan);
-  grid.insertAdjacentHTML('beforeend', `
-    <div class='card'>
-      <div class='thumb'>
-        <img src='img/${p.jan}.jpg' onerror="this.src='img/noimage.jpg'">
+ PRODUCTS.forEach(p => {
+  const jan   = String(p.jan ?? "");
+  const name  = String(p.name ?? "");
+  const price = Number(p.price ?? 0);
+  const barcode = renderBarcode(jan) || "";
+
+  grid.insertAdjacentHTML("beforeend", `
+    <div class="card">
+      <div class="thumb">
+        <img src="img/${jan}.jpg" onerror="this.onerror=null;this.src='img/noimage.jpg'">
       </div>
 
-      <div class='body'>
-        <div class='title'>${p.name}</div>
+      <div class="body">
+        <div class="title">${name}</div>
         <div class="price-row">
-          <span class="price-main">￥${Math.round(p.price * 1.1).toLocaleString()}</span>
-          <span class="price-sub">（税抜 ￥${p.price.toLocaleString()}）</span>
+          <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
+          <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
         </div>
-        <div class='barcode'>${barcode}</div>
+        <div class="barcode">${barcode}</div>
       </div>
 
-      <!-- 印刷専用の数量欄 -->
-      <div class="qty-print print-only">
+      <!-- 印刷専用数量欄（通常は非表示） -->
+      <div class="qty-print print-only" style="display:none">
         <label style="margin-right:4px;">数量</label>
-        <input id="print-qty-${p.jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
+        <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
       </div>
 
-      <div class='actions-card'>
-        <input id='qty-${p.jan}' type='number' class='qtyinput' min='0' step='1' placeholder='数量'>
-        <button class='btn' onclick='addToCart(${JSON.stringify(p)})'>カートに追加</button>
+      <div class="actions-card">
+        <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
+        <button class="btn" type="button"
+          onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
+          カートに追加
+        </button>
       </div>
     </div>
   `);
 });
+
 
 
 function addToCart(p){
