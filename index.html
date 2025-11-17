@@ -907,18 +907,12 @@ function enableAutoComplete(inputId){
   const input = document.getElementById(inputId);
   const list = document.createElement("div");
   list.className = "autolist";
-  // autowrap の中に挿入
   input.parentNode.appendChild(list);
 
   const saved = JSON.parse(localStorage.getItem(`history_${inputId}`) || "[]");
 
-  input.addEventListener("input", () => {
-    showList(input, list, saved);
-  });
-
-  input.addEventListener("focus", () => {
-    showList(input, list, saved);
-  });
+  input.addEventListener("input", () => { showList(input, list, saved); });
+  input.addEventListener("focus", () => { showList(input, list, saved); });
 
   input.addEventListener("change", () => {
     const val = input.value.trim();
@@ -950,86 +944,106 @@ function showList(input, list, saved) {
   });
 }
 
-// === オートコンプリート初期化 + 入力欄クリア ===
-window.addEventListener("DOMContentLoaded", () => {
-  const ids = ["buyerName","partnerName","siteName"];
-
-  // ページ読み込み時に毎回まっさらにする
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.value = "";
-    }
-  });
-
-  // その上でオートコンプリート機能を有効化
-  ids.forEach(enableAutoComplete);
-});
-
-
 console.log("✅ script loaded");
 
 const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX7vVh-CMGkpOVPsnIhbO-FEViWKcP6KAapatDeusREagPta62kuA/exec";
 
 let cart = [];
 
-// === DOM読み込み後に初期化 ===
+/* ====== 画面遷移のコア ====== */
+function startFlow(){
+  const buyer = (document.getElementById("buyerName")?.value || "").trim();
+  if (!buyer){
+    alert("発注者名を入力してください。");
+    return;
+  }
+  sessionStorage.setItem("buyerName",   buyer);
+  sessionStorage.setItem("partnerName", (document.getElementById("partnerName")?.value || "").trim());
+  sessionStorage.setItem("siteName",    (document.getElementById("siteName")?.value || "").trim());
+
+  const topPage = document.getElementById("topPage");
+  const mainEl  = document.querySelector("main");
+
+  if (topPage){
+    topPage.style.opacity = "0";
+    topPage.style.pointerEvents = "none";
+    setTimeout(() => {
+      topPage.style.display = "none";
+      topPage.style.visibility = "hidden";
+      topPage.style.zIndex = "-1";
+    }, 350);
+  }
+  if (mainEl){
+    mainEl.style.display   = "grid";
+    mainEl.style.visibility= "visible";
+    mainEl.style.opacity   = "1";
+    mainEl.style.position  = "relative";
+    mainEl.style.zIndex    = "10";
+  }
+  try { boot(); }
+  catch(e){ console.error("boot() error:", e); alert("商品描画でエラーが発生しました。コンソールをご確認ください。"); }
+}
+
+function bindStartButton(){
+  const btn = document.getElementById("startBtn");
+  if (btn) btn.addEventListener("click", startFlow);
+  // Enterでも開始
+  ["buyerName","partnerName","siteName"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("keydown", ev => { if (ev.key === "Enter") startFlow(); });
+  });
+}
+
+// 念のため、クリック委任で拾う保険
+document.addEventListener("click", ev=>{
+  const hit = ev.target.closest?.("#startBtn");
+  if (hit) startFlow();
+});
+
+// ヒーロー疑似要素がクリックをブロックしないよう強制
+(function(){
+  const style = document.createElement("style");
+  style.textContent = `
+    .top-hero::before, .top-hero::after { pointer-events:none !important; }
+    .top-hero, .top-card, .top-form, .top-input, #startBtn { pointer-events:auto !important; }
+  `;
+  document.head.appendChild(style);
+})();
+
+/* ====== 起動時セットアップ ====== */
 window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
 
-  // --- TOPページ → カタログ画面 ---
-  const startBtn = document.getElementById("startBtn");
-  if (startBtn) {
-    startBtn.onclick = () => {
-      const buyer = document.getElementById("buyerName").value.trim();
-      if (!buyer) return alert("発注者名を入力してください。");
+  // 入力欄を毎回リセット
+  ["buyerName","partnerName","siteName"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
 
-      sessionStorage.setItem("buyerName",   buyer);
-      sessionStorage.setItem("partnerName", document.getElementById("partnerName").value.trim());
-      sessionStorage.setItem("siteName",    document.getElementById("siteName").value.trim());
+  // オートコンプリート
+  ["buyerName","partnerName","siteName"].forEach(id=>{
+    try { enableAutoComplete(id); } catch(_) {}
+  });
 
-      const topPage = document.getElementById("topPage");
-      const mainEl  = document.querySelector("main");
+  // スタートボタン/Enter バインド
+  bindStartButton();
 
-      topPage.style.opacity = "0";
-      setTimeout(() => {
-        topPage.style.display   = "none";
-        topPage.style.visibility= "hidden";
-        topPage.style.zIndex    = "-1";
-      }, 400);
-
-      mainEl.style.display  = "grid";
-      mainEl.style.visibility = "visible";
-      mainEl.style.opacity    = "1";
-      mainEl.style.position   = "relative";
-      mainEl.style.zIndex     = "10";
-
-      console.log("✅ 発注カタログを開くクリックOK");
-      boot();
-    };
-  }
-
-  // --- メール送信ボタン ---
+  // メール送信ボタン
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 
-　  // --- カートアイコン（KART.png）クリックでカートパネルを開く ---
+  // カートトグル
   const cartToggle = document.getElementById("cartToggle");
   const cartPanel  = document.querySelector(".cart");
   if (cartToggle && cartPanel){
     cartToggle.addEventListener("click", () => {
-      if (!cart.length){
-        alert("カートに商品がありません");
-        return;
-      }
-      // 1回目クリックで開く／もう一度クリックで閉じる
+      if (!cart.length){ alert("カートに商品がありません"); return; }
       cartPanel.classList.toggle("open");
     });
   }
-
-  
 });
 
+/* ====== カート表示更新 ====== */
 function updateCart(){
   const list  = document.getElementById('cartlist');
   const badge = document.getElementById('cartBadge');
@@ -1040,11 +1054,9 @@ function updateCart(){
     list.textContent = 'カートは空です';
     document.getElementById('subtotal').textContent = '0円';
     document.getElementById('total').textContent    = '0円';
-
-    // ★ カートが空のときのバッジ
     if (badge){
       badge.textContent = '0';
-      badge.classList.add('is-empty');   // .cart-badge.is-empty { display:none; } で非表示
+      badge.classList.add('is-empty');
     }
     return;
   }
@@ -1052,22 +1064,20 @@ function updateCart(){
   let subtotal = 0;
   cart.forEach((it,i)=>{
     subtotal += it.price * it.qty;
-    list.innerHTML += `
+    list.insertAdjacentHTML("beforeend", `
       <div class='cartitem'>
         <div>${it.name}</div>
         <div>${it.qty}</div>
         <div>${(it.price * it.qty).toLocaleString()}円</div>
         <button onclick='removeItem(${i})'
                 style='color:red;border:none;background:none;font-weight:800'>×</button>
-      </div>`;
+      </div>
+    `);
   });
 
-  document.getElementById('subtotal').textContent =
-    subtotal.toLocaleString() + '円';
-  document.getElementById('total').textContent =
-    Math.round(subtotal * 1.1).toLocaleString() + '円';
+  document.getElementById('subtotal').textContent = subtotal.toLocaleString() + '円';
+  document.getElementById('total').textContent    = Math.round(subtotal * 1.1).toLocaleString() + '円';
 
-  // ★ バッジ更新（合計数量）
   if (badge){
     const totalQty = cart.reduce((sum, it) => sum + it.qty, 0);
     if (totalQty > 0){
@@ -1085,61 +1095,59 @@ function removeItem(i){
   updateCart();
 }
 
+/* ====== 商品描画 ====== */
 async function boot(){
   const PRODUCTS = await fetch('products.json', { cache: "no-store" })
-  .then(r => {
-    if (!r.ok) throw new Error("products.jsonが読み込めませんでした");
-    return r.json();
-  })
-  .catch(err => {
-    console.error(err);
-    alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
-    return [];
-  });
+    .then(r => { if (!r.ok) throw new Error("products.jsonが読み込めませんでした"); return r.json(); })
+    .catch(err => {
+      console.error(err);
+      alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
+      return [];
+    });
 
   const grid = document.getElementById('grid');
-  grid.innerHTML = ""; // 念のためクリア
+  grid.innerHTML = ""; // クリア
 
- PRODUCTS.forEach(p => {
-  const jan   = String(p.jan ?? "");
-  const name  = String(p.name ?? "");
-  const price = Number(p.price ?? 0);
-  const barcode = renderBarcode(jan) || "";
+  PRODUCTS.forEach(p => {
+    const jan   = String(p.jan ?? "");
+    const name  = String(p.name ?? "");
+    const price = Number(p.price ?? 0);
+    const barcode = renderBarcode(jan) || "";
 
-  grid.insertAdjacentHTML("beforeend", `
-    <div class="card">
-      <div class="thumb">
-        <img src="img/${jan}.jpg" onerror="this.onerror=null;this.src='img/noimage.jpg'">
-      </div>
-
-      <div class="body">
-        <div class="title">${name}</div>
-        <div class="price-row">
-          <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
-          <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="card">
+        <div class="thumb">
+          <img src="img/${jan}.jpg" onerror="this.onerror=null;this.src='img/noimage.jpg'">
         </div>
-        <div class="barcode">${barcode}</div>
+
+        <div class="body">
+          <div class="title">${name}</div>
+          <div class="price-row">
+            <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
+            <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
+          </div>
+          <div class="barcode">${barcode}</div>
+        </div>
+
+        <!-- 印刷専用数量欄（通常は非表示。@media print で表示） -->
+        <div class="qty-print print-only" style="display:none">
+          <label style="margin-right:4px;">数量</label>
+          <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
+        </div>
+
+        <div class="actions-card">
+          <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
+          <button class="btn" type="button"
+            onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
+            カートに追加
+          </button>
+        </div>
       </div>
+    `);
+  });
+}
 
-      <!-- 印刷専用数量欄（通常は非表示） -->
-      <div class="qty-print print-only" style="display:none">
-        <label style="margin-right:4px;">数量</label>
-        <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
-      </div>
-
-      <div class="actions-card">
-        <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
-        <button class="btn" type="button"
-          onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
-          カートに追加
-        </button>
-      </div>
-    </div>
-  `);
-});
-
-
-
+/* ====== カート操作 ====== */
 function addToCart(p){
   const q = document.getElementById(`qty-${p.jan}`).value;
   if (!q || q <= 0) return;
@@ -1154,24 +1162,24 @@ function addToCart(p){
   document.getElementById(`qty-${p.jan}`).value = '';
 }
 
-
+/* ====== 送信 ====== */
 async function sendOrder(){
-  if(!cart.length)return alert('カートが空です');
-  const buyer=document.getElementById('buyerName').value.trim();
-  if(!buyer)return alert('発注者名を入力してください');
-  const partner=document.getElementById('partnerName').value.trim();
-  const site=document.getElementById('siteName').value.trim();
+  if(!cart.length){ alert('カートが空です'); return; }
+  const buyer = (document.getElementById('buyerName')?.value || "").trim();
+  if(!buyer){ alert('発注者名を入力してください'); return; }
+  const partner = (document.getElementById('partnerName')?.value || "").trim();
+  const site    = (document.getElementById('siteName')?.value || "").trim();
 
-  const payload={
+  const payload = {
     buyerName:buyer,
     partnerName:partner,
     siteName:site,
     items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))
   };
 
-  const btn=document.getElementById('orderBtn');
-  btn.disabled=true;
-  btn.textContent='送信中…';
+  const btn = document.getElementById('orderBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中…';
 
   try{
     await fetch(GAS_ENDPOINT,{
@@ -1183,48 +1191,65 @@ async function sendOrder(){
 
     alert('✅ 発注を受け付けました（メール送信済み）');
 
-    // カートを空にする
     cart = [];
     updateCart();
 
-    // ★ TOPページに戻す ★
+    // TOPに戻す
     const topPage = document.getElementById('topPage');
     const mainEl  = document.querySelector('main');
-
     if (topPage && mainEl){
-      // カタログ画面を隠す
-      mainEl.style.display    = 'none';
-      mainEl.style.opacity    = '0';
+      mainEl.style.display = 'none';
+      mainEl.style.opacity = '0';
       mainEl.style.visibility = 'hidden';
-      mainEl.style.zIndex     = '0';
+      mainEl.style.zIndex = '0';
 
-      // TOPページを再表示
-      topPage.style.display    = 'flex';
-      topPage.style.opacity    = '1';
+      topPage.style.display = 'flex';
+      topPage.style.opacity = '1';
       topPage.style.visibility = 'visible';
-      topPage.style.zIndex     = '9999';
+      topPage.style.zIndex = '9999';
 
-      // ★ TOPページに戻ったときに入力ボックスをまっさらにする
-      ['buyerName','partnerName','siteName'].forEach(id => {
+      ['buyerName','partnerName','siteName'].forEach(id=>{
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
     }
-
   }catch(e){
     alert('⚠️ 送信に失敗しました：'+e.message);
   }finally{
-    btn.disabled=false;
-    btn.textContent='この内容で発注（メール送信）';
+    btn.disabled = false;
+    btn.textContent = 'この内容で発注（メール送信）';
   }
 }
 
+/* ====== バーコード ====== */
+function ean13Pattern(d){
+  const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],
+        G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],
+        R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],
+        P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
+  const s=(d||"").replace(/[^0-9]/g,"");
+  if(s.length<12) return null;
+  const d12=s.slice(0,12),
+        cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;
+  const first=d12[0], left=d12.slice(1,7), right=d12.slice(7,12)+cd;
+  let bits="101", par=P[first];
+  for(let i=0;i<6;i++){ bits+=(par[i]==="L"?L[left[i]]:G[left[i]]); }
+  bits+="01010";
+  for(let i=0;i<6;i++){ bits+=R[right[i]]; }
+  return bits+"101";
+}
 
-document.getElementById('orderBtn').onclick=sendOrder;
-
-function ean13Pattern(d){const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};const s=(d||"").replace(/[^0-9]/g,"");if(s.length<12)return null;const d12=s.slice(0,12),cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;const first=d12[0],left=d12.slice(1,7),right=d12.slice(7,12)+cd;let bits="101",par=P[first];for(let i=0;i<6;i++){bits+=(par[i]==="L"?L[left[i]]:G[left[i]]);}bits+="01010";for(let i=0;i<6;i++){bits+=R[right[i]];}return bits+"101";}
-function renderBarcode(jan){const bits=ean13Pattern(jan);if(!bits)return"";let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;for(let i=0;i<bits.length;i++)if(bits[i]==="1")out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;out+="</svg>";return out;}
+function renderBarcode(jan){
+  const bits=ean13Pattern(jan);
+  if(!bits) return "";
+  let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;
+  for(let i=0;i<bits.length;i++) if(bits[i]==="1") out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;
+  out+="</svg>";
+  return out;
+}
 </script>
+
+
 </body>
 </html>
 
