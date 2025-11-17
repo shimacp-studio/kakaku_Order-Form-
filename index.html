@@ -297,111 +297,139 @@ h1{margin:0;font-weight:800}
 
 
 /* === カタログ画面 === */
-header:not(.top-header){position:sticky;top:0;z-index:30;background:#ffffffcc;
-border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
-.wrap{max-width:1200px;margin:0 auto;padding:10px 16px;
-display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.brand{display:flex;align-items:center;gap:10px;}
-.brand img{height:38px;width:auto}
-.actions{display:flex;gap:12px;align-items:center}
-.btn{background:var(--brand);color:#fff;border:1px solid #1243c1;
-border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px;transition:0.3s}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.controls{max-width:1200px;margin:10px auto;display:grid;gap:8px;
-padding:0 16px;grid-template-columns:repeat(3,1fr);}
 
-/* TOPページ専用の入力ボックス */
-.top-input{
-  width:100%;
-  /* ★ 背景色 ＋ ロゴ画像をまとめて指定 */
-  background:
-    #eff4ff
-    url("img/shima_owl.jpg") no-repeat 12px center;
-  background-size:20px 20px;   /* ロゴの大きさ */
+/* === カタログ画面 === */
 
-  border:0;                    /* 枠線・下線を完全に消す */
+/* 発注画面ヘッダー（ロゴ＋KART＋印刷ボタン） */
+header:not(.top-header){
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid #e5e7eb;
+  backdrop-filter:saturate(140%) blur(10px);
+  box-shadow:0 8px 24px rgba(15,23,42,.04);
+}
+
+.wrap{
+  max-width:1120px;
+  margin:0 auto;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.brand img{
+  height:30px;
+  width:30px;
   border-radius:10px;
-  padding:10px 14px;
-  padding-left:44px;           /* ★ ロゴ分だけ左の余白を広げる */
-  font-size:14px;
-  outline:none;
+  box-shadow:0 6px 14px rgba(15,23,42,.18);
+}
+.brand h1{
+  font-size:13px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:#111827;
+}
+
+/* 右側：KART＋印刷ボタン */
+.actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* 共通ボタン（印刷ボタン・カート内ボタンなど） */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid #c4d0ea;
+  background:#111827;
+  color:#f9fafb;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(15,23,42,.35);
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease,
+    border-color .15s ease;
+}
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 14px 28px rgba(15,23,42,.45);
+}
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
   box-shadow:none;
-  -webkit-appearance:none;
-  appearance:none;
-}
-
-
-/* 念のため：TOPのカード内 input には一切線を出さない */
-.top-card input{
-  border:0 !important;
-  outline:none !important;
-  box-shadow:none !important;
-}
-
-/* フォーカス時だけふんわり青い枠を出す */
-.top-input:focus{
-  outline:none;
-  box-shadow:0 0 0 2px rgba(37,99,235,0.35);
-}
-
-/* オートフィル時も同じ薄いブルーにする（Chrome対策） */
-.top-input:-webkit-autofill{
-  -webkit-box-shadow:0 0 0 30px #eff4ff inset !important;
-          box-shadow:0 0 0 30px #eff4ff inset !important;
-  -webkit-text-fill-color:#0f172a !important;
+  transform:none;
 }
 
 /* === 発注カタログ画面レイアウト === */
 main{
-  display:none; /* JSで grid に変更される前は非表示 */
-  max-width:1200px;
-  margin:24px auto 32px;
-  padding:0 24px 32px;
-  background:#f3f4f6;         /* ← うすいグレーで面を作る */
-  border-radius:24px;
+  display:none; /* JS で表示制御 */
+  max-width:1120px;
+  margin:26px auto 40px;
+  padding:0 20px 40px;
 }
 
-
-/* === 商品カード（発注画面用：ECサイト風） === */
+/* 商品グリッド */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:24px;
+  gap:18px 16px;
 }
 
-/* 1商品カード */
+/* 1商品カード：極力ミニマルな白カード */
 .card{
   position:relative;
   display:flex;
   flex-direction:column;
-  background:#ffffff;
   border-radius:18px;
+  background:#ffffff;
   border:1px solid #e5e7eb;
+  box-shadow:0 8px 20px rgba(15,23,42,.03);
   overflow:hidden;
-  box-shadow:0 8px 20px rgba(15,23,42,.06);
   transition:
-    transform .15s ease,
-    box-shadow .15s ease,
-    border-color .15s ease;
+    transform .16s ease,
+    box-shadow .16s ease,
+    border-color .16s ease,
+    background .16s ease;
 }
 .card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 16px 32px rgba(15,23,42,.14);
-  border-color:#bfdbfe;
+  transform:translateY(-2px);
+  box-shadow:0 16px 32px rgba(15,23,42,.08);
+  border-color:#c7d2fe;
 }
 
-/* 画像エリア（正方形に近い比率でそろえる） */
+/* 画像エリア：明るいグラデ＋中央寄せ */
 .thumb{
   width:100%;
   aspect-ratio:4/3;
-  background:linear-gradient(135deg,#eff6ff,#e0f2fe);
+  background:radial-gradient(circle at top,#eff6ff 0,#e5f0ff 50%,#dee9ff 100%);
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
 }
 .thumb img{
-  max-width:88%;
+  width:88%;
   max-height:88%;
   object-fit:contain;
   display:block;
@@ -409,7 +437,7 @@ main{
 
 /* テキストエリア */
 .body{
-  padding:12px 14px 14px;
+  padding:10px 14px 12px;
   display:flex;
   flex-direction:column;
   gap:4px;
@@ -418,22 +446,23 @@ main{
 
 /* 商品名 */
 .title{
+  font-size:13px;
   font-weight:700;
-  font-size:14px;
-  line-height:1.6;
-  min-height:3.2em;     /* 2行分確保して高さをそろえる */
+  line-height:1.5;
+  color:#111827;
   display:-webkit-box;
   -webkit-line-clamp:2;
   -webkit-box-orient:vertical;
   overflow:hidden;
+  min-height:3em; /* 2行ぶん高さをそろえる */
 }
 
-/* 価格行（Amazon ぽく税込価格を強調） */
+/* 価格行：税込を太字で、税抜はグレーで控えめに */
 .price-row{
   margin-top:4px;
   display:flex;
   align-items:baseline;
-  gap:8px;
+  gap:6px;
 }
 .price-main{
   font-size:16px;
@@ -445,151 +474,157 @@ main{
   color:#6b7280;
 }
 
-/* 既存の .price を潰さないように軽くだけ残しておく（印刷用でも使う） */
+/* 互換用（印刷CSSなどが .price を参照している可能性があるので残す） */
 .price{
   font-size:13px;
   font-weight:700;
   color:#111827;
 }
 
-/* JANバーコード（今のまま） */
+/* バーコード */
+.barcode{
+  margin-top:6px;
+}
 .barcode svg{
   height:20px;
   width:90px;
 }
 
-/* 下部の数量＋カートボタン */
+/* 下部：数量入力＋カートボタン */
 .actions-card{
   display:flex;
   align-items:center;
-  justify-content:space-between;
   gap:8px;
-  margin-top:auto;
-  padding:10px 12px;
+  padding:9px 12px 10px;
   border-top:1px solid #e5e7eb;
   background:#f9fafb;
 }
 
-/* 数量入力 */
 .qtyinput{
-  flex:0 0 78px;
-  text-align:center;
-  border:1px solid #d1d5db;
-  border-radius:999px;
+  flex:0 0 76px;
   padding:6px 8px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
   font-size:13px;
+  text-align:center;
   background:#ffffff;
 }
 
-/* カートボタン（丸み＋Amazon 風の目立つボタン） */
+/* カード内「カートに追加」ボタン */
 .actions-card .btn{
   flex:1;
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  font-size:13px;
-  padding:8px 10px;
-  border-radius:999px;
-  background:linear-gradient(135deg,#2563eb,#1d4ed8);
-  border-color:#1d4ed8;
+  font-size:12px;
+  padding:7px 10px;
+  box-shadow:none;
+  background:#111827;
+  border-color:#111827;
 }
 .actions-card .btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 8px 16px rgba(37,99,235,.35);
+  box-shadow:0 10px 24px rgba(15,23,42,.35);
 }
 
-
-/* 数量入力 */
-.qtyinput{
-  width:80px;
-  text-align:center;
-  border:1px solid #d1d5db;
-  border-radius:999px;
-  padding:6px 8px;
-  font-size:13px;
-  background:#ffffff;
-}
-
-/* カード内の「カートに追加」ボタン */
-.actions-card .btn{
-  flex:1;
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  font-size:12px;
-  padding:8px 10px;
-}
-
-
-/* === カート側（KARTボタンで開閉するドロワー版） === */
-/* === カート（ドロワー） === */
+/* === カート（右側ドロワー） === */
 .cart{
   position:fixed;
-  top:86px;
+  top:82px;
   right:24px;
   width:320px;
-  max-height:calc(100dvh - 140px);
+  max-height:calc(100dvh - 120px);
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px 16px 14px;
 
   background:#ffffff;
   border-radius:18px;
-  padding:14px 14px 12px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  box-shadow:0 16px 40px rgba(15,23,42,.25);
   border:1px solid #e5e7eb;
+  box-shadow:0 18px 40px rgba(15,23,42,.18);
   color:#111827;
   z-index:60;
 
-  /* 初期状態は画面の外に隠す */
+  /* 初期状態は画面外 */
   transform:translateX(110%);
   opacity:0;
   pointer-events:none;
   transition:transform .25s ease, opacity .25s ease;
 }
-
-/* KART.png クリックで .open を付けてスライドイン */
 .cart.open{
   transform:translateX(0);
   opacity:1;
   pointer-events:auto;
 }
 
-/* カート内のボタンは青系に */
-.cart .btn{
-  width:100%;
-  justify-content:center;
-  background:linear-gradient(135deg,#2563eb,#1d4ed8);
-  border-color:#1d4ed8;
+.cart h2{
+  margin:0 0 4px;
+  font-size:13px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#6b7280;
 }
 
+/* カートの中身リスト */
+.cartlist{
+  flex:1;
+  overflow:auto;
+  padding-right:2px;
+  font-size:12px;
+}
+.cartitem{
+  display:grid;
+  grid-template-columns:1fr auto auto auto;
+  align-items:center;
+  gap:6px;
+  padding:6px 0;
+  border-bottom:1px solid #e5e7eb;
+}
+.cartitem:last-child{
+  border-bottom:none;
+}
+.cartitem div:nth-child(1){
+  font-weight:500;
+}
+.cartitem div:nth-child(2),
+.cartitem div:nth-child(3){
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  color:#4b5563;
+}
 
-/* === ヘッダ右上の KART ボタン === */
+/* カート内の合計金額表示はデフォルトのままでも見やすいのでCSS最小限に */
+.cart strong{
+  font-weight:700;
+}
+
+/* カートの送信ボタン */
+.cart .btn{
+  margin-top:6px;
+  width:100%;
+  justify-content:center;
+}
+
+/* === ヘッダー右上の KART ボタン === */
 .cart-toggle{
   position:relative;
   border:none;
   background:transparent;
   padding:0;
-  margin-right:8px;
   cursor:pointer;
 }
-
-/* ここが大事：サイズを固定しておく */
 .cart-toggle img{
-  height:32px;
-  width:auto;
-  max-width:none;
   display:block;
+  height:28px;
+  width:28px;
 }
 
 /* 件数バッジ */
 .cart-badge{
   position:absolute;
-  right:-4px;
   top:-4px;
+  right:-4px;
   min-width:18px;
+  padding:0 5px;
   height:18px;
-  padding:0 4px;
   border-radius:999px;
   background:#ef4444;
   color:#fff;
@@ -601,21 +636,22 @@ main{
   box-shadow:0 0 0 2px #f9fafb;
 }
 .cart-badge.is-empty{
-  display:none;    /* 件数0のときは非表示 */
+  display:none;
 }
 
-  
-/* レスポンシブ：幅が狭いときはメインを1カラムにするだけ */
-@media (max-width: 960px){
-  
-  /* 狭い時はカートを少し小さめにする程度の調整だけにする */
+/* レスポンシブ：狭い画面では margin/padding だけ調整 */
+@media (max-width:960px){
+  main{
+    margin:18px auto 28px;
+    padding:0 16px 32px;
+  }
   .cart{
-    width:280px;
+    width:100%;
+    max-width:320px;
     right:12px;
-    top:72px;
+    top:74px;
   }
 }
-
 
 
 /* === 印刷設定（前回の安定版をそのまま保持） === */
