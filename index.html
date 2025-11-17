@@ -344,6 +344,46 @@ h1{margin:0;font-weight:800}
     gap: 10px;
   }
 
+  /* カゴアイコン（KART.png）を小さく整える */
+.cart-toggle{
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cart-toggle img{
+  width: 28px;   /* ← お好みで 24〜32px くらいに調整OK */
+  height: 28px;
+  display: block;
+}
+
+/* カート内数量のバッジ */
+.cart-badge{
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px #f9fafb;
+}
+
+.cart-badge.is-empty{
+  display: none;
+}
+
+
+  
   /* 共通ボタン（印刷ボタン・カード内ボタン・カート内ボタン） */
   .btn{
     display: inline-flex;
