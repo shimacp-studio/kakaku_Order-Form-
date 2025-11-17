@@ -645,22 +645,17 @@ main{
   display:none;
 }
 
-  
 @media print {
+  /* 画面専用UIは印刷で隠す */
   #topPage, header, .actions, .cart, .actions-card, .controls {
     display:none!important;
   }
 
-/* ここから追加 */
-  .header-print{
-    display:flex !important;
-  }
-  .footer-print{
-    display:block !important;
-  }
-  /* ここまで追加 */
+  /* 印刷時のみヘッダー／フッターを出す */
+  .header-print{ display:flex !important; }
+  .footer-print{ display:block !important; }
 
-  
+  /* 印刷時のベース */
   body {
     background:#fff!important;
     counter-reset:item;
@@ -739,11 +734,16 @@ main{
   }
   .barcode svg {height:20px;width:70px;}
   .price {font-size:9.3pt;}
+
+  /* ★ 印刷専用「数量」欄（ここで表示ON） */
+  .qty-print,
+  .print-only{
+    display:flex !important;
+  }
   .qty-print {
     position:absolute!important;
     bottom:3mm!important;
     left:4mm!important;
-    display:flex;
     align-items:center;
     gap:1.2mm;
     font-size:9pt;
@@ -754,7 +754,12 @@ main{
     height:6mm!important;
     border:1px solid #bbb;
     border-radius:3mm;
+    padding:0 2mm;
+    background:#fff;
+    outline:none;
   }
+
+  /* 印刷ヘッダー／フッターの見た目 */
   .header-print {
     position:fixed;top:5mm;left:0;width:100%;
     display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;
@@ -768,6 +773,7 @@ main{
     padding-top:2mm;background:#fff;z-index:9999;
   }
 }
+
 
 /* === オートコンプリート候補の見た目（TOPページ用） === */
 .autolist {
