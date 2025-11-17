@@ -457,23 +457,26 @@ main{
   border-color: #4b5563;
 }
 
-/* 画像エリア：暗い背景の上に商品が浮く感じ */
+/* 画像エリア：白いパネルに乗せる（なんちゃって透過） */
 .thumb{
   width: 100%;
   aspect-ratio: 4 / 3;
-  background:
-    radial-gradient(circle at top, #1f2937 0%, #020617 55%, #020617 100%);
+  background: #f9fafb;              /* ★ここを白〜薄グレーに */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-bottom: 1px solid #e5e7eb33; /* 薄い仕切り線 お好みで */
 }
+
 .thumb img{
   width: 86%;
   max-height: 86%;
   object-fit: contain;
   display: block;
+  background: #f9fafb;              /* ★画像自体の下にも同じ色 */
 }
+
 
 /* テキストエリア */
 .body{
