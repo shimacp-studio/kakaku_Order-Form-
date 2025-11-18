@@ -294,26 +294,26 @@ h1{margin:0;font-weight:800}
   }
 }
 
-/* === 発注画面ヘッダー：Electro 風ナビバー（強め） ======================= */
+/* === 発注画面ヘッダー：Electro 風ナビバー（さらに強め） ======================= */
 
 header:not(.top-header){
   position: sticky;
   top: 0;
   z-index: 30;
   background: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
-  border-bottom: 1px solid rgba(148,163,184,.4);
-  box-shadow: 0 22px 60px rgba(0,0,0,.95);
+  border-bottom: 1px solid rgba(148,163,184,.45);
+  box-shadow: 0 26px 80px rgba(0,0,0,.98);
 }
 
-/* 中身の横並び（全体の高さをしっかり取る） */
+/* 中身の横並び（高さもしっかり） */
 .wrap{
   max-width: 1200px;
   margin: 0 auto;
-  padding: 12px 32px;
-  min-height: 70px;
+  padding: 14px 32px;
+  min-height: 80px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 }
 
 /* 左：ロゴ＋タイトル */
@@ -324,14 +324,14 @@ header:not(.top-header){
   white-space: nowrap;
 }
 .brand img{
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 14px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.75);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.85);
 }
 .brand h1{
   font-size: 15px;
-  letter-spacing: .20em;
+  letter-spacing: .22em;
   text-transform: uppercase;
   font-weight: 800;
   color: #f9fafb;
@@ -349,13 +349,13 @@ header:not(.top-header){
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 640px;
+  max-width: 680px;
   background: #020617;
   border-radius: 999px;
   border: 1px solid #334155;
   box-shadow:
     0 0 0 1px rgba(15,23,42,0.9),
-    0 18px 42px rgba(0,0,0,0.85);
+    0 22px 60px rgba(0,0,0,0.9);
   overflow: hidden;
 }
 
@@ -364,7 +364,7 @@ header:not(.top-header){
   border-color: #60a5fa;
   box-shadow:
     0 0 0 1px #60a5fa,
-    0 22px 60px rgba(37,99,235,0.75);
+    0 26px 70px rgba(37,99,235,0.8);
 }
 
 /* 入力欄 */
@@ -375,7 +375,7 @@ header:not(.top-header){
   background: transparent;
   color: #e5e7eb;
   font-size: 13px;
-  padding: 11px 14px 11px 40px;
+  padding: 12px 14px 12px 40px;
 }
 .search-box input::placeholder{
   color: #6b7280;
@@ -397,9 +397,9 @@ header:not(.top-header){
   color: #f9fafb;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: .12em;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  padding: 0 22px;
+  padding: 0 24px;
   cursor: pointer;
   height: 100%;
   display: inline-flex;
@@ -424,7 +424,7 @@ header:not(.top-header){
   justify-content: center;
   gap: 6px;
   padding: 0 16px;
-  min-height: 38px;
+  min-height: 40px;
   border-radius: 999px;
   border: 1px solid #374151;
   background: #111827;
@@ -434,7 +434,7 @@ header:not(.top-header){
   letter-spacing: .10em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.55);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
   transition:
     transform .12s ease,
     box-shadow .12s ease,
@@ -444,12 +444,12 @@ header:not(.top-header){
 }
 .btn:hover{
   transform: translateY(-1px);
-  box-shadow: 0 18px 38px rgba(0,0,0,0.75);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
   background: #1f2937;
 }
 .btn:active{
   transform: translateY(0);
-  box-shadow: 0 9px 20px rgba(0,0,0,0.65);
+  box-shadow: 0 9px 22px rgba(0,0,0,0.65);
 }
 .btn:disabled{
   opacity: .55;
@@ -457,7 +457,7 @@ header:not(.top-header){
   box-shadow: none;
 }
 
-/* カゴアイコン：一回り大きく＆丸背景で「ボタン感」を強く */
+/* カゴアイコン：大きめの丸ボタンにして主張を強く */
 .cart-toggle{
   position: relative;
   border: none;
@@ -466,21 +466,22 @@ header:not(.top-header){
   cursor: pointer;
 }
 .cart-toggle img{
-  width: 34px;
-  height: 34px;
-  padding: 6px;
+  width: 40px;
+  height: 40px;
+  padding: 7px;
   border-radius: 999px;
   background: #020617;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.85);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.9);
   border: 1px solid #4b5563;
   display: block;
 }
 
+
 /* カゴの件数バッジ */
 .cart-badge{
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -2px;
+  right: -2px;
   min-width: 20px;
   height: 20px;
   padding: 0 6px;
@@ -498,20 +499,71 @@ header:not(.top-header){
   display: none;
 }
 
+/* スクロールするコメント帯（Electro 風マルチループ） */
+.order-marquee{
+  background:#020617;
+  border-bottom:1px solid #111827;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.order-marquee-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:8px 32px;
+  position:relative;
+}
+.order-marquee-track{
+  display:inline-flex;
+  align-items:center;
+  gap:24px;
+  animation:orderMarquee 28s linear infinite;
+}
+.order-marquee-badge{
+  padding:2px 10px;
+  border-radius:999px;
+  border:1px solid #374151;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#e5e7eb;
+}
+.order-marquee-text{
+  font-size:12px;
+  color:#9ca3af;
+}
+.order-marquee-dot{
+  font-size:14px;
+  color:#4b5563;
+}
+
+@keyframes orderMarquee{
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(-50%); }
+}
+
+/* 印刷のときは非表示（この @media は単独ブロックでOK） */
+@media print{
+  .order-marquee{ display:none!important; }
+}
+
+  
+
+
 /* 幅が狭いときの調整 */
 @media (max-width: 960px){
   .wrap{
-    padding-inline: 12px;
+    padding-inline: 10px;
     gap: 10px;
   }
   .brand h1{
     font-size: 12px;
-    letter-spacing: .14em;
+    letter-spacing: .16em;
   }
   .search-box{
     max-width: 100%;
   }
 }
+
 
 
   
@@ -1141,6 +1193,41 @@ main{
   </div>
 </header>
 
+<!-- ★★★ ここにスクロールするコメント帯を追加 ★★★ -->
+<div class="order-marquee">
+  <div class="order-marquee-inner">
+    <div class="order-marquee-track">
+      <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
+      <span class="order-marquee-text">
+        一つひとつの現場に、ちょうどいい消耗品を。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        月１回の「まとめ発注」で、ストック切れゼロへ。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        カタログから選ぶだけ。レジ前での発注メモはもう不要です。
+      </span>
+
+      <!-- ループ用にもう一周分コピー -->
+      <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
+      <span class="order-marquee-text">
+        一つひとつの現場に、ちょうどいい消耗品を。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        月１回の「まとめ発注」で、ストック切れゼロへ。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        カタログから選ぶだけ。レジ前での発注メモはもう不要です。
+      </span>
+    </div>
+  </div>
+</div>
+<!-- ★★★ ここまでを追加 ★★★ -->
+  
 <main>
   <section><div id="grid" class="grid"></div></section>
   <aside class="cart">
