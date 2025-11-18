@@ -605,6 +605,15 @@ main{
   text-align: left;
 }
 
+/* 画面ではテキストだけ表示、バーコードSVGは隠す */
+.barcode-text{
+  display: block;
+}
+.barcode-svg{
+  display: none;
+}
+
+
 
 /* 下部：数量＋カートボタンをフラットに */
 .actions-card{
@@ -885,7 +894,23 @@ main{
     word-break:break-word!important;
     font-weight:700!important;
   }
-  .barcode svg {height:20px;width:70px;}
+
+  /* ★ 印刷時のJAN：テキストを隠してバーコードSVGだけ表示 */
+  .barcode{
+    margin-top:0;
+    text-align:left;
+  }
+  .barcode-text{
+    display:none !important;
+  }
+  .barcode-svg{
+    display:inline-block !important;
+  }
+  .barcode-svg svg{
+    height:20px;
+    width:70px;
+  }
+
   .price {font-size:9.3pt;}
 
   /* ★ 印刷専用「数量」欄（ここで表示ON） */
@@ -926,6 +951,7 @@ main{
     padding-top:2mm;background:#fff;z-index:9999;
   }
 }
+
 
 
 /* === オートコンプリート候補の見た目（TOPページ用） === */
