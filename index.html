@@ -418,6 +418,75 @@ header:not(.top-header){
   display: none;
 }
 
+/* 検索ボックス（Electroのヘッダー検索風） */
+.search-wrap{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.search-box{
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 520px;
+  background: #020617;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+
+.search-box input{
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 13px;
+  padding: 8px 12px 8px 34px;
+}
+
+.search-box input::placeholder{
+  color: #6b7280;
+}
+
+.search-icon{
+  position: absolute;
+  left: 10px;
+  font-size: 13px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.search-btn{
+  border: none;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+  height: 100%;
+}
+
+.search-btn:hover{
+  background: #1f2937;
+}
+
+/* 幅が狭いときはパディングを少し詰める */
+@media (max-width: 960px){
+  .search-wrap{
+    padding: 0 8px;
+  }
+}
+
+
+  
 /* ===== 発注カタログ本体 ===== */
 main{
   max-width: 1200px;
@@ -526,21 +595,16 @@ main{
   color: #e5e7eb;
 }
 
-/* JANバーコード：今のまま小さく中央寄せ */
+/* JANテキスト表示（画面用） */
 .barcode{
-  margin-top: 6px;
-  padding: 6px 0 4px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #9ca3af;
+  font-family: "SF Mono","Consolas","Menlo",monospace;
+  letter-spacing: .08em;
+  text-align: left;
 }
-.barcode svg{
-  height: 14px;
-  width: 120px;
-}
-.barcode svg rect[fill='#000']{
-  fill: #e5e7eb;
-}
+
 
 /* 下部：数量＋カートボタンをフラットに */
 .actions-card{
@@ -956,17 +1020,25 @@ main{
       <img src="img/shima_owl.jpg" alt="logo">
       <h1>シマコーポレーション 発注カタログ</h1>
     </div>
+
+    <!-- ★ Electro風 検索ボックス -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input id="productSearch" type="search"
+               placeholder="ここに商品名・JANを入力して検索"
+               autocomplete="off">
+        <button id="searchBtn" class="search-btn" type="button">検索</button>
+      </div>
+    </div>
+
     <div class="actions">
-  <!-- ★ カートトグルボタン（KART.png） -->
-  <button id="cartToggle" class="cart-toggle" type="button">
-    <img src="img/KART.png" alt="カート">
-    <span id="cartBadge" class="cart-badge is-empty">0</span>
-  </button>
-
-  <!-- 既存の印刷ボタンはそのまま -->
-  <button class="btn" onclick="window.print()">印刷（A4縦）</button>
-</div>
-
+      <button id="cartToggle" class="cart-toggle" type="button">
+        <img src="img/KART.png" alt="カート">
+        <span id="cartBadge" class="cart-badge is-empty">0</span>
+      </button>
+      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+    </div>
   </div>
 </header>
 
@@ -1129,6 +1201,23 @@ window.addEventListener("DOMContentLoaded", () => {
       cartPanel.classList.toggle("open");
     });
   }
+
+// ★ ここから検索ボックスのイベントを追加 ↓↓↓
+  const searchInput = document.getElementById('productSearch');
+  const searchBtn   = document.getElementById('searchBtn');
+
+  if (searchInput){
+    // 入力するたびに絞り込み
+    searchInput.addEventListener('input', applySearchFilter);
+    // Enterキーでも検索
+    searchInput.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter') applySearchFilter();
+    });
+  }
+  if (searchBtn){
+    searchBtn.addEventListener('click', applySearchFilter);
+  }
+  
 });
 
 /* ====== カート表示更新 ====== */
@@ -1178,6 +1267,28 @@ function updateCart(){
   }
 }
 
+/* ====== 商品検索フィルター（名前・JAN両方） ====== */
+function applySearchFilter(){
+  const input = document.getElementById('productSearch');
+  const grid  = document.getElementById('grid');
+  if (!input || !grid) return;
+
+  const q = input.value.trim().toLowerCase();
+  const cards = grid.querySelectorAll('.card');
+
+  if (!q){
+    // 検索文字列が空なら全部表示
+    cards.forEach(c => c.style.display = '');
+    return;
+  }
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+  
 function removeItem(i){
   cart.splice(i,1);
   updateCart();
@@ -1196,11 +1307,13 @@ async function boot(){
   const grid = document.getElementById('grid');
   grid.innerHTML = ""; // クリア
 
-  PRODUCTS.forEach(p => {
+    PRODUCTS.forEach(p => {
     const jan   = String(p.jan ?? "");
     const name  = String(p.name ?? "");
     const price = Number(p.price ?? 0);
-    const barcode = renderBarcode(jan) || "";
+
+    // ★ JANテキスト（空なら非表示）
+    const barcodeText = jan ? `JAN: ${jan}` : "";
 
     grid.insertAdjacentHTML("beforeend", `
       <div class="card">
@@ -1214,7 +1327,7 @@ async function boot(){
             <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
             <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
           </div>
-          <div class="barcode">${barcode}</div>
+          <div class="barcode">${barcodeText}</div>
         </div>
 
         <!-- 印刷専用数量欄（通常は非表示。@media print で表示） -->
