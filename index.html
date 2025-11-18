@@ -294,45 +294,46 @@ h1{margin:0;font-weight:800}
   }
 }
 
-/* === 発注画面ヘッダー：Electro 風ナビバー ======================= */
+/* === 発注画面ヘッダー：Electro 風ナビバー（強め） ======================= */
 
 header:not(.top-header){
   position: sticky;
   top: 0;
   z-index: 30;
-  background: #020617;
-  border-bottom: 1px solid rgba(148,163,184,.35);
-  box-shadow: 0 18px 40px rgba(0,0,0,.85);
+  background: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
+  border-bottom: 1px solid rgba(148,163,184,.4);
+  box-shadow: 0 22px 60px rgba(0,0,0,.95);
 }
 
-/* 中身の横並び */
+/* 中身の横並び（全体の高さをしっかり取る） */
 .wrap{
   max-width: 1200px;
   margin: 0 auto;
-  padding: 8px 28px;
+  padding: 12px 32px;
+  min-height: 70px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 
-/* 左：ロゴ＋タイトル（Electro のロゴっぽく） */
+/* 左：ロゴ＋タイトル */
 .brand{
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   white-space: nowrap;
 }
 .brand img{
-  width: 32px;
-  height: 32px;
-  border-radius: 12px;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.7);
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.75);
 }
 .brand h1{
-  font-size: 14px;
-  letter-spacing: .18em;
+  font-size: 15px;
+  letter-spacing: .20em;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800;
   color: #f9fafb;
 }
 
@@ -348,13 +349,13 @@ header:not(.top-header){
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 560px;
-  background: radial-gradient(circle at top, #020617 0, #020617 50%, #020617 100%);
+  max-width: 640px;
+  background: #020617;
   border-radius: 999px;
   border: 1px solid #334155;
   box-shadow:
     0 0 0 1px rgba(15,23,42,0.9),
-    0 14px 32px rgba(0,0,0,0.7);
+    0 18px 42px rgba(0,0,0,0.85);
   overflow: hidden;
 }
 
@@ -363,7 +364,7 @@ header:not(.top-header){
   border-color: #60a5fa;
   box-shadow:
     0 0 0 1px #60a5fa,
-    0 16px 40px rgba(37,99,235,0.65);
+    0 22px 60px rgba(37,99,235,0.75);
 }
 
 /* 入力欄 */
@@ -374,7 +375,7 @@ header:not(.top-header){
   background: transparent;
   color: #e5e7eb;
   font-size: 13px;
-  padding: 9px 12px 9px 38px;
+  padding: 11px 14px 11px 40px;
 }
 .search-box input::placeholder{
   color: #6b7280;
@@ -383,22 +384,22 @@ header:not(.top-header){
 /* 🔍 アイコン */
 .search-icon{
   position: absolute;
-  left: 12px;
+  left: 14px;
   font-size: 13px;
   color: #9ca3af;
   pointer-events: none;
 }
 
-/* 検索ボタン（右側の小さなピル） */
+/* 検索ボタン（バーの一部として存在感を出す） */
 .search-btn{
   border: none;
   background: linear-gradient(135deg,#2563eb,#1d4ed8);
   color: #f9fafb;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: .10em;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  padding: 9px 18px;
+  padding: 0 22px;
   cursor: pointer;
   height: 100%;
   display: inline-flex;
@@ -413,17 +414,17 @@ header:not(.top-header){
 .actions{
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* 共通ボタン（印刷ボタン・カート内ボタンなど） */
+/* 共通ボタン（印刷ボタンなど） */
 .btn{
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 16px;
-  min-height: 36px;
+  padding: 0 16px;
+  min-height: 38px;
   border-radius: 999px;
   border: 1px solid #374151;
   background: #111827;
@@ -433,7 +434,7 @@ header:not(.top-header){
   letter-spacing: .10em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.55);
   transition:
     transform .12s ease,
     box-shadow .12s ease,
@@ -443,12 +444,12 @@ header:not(.top-header){
 }
 .btn:hover{
   transform: translateY(-1px);
-  box-shadow: 0 18px 34px rgba(0,0,0,0.7);
+  box-shadow: 0 18px 38px rgba(0,0,0,0.75);
   background: #1f2937;
 }
 .btn:active{
   transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+  box-shadow: 0 9px 20px rgba(0,0,0,0.65);
 }
 .btn:disabled{
   opacity: .55;
@@ -456,7 +457,7 @@ header:not(.top-header){
   box-shadow: none;
 }
 
-/* カゴアイコン */
+/* カゴアイコン：一回り大きく＆丸背景で「ボタン感」を強く */
 .cart-toggle{
   position: relative;
   border: none;
@@ -465,8 +466,13 @@ header:not(.top-header){
   cursor: pointer;
 }
 .cart-toggle img{
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #020617;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.85);
+  border: 1px solid #4b5563;
   display: block;
 }
 
@@ -475,9 +481,9 @@ header:not(.top-header){
   position: absolute;
   top: -4px;
   right: -4px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
   border-radius: 999px;
   background: #f97316;
   color: #111827;
@@ -492,20 +498,21 @@ header:not(.top-header){
   display: none;
 }
 
-/* 幅が狭いときはパディングを少し詰める */
+/* 幅が狭いときの調整 */
 @media (max-width: 960px){
   .wrap{
     padding-inline: 12px;
     gap: 10px;
   }
-  .search-wrap{
-    padding: 0 4px;
-  }
   .brand h1{
     font-size: 12px;
-    letter-spacing: .12em;
+    letter-spacing: .14em;
+  }
+  .search-box{
+    max-width: 100%;
   }
 }
+
 
   
 /* ===== 発注カタログ本体 ===== */
