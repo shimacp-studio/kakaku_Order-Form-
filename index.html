@@ -1309,44 +1309,53 @@ async function boot(){
   grid.innerHTML = ""; // クリア
 
     PRODUCTS.forEach(p => {
-    const jan   = String(p.jan ?? "");
-    const name  = String(p.name ?? "");
-    const price = Number(p.price ?? 0);
+  const jan   = String(p.jan ?? "");
+  const name  = String(p.name ?? "");
+  const price = Number(p.price ?? 0);
 
-    // ★ JANテキスト（空なら非表示）
-    const barcodeText = jan ? `JAN: ${jan}` : "";
+  // 画面用：JANテキスト
+  const barcodeText = jan ? `JAN: ${jan}` : "";
 
-    grid.insertAdjacentHTML("beforeend", `
-      <div class="card">
-        <div class="thumb">
-          <img src="img/${jan}.jpg" onerror="this.onerror=null;this.src='img/noimage.jpg'">
+  // 印刷用：バーコードSVG
+  const barcodeSvg  = jan ? (renderBarcode(jan) || "") : "";
+
+  grid.insertAdjacentHTML("beforeend", `
+    <div class="card">
+      <div class="thumb">
+        <img src="img/${jan}.jpg" onerror="this.onerror=null;this.src='img/noimage.jpg'">
+      </div>
+
+      <div class="body">
+        <div class="title">${name}</div>
+        <div class="price-row">
+          <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
+          <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
         </div>
 
-        <div class="body">
-          <div class="title">${name}</div>
-          <div class="price-row">
-            <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
-            <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
-          </div>
-          <div class="barcode">${barcodeText}</div>
-        </div>
-
-        <!-- 印刷専用数量欄（通常は非表示。@media print で表示） -->
-        <div class="qty-print print-only" style="display:none">
-          <label style="margin-right:4px;">数量</label>
-          <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
-        </div>
-
-        <div class="actions-card">
-          <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
-          <button class="btn" type="button"
-            onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
-            カートに追加
-          </button>
+        <!-- ★ 画面用テキスト＋印刷用バーコードを両方入れておく -->
+        <div class="barcode">
+          <span class="barcode-text">${barcodeText}</span>
+          <span class="barcode-svg">${barcodeSvg}</span>
         </div>
       </div>
-    `);
-  });
+
+      <!-- 印刷専用数量欄（既存のまま） -->
+      <div class="qty-print print-only" style="display:none">
+        <label style="margin-right:4px;">数量</label>
+        <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
+      </div>
+
+      <div class="actions-card">
+        <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
+        <button class="btn" type="button"
+          onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
+          カートに追加
+        </button>
+      </div>
+    </div>
+  `);
+});
+
 }
 
 /* ====== カート操作 ====== */
