@@ -465,14 +465,19 @@ header:not(.top-header){
   padding: 0;
   cursor: pointer;
 }
+
+/* カゴアイコン：枠・丸背景ナシでアイコン自体を強調 */
 .cart-toggle img{
-  width: 70px;            /* ← 少し大きめに */
-  height: 48px;
-  padding: 0;             /* ← 余白なし（輪っかを消す） */
-  border-radius: 999px;   /* 画像が丸の場合はそのまま活かす */
-  box-shadow: 0 16px 40px rgba(0,0,0,0.7); /* ほんのり立体感だけ残す */
+  width: 80px;              /* ← さらに大きめに */
+  height: 52px;
+  padding: 0;               /* ← 内側の余白をゼロにして輪っかを消す */
+  border-radius: 0;         /* 画像自体が丸なら 999px にしてもOK */
+  background: none !important;
+  border: none !important;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.65);  /* うっすら影だけ残す */
   display: block;
 }
+
 
 /* カゴの件数バッジ */
 .cart-badge{
@@ -507,39 +512,42 @@ header:not(.top-header){
 .order-marquee-inner{
   max-width:1200px;
   margin:0 auto;
-  padding:10px 32px;       /* ← 少し高さアップ */
+  padding:12px 32px;                /* ← 高さアップ */
   position:relative;
 }
 
 .order-marquee-track{
   display:inline-flex;
   align-items:center;
-  gap:32px;                /* ← 余白を少し広げる */
-  animation:orderMarquee 26s linear infinite;
+  gap:40px;                          /* ← コメント同士の間隔も広く */
+  animation:orderMarquee 24s linear infinite;
 }
 
-/* 左のバッジ */
+/* 左側のバッジは少しだけ明るく */
 .order-marquee-badge{
-  padding:3px 12px;
+  padding:4px 14px;
   border-radius:999px;
-  border:1px solid #475569;
-  font-size:20px;          /* ← ほんの少し大きく */
-  letter-spacing:.20em;
+  border:1px solid #64748b;
+  font-size:11px;
+  letter-spacing:.22em;
   text-transform:uppercase;
-  color:#f9fafb;           /* ← ほぼ白で主張を強く */
+  color:#f9fafb;
 }
 
-/* メインメッセージ */
+/* ★ メインメッセージ：白・大きめ・太文字 ● */
 .order-marquee-text{
-  font-size:13px;          /* ← 1段階大きく */
-  color:#f9fafb;           /* ← 明るめグレー */
+  font-size:14px;                    /* ← 1段階UP */
+  font-weight:700;                   /* ← 太文字 */
+  color:#ffffff;                     /* ← はっきり白 */
+  letter-spacing:.03em;
 }
 
-/* 区切りのドット */
+/* 区切りドットも少し明るく＆大きく */
 .order-marquee-dot{
-  font-size:16px;
-  color:#6b7280;           /* ← これも少し明るく */
+  font-size:18px;
+  color:#9ca3af;
 }
+
 
 
 @keyframes orderMarquee{
