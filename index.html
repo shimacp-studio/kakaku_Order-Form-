@@ -817,8 +817,9 @@ main{
   .footer-print{ display:block !important; }
 
   /* 印刷時のベース */
+  html,
   body {
-    background:#fff!important;
+    background:#ffffff !important;   /* ★ ページ全体を真っ白に固定 */
     counter-reset:item;
     position:relative!important;
   }
@@ -828,6 +829,7 @@ main{
     padding:0;
     position:relative!important;
     min-height:245mm!important;
+    background:#ffffff !important;   /* 念のため main も白に */
   }
   .grid {
     grid-template-columns:repeat(2,1fr)!important;
@@ -937,7 +939,7 @@ main{
     outline:none;
   }
 
-   /* 印刷ヘッダー／フッターの見た目 */
+  /* 印刷ヘッダー／フッターの見た目（真っ白固定） */
   .header-print {
     position:fixed;
     top:5mm;
@@ -948,8 +950,8 @@ main{
     justify-content:center;
     gap:8px;
 
-    /* ★ 背景を完全な白に固定 */
     background:#ffffff !important;
+    background-image:none !important;
     box-shadow:none !important;
     border-bottom:none !important;
   }
@@ -973,10 +975,11 @@ main{
     font-family:"Noto Sans JP","Segoe UI",sans-serif;
     color:#0f172a;
     padding-top:2mm;
-    background:#fff;
+    background:#ffffff !important;
     z-index:9999;
   }
 }
+
 
 
 /* === オートコンプリート候補の見た目（TOPページ用） === */
