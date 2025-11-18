@@ -680,6 +680,45 @@ main{
 }
 
 
+/* === 発注画面：背景を反転（外側：黒／中：グレー） ================= */
+@media screen {
+
+  /* ページ全体を濃いネイビー〜ブラックに */
+  body{
+    background: #020617;
+  }
+
+  /* 商品エリア（main）は明るめグレーのパネルに */
+  main{
+    background: #f3f4f6;                  /* もともと外側に使っていたグレー */
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.85);
+  }
+
+  /* 明るい背景に合わせて、文字と入力も少しだけ調整 */
+  .title{
+    color: #111827;
+  }
+  .price{
+    color: #111827;
+  }
+  .price-sub{
+    color: #6b7280;
+  }
+  .barcode svg rect[fill='#000']{
+    fill: #111827;
+  }
+
+  .qtyinput{
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+  }
+
+  .actions-card .btn{
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  }
+}
 
 
 /* === 印刷設定（前回の安定版をそのまま保持） === */
