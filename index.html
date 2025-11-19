@@ -1656,34 +1656,40 @@ header .actions .cart-toggle img{
   </div><!-- /.wrap -->
 </header>
 
+<!-- ★★★ スクロールするコメント帯 ★★★ -->
+<div class="order-marquee">
+  <div class="order-marquee-inner">
+    <div class="order-marquee-track">
+      <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
+      <span class="order-marquee-text">
+        一つひとつの現場に、ちょうどいい消耗品を。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        月１回の「まとめ発注」で、ストック切れゼロへ。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        カタログから選ぶだけ。レジ前での発注メモはもう不要です。
+      </span>
 
-  
-  <div class="wrap">
-    <div class="brand">
-      <img src="img/shima_owl.jpg" alt="logo">
-      <h1>シマコーポレーション 発注カタログ</h1>
-    </div>
-
-    <!-- ★ Electro風 検索ボックス -->
-    <div class="search-wrap">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input id="productSearch" type="search"
-               placeholder="ここに商品名・JANを入力して検索"
-               autocomplete="off">
-        <button id="searchBtn" class="search-btn" type="button">検索</button>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button id="cartToggle" class="cart-toggle" type="button">
-        <img src="img/KART.png" alt="カート">
-        <span id="cartBadge" class="cart-badge is-empty">0</span>
-      </button>
-      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+      <!-- ループ用にもう一周分コピー -->
+      <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
+      <span class="order-marquee-text">
+        一つひとつの現場に、ちょうどいい消耗品を。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        月１回の「まとめ発注」で、ストック切れゼロへ。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        カタログから選ぶだけ。レジ前での発注メモはもう不要です。
+      </span>
     </div>
   </div>
-</header>
+</div>
+<!-- ★★★ ここまでスクロール帯 ★★★ -->
 
 <main>
   <!-- ★ 発注画面用：パートナー企業／現場名 -->
@@ -1702,7 +1708,9 @@ header .actions .cart-toggle img{
     </div>
   </section>
 
-  <section><div id="grid" class="grid"></div></section>
+  <section>
+    <div id="grid" class="grid"></div>
+  </section>
 
   <aside class="cart">
     <h2>カート</h2>
@@ -1714,6 +1722,7 @@ header .actions .cart-toggle img{
     <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
   </aside>
 </main>
+
 
 
 <div class="header-print">
