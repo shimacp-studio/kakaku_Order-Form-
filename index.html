@@ -353,17 +353,26 @@ h1{margin:0;font-weight:800}
     font-size: 12px;
   }
 
-  /* 右側フォームカード：スマホでは独立した白カードにして読みやすく */
   .top-card{
     position: static;
     transform: none;
     width: 100%;
     max-width: none;
     margin-top: 8px;
-    padding: 14px 12px 16px;
-    background: rgba(255,255,255,0.94);
-    border-radius: 14px;
-    backdrop-filter: blur(10px);
+    padding: 0;                 /* 余白も最小限に */
+    background: transparent;    /* ★ 背景色を完全に透明に */
+    border-radius: 0;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  /* 文字がロゴの上でも読みやすいように少しだけ強める（お好みで） */
+  .top-card h1{
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 800;
+    color: #111827;             /* そのままでもOK */
+    text-shadow: 0 1px 2px rgba(255,255,255,0.6);
   }
   .top-eyebrow{
     font-size: 10px;
