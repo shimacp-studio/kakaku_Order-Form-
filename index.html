@@ -293,10 +293,18 @@ h1{margin:0;font-weight:800}
     background:#020617;
   }
 
-  /* ロゴバーはそのまま上にベタっと付ける */
+   /* ★ ここを上書き */
   .top-header{
     padding:10px 16px 8px;
     border-bottom:none;
+    background:rgba(0,0,0,0.88);       /* 黒い帯をつける */
+  }
+  .top-brand-text{
+    color:#f9fafb;                     /* タイトルを白に */
+    text-shadow:0 0 8px rgba(0,0,0,0.7);
+  }
+  .top-ship{
+    color:#e5e7eb;                     /* サブコピーも明るめに */
   }
 
   /* ヒーローは縦長の写真＋グラデ背景に */
@@ -304,20 +312,41 @@ h1{margin:0;font-weight:800}
     margin-top:0;
   }
 
+    /* ヒーロー：スマホではほぼ画面いっぱいに使う */
   .top-hero{
     position:relative;
-    height:420px;
+    min-height:calc(100dvh - 140px);     /* 画面高さからヘッダー分を引いた感じ */
     border-radius:0;
-    padding:24px 18px 24px;
+    padding:24px 18px 28px;
 
-    /* 好きな画像に差し替えてOK（今はフクロウ画像を使う想定） */
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;            /* 下側にギュッと寄せる */
+
     background:
       linear-gradient(to bottom,
-        rgba(15,23,42,0.10) 0%,
-        rgba(15,23,42,0.85) 100%
+        rgba(248,113,113,0.05) 0%,
+        rgba(248,113,113,0.75) 35%,
+        rgba(15,23,42,0.95) 100%
       ),
       url("img/shima_owl.jpg") center / cover no-repeat;
   }
+
+  /* キャッチコピー：ゴリっと主張させる */
+  .top-hero-copy{
+    position:static;
+    transform:none;
+    max-width:100%;
+    margin-bottom:14px;
+    font-size:22px;
+    line-height:1.5;
+    font-weight:800;
+    color:#f9fafb;
+    text-shadow:
+      0 0 14px rgba(0,0,0,0.9),
+      0 0 30px rgba(0,0,0,1);
+  }
+
 
   /* もともとの ::before / ::after のロゴ重ねはスマホでは無効化 */
   .top-hero::before,
@@ -380,112 +409,6 @@ h1{margin:0;font-weight:800}
   }
   .top-start-btn{
     width:100%;
-  }
-}
-
-
-
-
-/* === TOPページ専用：スマホ表示の最適化 ======================= */
-@media (max-width: 640px){
-
-  /* 画面全体をスクロール可能にして、少し余白を確保 */
-  #topPage{
-    padding: 8px 0 16px;
-    align-items: flex-start;
-    overflow-y: auto;          /* ← 下までスクロールできるように */
-  }
-
-  /* 白いカードの余白・角丸をスマホ向けに */
-  .top-shell{
-    margin: 0 10px;
-    padding: 12px 12px 18px;
-    border-radius: 18px;
-    gap: 14px;
-  }
-
-  /* 上のバー（ロゴ＋タイトル＋説明）を縦に並べる */
-  .top-header{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  .top-brand-text{
-    font-size: 12px;
-    letter-spacing: .08em;
-  }
-  .top-ship{
-    font-size: 11px;
-  }
-
-  /* ヒーロー背景：高さは自動、上下の余白だけ */
-  .top-hero{
-    height: auto;
-    padding: 18px 14px 16px;
-    border-radius: 16px;
-  }
-  .top-hero::before{
-    background-position: center bottom;
-    background-size: auto 75%;
-    opacity: .35;
-  }
-
-  /* キャッチコピーは上に固定せず、普通に縦に並べる */
-  .top-hero-copy{
-    position: static;
-    transform: none;
-    margin-bottom: 16px;
-    font-size: 20px;
-    line-height: 1.5;
-    max-width: none;
-  }
-  .top-hero-sub{
-    display: block;
-    margin-top: 6px;
-    font-size: 12px;
-  }
-
-  .top-card{
-    position: static;
-    transform: none;
-    width: 100%;
-    max-width: none;
-    margin-top: 8px;
-    padding: 0;                 /* 余白も最小限に */
-    background: transparent;    /* ★ 背景色を完全に透明に */
-    border-radius: 0;
-    backdrop-filter: none;
-    box-shadow: none;
-  }
-
-  /* 文字がロゴの上でも読みやすいように少しだけ強める（お好みで） */
-  .top-card h1{
-    font-size: 15px;
-    line-height: 1.5;
-    font-weight: 800;
-    color: #111827;             /* そのままでもOK */
-    text-shadow: 0 1px 2px rgba(255,255,255,0.6);
-  }
-  .top-eyebrow{
-    font-size: 10px;
-  }
-  .top-card h1{
-    font-size: 15px;
-    line-height: 1.5;
-  }
-  .top-lead{
-    font-size: 12px;
-  }
-
-  /* 入力まわり＆ボタンを親指で押しやすいサイズに */
-  .top-input{
-    font-size: 14px;
-    padding: 9px 12px;
-    padding-left: 40px;      /* ロゴぶんの左余白はキープ */
-  }
-  .top-start-btn{
-    font-size: 14px;
-    padding: 10px 14px;
   }
 }
 
