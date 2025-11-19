@@ -1577,39 +1577,9 @@ header .actions .cart-toggle img{
   </div><!-- /.top-shell -->
 </div><!-- /#topPage -->
 
-
-
-
 <!-- === 発注カタログ画面 === -->
-<header>
-  <div class="wrap">
-    <div class="brand">
-      <img src="img/shima_owl.jpg" alt="logo">
-      <h1>シマコーポレーション 発注カタログ</h1>
-    </div>
 
-    <!-- ★ Electro風 検索ボックス -->
-    <div class="search-wrap">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input id="productSearch" type="search"
-               placeholder="ここに商品名・JANを入力して検索"
-               autocomplete="off">
-        <button id="searchBtn" class="search-btn" type="button">検索</button>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button id="cartToggle" class="cart-toggle" type="button">
-        <img src="img/KART.png" alt="カート">
-        <span id="cartBadge" class="cart-badge is-empty">0</span>
-      </button>
-      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
-    </div>
-  </div>
-</header>
-
-<!-- ★★★ ここにスクロールするコメント帯を追加 ★★★ -->
+<!-- ★★★ 先にスクロールするコメント帯（いちばん上） ★★★ -->
 <div class="order-marquee">
   <div class="order-marquee-inner">
     <div class="order-marquee-track">
@@ -1642,8 +1612,36 @@ header .actions .cart-toggle img{
     </div>
   </div>
 </div>
-<!-- ★★★ ここまでを追加 ★★★ -->
-  
+
+<!-- ★ メッセージのすぐ下にヘッダー（検索＋カート＋印刷） ★ -->
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <img src="img/shima_owl.jpg" alt="logo">
+      <h1>シマコーポレーション 発注カタログ</h1>
+    </div>
+
+    <!-- ★ Electro風 検索ボックス -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input id="productSearch" type="search"
+               placeholder="ここに商品名・JANを入力して検索"
+               autocomplete="off">
+        <button id="searchBtn" class="search-btn" type="button">検索</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="cartToggle" class="cart-toggle" type="button">
+        <img src="img/KART.png" alt="カート">
+        <span id="cartBadge" class="cart-badge is-empty">0</span>
+      </button>
+      <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+    </div>
+  </div>
+</header>
+
 <main>
   <!-- ★ 発注画面用：パートナー企業／現場名 -->
   <section class="order-meta">
@@ -1732,7 +1730,6 @@ const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX
 
 let cart = [];
 
-/* ====== 画面遷移のコア ====== */
 function startFlow(){
   const buyer = (document.getElementById("buyerName")?.value || "").trim();
   if (!buyer){
@@ -1756,15 +1753,23 @@ function startFlow(){
     }, 350);
   }
   if (mainEl){
-    mainEl.style.display   = "grid"; 
+    mainEl.style.display   = "block";
     mainEl.style.visibility= "visible";
     mainEl.style.opacity   = "1";
     mainEl.style.position  = "relative";
     mainEl.style.zIndex    = "10";
   }
+
+  // ★ TOPから発注画面に切り替わるタイミングで、いったん一番上まで戻す
+  window.scrollTo(0, 0);
+
   try { boot(); }
-  catch(e){ console.error("boot() error:", e); alert("商品描画でエラーが発生しました。コンソールをご確認ください。"); }
+  catch(e){
+    console.error("boot() error:", e);
+    alert("商品描画でエラーが発生しました。コンソールをご確認ください。");
+  }
 }
+
 
 function bindStartButton(){
   const btn = document.getElementById("startBtn");
