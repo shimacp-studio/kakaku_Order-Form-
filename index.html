@@ -1142,31 +1142,34 @@ main{
   display: none;
 }
 
-
-
 /* 下部：数量＋カートボタンをフラットに */
 .actions-card{
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   margin-top: 8px;
-  padding: 0;                     /* ★ 枠の中じゃなく、ただ並んでいる感じに */
+  padding: 0;
   border-top: none;
   background: transparent;
 }
+
 .qtyinput{
-  flex: 0 0 86px;
+  flex: 0 0 80px;
+  width: 80px;
   padding: 6px 8px;
   border-radius: 999px;
-  border: 1px solid #4b5563;
-  background: #020617;
-  color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
   font-size: 13px;
   text-align: center;
 }
+
 .qtyinput::placeholder{
-  color: #6b7280;
+  color: #9ca3af;
 }
+
 .actions-card .btn{
   flex: 1;
   font-size: 11px;
@@ -1174,12 +1177,14 @@ main{
   background: #fbbf24;
   color: #111827;
   border-color: #fbbf24;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.7);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
 }
 .actions-card .btn:hover{
   background: #facc15;
   border-color: #facc15;
 }
+
+
 
 /* === 商品画像拡大モーダル ======================= */
 .image-modal{
@@ -2262,6 +2267,41 @@ function renderBarcode(jan){
   out+="</svg>";
   return out;
 }
+
+function renderBarcode(jan){
+  const bits=ean13Pattern(jan);
+  if(!bits) return "";
+  let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;
+  for(let i=0;i<bits.length;i++) if(bits[i]==="1") out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;
+  out+="</svg>";
+  return out;
+}
+
+/* === 画像拡大モーダル制御 === */
+document.addEventListener('DOMContentLoaded', () => {
+  const modal    = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalImg');
+  if (!modal || !modalImg) return;
+
+  // 商品画像タップで拡大
+  document.addEventListener('click', (e) => {
+    const img = e.target.closest('.product-img');
+    if (img) {
+      modalImg.src = img.src;
+      modal.classList.add('open');
+    }
+  });
+
+  // 黒いところタップで閉じる
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('open');
+    }
+  });
+});
+</script>
+
+  
 </script>
 
 <script>
