@@ -274,17 +274,16 @@ h1{margin:0;font-weight:800}
   box-shadow:0 8px 18px rgba(37,99,235,.35);
 }
 
-/* === スマホ・タブレット（Electro 風フルスクリーンヒーロー） ================== */
+/* === スマホ・タブレットでは Electro 風ヒーローにする ================== */
 @media (max-width:900px){
 
-  /* 画面全体をダークにして、グレーのフチをなくす */
-  html, body, #topPage{
+  /* 画面全体をダークにして、余白カードをやめる */
+  #topPage{
+    align-items:flex-start;
+    padding:0;
     background:#020617;
   }
-  #topPage{
-    padding:0;
-    align-items:flex-start;
-  }
+
   .top-shell{
     margin:0;
     max-width:none;
@@ -294,80 +293,45 @@ h1{margin:0;font-weight:800}
     background:#020617;
   }
 
-  /* 上の黒帯（ロゴ＋タイトル） */
+  /* ロゴバーはそのまま上にベタっと付ける */
   .top-header{
     padding:10px 16px 8px;
     border-bottom:none;
-    background:#020617;
-  }
-  .top-brand-text{
-    font-size:13px;
-    line-height:1.3;
-    color:#f9fafb;
-  }
-  .top-ship{
-    font-size:11px;
-    color:#9ca3af;
   }
 
-  /* ヒーロー：ほぼ画面いっぱい＋ロゴを少し薄めに */
+  /* ヒーローは縦長の写真＋グラデ背景に */
   .top-hero-row{
     margin-top:0;
   }
 
   .top-hero{
     position:relative;
-    min-height:calc(100dvh - 56px);   /* ほぼ全画面 */
+    height:420px;
     border-radius:0;
-    padding:48px 18px 40px;
+    padding:24px 18px 24px;
 
-    /* 背景画像＋ネイビーグラデで色を薄く見せる */
+    /* 好きな画像に差し替えてOK（今はフクロウ画像を使う想定） */
     background:
-      linear-gradient(
-        to bottom,
-        rgba(2,6,23,0.65) 0%,
-        rgba(2,6,23,0.85) 55%,
-        rgba(2,6,23,0.95) 100%
+      linear-gradient(to bottom,
+        rgba(15,23,42,0.10) 0%,
+        rgba(15,23,42,0.85) 100%
       ),
-      url("img/shima_owl.jpg") center / 120% auto no-repeat;
-    background-color:#020617;
+      url("img/shima_owl.jpg") center / cover no-repeat;
   }
 
-  /* 画像の色味をさらに抑えるためのオーバーレイ */
+  /* もともとの ::before / ::after のロゴ重ねはスマホでは無効化 */
   .top-hero::before,
   .top-hero::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-  }
-  /* うっすらネイビーをかぶせてロゴの色を薄く */
-  .top-hero::before{
-    background:rgba(15,23,42,0.35);
-  }
-  /* 下側は少し暗くしてカードを浮かせる */
-  .top-hero::after{
-    background:linear-gradient(
-      to bottom,
-      rgba(15,23,42,0.0) 0%,
-      rgba(15,23,42,0.6) 65%,
-      rgba(15,23,42,1.0) 100%
-    );
+    content:none !important;
   }
 
-  /* テキストとフォームは前面に固定 */
-  .top-hero-copy,
-  .top-card{
-    position:relative;
-    z-index:1;
-  }
-
-  /* キャッチコピー：白文字でゴリっと主張 */
+  /* キャッチコピーを左下寄せ・白文字で主張強めに */
   .top-hero-copy{
     position:static;
     transform:none;
     max-width:100%;
-    margin-bottom:18px;
+    margin-top:auto;
+    margin-bottom:12px;
     font-size:22px;
     line-height:1.5;
     font-weight:800;
@@ -383,36 +347,147 @@ h1{margin:0;font-weight:800}
     opacity:0.95;
   }
 
-  /* 入力カード：下側に白カードとして浮かせる */
+  /* 入力カードは Electro の「下に白いカードが乗る」イメージ */
   .top-card{
-    margin-top:auto;
-    width:100%;
-    max-width:100%;
-    padding:18px 18px 20px;
+    position:relative;
+    right:auto;
+    top:auto;
+    transform:none;
+    width:auto;
+    max-width:none;
+
+    /* ヒーローの下に少し食い込ませる */
+    margin:-36px 16px 0;
+    padding:18px 16px 20px;
+
     background:#f9fafb;
-    border-radius:20px;
-    box-shadow:0 18px 40px rgba(0,0,0,0.7);
+    border-radius:18px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.65);
   }
+
   .top-card h1{
     font-size:16px;
     line-height:1.5;
   }
+
   .top-lead{
     font-size:12px;
   }
 
+  /* 入力ボックス・ボタンは横幅100%でそのまま使う */
   .top-input{
     width:100%;
-    font-size:14px;
-    padding:10px 14px;
   }
   .top-start-btn{
     width:100%;
-    font-size:14px;
-    padding:11px 16px;
   }
 }
 
+
+
+
+/* === TOPページ専用：スマホ表示の最適化 ======================= */
+@media (max-width: 640px){
+
+  /* 画面全体をスクロール可能にして、少し余白を確保 */
+  #topPage{
+    padding: 8px 0 16px;
+    align-items: flex-start;
+    overflow-y: auto;          /* ← 下までスクロールできるように */
+  }
+
+  /* 白いカードの余白・角丸をスマホ向けに */
+  .top-shell{
+    margin: 0 10px;
+    padding: 12px 12px 18px;
+    border-radius: 18px;
+    gap: 14px;
+  }
+
+  /* 上のバー（ロゴ＋タイトル＋説明）を縦に並べる */
+  .top-header{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .top-brand-text{
+    font-size: 12px;
+    letter-spacing: .08em;
+  }
+  .top-ship{
+    font-size: 11px;
+  }
+
+  /* ヒーロー背景：高さは自動、上下の余白だけ */
+  .top-hero{
+    height: auto;
+    padding: 18px 14px 16px;
+    border-radius: 16px;
+  }
+  .top-hero::before{
+    background-position: center bottom;
+    background-size: auto 75%;
+    opacity: .35;
+  }
+
+  /* キャッチコピーは上に固定せず、普通に縦に並べる */
+  .top-hero-copy{
+    position: static;
+    transform: none;
+    margin-bottom: 16px;
+    font-size: 20px;
+    line-height: 1.5;
+    max-width: none;
+  }
+  .top-hero-sub{
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .top-card{
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    margin-top: 8px;
+    padding: 0;                 /* 余白も最小限に */
+    background: transparent;    /* ★ 背景色を完全に透明に */
+    border-radius: 0;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  /* 文字がロゴの上でも読みやすいように少しだけ強める（お好みで） */
+  .top-card h1{
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 800;
+    color: #111827;             /* そのままでもOK */
+    text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+  }
+  .top-eyebrow{
+    font-size: 10px;
+  }
+  .top-card h1{
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .top-lead{
+    font-size: 12px;
+  }
+
+  /* 入力まわり＆ボタンを親指で押しやすいサイズに */
+  .top-input{
+    font-size: 14px;
+    padding: 9px 12px;
+    padding-left: 40px;      /* ロゴぶんの左余白はキープ */
+  }
+  .top-start-btn{
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+}
 
   
 /* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
@@ -1365,188 +1440,21 @@ header .actions .cart-toggle img{
 }
 
   
-
-/* === TOPヒーロー＆フォーム 最終調整（スマホ優先 / Electro風） ================== */
-
-/* TOP全体：ダーク背景で画面いっぱいに */
-#topPage{
-  background:#020617 !important;
-  padding:0 !important;
-  align-items:flex-start !important;
-  justify-content:center !important;
-  height:100dvh;
-  overflow-y:auto;
-}
-
-/* コンテナ：白カードをやめてフラットに */
-.top-shell{
-  max-width:960px;
-  margin:0 auto;
-  padding:12px 16px 32px;
-  background:transparent !important;
-  border-radius:0 !important;
-  box-shadow:none !important;
-  gap:16px;
-}
-
-/* 上部バー：ダークバー＋白文字でクッキリ */
-.top-header{
-  padding:10px 4px 8px;
-  border-bottom:none !important;
-  background:transparent;
-}
-.top-brand-text{
-  font-weight:800;
-  font-size:13px;
-  letter-spacing:.10em;
-  color:#f9fafb !important;
-}
-.top-ship{
-  font-size:11px;
-  color:#e5e7eb !important;
-}
-
-/* ヒーロー：フクロウ画像を全面に敷く */
-.top-hero{
-  position:relative;
-  width:100%;
-  min-height:calc(100dvh - 72px);
-  border-radius:0;
-  overflow:hidden;
-  padding:80px 18px 32px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  background:
-    radial-gradient(circle at top, rgba(15,23,42,0.75) 0, rgba(15,23,42,0.25) 40%, rgba(15,23,42,0.95) 100%),
-    url("img/shima_owl.jpg") center/cover no-repeat;
-}
-
-/* 以前の::before/::afterは無効化 */
-.top-hero::before,
-.top-hero::after{
-  content:none !important;
-}
-
-/* キャッチコピー：左寄せの白太字 */
-.top-hero-copy{
-  position:relative;
-  max-width:92%;
-  margin:0 0 28px;
-  font-size:26px;
-  line-height:1.5;
-  font-weight:800;
-  color:#f9fafb;
-  text-shadow:0 4px 18px rgba(0,0,0,0.9);
-}
-.top-hero-sub{
-  display:block;
-  margin-top:8px;
-  font-size:13px;
-  font-weight:500;
-  color:#e5e7eb;
-  opacity:.96;
-}
-
-/* フォーム：カード背景をやめて文字＋入力だけ */
-.top-card{
-  position:relative;
-  max-width:520px;
-  margin:0 auto 0;
-  padding:0;
-  text-align:center;
-  background:transparent !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
-.top-eyebrow{
-  font-size:11px;
-  letter-spacing:.18em;
-  font-weight:700;
-  color:#e5e7eb;
-  margin:0 0 4px;
-}
-.top-card h1{
-  font-size:16px;
-  line-height:1.6;
-  font-weight:800;
-  color:#f9fafb;
-  margin:0 0 6px;
-  text-shadow:0 2px 6px rgba(0,0,0,0.7);
-}
-.top-lead{
-  margin:0 0 14px;
-  font-size:12px;
-  color:#e5e7eb;
-  opacity:.9;
-}
-
-/* 入力＆ボタンを中央配置 */
-.top-form{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:stretch;
-}
-
-/* 入力ボックス：白ガラスだけ残す */
-.top-input{
-  width:100%;
-  border-radius:999px;
-  padding:10px 16px;
-  font-size:14px;
-  color:#0f172a;
-  background:rgba(248,250,252,0.96);
-  border:1px solid rgba(148,163,184,0.9);
-  box-shadow:0 10px 26px rgba(15,23,42,0.55);
-}
-
-/* ボタンはそのままだが下の余白を少しだけ */
-.top-start-btn{
-  margin-top:8px;
-}
-
-/* ===== スマホ幅（〜640px）：上下のバランス調整 ===== */
-@media (max-width:640px){
-  #topPage{
-    padding-top:8px;
-  }
-  .top-shell{
-    padding:8px 10px 24px;
-  }
-  .top-hero{
-    min-height:calc(100dvh - 82px);
-    padding:60px 14px 28px;
-  }
-  .top-hero-copy{
-    font-size:22px;
-    margin-bottom:22px;
-  }
-  .top-card{
-    max-width:100%;
-  }
-}
 </style>
 </head>
-
 <body>
 
+<!-- === TOPページ（Wix風ヒーロー） === -->
 <div id="topPage">
   <div class="top-shell">
-
-<!-- === TOPページ（Wix風ヒーロー） === -->
-<header class="top-header">
-  <div class="top-brand">
-    <img src="img/shima_owl.jpg" alt="シマコーポレーション ロゴ" class="top-logo">
-    <!-- ここを改行入りに変更 -->
-    <span class="top-brand-text">
-      シマコーポレーション<br>発注カタログ
-    </span>
-  </div>
-  <div class="top-ship">現場からカンタン Web 発注</div>
-</header>
-
+    <!-- 上部バー -->
+    <header class="top-header">
+      <div class="top-brand">
+        <img src="img/shima_owl.jpg" alt="シマコーポレーション ロゴ" class="top-logo">
+        <span class="top-brand-text">シマコーポレーション 発注カタログ</span>
+      </div>
+      <div class="top-ship">現場からカンタン Web 発注</div>
+    </header>
 
    <!-- ヒーロー＋フォーム -->
 <div class="top-hero-row">
@@ -1571,33 +1479,9 @@ header .actions .cart-toggle img{
 
           <div class="top-form">
             <div class="autowrap">
-              <input id="buyerName"  
-                     type="text" 
-                     autocomplete="off"
-                     placeholder="発注者名（例：門真店 〇〇）">
-              <label for="buyerName">発注者名</label>
+              <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off">
             </div>
-
-            <div class="autowrap">
-              <input id="partnerName" 
-                     type="text" 
-                     autocomplete="off"
-                     placeholder="取引先名（例：〇〇株式会社）">
-              <label for="partnerName">取引先名</label>
-            </div>
-
-            <div class="autowrap">
-              <input id="siteName" 
-                     type="text" 
-                     autocomplete="off"
-                     placeholder="現場名 / 納品先（例：〇〇工事現場）">
-              <label for="siteName">現場名 / 納品先</label>
-            </div>
-
-            <div class="top-note">
-              ※入力内容はブラウザにのみ保存され、次回以降も自動候補として表示されます。
-            </div>
-
+           
             <button id="startBtn" class="btn top-start-btn">
               発注カタログを開く
             </button>
@@ -1610,13 +1494,13 @@ header .actions .cart-toggle img{
 
 
 
+
 <!-- === 発注カタログ画面 === -->
-<div id="orderPage" style="display:none;">
 <header>
   <div class="wrap">
     <div class="brand">
       <img src="img/shima_owl.jpg" alt="logo">
-      <h1>シマコーポレーション<br>発注カタログ</h1>
+      <h1>シマコーポレーション 発注カタログ</h1>
     </div>
 
     <!-- ★ Electro風 検索ボックス -->
@@ -1713,7 +1597,6 @@ header .actions .cart-toggle img{
 <div class="footer-print">
   発注者名：＿＿＿＿＿＿＿＿＿＿＿　日付：＿＿＿＿＿＿＿＿＿＿＿　備考：＿＿＿＿＿＿＿＿＿＿＿
 </div>
-</div><!-- /#orderPage -->
 
 <script>
 // === オートコンプリート機能（履歴のみ） ===
@@ -1771,43 +1654,38 @@ function startFlow(){
     alert("発注者名を入力してください。");
     return;
   }
-  // 発注者名だけをセッションに保持（パートナー名・現場名は発注画面で入力）
-  sessionStorage.setItem("buyerName", buyer);
+  sessionStorage.setItem("buyerName",   buyer);
+  sessionStorage.setItem("partnerName", (document.getElementById("partnerName")?.value || "").trim());
+  sessionStorage.setItem("siteName",    (document.getElementById("siteName")?.value || "").trim());
 
-  const topPage   = document.getElementById("topPage");
-  const orderPage = document.getElementById("orderPage");
+  const topPage = document.getElementById("topPage");
+  const mainEl  = document.querySelector("main");
 
   if (topPage){
     topPage.style.opacity = "0";
     topPage.style.pointerEvents = "none";
     setTimeout(() => {
-      topPage.style.display   = "none";
-      topPage.style.visibility= "hidden";
-      topPage.style.zIndex    = "-1";
+      topPage.style.display = "none";
+      topPage.style.visibility = "hidden";
+      topPage.style.zIndex = "-1";
     }, 350);
   }
-  if (orderPage){
-    orderPage.style.display    = "block";
-    orderPage.style.visibility = "visible";
-    orderPage.style.opacity    = "1";
-    orderPage.style.zIndex     = "10";
-    // 念のため一番上へスクロール
-    window.scrollTo(0, 0);
+  if (mainEl){
+    mainEl.style.display   = "grid";
+    mainEl.style.visibility= "visible";
+    mainEl.style.opacity   = "1";
+    mainEl.style.position  = "relative";
+    mainEl.style.zIndex    = "10";
   }
-
-  try {
-    boot();
-  } catch(e){
-    console.error("boot() error:", e);
-    alert("商品描画でエラーが発生しました。コンソールをご確認ください。");
-  }
+  try { boot(); }
+  catch(e){ console.error("boot() error:", e); alert("商品描画でエラーが発生しました。コンソールをご確認ください。"); }
 }
 
 function bindStartButton(){
   const btn = document.getElementById("startBtn");
   if (btn) btn.addEventListener("click", startFlow);
-  // Enterでも開始（TOPページの発注者名だけ）
-  ["buyerName"].forEach(id=>{
+  // Enterでも開始
+  ["buyerName","partnerName","siteName"].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.addEventListener("keydown", ev => { if (ev.key === "Enter") startFlow(); });
   });
@@ -2064,24 +1942,23 @@ async function sendOrder(){
     updateCart();
 
     // TOPに戻す
-    const topPage   = document.getElementById('topPage');
-    const orderPage = document.getElementById('orderPage');
-    if (topPage && orderPage){
-      orderPage.style.display   = 'none';
-      orderPage.style.opacity   = '0';
-      orderPage.style.visibility= 'hidden';
-      orderPage.style.zIndex    = '0';
+    const topPage = document.getElementById('topPage');
+    const mainEl  = document.querySelector('main');
+    if (topPage && mainEl){
+      mainEl.style.display = 'none';
+      mainEl.style.opacity = '0';
+      mainEl.style.visibility = 'hidden';
+      mainEl.style.zIndex = '0';
 
-      topPage.style.display     = 'flex';
-      topPage.style.opacity     = '1';
-      topPage.style.visibility  = 'visible';
-      topPage.style.zIndex      = '9999';
+      topPage.style.display = 'flex';
+      topPage.style.opacity = '1';
+      topPage.style.visibility = 'visible';
+      topPage.style.zIndex = '9999';
 
       ['buyerName','partnerName','siteName'].forEach(id=>{
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
-      window.scrollTo(0, 0);
     }
   }catch(e){
     alert('⚠️ 送信に失敗しました：'+e.message);
@@ -2122,6 +1999,7 @@ function renderBarcode(jan){
 
 </body>
 </html>
+
 
 
 
