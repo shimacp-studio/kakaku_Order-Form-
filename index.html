@@ -383,15 +383,15 @@ h1{margin:0;font-weight:800}
   }
 }
 
-/* === TOPページ専用：スマホ表示の最適化（スマホはロゴを全画面） ======================= */
+/* === TOPページ専用：スマホ表示の最適化（SP用） ======================= */
 @media (max-width: 640px){
 
-  /* 画面いっぱいをヒーローに使う */
+  /* 画面全体をTOPに使う */
   #topPage{
     padding: 0;
+    min-height: 100dvh;
     align-items: stretch;
-    background: #020617;
-    overflow: hidden;
+    background: #000;
   }
 
   .top-shell{
@@ -402,56 +402,59 @@ h1{margin:0;font-weight:800}
     background: transparent;
   }
 
-  /* 上のバーは画像の上に重ねる（背景ナシ） */
+  /* ★ 上部のヘッダー帯：ちゃんと「バー」として表示 */
   .top-header{
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    right: 12px;
-    padding-bottom: 0;
-    border-bottom: none;
-    background: transparent;
-    z-index: 2;
+    position: relative;
+    z-index: 10;
+    padding: 8px 16px 10px;
+    border-bottom: 1px solid rgba(148,163,184,.6);
+    background: rgba(15,23,42,.96);
   }
 
   .top-hero-row{
     margin-top: 0;
   }
 
-   .top-hero{
-    position: relative;
-    height: 100dvh; /* 画面の高さぜんぶ */
-    padding: 0;
+  /* ★ ロゴ画像を背景にフル画面（ヘッダーの高さだけ差し引く） */
+  .top-hero{
+    min-height: calc(100dvh - 64px); /* ヘッダー分を差し引き */
+    height: auto;
+    width: 100%;
+    padding: 24px 16px 32px;
     border-radius: 0;
-    /* ★ ロゴ画像を「薄く」背景っぽく見せるためのグラデーションに変更 */
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* ← これで中央ぞろえ */
+    align-items: center;
+    gap: 18px;
+
     background:
       linear-gradient(to bottom,
-        rgba(255,255,255,0.20) 0%,   /* 上側は白をかぶせて画像を薄く */
-        rgba(0,0,0,0.82) 100%        /* 下側は少し暗くして文字をクッキリ */
+        rgba(255,255,255,0.75) 0%,    /* 上をかなり薄く */
+        rgba(0,0,0,0.85) 100%
       ),
       url("img/shima_owl.jpg") center / cover no-repeat;
   }
 
-
-  /* デスクトップ用の::before / ::after はスマホでは無効化 */
+  /* PC用の before/after はSPでは消す */
   .top-hero::before,
   .top-hero::after{
     content: none !important;
   }
 
-  /* キャッチコピーは左下寄せ・白文字で画像の上に */
+  /* キャッチコピー：中央寄せ（でも文章は左揃え） */
   .top-hero-copy{
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 120px;
+    position: static;
     transform: none;
-    max-width: 100%;
+    max-width: 460px;
     margin: 0;
     font-size: 20px;
-    line-height: 1.5;
+    line-height: 1.6;
     font-weight: 800;
     color: #f9fafb;
+    text-align: left;
     text-shadow: 0 4px 16px rgba(0,0,0,0.9);
   }
 
@@ -464,44 +467,42 @@ h1{margin:0;font-weight:800}
     opacity: 0.95;
   }
 
-  /* フォームカードは画面下にオーバーレイ（背景は透明のまま） */
+  /* ★ フォームカード：絶対配置をやめて中央の塊に入れる */
   .top-card{
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 32px;
+    position: static;
+    right: auto;
+    top: auto;
     transform: none;
-    width: auto;
-    max-width: none;
+    width: 100%;
+    max-width: 460px;
     margin: 0;
-    padding: 0;
-    background: transparent;   /* ★ 白いカード背景はナシ */
-    border-radius: 0;
-    backdrop-filter: none;
-    box-shadow: none;
-  }
 
-  .top-card h1{
-    font-size: 15px;
-    line-height: 1.5;
-    font-weight: 800;
-    color: #f9fafb;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    padding: 12px 14px 16px;
+    background: rgba(15,23,42,0.78);
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.85);
+    backdrop-filter: blur(18px);
   }
 
   .top-eyebrow{
     font-size: 10px;
     color: #e5e7eb;
+    opacity: 0.85;
   }
-
+  .top-card h1{
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 800;
+    color: #f9fafb;
+  }
   .top-lead{
     font-size: 11px;
     color: #e5e7eb;
-    opacity: 0.85;
+    opacity: 0.9;
   }
 
   .top-form{
-    margin-top: 6px;
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -518,12 +519,14 @@ h1{margin:0;font-weight:800}
     font-size: 14px;
     padding: 10px 14px;
   }
-}
 
- /* すでに書いてあるスマホ用のスタイルの下あたりに追加 */
-  .top-logo{
-    width:28px;
-    height:28px;
+  .top-note{
+    margin-top: 4px;
+    font-size: 10px;
+    color: #e5e7eb;
+    opacity: 0.85;
+  }
+}
 
   
 /* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
