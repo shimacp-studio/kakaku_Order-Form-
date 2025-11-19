@@ -87,7 +87,7 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
-/* ヒーロー全体：水色グラデやめてロゴ総柄だけに */
+/* ヒーロー全体：白ベース＋ロゴ1枚ウォーターマーク */
 .top-hero{
   position:relative;
   width:100%;
@@ -95,25 +95,26 @@ h1{margin:0;font-weight:800}
   border-radius:22px;
   overflow:hidden;
 
-  /* 台紙は白（グレー感を消す） */
+  /* 台紙は完全に白（水色なし） */
   background:#ffffff;
 }
 
-/* ロゴをタイル状に敷き詰める */
+/* ロゴ1枚を大きく中央に配置して透かす */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
+
   background-image:url("img/shima_owl.jpg");
-  background-repeat:repeat;
-  background-size:120px 120px;     /* PC用：ロゴ1つの大きさ */
-  background-position:center;
-  opacity:.18;                     /* うすく敷いて文字はハッキリ */
-  filter:saturate(115%) contrast(105%);
+  background-repeat:no-repeat;
+  background-position:center center;  /* 画面中央にドン */
+  background-size: min(60%, 420px);   /* 横幅の60%か420pxの小さい方に収まるサイズ */
+
+  opacity:0.18;                       /* うっすら見えるくらい */
+  filter:saturate(115%) contrast(110%);
   pointer-events:none;
   z-index:0;
 }
-
 
 /* コピーとフォームは前面に */
 .top-hero-copy,
@@ -273,17 +274,17 @@ h1{margin:0;font-weight:800}
     border-radius:20px;
   }
 
-  /* ★ モバイル版ヒーロー：高さ自動＆ロゴ総柄のまま */
+  /* ★ スマホ版ヒーロー：高さ自動＋ロゴ1枚を少し小さめに */
   .top-hero{
     height:auto;
-    padding:32px 18px 22px;
+    padding:28px 16px 20px;  /* 上下の余白だけ調整 */
     border-radius:18px;
-    background:#ffffff;     /* ここも白で統一 */
+    background:#ffffff;
   }
   .top-hero::before{
-    background-size:96px 96px;  /* モバイルは少し小さめにタイル */
-    background-position:center;
-    opacity:.22;                /* スマホ画面でもロゴが分かるくらいに少し濃く */
+    background-position:center top;      /* 少し上寄せでもOKなら top にしてもいい */
+    background-size: min(70%, 260px);    /* スマホでは少し小さめに */
+    opacity:0.22;                        /* 画面が小さいので若干だけ濃く */
   }
 
   .top-hero-copy{
@@ -301,6 +302,7 @@ h1{margin:0;font-weight:800}
     margin-top:8px;
   }
 }
+
 
 
 /* === TOPページ専用：スマホ表示の最適化 ======================= */
