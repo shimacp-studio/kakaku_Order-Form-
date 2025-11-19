@@ -710,29 +710,62 @@ header:not(.top-header){
   gap:14px;
 }
 
-/* スマホ時は ヘッダー全体を「縦に」並べる */
+/* スマホ時：ヘッダー内に検索＋カート＋印刷をきれいに収める */
 @media (max-width:640px){
+
+  /* 黒い帯の中で上下2段レイアウト（1段目：ロゴ、2段目：検索＋カート＋印刷） */
   header:not(.top-header) .wrap{
     flex-direction:column;
     align-items:stretch;
-    gap:10px;
-    padding:10px 16px 12px;
+    gap:8px;
+    padding:10px 14px 8px;
   }
+
+  /* 2段目の横並び行 */
   .header-row{
     width:100%;
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
+
+  /* 検索ボックスは幅いっぱい使う */
   .header-row .search-wrap{
     flex:1;
   }
-  .header-row .actions{
-    justify-content:flex-end;
+  .search-box{
+    max-width:100%;
+  }
+  .search-box input{
+    font-size:13px;
+  }
+  .search-btn{
+    padding:0 16px;
+    font-size:10px;
   }
 
-  /* ヘッダーの下からきれいに商品が始まるように少し余白 */
+  /* カート＋印刷ボタンを少しコンパクトに */
+  .header-row .actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  header .actions .btn{
+    font-size:10px;
+    padding:0 12px;
+    min-height:36px;
+    white-space:nowrap;
+  }
+
+  /* スクロール帯の下の余白を詰める */
+  .order-marquee-inner{
+    padding:8px 16px;
+  }
   main{
-    margin:16px auto 32px;
+    margin:8px auto 24px;
   }
 }
+
 
   
 /* ボタン共通（印刷ボタンなど） */
@@ -1506,16 +1539,18 @@ header .actions .cart-toggle{
   box-shadow:none !important;
 }
 
+/* カートアイコン：少し小さめにして印刷ボタンの場所を確保 */
 header .actions .cart-toggle img{
-  width:56px !important;
-  height:56px !important;
+  width:44px !important;
+  height:44px !important;
   padding:0 !important;
-  border-radius:0 !important;          /* 画像そのものが丸ならここはお好みで */
-  background:transparent !important;    /* 丸い背景を完全OFF */
-  border:none !important;              /* 枠線OFF */
-  box-shadow:none !important;          /* 影も一旦OFF（邪魔なら） */
+  border-radius:0 !important;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
   display:block;
 }
+
 
 /* ===== スクロール帯：白・大きく・太く・主張強め ===== */
 .order-marquee{
