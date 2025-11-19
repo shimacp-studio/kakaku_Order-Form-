@@ -710,64 +710,78 @@ header:not(.top-header){
   gap:14px;
 }
 
-/* スマホ時：ヘッダー内に検索＋カート＋印刷をきれいに収める */
+/* スマホ時：ヘッダー中央寄せ＋印刷ボタンOFF＋余白調整 ===================== */
 @media (max-width:640px){
 
-  /* 黒い帯の中で上下2段レイアウト（1段目：ロゴ、2段目：検索＋カート＋印刷） */
+  /* 黒い帯の中で上下2段レイアウト（1段目：ロゴ、2段目：検索＋カート） */
   header:not(.top-header) .wrap{
-    flex-direction:column;
-    align-items:stretch;
-    gap:8px;
-    padding:10px 14px 8px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 10px 14px 6px;
   }
 
-  /* 2段目の横並び行 */
+  /* 1段目：ロゴ＋タイトルを左右中央ぞろえに */
+  header:not(.top-header) .brand{
+    justify-content: center;
+    text-align: center;
+  }
+  header:not(.top-header) .brand h1{
+    font-size: 14px;
+  }
+
+  /* 2段目：検索＋カートの横並び行 */
   .header-row{
-    width:100%;
-    display:flex;
-    align-items:center;
-    gap:8px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   /* 検索ボックスは幅いっぱい使う */
   .header-row .search-wrap{
-    flex:1;
+    flex: 1;
   }
   .search-box{
-    max-width:100%;
+    max-width: 100%;
   }
   .search-box input{
-    font-size:13px;
+    font-size: 13px;
   }
   .search-btn{
-    padding:0 16px;
-    font-size:10px;
+    padding: 0 16px;
+    font-size: 10px;
   }
 
-  /* カート＋印刷ボタンを少しコンパクトに */
+  /* カートは残して、印刷ボタンだけスマホでは非表示 */
   .header-row .actions{
-    display:flex;
-    align-items:center;
-    gap:8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  header .actions .btn{
-    font-size:10px;
-    padding:0 12px;
-    min-height:36px;
-    white-space:nowrap;
+  header:not(.top-header) .actions .btn{
+    display: none;    /* ← 印刷（A4縦）ボタンを隠す */
   }
 
   /* スクロール帯の下の余白を詰める */
   .order-marquee-inner{
-    padding:8px 16px;
+    padding: 6px 16px;
   }
+  .order-marquee{
+    margin-bottom: 4px;
+  }
+
+  /* 帯のすぐ下からフォームが始まるようにする */
   main{
-    margin:8px auto 24px;
+    margin: 4px auto 24px !important;
+  }
+  .order-meta{
+    margin-top: 8px !important;
+    padding-inline: 16px;
   }
 }
 
 
-  
 /* ボタン共通（印刷ボタンなど） */
 .btn{
   display: inline-flex;
@@ -852,7 +866,6 @@ header:not(.top-header){
   display: none;
 }
 
-
 /* 印刷ボタンも少しだけ強めに */
 .btn{
   min-height: 42px;
@@ -860,7 +873,6 @@ header:not(.top-header){
 }
 
 /* === スクロールするコメント帯（主張強めバージョン） ======================= */
-
 .order-marquee{
   background: radial-gradient(circle at top, #020617 0, #020617 60%, #000 100%);
   border-top: 1px solid #020617;
@@ -923,6 +935,7 @@ header:not(.top-header){
 @media print{
   .order-marquee{ display:none!important; }
 }
+
 
 
 
@@ -1685,7 +1698,8 @@ header .actions .cart-toggle img{
           <img src="img/KART.png" alt="カート">
           <span id="cartBadge" class="cart-badge is-empty">0</span>
         </button>
-        <button class="btn" onclick="window.print()">印刷（A4縦）</button>
+        <!-- ★ クラス print-btn を追加 -->
+  <button class="btn print-btn" onclick="window.print()">印刷（A4縦）</button>
       </div>
     </div><!-- /.header-row -->
   </div><!-- /.wrap -->
