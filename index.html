@@ -87,29 +87,33 @@ h1{margin:0;font-weight:800}
   margin-top:16px;
 }
 
-/* ヒーロー全体：淡い青グラデだけにする */
+/* ヒーロー全体：水色グラデやめてロゴ総柄だけに */
 .top-hero{
   position:relative;
   width:100%;
   height:420px;
   border-radius:22px;
   overflow:hidden;
-  /* ★ ロゴは消して、背景は淡い青グラデだけ */
-  background:linear-gradient(115deg,#dbeafe 0%,#e5f0ff 40%,#c7ddff 100%);
+
+  /* 台紙は白（グレー感を消す） */
+  background:#ffffff;
 }
 
-/* ロゴ層：少し小さく＆薄く */
+/* ロゴをタイル状に敷き詰める */
 .top-hero::before{
   content:"";
   position:absolute;
   inset:0;
-  background:
-    url("img/shima_owl.jpg") left center / 65% auto no-repeat;
-    /* ↑ 65% を 50〜80% くらいで調整するとサイズ変えられます */
-  opacity:0.25;           /* ★ 薄さ：0.25 ぐらい。もっと薄くしたければ 0.15 とかに */
+  background-image:url("img/shima_owl.jpg");
+  background-repeat:repeat;
+  background-size:120px 120px;     /* PC用：ロゴ1つの大きさ */
+  background-position:center;
+  opacity:.18;                     /* うすく敷いて文字はハッキリ */
+  filter:saturate(115%) contrast(105%);
   pointer-events:none;
   z-index:0;
 }
+
 
 /* コピーとフォームは前面に */
 .top-hero-copy,
@@ -268,16 +272,20 @@ h1{margin:0;font-weight:800}
     padding:16px 14px 18px;
     border-radius:20px;
   }
+
+  /* ★ モバイル版ヒーロー：高さ自動＆ロゴ総柄のまま */
   .top-hero{
     height:auto;
-    padding:32px 18px 18px;
+    padding:32px 18px 22px;
     border-radius:18px;
+    background:#ffffff;     /* ここも白で統一 */
   }
   .top-hero::before{
-    background-position:center bottom;
-    background-size:auto 70%;
-    opacity:0.6;
+    background-size:96px 96px;  /* モバイルは少し小さめにタイル */
+    background-position:center;
+    opacity:.22;                /* スマホ画面でもロゴが分かるくらいに少し濃く */
   }
+
   .top-hero-copy{
     position:static;
     transform:none;
@@ -293,6 +301,7 @@ h1{margin:0;font-weight:800}
     margin-top:8px;
   }
 }
+
 
 /* === TOPページ専用：スマホ表示の最適化 ======================= */
 @media (max-width: 640px){
