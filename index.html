@@ -520,62 +520,57 @@ h1{margin:0;font-weight:800}
     color: #e5e7eb;
     opacity: 0.85;
   }
+}
+/* === SP最終上書き：発注画面の見切れ＋3列を強制 ======================= */
+@media (max-width:640px){
 
-  /* === 発注画面：スマホ表示用（上部見切れ防止＋3列グリッド） === */
-
-  /* 横スクロールで画面がズレないようにする */
+  /* 横スクロール防止 */
   body{
-    overflow-x: hidden;
+    overflow-x: hidden !important;
   }
 
-  /* スマホのときもヘッダーは上にピタッと表示 */
-  header:not(.top-header){
-    position: sticky;
-    top: 0;
-    z-index: 20;
-  }
-
-  /* ヘッダーの高さぶんだけ下げて、上部が隠れないようにする */
+  /* 発注画面の上がヘッダーに隠れないよう margin を強制 */
   main{
-    margin: 88px auto 32px;      /* ← 上を少し大きめに */
-    padding: 12px 8px 32px;
+    margin: 88px auto 32px !important;
+    padding: 12px 8px 32px !important;
   }
 
-  /* ★ 商品カードを3列にする */
+  /* 商品カードをスマホでも3列に固定 */
   .grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px 8px;               /* 縦14px / 横8px くらいで詰める */
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px 8px !important;
   }
 
   .card{
-    padding: 4px 2px 10px;
+    padding: 4px 2px 10px !important;
   }
 
   .thumb{
-    aspect-ratio: 3 / 4;         /* 少し縦長にして3列でも見やすく */
-    border-radius: 12px;
+    aspect-ratio: 3 / 4 !important;
+    border-radius: 12px !important;
   }
 
   .title{
-    font-size: 11px;
-    min-height: 2.6em;
+    font-size: 11px !important;
+    min-height: 2.6em !important;
   }
 
   .price-main{
-    font-size: 13px;
+    font-size: 13px !important;
   }
   .price-sub{
-    font-size: 9px;
+    font-size: 9px !important;
   }
 
   .qtyinput{
-    flex: 0 0 60px;
-    font-size: 11px;
+    flex: 0 0 60px !important;
+    font-size: 11px !important;
   }
 
   .actions-card .btn{
-    font-size: 10px;
-    padding: 6px 4px;
+    font-size: 10px !important;
+    padding: 6px 4px !important;
   }
 }
 
