@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>シマコーポレーション 発注カタログ</title>
+<title>シマコーポレーション<br>発注カタログ</title>
 <style>
 :root {
   --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;
@@ -299,6 +299,16 @@ h1{margin:0;font-weight:800}
     border-bottom:none;
   }
 
+    /* ★ スマホ／タブレット時のヘッダータイトルを白・太字に */
+  .top-brand-text{
+    font-size:14px;
+    line-height:1.4;
+    color:#f9fafb;      /* 白 */
+    font-weight:800;
+    display:inline-block;
+  }
+
+
   /* ヒーローは縦長の写真＋グラデ背景に */
   .top-hero-row{
     margin-top:0;
@@ -467,7 +477,7 @@ h1{margin:0;font-weight:800}
     opacity: 0.95;
   }
 
-    /* フォームカード：ロゴ画像の上に“透けて”乗るイメージ */
+     /* フォームカード：背景なしでロゴ画像の上に文字だけ乗せる */
   .top-card{
     position: static;
     transform: none;
@@ -476,12 +486,13 @@ h1{margin:0;font-weight:800}
     margin: 0 auto;
     margin-top: 12px;
 
-    padding: 12px 14px 16px;
-    background: rgba(15,23,42,0.72);   /* ★ 半透明の濃いネイビー */
-    border-radius: 16px;
-    backdrop-filter: blur(18px);       /* ほんのりガラス風ぼかし */
-    box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+    padding: 0;                 /* 余白いらなければ 0、欲しければ 8〜12px に */
+    background: transparent;    /* ★ 背景なし */
+    border-radius: 0;           /* 角丸も消すなら 0 のまま */
+    backdrop-filter: none;      /* ぼかしOFF */
+    box-shadow: none;           /* 影OFF */
   }
+
 
   .top-eyebrow{
     font-size: 10px;
