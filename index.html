@@ -763,9 +763,6 @@ header:not(.top-header){
 
 
 
-  
-
-
 /* 幅が狭いときの調整 */
 @media (max-width: 960px){
   .wrap{
@@ -781,7 +778,54 @@ header:not(.top-header){
   }
 }
 
+/* === 発注画面：パートナー企業／現場名エリア ====================== */
 
+.order-meta{
+  max-width:1200px;
+  margin:10px auto 0;
+  padding:0 32px;
+}
+.order-meta-inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:flex-end;
+}
+.meta-field{
+  flex:1;
+  min-width:220px;
+}
+.meta-field label{
+  display:block;
+  margin-bottom:4px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#9ca3af;
+}
+.meta-input{
+  width:100%;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid #4b5563;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:13px;
+}
+.meta-input::placeholder{
+  color:#6b7280;
+}
+@media (max-width:960px){
+  .order-meta{
+    padding:0 16px;
+  }
+}
+@media print{
+  .order-meta{
+    display:none !important;
+  }
+}
 
   
 /* ===== 発注カタログ本体 ===== */
@@ -1437,12 +1481,7 @@ header .actions .cart-toggle img{
             <div class="autowrap">
               <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off">
             </div>
-            <div class="autowrap">
-              <input id="partnerName" class="top-input" placeholder="パートナー企業" autocomplete="off">
-            </div>
-            <div class="autowrap">
-              <input id="siteName"    class="top-input" placeholder="現場名"         autocomplete="off">
-            </div>
+           
             <button id="startBtn" class="btn top-start-btn">
               発注カタログを開く
             </button>
@@ -1521,15 +1560,35 @@ header .actions .cart-toggle img{
 <!-- ★★★ ここまでを追加 ★★★ -->
   
 <main>
+  <!-- ★ 発注画面用：パートナー企業／現場名 -->
+  <section class="order-meta">
+    <div class="order-meta-inner">
+      <div class="meta-field">
+        <label for="partnerName">パートナー企業（任意）</label>
+        <input id="partnerName" class="meta-input"
+               placeholder="例：〇〇建設" autocomplete="off">
+      </div>
+      <div class="meta-field">
+        <label for="siteName">現場名（任意）</label>
+        <input id="siteName" class="meta-input"
+               placeholder="例：△△ビル新築工事" autocomplete="off">
+      </div>
+    </div>
+  </section>
+
   <section><div id="grid" class="grid"></div></section>
+
   <aside class="cart">
     <h2>カート</h2>
     <div id="cartlist" class="cartlist"></div>
-    <div><strong>小計：</strong><span id="subtotal">0円</span><br>
-      <strong>税込：</strong><span id="total">0円</span></div>
+    <div>
+      <strong>小計：</strong><span id="subtotal">0円</span><br>
+      <strong>税込：</strong><span id="total">0円</span>
+    </div>
     <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
   </aside>
 </main>
+
 
 <div class="header-print">
   <img src="img/shima_owl.jpg" alt="logo">
