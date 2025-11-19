@@ -433,7 +433,7 @@ h1{margin:0;font-weight:800}
     background:
       linear-gradient(to bottom,
         rgba(255,255,255,0.75) 0%,    /* 上をかなり薄く */
-        rgba(0,0,0,0.85) 100%
+        rgba(0,0,0,0.70) 100%
       ),
       url("img/shima_owl.jpg") center / cover no-repeat;
   }
@@ -467,21 +467,20 @@ h1{margin:0;font-weight:800}
     opacity: 0.95;
   }
 
-  /* ★ フォームカード：絶対配置をやめて中央の塊に入れる */
+   /* フォームカード：ロゴ画像の上に“透けて”乗るイメージ */
   .top-card{
     position: static;
-    right: auto;
-    top: auto;
     transform: none;
     width: 100%;
     max-width: 460px;
-    margin: 0;
+    margin: 0 auto;
+    margin-top: 12px;
 
     padding: 12px 14px 16px;
-    background: rgba(15,23,42,0.78);
+    background: rgba(15,23,42,0.72);   /* ★ 半透明の濃いネイビー */
     border-radius: 16px;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.85);
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);       /* ほんのりガラス風ぼかし */
+    box-shadow: 0 18px 40px rgba(0,0,0,0.75);
   }
 
   .top-eyebrow{
@@ -489,44 +488,28 @@ h1{margin:0;font-weight:800}
     color: #e5e7eb;
     opacity: 0.85;
   }
+
   .top-card h1{
     font-size: 15px;
     line-height: 1.5;
     font-weight: 800;
-    color: #f9fafb;
+    color: #f9fafb;                    /* 白文字にして読みやすく */
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
   }
+
   .top-lead{
     font-size: 11px;
     color: #e5e7eb;
     opacity: 0.9;
   }
 
-  .top-form{
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .top-input{
-    width: 100%;
-    font-size: 14px;
-    padding: 9px 12px;
-  }
-
-  .top-start-btn{
-    width: 100%;
-    font-size: 14px;
-    padding: 10px 14px;
-  }
-
   .top-note{
-    margin-top: 4px;
     font-size: 10px;
     color: #e5e7eb;
     opacity: 0.85;
   }
-}
+
+
 
   
 /* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
