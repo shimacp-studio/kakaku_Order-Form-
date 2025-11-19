@@ -1118,6 +1118,81 @@ main{
 .autolist div:hover {
   background:#e0edff;
 }
+
+/* === ★ 最終上書き：カートアイコン＆スクロール帯を強める ================= */
+
+/* カートアイコン：丸背景・枠線を完全OFF＋サイズUP */
+header .actions .cart-toggle{
+  padding:0 !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+header .actions .cart-toggle img{
+  width:56px !important;
+  height:56px !important;
+  padding:0 !important;
+  border-radius:0 !important;          /* 画像そのものが丸ならここはお好みで */
+  background:transparent !important;    /* 丸い背景を完全OFF */
+  border:none !important;              /* 枠線OFF */
+  box-shadow:none !important;          /* 影も一旦OFF（邪魔なら） */
+  display:block;
+}
+
+/* ===== スクロール帯：白・大きく・太く・主張強め ===== */
+.order-marquee{
+  background:#020617 !important;
+  border-bottom:1px solid #111827 !important;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.order-marquee-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:14px 32px !important;        /* 高さアップ */
+  position:relative;
+}
+
+.order-marquee-track{
+  display:inline-flex;
+  align-items:center;
+  gap:48px;                             /* コメントの間隔を広めに */
+  animation:orderMarquee 22s linear infinite;
+}
+
+/* バッジは少し大きく・明るく */
+.order-marquee-badge{
+  padding:4px 16px;
+  border-radius:999px;
+  border:1px solid #64748b;
+  font-size:12px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#f9fafb;
+}
+
+/* メインメッセージ：白・大きく・太文字 */
+.order-marquee-text{
+  font-size:16px !important;
+  font-weight:800 !important;
+  color:#ffffff !important;
+  letter-spacing:.04em;
+}
+
+/* 区切りドットも少し大きく＆明るめに */
+.order-marquee-dot{
+  font-size:20px !important;
+  color:#e5e7eb !important;
+}
+
+/* 印刷のときは非表示のまま維持 */
+@media print{
+  .order-marquee{ display:none !important; }
+}
+
+  
 </style>
 </head>
 <body>
