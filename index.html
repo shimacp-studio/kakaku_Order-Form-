@@ -383,111 +383,145 @@ h1{margin:0;font-weight:800}
   }
 }
 
-
-
-
-/* === TOPページ専用：スマホ表示の最適化 ======================= */
+/* === TOPページ専用：スマホ表示の最適化（スマホはロゴを全画面） ======================= */
 @media (max-width: 640px){
 
-  /* 画面全体をスクロール可能にして、少し余白を確保 */
+  /* 画面いっぱいをヒーローに使う */
   #topPage{
-    padding: 8px 0 16px;
-    align-items: flex-start;
-    overflow-y: auto;          /* ← 下までスクロールできるように */
+    padding: 0;
+    align-items: stretch;
+    background: #020617;
+    overflow: hidden;
   }
 
-  /* 白いカードの余白・角丸をスマホ向けに */
   .top-shell{
-    margin: 0 10px;
-    padding: 12px 12px 18px;
-    border-radius: 18px;
-    gap: 14px;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
   }
 
-  /* 上のバー（ロゴ＋タイトル＋説明）を縦に並べる */
+  /* 上のバーは画像の上に重ねる（背景ナシ） */
   .top-header{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  .top-brand-text{
-    font-size: 12px;
-    letter-spacing: .08em;
-  }
-  .top-ship{
-    font-size: 11px;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    padding-bottom: 0;
+    border-bottom: none;
+    background: transparent;
+    z-index: 2;
   }
 
-  /* ヒーロー背景：高さは自動、上下の余白だけ */
+  .top-hero-row{
+    margin-top: 0;
+  }
+
+  /* ★ ここでロゴ画像を“スマホ全画面”にする */
   .top-hero{
-    height: auto;
-    padding: 18px 14px 16px;
-    border-radius: 16px;
-  }
-  .top-hero::before{
-    background-position: center bottom;
-    background-size: auto 75%;
-    opacity: .35;
+    position: relative;
+    height: 100dvh; /* 画面の高さぜんぶ */
+    padding: 0;
+    border-radius: 0;
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.80) 100%
+      ),
+      url("img/shima_owl.jpg") center / cover no-repeat;
   }
 
-  /* キャッチコピーは上に固定せず、普通に縦に並べる */
+  /* デスクトップ用の::before / ::after はスマホでは無効化 */
+  .top-hero::before,
+  .top-hero::after{
+    content: none !important;
+  }
+
+  /* キャッチコピーは左下寄せ・白文字で画像の上に */
   .top-hero-copy{
-    position: static;
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 120px;
     transform: none;
-    margin-bottom: 16px;
+    max-width: 100%;
+    margin: 0;
     font-size: 20px;
     line-height: 1.5;
-    max-width: none;
+    font-weight: 800;
+    color: #f9fafb;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.9);
   }
+
   .top-hero-sub{
     display: block;
     margin-top: 6px;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e7eb;
+    opacity: 0.95;
   }
 
+  /* フォームカードは画面下にオーバーレイ（背景は透明のまま） */
   .top-card{
-    position: static;
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 32px;
     transform: none;
-    width: 100%;
+    width: auto;
     max-width: none;
-    margin-top: 8px;
-    padding: 0;                 /* 余白も最小限に */
-    background: transparent;    /* ★ 背景色を完全に透明に */
+    margin: 0;
+    padding: 0;
+    background: transparent;   /* ★ 白いカード背景はナシ */
     border-radius: 0;
     backdrop-filter: none;
     box-shadow: none;
   }
 
-  /* 文字がロゴの上でも読みやすいように少しだけ強める（お好みで） */
   .top-card h1{
     font-size: 15px;
     line-height: 1.5;
     font-weight: 800;
-    color: #111827;             /* そのままでもOK */
-    text-shadow: 0 1px 2px rgba(255,255,255,0.6);
-  }
-  .top-eyebrow{
-    font-size: 10px;
-  }
-  .top-card h1{
-    font-size: 15px;
-    line-height: 1.5;
-  }
-  .top-lead{
-    font-size: 12px;
+    color: #f9fafb;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
   }
 
-  /* 入力まわり＆ボタンを親指で押しやすいサイズに */
+  .top-eyebrow{
+    font-size: 10px;
+    color: #e5e7eb;
+  }
+
+  .top-lead{
+    font-size: 11px;
+    color: #e5e7eb;
+    opacity: 0.85;
+  }
+
+  .top-form{
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .top-input{
+    width: 100%;
     font-size: 14px;
     padding: 9px 12px;
-    padding-left: 40px;      /* ロゴぶんの左余白はキープ */
   }
+
   .top-start-btn{
+    width: 100%;
     font-size: 14px;
     padding: 10px 14px;
   }
 }
+
+
+
+
 
   
 /* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
