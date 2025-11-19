@@ -213,42 +213,55 @@ h1{margin:0;font-weight:800}
   width:100%;
 }
 
-/* TOPページ専用の入力ボックス（ロゴ＋淡い青グラデ） */
+/* TOPページ専用の入力ボックス：ロゴ背景なし“ガラス白” */
 .top-input{
   width:100%;
-
-  /* 1枚目: ロゴ / 2枚目: 淡い青グラデーション */
-  background:
-    url("img/shima_owl.jpg") 12px center / 20px 20px no-repeat,
-    linear-gradient(120deg,#dbeafe 0%,#e0f2fe 40%,#bfdbfe 100%);
-
-  border:0;
-  border-radius:10px;
-  padding:10px 14px;
-  padding-left:44px;          /* ロゴぶん左の余白を広げる */
+  border-radius:999px;
+  padding:10px 16px;
   font-size:14px;
+  color:#0f172a;
+
+  /* ほぼ白だけど少しだけ透ける */
+  background:rgba(255,255,255,0.88);
+  border:1px solid rgba(148,163,184,0.65);
+  box-shadow:0 10px 26px rgba(15,23,42,0.25);
+
   outline:none;
-  box-shadow:none;
   -webkit-appearance:none;
   appearance:none;
+
+  /* ガラスっぽく */
+  backdrop-filter:blur(12px) saturate(140%);
 }
 
-.top-input:focus{
-  outline:none;
-  box-shadow:0 0 0 2px rgba(37,99,235,0.35);
+/* プレースホルダー */
+.top-input::placeholder{
+  color:#9ca3af;
 }
+
+/* フォーカス時は青く光らせる */
+.top-input:focus{
+  border-color:#2563eb;
+  box-shadow:
+    0 0 0 1px rgba(37,99,235,0.9),
+    0 14px 34px rgba(37,99,235,0.45);
+}
+
+/* top-card 直下の input の枠を消す（既存ロジックは維持） */
 .top-card input{
   border:0 !important;
   outline:none !important;
   box-shadow:none !important;
 }
+
+/* autofill 対策（色だけ白側に寄せる） */
 .top-input:-webkit-autofill{
-  -webkit-box-shadow:0 0 0 30px #f3f4ff inset !important;
-          box-shadow:0 0 0 30px #f3f4ff inset !important;
+  -webkit-box-shadow:0 0 0 30px rgba(255,255,255,0.9) inset !important;
+          box-shadow:0 0 0 30px rgba(255,255,255,0.9) inset !important;
   -webkit-text-fill-color:#0f172a !important;
 }
 
-/* 開くボタン（Wix っぽい青） */
+/* 開くボタン（Wix っぽい青）はそのまま */
 .top-start-btn{
   margin-top:8px;
   width:100%;
@@ -261,6 +274,7 @@ h1{margin:0;font-weight:800}
   transform:translateY(-1px);
   box-shadow:0 8px 18px rgba(37,99,235,.35);
 }
+
 
 /* スマホ・タブレットでは縦積み */
 @media (max-width:900px){
