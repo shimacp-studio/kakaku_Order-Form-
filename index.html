@@ -164,6 +164,7 @@ h1{margin:0;font-weight:800}
   z-index:1;
 }
 
+/* 右側フォームカード：1枚の白ガラスカードにする */
 .top-card{
   position:absolute;
   right:56px;
@@ -171,12 +172,13 @@ h1{margin:0;font-weight:800}
   transform:translateY(-50%);
   width:320px;
   max-width:38%;
-  padding:22px 22px 24px;
+  padding:20px 20px 22px;
 
-  /* ★ ここを変更（白パネルをやめる） */
-  background:transparent;        /* ← 白い背景をやめる */
-  box-shadow:none;               /* ← 影も消す */
-  border-radius:0;               /* ← 角丸も不要なら 0 に */
+  background:rgba(255,255,255,0.88);
+  border-radius:18px;
+  box-shadow:0 20px 45px rgba(15,23,42,0.55);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
 
   text-align:left;
   z-index:1;
@@ -213,7 +215,7 @@ h1{margin:0;font-weight:800}
   width:100%;
 }
 
-/* TOPページ専用の入力ボックス：もっと透けさせる“ガラス白” */
+/* TOPページ専用の入力ボックス：読みやすさ優先ガラス白 */
 .top-input{
   width:100%;
   border-radius:999px;
@@ -221,32 +223,35 @@ h1{margin:0;font-weight:800}
   font-size:14px;
   color:#0f172a;
 
-  /* かなり透けた白にする（0.35） */
-  background:rgba(255,255,255,0.35);
-  border:1px solid rgba(148,163,184,0.55);
-  box-shadow:0 12px 28px rgba(15,23,42,0.35);
+  /* ほぼ白だけど、うっすら背景を感じるぐらい */
+  background:rgba(248,250,252,0.95);
+  border:1px solid rgba(148,163,184,0.8);
+  box-shadow:0 8px 22px rgba(15,23,42,0.22);
 
   outline:none;
   -webkit-appearance:none;
   appearance:none;
-
-  /* ガラス感（iOS 対策で -webkit- も） */
-  backdrop-filter:blur(18px) saturate(180%);
-  -webkit-backdrop-filter:blur(18px) saturate(180%);
 }
 
-/* プレースホルダー */
 .top-input::placeholder{
-  color:#e5e7eb;
+  color:#9ca3af;
 }
 
-/* フォーカス時は青く光る */
 .top-input:focus{
   border-color:#2563eb;
   box-shadow:
     0 0 0 1px rgba(37,99,235,0.9),
-    0 16px 38px rgba(37,99,235,0.55);
+    0 16px 34px rgba(37,99,235,0.55);
 }
+
+/* autofill 時も同じトーンに揃える */
+.top-input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px rgba(248,250,252,0.95) inset !important;
+          box-shadow:0 0 0 1000px rgba(248,250,252,0.95) inset !important;
+  -webkit-text-fill-color:#0f172a !important;
+}
+
+
 
 /* autofill で真っ白に塗りつぶされないようにする */
 .top-input:-webkit-autofill{
@@ -254,7 +259,6 @@ h1{margin:0;font-weight:800}
           box-shadow:0 0 0 1000px rgba(255,255,255,0.35) inset !important;
   -webkit-text-fill-color:#0f172a !important;
 }
-
 
 /* 開くボタン（Wix っぽい青）はそのまま */
 .top-start-btn{
@@ -270,7 +274,6 @@ h1{margin:0;font-weight:800}
   box-shadow:0 8px 18px rgba(37,99,235,.35);
 }
 
-
 /* スマホ・タブレットでは縦積み */
 @media (max-width:900px){
   #topPage{
@@ -282,20 +285,16 @@ h1{margin:0;font-weight:800}
     padding:16px 14px 18px;
     border-radius:20px;
   }
-
-  /* ★ スマホ版ヒーロー：高さ自動＋ロゴ1枚を少し小さめに */
   .top-hero{
     height:auto;
-    padding:28px 16px 20px;  /* 上下の余白だけ調整 */
+    padding:32px 18px 18px;
     border-radius:18px;
-    background:#ffffff;
   }
   .top-hero::before{
-    background-position:center top;      /* 少し上寄せでもOKなら top にしてもいい */
-    background-size: min(70%, 260px);    /* スマホでは少し小さめに */
-    opacity:0.22;                        /* 画面が小さいので若干だけ濃く */
+    background-position:center bottom;
+    background-size:auto 70%;
+    opacity:0.6;
   }
-
   .top-hero-copy{
     position:static;
     transform:none;
@@ -308,9 +307,10 @@ h1{margin:0;font-weight:800}
     transform:none;
     width:100%;
     max-width:none;
-    margin-top:8px;
+    margin-top:18px;
   }
 }
+
 
 
 
