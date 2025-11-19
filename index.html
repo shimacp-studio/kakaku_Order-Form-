@@ -529,13 +529,13 @@ h1{margin:0;font-weight:800}
     overflow-x: hidden !important;
   }
 
-  /* 発注画面の上がヘッダーに隠れないよう margin を強制 */
+  /* 発注画面の余白（スクロール帯のすぐ下からスタート） */
   main{
-    margin: 88px auto 32px !important;
-    padding: 12px 8px 32px !important;
+    margin: 8px auto 24px !important;
+    padding: 12px 8px 24px !important;
   }
 
-  /* 商品カードをスマホでも3列に固定 */
+  /* 商品カード 3列レイアウト */
   .grid{
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -543,7 +543,7 @@ h1{margin:0;font-weight:800}
   }
 
   .card{
-    padding: 4px 2px 10px !important;
+    padding: 4px 2px 12px !important;
   }
 
   .thumb{
@@ -563,16 +563,28 @@ h1{margin:0;font-weight:800}
     font-size: 9px !important;
   }
 
+  /* ★ 数量入力とカートボタンを「縦積み＆全幅」にする */
+  .actions-card{
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+  }
+
   .qtyinput{
-    flex: 0 0 60px !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
     font-size: 11px !important;
   }
 
   .actions-card .btn{
+    width: 100% !important;
     font-size: 10px !important;
-    padding: 6px 4px !important;
+    padding: 6px 6px !important;
+    white-space: nowrap;
   }
 }
+
 
   
 /* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
@@ -1167,6 +1179,34 @@ main{
 .actions-card .btn:hover{
   background: #facc15;
   border-color: #facc15;
+}
+
+/* === 商品画像拡大モーダル ======================= */
+.image-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 80;
+}
+.image-modal.open{
+  display: flex;
+}
+.image-modal img{
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.9);
+  background: #ffffff;
+}
+
+/* 印刷時はモーダル非表示 */
+@media print{
+  .image-modal{
+    display: none !important;
+  }
 }
 
 
@@ -1948,6 +1988,37 @@ window.addEventListener("DOMContentLoaded", () => {
   
 });
 
+/* ===== 商品画像タップで拡大表示 ===== */
+(function(){
+  const modal    = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalImg');
+
+  if (!modal || !modalImg) return;
+
+  // 画像をタップしたとき
+  document.addEventListener('click', e => {
+    const img = e.target.closest('.product-img');
+    if (img){
+      modalImg.src = img.src;
+      modalImg.alt = img.dataset.name || img.alt || '';
+      modal.classList.add('open');
+    }
+
+    // オーバーレイ部分をタップしたら閉じる
+    if (e.target === modal){
+      modal.classList.remove('open');
+    }
+  });
+
+  // ESCキーでも閉じる
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){
+      modal.classList.remove('open');
+    }
+  });
+})();
+
+  
 /* ====== カート表示更新 ====== */
 function updateCart(){
   const list  = document.getElementById('cartlist');
@@ -2049,7 +2120,13 @@ async function boot(){
   grid.insertAdjacentHTML("beforeend", `
     <div class="card">
       <div class="thumb">
-        <img src="img/${jan}.jpg" onerror="this.onerror=null;this.src='img/noimage.jpg'">
+        <img
+  src="img/${jan}.jpg"
+  alt="${name}"
+  class="product-img"
+  data-name="${name}"
+  onerror="this.onerror=null;this.src='img/noimage.jpg'">
+
       </div>
 
       <div class="body">
@@ -2186,6 +2263,18 @@ function renderBarcode(jan){
   return out;
 }
 </script>
+
+<script>
+// ここに全部の JavaScript が入っているはず
+</script>
+
+<!-- 商品画像拡大用モーダル（★ここを追加） -->
+<div id="imgModal" class="image-modal">
+  <img id="imgModalImg" src="" alt="">
+</div>
+
+</body>
+</html>
 
 
 </body>
