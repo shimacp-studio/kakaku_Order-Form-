@@ -299,6 +299,16 @@ h1{margin:0;font-weight:800}
     border-bottom:none;
   }
 
+    /* ★ スマホ／タブレット時のヘッダータイトルを白・太字に */
+  .top-brand-text{
+    font-size:14px;
+    line-height:1.4;
+    color:#f9fafb;      /* 白 */
+    font-weight:800;
+    display:inline-block;
+  }
+
+
   
   /* ヒーローは縦長の写真＋グラデ背景に */
   .top-hero-row{
@@ -510,7 +520,7 @@ h1{margin:0;font-weight:800}
     color: #e5e7eb;
     opacity: 0.85;
   }
-
+}
 
 
 
@@ -1696,7 +1706,7 @@ function startFlow(){
     }, 350);
   }
   if (mainEl){
-    mainEl.style.display   = "block";
+    mainEl.style.display   = "grid"; 
     mainEl.style.visibility= "visible";
     mainEl.style.opacity   = "1";
     mainEl.style.position  = "relative";
