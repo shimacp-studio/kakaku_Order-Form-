@@ -712,10 +712,25 @@ header:not(.top-header){
 
 /* スマホ時は ヘッダー全体を「縦に」並べる */
 @media (max-width:640px){
-  header .wrap{
+  header:not(.top-header) .wrap{
     flex-direction:column;
     align-items:stretch;
     gap:10px;
+    padding:10px 16px 12px;
+  }
+  .header-row{
+    width:100%;
+  }
+  .header-row .search-wrap{
+    flex:1;
+  }
+  .header-row .actions{
+    justify-content:flex-end;
+  }
+
+  /* ヘッダーの下からきれいに商品が始まるように少し余白 */
+  main{
+    margin:16px auto 32px;
   }
 }
 
@@ -1616,7 +1631,7 @@ header .actions .cart-toggle img{
       <h1>シマコーポレーション 発注カタログ</h1>
     </div>
 
-    <!-- 2行目：検索ボックス＋カート＋印刷 -->
+    <!-- 2行目：検索＋カート＋印刷をまとめた行 -->
     <div class="header-row">
       <!-- 検索ボックス -->
       <div class="search-wrap">
@@ -1637,9 +1652,10 @@ header .actions .cart-toggle img{
         </button>
         <button class="btn" onclick="window.print()">印刷（A4縦）</button>
       </div>
-    </div>
-  </div>
+    </div><!-- /.header-row -->
+  </div><!-- /.wrap -->
 </header>
+
 
   
   <div class="wrap">
