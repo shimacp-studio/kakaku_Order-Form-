@@ -1529,7 +1529,11 @@ header .actions .cart-toggle img{
 }
 </style>
 </head>
+
 <body>
+
+<div id="topPage">
+  <div class="top-shell">
 
 <!-- === TOPページ（Wix風ヒーロー） === -->
 <header class="top-header">
@@ -1567,9 +1571,33 @@ header .actions .cart-toggle img{
 
           <div class="top-form">
             <div class="autowrap">
-              <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off">
+              <input id="buyerName"  
+                     type="text" 
+                     autocomplete="off"
+                     placeholder="発注者名（例：門真店 〇〇）">
+              <label for="buyerName">発注者名</label>
             </div>
-           
+
+            <div class="autowrap">
+              <input id="partnerName" 
+                     type="text" 
+                     autocomplete="off"
+                     placeholder="取引先名（例：〇〇株式会社）">
+              <label for="partnerName">取引先名</label>
+            </div>
+
+            <div class="autowrap">
+              <input id="siteName" 
+                     type="text" 
+                     autocomplete="off"
+                     placeholder="現場名 / 納品先（例：〇〇工事現場）">
+              <label for="siteName">現場名 / 納品先</label>
+            </div>
+
+            <div class="top-note">
+              ※入力内容はブラウザにのみ保存され、次回以降も自動候補として表示されます。
+            </div>
+
             <button id="startBtn" class="btn top-start-btn">
               発注カタログを開く
             </button>
@@ -1579,7 +1607,6 @@ header .actions .cart-toggle img{
     </div><!-- /.top-hero-row -->
   </div><!-- /.top-shell -->
 </div><!-- /#topPage -->
-
 
 
 
