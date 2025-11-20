@@ -828,7 +828,7 @@ header:not(.top-header){
 .order-marquee{
   margin-bottom: 4px;
   position: sticky;
-  top: 72px;   /* タイトル＋検索行の高さにあわせて微調整可 */
+  top: 110px;   /* タイトル＋検索行の高さにあわせて微調整可 */
   z-index: 25;
 }
 
@@ -1290,6 +1290,13 @@ main{
 }
 .image-modal.open{
   display: flex;
+
+  /* 画像拡大モーダル内の数量入力（iOSの自動ズーム対策） */
+#modalQty{
+  font-size: 16px;
+}
+
+  
 }
 
 .image-modal-panel{
@@ -2277,12 +2284,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      if (modalQty){
+　　      if (modalQty){
+        // 自動フォーカスはやめて、ユーザーがタップしたときだけキーボードを出す
         modalQty.value = "";
-        setTimeout(() => {
-          try{ modalQty.focus({ preventScroll:true }); }catch(_){}
-        }, 50);
       }
+
 
       // モーダルに商品情報を覚えさせる
       modal.dataset.jan   = jan;
@@ -2581,10 +2587,19 @@ function addToCartFromModal(){
 
   if (!jan || !q || q <= 0) return;
 
+  // iOS で拡大したままにならないよう、フォーカスを外す
+  try{
+    input.blur();
+    if (document.activeElement && typeof document.activeElement.blur === 'function'){
+      document.activeElement.blur();
+    }
+  }catch(_){}
+
   upsertCart({ jan, name, price }, q);
   input.value = '';
   modal.classList.remove('open');
 }
+
 
 /* ====== 送信 ====== */
 async function sendOrder(){
