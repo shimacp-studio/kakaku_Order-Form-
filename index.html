@@ -397,10 +397,13 @@ h1{margin:0;font-weight:800}
 /* === TOPページ専用：スマホ表示の最適化（SP用） ======================= */
 @media (max-width: 640px){
 
-  /* 画面全体をTOPに使う */
+  /* 画面全体をTOPに使う（※SPでは fixed をやめる） */
   #topPage{
+    position: relative;      /* ← 元の position:fixed を上書き */
+    inset: auto;             /* fixed 時の inset:0 を無効化 */
+    height: auto;            /* 100dvh を解除して通常の高さに */
+    min-height: 100vh;       /* 画面1枚ぶんは確保 */
     padding: 0;
-    min-height: 100dvh;
     align-items: stretch;
     background: #000;
   }
