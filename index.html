@@ -612,7 +612,7 @@ header:not(.top-header){
   position: sticky;
   top: 0;
   z-index: 30;
-  background: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
+  background: #000;
   border-bottom: 1px solid rgba(148,163,184,.5);
   box-shadow: 0 26px 80px rgba(0,0,0,.96);
 }
@@ -827,9 +827,7 @@ header:not(.top-header){
 }
 .order-marquee{
   margin-bottom: 4px;
-  position: sticky;
-  top: 110px;   /* タイトル＋検索行の高さにあわせて微調整可 */
-  z-index: 25;
+  
 }
 
 
@@ -1290,14 +1288,13 @@ main{
 }
 .image-modal.open{
   display: flex;
+}
 
-  /* 画像拡大モーダル内の数量入力（iOSの自動ズーム対策） */
+/* 画像拡大モーダル内の数量入力（iOSの自動ズーム対策） */
 #modalQty{
   font-size: 16px;
 }
 
-  
-}
 
 .image-modal-panel{
   position: relative;
@@ -2040,11 +2037,15 @@ header .actions .cart-toggle img{
     <strong>値引き合計：</strong><span id="discountTotal">0円</span><br>
     <strong>税込：</strong><span id="total">0円</span>
   </div>
+  
   <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
 </aside>
  
-</main>
 
+  <!-- ページの一番上へ戻るボタン -->
+  <button id="backToTop" class="back-to-top" type="button" aria-label="ページの先頭へ">
+    ↑
+  </button>
 
 
 <div class="header-print">
@@ -2304,6 +2305,26 @@ document.addEventListener('DOMContentLoaded', () => {
       modal.classList.remove('open');
     }
   });
+
+// ===== ページトップへ戻るボタン =====
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if (y > 300){
+      btn.classList.add('is-visible');
+    }else{
+      btn.classList.remove('is-visible');
+    }
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
 
   // 「カートに追加」ボタン
   if (modalAdd){
