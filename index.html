@@ -620,6 +620,24 @@ header:not(.top-header){
   box-shadow: 0 26px 80px rgba(0,0,0,.96);
 }
 
+/* === TOP / カタログの表示切り替え =================== */
+/* 初期状態：TOPだけ表示（bodyに catalog-open が付くまで隠す） */
+body:not(.catalog-open) header:not(.top-header),
+body:not(.catalog-open) .order-marquee,
+body:not(.catalog-open) main{
+  display: none;
+}
+
+/* カタログ表示モード：ヘッダー＋帯＋本文を表示 */
+body.catalog-open header:not(.top-header){
+  display: flex;
+}
+body.catalog-open .order-marquee,
+body.catalog-open main{
+  display: block;
+}
+
+  
 /* 中身レイアウト */
 .wrap{
   max-width: 1200px;
@@ -2020,46 +2038,54 @@ const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGz8VCT8IkE_8nPOX
 let cart = [];
 
 function startFlow(){
-  const buyer = (document.getElementById("buyerName")?.value || "").trim();
+  const buyerInput = document.getElementById("buyerName");
+  const buyer = (buyerInput?.value || "").trim();
   if (!buyer){
     alert("発注者名を入力してください。");
+    buyerInput?.focus();
     return;
   }
 
-  // キーボードを閉じる（スマホ対策）
-  if (document.activeElement && typeof document.activeElement.blur === "function"){
-    document.activeElement.blur();
-  }
-
-  // 入力値を保存
+  // 入力値を保存（履歴用）
   sessionStorage.setItem("buyerName",   buyer);
   sessionStorage.setItem("partnerName", (document.getElementById("partnerName")?.value || "").trim());
   sessionStorage.setItem("siteName",    (document.getElementById("siteName")?.value || "").trim());
 
+  // スマホのキーボードを閉じる
+  if (document.activeElement && typeof document.activeElement.blur === "function"){
+    document.activeElement.blur();
+  }
+
   const topPage = document.getElementById("topPage");
   const mainEl  = document.querySelector("main");
 
-  // ★ アニメーションや setTimeout をやめて、一気に非表示にする
+  // ★ カタログ表示モードON（CSS側で header/main を表示させる）
+  document.body.classList.add("catalog-open");
+
+  // TOPをフェードアウトして隠す
   if (topPage){
-    topPage.style.display       = "none";
-    topPage.style.visibility    = "hidden";
-    topPage.style.opacity       = "0";
+    topPage.style.opacity = "0";
     topPage.style.pointerEvents = "none";
-    topPage.style.zIndex        = "-1";
+    setTimeout(() => {
+      topPage.style.display    = "none";
+      topPage.style.visibility = "hidden";
+      topPage.style.zIndex     = "-1";
+    }, 350);
   }
 
+  // 念のため main 側も強制表示
   if (mainEl){
     mainEl.style.display    = "block";
     mainEl.style.visibility = "visible";
     mainEl.style.opacity    = "1";
     mainEl.style.position   = "relative";
-    mainEl.style.zIndex     = "10";
+    mainEl.style.zIndex     = "1";
   }
 
-  // いったん一番上へスクロール
+  // 画面を一番上へ
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
-  // カタログ描画
+  // 商品グリッド描画
   try {
     boot();
   } catch(e){
@@ -2407,36 +2433,55 @@ function addToCartFromModal(){
   modal.classList.remove('open');
 }
 
-
 /* ====== 送信 ====== */
 async function sendOrder(){
-  if(!cart.length){ alert('カートが空です'); return; }
-  const buyer = (document.getElementById('buyerName')?.value || "").trim();
-  if(!buyer){ alert('発注者名を入力してください'); return; }
-  const partner = (document.getElementById('partnerName')?.value || "").trim();
-  const site    = (document.getElementById('siteName')?.value || "").trim();
+  if (!cart.length){
+    alert('カートが空です');
+    return;
+  }
+
+  const buyerEl   = document.getElementById('buyerName');
+  const partnerEl = document.getElementById('partnerName');
+  const siteEl    = document.getElementById('siteName');
+
+  const buyer = (buyerEl?.value || "").trim();
+  if (!buyer){
+    alert('発注者名を入力してください');
+    buyerEl?.focus();
+    return;
+  }
+  const partner = (partnerEl?.value || "").trim();
+  const site    = (siteEl?.value    || "").trim();
 
   const payload = {
-    buyerName:buyer,
-    partnerName:partner,
-    siteName:site,
-    items:cart.map(c=>({jan:c.jan,name:c.name,price:c.price,qty:c.qty}))
+    buyerName:   buyer,
+    partnerName: partner,
+    siteName:    site,
+    items: cart.map(c => ({
+      jan:   c.jan,
+      name:  c.name,
+      price: c.price,
+      qty:   c.qty
+    }))
   };
 
   const btn = document.getElementById('orderBtn');
-  btn.disabled = true;
-  btn.textContent = '送信中…';
+  if (btn){
+    btn.disabled = true;
+    btn.textContent = '送信中…';
+  }
 
   try{
-    await fetch(GAS_ENDPOINT,{
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
+    await fetch(GAS_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
 
     alert('✅ 発注を受け付けました（メール送信済み）');
 
+    // カートをクリア
     cart = [];
     updateCart();
 
@@ -2444,28 +2489,41 @@ async function sendOrder(){
     const topPage = document.getElementById('topPage');
     const mainEl  = document.querySelector('main');
     if (topPage && mainEl){
-      mainEl.style.display = 'none';
-      mainEl.style.opacity = '0';
+      // ★ カタログ表示モードOFF → ヘッダー＆mainをCSS側で非表示に
+      document.body.classList.remove('catalog-open');
+
+      // 発注画面を隠す
+      mainEl.style.display    = 'none';
+      mainEl.style.opacity    = '0';
       mainEl.style.visibility = 'hidden';
-      mainEl.style.zIndex = '0';
+      mainEl.style.zIndex     = '0';
 
-      topPage.style.display = 'flex';
-      topPage.style.opacity = '1';
+      // TOPを再表示
+      topPage.style.display    = 'flex';
+      topPage.style.opacity    = '1';
       topPage.style.visibility = 'visible';
-      topPage.style.zIndex = '9999';
+      topPage.style.zIndex     = '9999';
 
-      ['buyerName','partnerName','siteName'].forEach(id=>{
+      // 入力欄をリセット
+      ['buyerName','partnerName','siteName'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
+
+      // 画面を一番上へ
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
   }catch(e){
-    alert('⚠️ 送信に失敗しました：'+e.message);
+    alert('⚠️ 送信に失敗しました：' + e.message);
   }finally{
-    btn.disabled = false;
-    btn.textContent = 'この内容で発注（メール送信）';
+    if (btn){
+      btn.disabled = false;
+      btn.textContent = 'この内容で発注（メール送信）';
+    }
   }
 }
+
+
 
 /* ====== バーコード ====== */
 function ean13Pattern(d){
