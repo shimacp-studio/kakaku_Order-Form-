@@ -563,27 +563,30 @@ h1{margin:0;font-weight:800}
   .price-sub{
     font-size: 9px !important;
   }
-
-  /* ★ 数量入力とカートボタンを「縦積み＆全幅」にする */
+  /* ★ 数量入力とカートボタンを「1行・左 数量 / 右 カート」にする */
   .actions-card{
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 6px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
 
   .qtyinput{
-    flex: 0 0 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    flex: 0 0 60px !important;
+    width: 60px !important;
+    max-width: 60px !important;
+    padding: 4px 4px !important;
     font-size: 11px !important;
   }
 
   .actions-card .btn{
-    width: 100% !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
     font-size: 10px !important;
     padding: 6px 6px !important;
     white-space: nowrap;
   }
+
+  
 }
 
 
@@ -1183,26 +1186,150 @@ main{
 }
 
 
-
 /* === 商品画像拡大モーダル ======================= */
 .image-modal{
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.80);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 80;
+  padding: 16px;
 }
 .image-modal.open{
   display: flex;
 }
-.image-modal img{
-  max-width: 90vw;
-  max-height: 80vh;
+
+.image-modal-panel{
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  max-height: 100%;
+  background: #020617;
+  border-radius: 20px;
+  border: 1px solid #1f2937;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.96);
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  color: #e5e7eb;
+}
+
+.image-modal-main{
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.image-modal-photo{
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal-photo img{
+  display: block;
+  max-width: min(340px, 60vw);
+  max-height: 420px;
   border-radius: 16px;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.9);
   background: #ffffff;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.9);
+}
+
+.image-modal-info{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.image-modal-title{
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.image-modal-price{
+  font-size: 16px;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.image-modal-jan{
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.image-modal-actions{
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #1f2937;
+}
+
+.modal-qtyinput{
+  flex: 0 0 90px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  text-align: center;
+}
+.modal-qtyinput::placeholder{
+  color: #9ca3af;
+}
+.modal-addbtn{
+  flex: 1;
+}
+
+/* 閉じるボタン */
+.image-modal-close{
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* スマホ最適化 */
+@media (max-width:640px){
+  .image-modal{
+    padding: 10px;
+  }
+  .image-modal-panel{
+    max-width: 100%;
+    padding: 12px 12px 14px;
+  }
+  .image-modal-main{
+    flex-direction: column;
+  }
+  .image-modal-photo img{
+    max-width: 100%;
+    max-height: 50vh;
+  }
+  .image-modal-title{
+    font-size: 13px;
+  }
+  .image-modal-price{
+    font-size: 15px;
+  }
+  .image-modal-actions{
+    gap: 6px;
+  }
+  .modal-qtyinput{
+    flex: 0 0 70px;
+    font-size: 12px;
+    padding: 5px 6px;
+  }
 }
 
 /* 印刷時はモーダル非表示 */
@@ -1211,6 +1338,7 @@ main{
     display: none !important;
   }
 }
+
 
 
 /* ===== カート（右側スライドパネル） ===== */
@@ -1993,8 +2121,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /* ===== 商品画像タップで拡大表示 ===== */
 (function(){
-  const modal    = document.getElementById('imgModal');
-  const modalImg = document.getElementById('imgModalImg');
+  const modal      = document.getElementById('imgModal');
+  const modalImg   = document.getElementById('imgModalImg');
+  const modalTitle = document.getElementById('imgModalTitle');
+  const modalPrice = document.getElementById('imgModalPrice');
+  const modalJan   = document.getElementById('imgModalJan');
+  const modalQty   = document.getElementById('modalQty');
+  const modalAdd   = document.getElementById('modalAddBtn');
 
   if (!modal || !modalImg) return;
 
@@ -2002,16 +2135,50 @@ window.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('click', e => {
     const img = e.target.closest('.product-img');
     if (img){
+      const jan   = img.dataset.jan  || "";
+      const name  = img.dataset.name || img.alt || "";
+      const price = Number(img.dataset.price || 0);
+
       modalImg.src = img.src;
-      modalImg.alt = img.dataset.name || img.alt || '';
+      modalImg.alt = name;
+
+      if (modalTitle) modalTitle.textContent = name;
+      if (modalJan)   modalJan.textContent   = jan ? `JAN: ${jan}` : "";
+
+      if (modalPrice){
+        if (price){
+          const inc = Math.round(price * 1.1);
+          modalPrice.textContent = `￥${inc.toLocaleString()}（税抜 ￥${price.toLocaleString()}）`;
+        }else{
+          modalPrice.textContent = "";
+        }
+      }
+
+      if (modalQty){
+        modalQty.value = "";
+        setTimeout(() => {
+          try{ modalQty.focus({ preventScroll:true }); }catch(_){}
+        }, 50);
+      }
+
+      // モーダルに商品情報を覚えさせる
+      modal.dataset.jan   = jan;
+      modal.dataset.name  = name;
+      modal.dataset.price = String(price || 0);
+
       modal.classList.add('open');
     }
 
-    // オーバーレイ部分をタップしたら閉じる
-    if (e.target === modal){
+    // オーバーレイ or ×ボタンで閉じる
+    if (e.target === modal || e.target.closest('.image-modal-close')){
       modal.classList.remove('open');
     }
   });
+
+  // 「カートに追加」ボタン
+  if (modalAdd){
+    modalAdd.addEventListener('click', addToCartFromModal);
+  }
 
   // ESCキーでも閉じる
   document.addEventListener('keydown', e => {
@@ -2020,6 +2187,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 })();
+
 
   
 /* ====== カート表示更新 ====== */
@@ -2124,11 +2292,15 @@ async function boot(){
     <div class="card">
       <div class="thumb">
         <img
+  <img
   src="img/${jan}.jpg"
   alt="${name}"
   class="product-img"
   data-name="${name}"
+  data-jan="${jan}"
+  data-price="${price}"
   onerror="this.onerror=null;this.src='img/noimage.jpg'">
+
 
       </div>
 
@@ -2166,19 +2338,46 @@ async function boot(){
 }
 
 /* ====== カート操作 ====== */
-function addToCart(p){
-  const q = document.getElementById(`qty-${p.jan}`).value;
-  if (!q || q <= 0) return;
-
+function upsertCart(p, q){
   const ex = cart.find(x => x.jan === p.jan);
+  const qty = Number(q);
+  if (!qty || qty <= 0) return;
+
   if (ex){
-    ex.qty += Number(q);
+    ex.qty += qty;
   }else{
-    cart.push({...p, qty:Number(q)});
+    cart.push({ ...p, qty });
   }
   updateCart();
-  document.getElementById(`qty-${p.jan}`).value = '';
 }
+
+function addToCart(p){
+  const input = document.getElementById(`qty-${p.jan}`);
+  const q = input ? Number(input.value) : 0;
+  if (!q || q <= 0) return;
+
+  upsertCart(p, q);
+  if (input) input.value = '';
+}
+
+/* モーダルからカートに追加 */
+function addToCartFromModal(){
+  const modal = document.getElementById('imgModal');
+  const input = document.getElementById('modalQty');
+  if (!modal || !input) return;
+
+  const jan   = modal.dataset.jan;
+  const name  = modal.dataset.name;
+  const price = Number(modal.dataset.price || 0);
+  const q     = Number(input.value);
+
+  if (!jan || !q || q <= 0) return;
+
+  upsertCart({ jan, name, price }, q);
+  input.value = '';
+  modal.classList.remove('open');
+}
+
 
 /* ====== 送信 ====== */
 async function sendOrder(){
@@ -2275,28 +2474,7 @@ function renderBarcode(jan){
   return out;
 }
 
-/* === 画像拡大モーダル制御 === */
-document.addEventListener('DOMContentLoaded', () => {
-  const modal    = document.getElementById('imgModal');
-  const modalImg = document.getElementById('imgModalImg');
-  if (!modal || !modalImg) return;
 
-  // 商品画像タップで拡大
-  document.addEventListener('click', (e) => {
-    const img = e.target.closest('.product-img');
-    if (img) {
-      modalImg.src = img.src;
-      modal.classList.add('open');
-    }
-  });
-
-  // 黒いところタップで閉じる
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.remove('open');
-    }
-  });
-});
 </script>
 
   
@@ -2306,9 +2484,39 @@ document.addEventListener('DOMContentLoaded', () => {
 // ここに全部の JavaScript が入っているはず
 </script>
 
-<!-- 商品画像拡大用モーダル（★ここを追加） -->
+<!-- 商品画像拡大用モーダル（画像＋商品情報＋カート） -->
 <div id="imgModal" class="image-modal">
-  <img id="imgModalImg" src="" alt="">
+  <div class="image-modal-panel">
+    <button type="button"
+            class="image-modal-close"
+            aria-label="閉じる">×</button>
+
+    <div class="image-modal-main">
+      <div class="image-modal-photo">
+        <img id="imgModalImg" src="" alt="">
+      </div>
+
+      <div class="image-modal-info">
+        <div id="imgModalTitle" class="image-modal-title"></div>
+        <div id="imgModalPrice" class="image-modal-price"></div>
+        <div id="imgModalJan"   class="image-modal-jan"></div>
+
+        <div class="image-modal-actions">
+          <input id="modalQty"
+                 type="number"
+                 class="modal-qtyinput"
+                 min="0"
+                 step="1"
+                 placeholder="数量">
+          <button id="modalAddBtn"
+                  type="button"
+                  class="btn modal-addbtn">
+            カートに追加
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>
