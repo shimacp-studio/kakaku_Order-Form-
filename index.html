@@ -394,10 +394,10 @@ h1{margin:0;font-weight:800}
   }
 }
 
-/* 追加情報の文字を少し小さめに */
+/* 価格の下に出す追加情報（入数・通常価格・値引き・JAN） */
 .card .meta{
   margin-top: 4px;
-  font-size: 11px;     /* ←ここで調整（10〜12くらいが目安） */
+  font-size: 12px;
   line-height: 1.5;
   color: var(--muted);
 }
@@ -405,6 +405,19 @@ h1{margin:0;font-weight:800}
 .card .meta div{
   margin-bottom: 2px;
 }
+
+/* JAN 行だけ少し上に余白 */
+.card .meta .meta-jan{
+  margin-top: 2px;
+}
+
+/* スマホ時はさらに一段小さくして、ギュッとしまった感じに */
+@media (max-width:640px){
+  .card .meta{
+    font-size: 10px;
+  }
+}
+
 
   
 /* === TOPページ専用：スマホ表示の最適化（SP用） ======================= */
@@ -2349,7 +2362,6 @@ async function boot(){
     const jan   = String(p.jan ?? "");
     const name  = String(p.name ?? "");
     const pack  = String(p.pack ?? "");
-    const category = String(p.category ?? "");
 
     const price = Number(
       p.price_ex_tax ??   // 新JSON（税抜 売価）
@@ -2364,9 +2376,9 @@ async function boot(){
       ? p.discount_ex_tax
       : null;
 
-    const regularText  = regular  != null ? `￥${regular.toLocaleString()}` : "-";
+    const regularText  = regular != null ? `￥${regular.toLocaleString()}` : "-";
 
-    // ★ 値引き表示：▲1,680円 形式
+    // 値引き表示：▲1,680円 形式
     let discountText = "-";
     if (discount != null) {
       const abs = Math.abs(discount);
@@ -2374,13 +2386,10 @@ async function boot(){
       discountText = `${sign}${abs.toLocaleString()}円`;
     }
 
-    const packText = pack ? pack : "-";
+    const packText = pack || "-";
 
-    // 画面用：JANテキスト
-    const barcodeText = jan ? `JAN: ${jan}` : "";
-
-    // 印刷用：バーコードSVG
-    const barcodeSvg  = jan ? (renderBarcode(jan) || "") : "";
+    // 印刷用：バーコードSVGだけ（JAN文字は meta に表示）
+    const barcodeSvg = jan ? (renderBarcode(jan) || "") : "";
 
     grid.insertAdjacentHTML("beforeend", `
       <div class="card">
@@ -2403,17 +2412,15 @@ async function boot(){
             <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
           </div>
 
-          <!-- 追加情報（brand は非表示） -->
+          <!-- 追加情報（category は出さない） -->
           <div class="meta">
             <div>入数：${packText}</div>
             <div>通常価格(税抜）：${regularText}</div>
             <div>値引き(税抜）：${discountText}</div>
-            <div>カテゴリ：${category || "-"}</div>
+            <div class="meta-jan">JAN：${jan}</div>
           </div>
 
-          <!-- 画面用テキスト＋印刷用バーコード -->
           <div class="barcode">
-            <span class="barcode-text">${barcodeText}</span>
             <span class="barcode-svg">${barcodeSvg}</span>
           </div>
         </div>
@@ -2427,7 +2434,7 @@ async function boot(){
         <div class="actions-card">
           <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
           <button class="btn" type="button"
-            onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
+            onclick='addToCart(${JSON.stringify({ jan: jan, name: name, price: price })})'>
             カートに追加
           </button>
         </div>
@@ -2435,7 +2442,6 @@ async function boot(){
     `);
   });
 }
-
 
 
 
