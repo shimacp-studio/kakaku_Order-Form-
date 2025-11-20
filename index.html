@@ -1093,6 +1093,50 @@ main{
     transform .14s ease,
     box-shadow .14s ease;
 }
+
+.card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  padding: 4px 4px 18px;
+  transition:
+    transform .14s ease,
+    box-shadow .14s ease;
+}
+
+/* 価格の下に出す商品情報（入数・通常価格・値引き） */
+.card .meta{
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.card .meta div{
+  margin-bottom: 2px;
+}
+
+/* カート内の商品名＋割引行 */
+.cartitem-name{
+  font-size: 12px;
+}
+.cartitem-discount{
+  margin-top: 2px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* スマホ時はもう一段小さくして詰める */
+@media (max-width:640px){
+  .card .meta{
+    font-size: 10px;
+  }
+}
+
+  
 .card:hover{
   transform: translateY(-2px);
   box-shadow: 0 16px 40px rgba(0,0,0,0.45);  /* ★ うっすら浮く程度 */
