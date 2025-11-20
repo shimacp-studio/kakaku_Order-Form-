@@ -1967,15 +1967,17 @@ header .actions .cart-toggle img{
     <div id="grid" class="grid"></div>
   </section>
 
-  <aside class="cart">
-    <h2>カート</h2>
-    <div id="cartlist" class="cartlist"></div>
-    <div>
-      <strong>小計：</strong><span id="subtotal">0円</span><br>
-      <strong>税込：</strong><span id="total">0円</span>
-    </div>
-    <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
-  </aside>
+<aside class="cart">
+  <h2>カート</h2>
+  <div id="cartlist" class="cartlist"></div>
+  <div>
+    <strong>小計：</strong><span id="subtotal">0円</span><br>
+    <strong>値引き合計：</strong><span id="discountTotal">0円</span><br>
+    <strong>税込：</strong><span id="total">0円</span>
+  </div>
+  <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
+</aside>
+ 
 </main>
 
 
@@ -2266,6 +2268,9 @@ function updateCart(){
     list.textContent = 'カートは空です';
     document.getElementById('subtotal').textContent = '0円';
     document.getElementById('total').textContent    = '0円';
+    const discSpan = document.getElementById('discountTotal');
+    if (discSpan) discSpan.textContent = '0円';
+
     if (badge){
       badge.textContent = '0';
       badge.classList.add('is-empty');
@@ -2275,19 +2280,24 @@ function updateCart(){
 
   const productMap = window.PRODUCTS_BY_JAN || {};
 
-  let subtotal = 0;
-  cart.forEach((it,i)=>{
+  let subtotal      = 0;
+  let discountTotal = 0;
+
+  cart.forEach((it, i) => {
     subtotal += it.price * it.qty;
 
     const prod     = productMap[String(it.jan)] || {};
-    const regular  = typeof prod.regular_price_ex_tax === "number" ? prod.regular_price_ex_tax : null;
-    const discount = typeof prod.discount_ex_tax === "number" ? prod.discount_ex_tax : null;
+    const regular  = (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null;
+    const discount = (typeof prod.discount_ex_tax === "number")       ? prod.discount_ex_tax       : null;
 
     let discountLine = "";
     if (regular != null && discount != null){
       const abs  = Math.abs(discount);
       const sign = discount < 0 ? "▲" : "＋";
-      discountLine = `<div class="cartitem-discount">通常￥${regular.toLocaleString()} / 値引き：${sign}${abs.toLocaleString()}円</div>`;
+      discountLine =
+        `<div class="cartitem-discount">通常￥${regular.toLocaleString()} / 値引き：${sign}${abs.toLocaleString()}円</div>`;
+      // 合計値引き（金額×数量）
+      discountTotal += discount * it.qty;
     }
 
     list.insertAdjacentHTML("beforeend", `
@@ -2299,14 +2309,30 @@ function updateCart(){
         <div>数量：${it.qty}</div>
         <div>￥${(it.price * it.qty).toLocaleString()}</div>
         <button onclick='removeItem(${i})'
-                class='cartitem-remove'>×</button>
+                style='color:red;border:none;background:none;font-weight:800'>×</button>
       </div>
     `);
   });
 
-  document.getElementById('subtotal').textContent = subtotal.toLocaleString() + '円';
-  document.getElementById('total').textContent    = Math.round(subtotal * 1.1).toLocaleString() + '円';
+  // 小計・税込
+  document.getElementById('subtotal').textContent =
+    subtotal.toLocaleString() + '円';
+  document.getElementById('total').textContent =
+    Math.round(subtotal * 1.1).toLocaleString() + '円';
 
+  // 値引き合計
+  const discSpan = document.getElementById('discountTotal');
+  if (discSpan){
+    if (discountTotal){
+      const abs  = Math.abs(discountTotal);
+      const sign = discountTotal < 0 ? "▲" : "＋";
+      discSpan.textContent = `${sign}${abs.toLocaleString()}円`;
+    }else{
+      discSpan.textContent = '0円';
+    }
+  }
+
+  // バッジ（件数）
   if (badge){
     const totalQty = cart.reduce((sum, it) => sum + it.qty, 0);
     if (totalQty > 0){
@@ -2318,6 +2344,7 @@ function updateCart(){
     }
   }
 }
+
 
 /* ====== 商品検索フィルター（名前・JAN両方） ====== */
 function applySearchFilter(){
@@ -2356,7 +2383,7 @@ async function boot(){
       return [];
     });
 
-  // JAN -> 商品情報 のマップ（カート表示用）
+  // JAN -> 商品情報 のマップ（カート側で値引き計算に使う）
   window.PRODUCTS_BY_JAN = {};
   PRODUCTS.forEach(p => {
     const key = String(p.jan ?? "");
@@ -2367,19 +2394,33 @@ async function boot(){
   grid.innerHTML = ""; // クリア
 
   PRODUCTS.forEach(p => {
-    const jan  = String(p.jan ?? "");
-    const name = String(p.name ?? "");
+    const jan   = String(p.jan ?? "");
+    const name  = String(p.name ?? "");
 
-    // ★ ここがポイント：price_ex_tax を優先して使う
+    // JSON の税抜価格を読む（なければ旧 price を見る）
     const price = Number(
-      p.price_ex_tax ??   // 新しい JSON（税抜価格）
-      p.price ??          // 念のため旧 JSON にも対応
+      p.price_ex_tax ??   // 新JSON
+      p.price ??          // 旧JSON互換
       0
     );
 
-    // 画面用 JAN テキスト
+    const pack     = p.pack ?? "";
+    const regular  = (typeof p.regular_price_ex_tax === "number") ? p.regular_price_ex_tax : null;
+    const discount = (typeof p.discount_ex_tax === "number")       ? p.discount_ex_tax       : null;
+
+    const packText    = pack || "-";
+    const regularText = (regular != null) ? `￥${regular.toLocaleString()}` : "-";
+
+    // 値引き表示（▲1,680円 形式）
+    let discountText = "-";
+    if (discount != null){
+      const abs  = Math.abs(discount);
+      const sign = discount < 0 ? "▲" : "＋";
+      discountText = `${sign}${abs.toLocaleString()}円`;
+    }
+
+    // JAN 表示用
     const barcodeText = jan ? `JAN: ${jan}` : "";
-    // 印刷用バーコード
     const barcodeSvg  = jan ? (renderBarcode(jan) || "") : "";
 
     grid.insertAdjacentHTML("beforeend", `
@@ -2397,10 +2438,20 @@ async function boot(){
 
         <div class="body">
           <div class="title">${name}</div>
+
           <div class="price-row">
             <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
             <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
           </div>
+
+          <!-- ここが追加の商品情報 -->
+          <div class="meta">
+            <div>入数：${packText}</div>
+            <div>通常価格（税抜）：${regularText}</div>
+            <div>値引き（税抜）：${discountText}</div>
+          </div>
+
+          <!-- JAN 表示＋バーコード -->
           <div class="barcode">
             <span class="barcode-text">${barcodeText}</span>
             <span class="barcode-svg">${barcodeSvg}</span>
@@ -2426,6 +2477,7 @@ async function boot(){
     `);
   });
 }
+
 
 
 /* ====== カート操作 ====== */
