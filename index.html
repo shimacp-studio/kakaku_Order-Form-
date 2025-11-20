@@ -563,28 +563,34 @@ h1{margin:0;font-weight:800}
   .price-sub{
     font-size: 9px !important;
   }
-  /* ★ 数量入力とカートボタンを「1行・左 数量 / 右 カート」にする */
+
+    /* ★ SP時の数量＋カート：1行でバランスよく */
   .actions-card{
     flex-direction: row !important;
     align-items: center !important;
-    gap: 4px !important;
+    justify-content: space-between;
+    gap: 8px !important;
+    margin-top: 10px;
   }
 
   .qtyinput{
-    flex: 0 0 60px !important;
-    width: 60px !important;
-    max-width: 60px !important;
-    padding: 4px 4px !important;
+    flex: 0 0 70px !important;
+    width: 70px !important;
+    max-width: 70px !important;
+    padding: 6px 6px !important;
     font-size: 11px !important;
+    text-align: center;
   }
 
   .actions-card .btn{
     flex: 1 1 auto !important;
     width: auto !important;
-    font-size: 10px !important;
-    padding: 6px 6px !important;
+    font-size: 11px !important;
+    padding: 8px 10px !important;
     white-space: nowrap;
   }
+}
+
 
   
 }
@@ -2120,7 +2126,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ===== 商品画像タップで拡大表示 ===== */
-(function(){
+document.addEventListener('DOMContentLoaded', () => {
   const modal      = document.getElementById('imgModal');
   const modalImg   = document.getElementById('imgModalImg');
   const modalTitle = document.getElementById('imgModalTitle');
@@ -2167,6 +2173,7 @@ window.addEventListener("DOMContentLoaded", () => {
       modal.dataset.price = String(price || 0);
 
       modal.classList.add('open');
+      return;
     }
 
     // オーバーレイ or ×ボタンで閉じる
@@ -2186,7 +2193,8 @@ window.addEventListener("DOMContentLoaded", () => {
       modal.classList.remove('open');
     }
   });
-})();
+});
+
 
 
   
