@@ -2022,6 +2022,13 @@ function startFlow(){
     alert("発注者名を入力してください。");
     return;
   }
+
+  // キーボードを閉じる（スマホ対策）
+  if (document.activeElement && typeof document.activeElement.blur === "function"){
+    document.activeElement.blur();
+  }
+
+  // 入力値を保存
   sessionStorage.setItem("buyerName",   buyer);
   sessionStorage.setItem("partnerName", (document.getElementById("partnerName")?.value || "").trim());
   sessionStorage.setItem("siteName",    (document.getElementById("siteName")?.value || "").trim());
@@ -2029,32 +2036,35 @@ function startFlow(){
   const topPage = document.getElementById("topPage");
   const mainEl  = document.querySelector("main");
 
+  // ★ アニメーションや setTimeout をやめて、一気に非表示にする
   if (topPage){
-    topPage.style.opacity = "0";
+    topPage.style.display       = "none";
+    topPage.style.visibility    = "hidden";
+    topPage.style.opacity       = "0";
     topPage.style.pointerEvents = "none";
-    setTimeout(() => {
-      topPage.style.display = "none";
-      topPage.style.visibility = "hidden";
-      topPage.style.zIndex = "-1";
-    }, 350);
+    topPage.style.zIndex        = "-1";
   }
+
   if (mainEl){
-    mainEl.style.display   = "block";
-    mainEl.style.visibility= "visible";
-    mainEl.style.opacity   = "1";
-    mainEl.style.position  = "relative";
-    mainEl.style.zIndex    = "10";
+    mainEl.style.display    = "block";
+    mainEl.style.visibility = "visible";
+    mainEl.style.opacity    = "1";
+    mainEl.style.position   = "relative";
+    mainEl.style.zIndex     = "10";
   }
 
-  // ★ TOPから発注画面に切り替わるタイミングで、いったん一番上まで戻す
-  window.scrollTo(0, 0);
+  // いったん一番上へスクロール
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
-  try { boot(); }
-  catch(e){
+  // カタログ描画
+  try {
+    boot();
+  } catch(e){
     console.error("boot() error:", e);
     alert("商品描画でエラーが発生しました。コンソールをご確認ください。");
   }
 }
+
 
 
 function bindStartButton(){
