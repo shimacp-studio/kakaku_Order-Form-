@@ -394,32 +394,6 @@ h1{margin:0;font-weight:800}
   }
 }
 
-/* 価格の下に出す追加情報（入数・通常価格・値引き・JAN） */
-.card .meta{
-  margin-top: 4px;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-.card .meta div{
-  margin-bottom: 2px;
-}
-
-/* JAN 行だけ少し上に余白 */
-.card .meta .meta-jan{
-  margin-top: 2px;
-}
-
-/* スマホ時はさらに一段小さくして、ギュッとしまった感じに */
-@media (max-width:640px){
-  .card .meta{
-    font-size: 10px;
-  }
-}
-
-
-  
 /* === TOPページ専用：スマホ表示の最適化（SP用） ======================= */
 @media (max-width: 640px){
 
@@ -593,17 +567,15 @@ h1{margin:0;font-weight:800}
     font-size: 9px !important;
   }
 
-     /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト
-     → カードの「一番下」にボタンがそろうようにする */
+     /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト */
   .actions-card{
     display: flex !important;
     flex-direction: column !important;  /* 縦並び */
     align-items: stretch !important;
     gap: 8px !important;
-    margin-top: auto;   /* ← ここがポイント：余りの高さを全部ここに寄せる */
+    margin-top: 10px;
     padding: 0 4px;
   }
-
 
   .qtyinput{
     flex: 0 0 auto !important;
@@ -848,9 +820,6 @@ body.catalog-open main{
   }
   .order-marquee{
     margin-bottom: 4px;
-    position: sticky;
-    top: 64px;       /* ヘッダーの高さに合わせて 56〜80px くらいで微調整OK */
-    z-index: 25;
   }
 
   /* 帯のすぐ下からフォームが始まるようにする */
@@ -2175,13 +2144,23 @@ window.addEventListener("DOMContentLoaded", () => {
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 
-  // カートトグル
+  // カートトグル（開く専用）＋ 画面クリックで閉じる
   const cartToggle = document.getElementById("cartToggle");
   const cartPanel  = document.querySelector(".cart");
   if (cartToggle && cartPanel){
-    cartToggle.addEventListener("click", () => {
+    // アイコンクリック：カートを開くだけ
+    cartToggle.addEventListener("click", (ev) => {
+      ev.stopPropagation();
       if (!cart.length){ alert("カートに商品がありません"); return; }
-      cartPanel.classList.toggle("open");
+      cartPanel.classList.add("open");
+    });
+
+    // 発注画面の適当な場所クリックで閉じる（カート内とアイコンは除外）
+    document.addEventListener("click", (ev) => {
+      if (!cartPanel.classList.contains("open")) return;
+      const target = ev.target;
+      if (cartPanel.contains(target) || cartToggle.contains(target)) return;
+      cartPanel.classList.remove("open");
     });
   }
 
@@ -2294,16 +2273,33 @@ function updateCart(){
     return;
   }
 
+  const productMap = window.PRODUCTS_BY_JAN || {};
+
   let subtotal = 0;
   cart.forEach((it,i)=>{
     subtotal += it.price * it.qty;
+
+    const prod     = productMap[String(it.jan)] || {};
+    const regular  = typeof prod.regular_price_ex_tax === "number" ? prod.regular_price_ex_tax : null;
+    const discount = typeof prod.discount_ex_tax === "number" ? prod.discount_ex_tax : null;
+
+    let discountLine = "";
+    if (regular != null && discount != null){
+      const abs  = Math.abs(discount);
+      const sign = discount < 0 ? "▲" : "＋";
+      discountLine = `<div class="cartitem-discount">通常￥${regular.toLocaleString()} / 値引き：${sign}${abs.toLocaleString()}円</div>`;
+    }
+
     list.insertAdjacentHTML("beforeend", `
       <div class='cartitem'>
-        <div>${it.name}</div>
-        <div>${it.qty}</div>
-        <div>${(it.price * it.qty).toLocaleString()}円</div>
+        <div>
+          <div class="cartitem-name">${it.name}</div>
+          ${discountLine}
+        </div>
+        <div>数量：${it.qty}</div>
+        <div>￥${(it.price * it.qty).toLocaleString()}</div>
         <button onclick='removeItem(${i})'
-                style='color:red;border:none;background:none;font-weight:800'>×</button>
+                class='cartitem-remove'>×</button>
       </div>
     `);
   });
@@ -2360,95 +2356,75 @@ async function boot(){
       return [];
     });
 
+  // JAN -> 商品情報 のマップを作成（カート表示で使用）
+  window.PRODUCTS_BY_JAN = {};
+  PRODUCTS.forEach(p => {
+    const key = String(p.jan ?? "");
+    if (key) window.PRODUCTS_BY_JAN[key] = p;
+  });
+
   const grid = document.getElementById('grid');
   grid.innerHTML = ""; // クリア
 
-  PRODUCTS.forEach(p => {
-    const jan   = String(p.jan ?? "");
-    const name  = String(p.name ?? "");
-    const pack  = String(p.pack ?? "");
+    PRODUCTS.forEach(p => {
+  const jan   = String(p.jan ?? "");
+  const name  = String(p.name ?? "");
+  const price = Number(p.price ?? 0);
 
-    const price = Number(
-      p.price_ex_tax ??   // 新JSON（税抜 売価）
-      p.price ??          // 旧JSONとの互換用
-      0
-    );
+  // 画面用：JANテキスト
+  const barcodeText = jan ? `JAN: ${jan}` : "";
 
-    const regular = (typeof p.regular_price_ex_tax === "number")
-      ? p.regular_price_ex_tax
-      : null;
-    const discount = (typeof p.discount_ex_tax === "number")
-      ? p.discount_ex_tax
-      : null;
+  // 印刷用：バーコードSVG
+  const barcodeSvg  = jan ? (renderBarcode(jan) || "") : "";
 
-    const regularText  = regular != null ? `￥${regular.toLocaleString()}` : "-";
+  grid.insertAdjacentHTML("beforeend", `
+    <div class="card">
+      <div class="thumb">
+        <img
+  <img
+  src="img/${jan}.jpg"
+  alt="${name}"
+  class="product-img"
+  data-name="${name}"
+  data-jan="${jan}"
+  data-price="${price}"
+  onerror="this.onerror=null;this.src='img/noimage.jpg'">
 
-    // 値引き表示：▲1,680円 形式
-    let discountText = "-";
-    if (discount != null) {
-      const abs = Math.abs(discount);
-      const sign = discount < 0 ? "▲" : "＋";
-      discountText = `${sign}${abs.toLocaleString()}円`;
-    }
 
-    const packText = pack || "-";
+      </div>
 
-    // 印刷用：バーコードSVGだけ（JAN文字は meta に表示）
-    const barcodeSvg = jan ? (renderBarcode(jan) || "") : "";
-
-    grid.insertAdjacentHTML("beforeend", `
-      <div class="card">
-        <div class="thumb">
-          <img
-            src="img/${jan}.jpg"
-            alt="${name}"
-            class="product-img"
-            data-name="${name}"
-            data-jan="${jan}"
-            data-price="${price}"
-            onerror="this.onerror=null;this.src='img/noimage.jpg'">
+      <div class="body">
+        <div class="title">${name}</div>
+        <div class="price-row">
+          <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
+          <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
         </div>
 
-        <div class="body">
-          <div class="title">${name}</div>
-
-          <div class="price-row">
-            <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
-            <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
-          </div>
-
-          <!-- 追加情報（category は出さない） -->
-          <div class="meta">
-            <div>入数：${packText}</div>
-            <div>通常価格(税抜)${regularText}</div>
-            <div>値引き(税抜)${discountText}</div>
-            <div class="meta-jan">JAN：${jan}</div>
-          </div>
-
-          <div class="barcode">
-            <span class="barcode-svg">${barcodeSvg}</span>
-          </div>
-        </div>
-
-        <!-- 印刷専用数量欄 -->
-        <div class="qty-print print-only" style="display:none">
-          <label style="margin-right:4px;">数量</label>
-          <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
-        </div>
-
-        <div class="actions-card">
-          <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
-          <button class="btn" type="button"
-            onclick='addToCart(${JSON.stringify({ jan: jan, name: name, price: price })})'>
-            カートに追加
-          </button>
+        <!-- ★ 画面用テキスト＋印刷用バーコードを両方入れておく -->
+        <div class="barcode">
+          <span class="barcode-text">${barcodeText}</span>
+          <span class="barcode-svg">${barcodeSvg}</span>
         </div>
       </div>
-    `);
-  });
+
+      <!-- 印刷専用数量欄（既存のまま） -->
+      <div class="qty-print print-only" style="display:none">
+        <label style="margin-right:4px;">数量</label>
+        <input id="print-qty-${jan}" type="text" inputmode="numeric" pattern="[0-9０-９]*" aria-label="印刷用数量">
+      </div>
+
+      <div class="actions-card">
+        <input id="qty-${jan}" type="number" class="qtyinput" min="0" step="1" placeholder="数量">
+        <button class="btn" type="button"
+          onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
+          カートに追加
+        </button>
+      </div>
+    </div>
+  `);
+});
+
 }
-
-
 
 /* ====== カート操作 ====== */
 function upsertCart(p, q){
@@ -2670,6 +2646,7 @@ function renderBarcode(jan){
 
 </body>
 </html>
+
 
 
 
