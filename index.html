@@ -564,25 +564,24 @@ h1{margin:0;font-weight:800}
     font-size: 9px !important;
   }
 
-      /* ★ SP時の数量入力＋カート：1行でバランスよく */
+     /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト */
   .actions-card{
     display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between;
-    gap: 6px !important;
+    flex-direction: column !important;  /* 縦並び */
+    align-items: stretch !important;
+    gap: 8px !important;
     margin-top: 10px;
+    padding: 0 4px;
   }
 
   .qtyinput{
-    flex: 0 0 64px !important;
-    width: 64px !important;
-    max-width: 64px !important;
-    padding: 6px 6px !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 6px 8px !important;
     font-size: 11px !important;
     text-align: center;
     box-sizing: border-box;
-
     border-radius: 999px;
     border: 1px solid #d1d5db;
     background: #ffffff;
@@ -590,15 +589,15 @@ h1{margin:0;font-weight:800}
   }
 
   .actions-card .btn{
-    flex: 1 1 auto !important;
-    width: auto !important;
+    width: 100% !important;
+    flex: 0 0 auto !important;
     min-height: 34px;
-    font-size: 10px !important;
-    padding: 6px 8px !important;
+    font-size: 11px !important;
+    padding: 8px 8px !important;
     white-space: nowrap;
   }
-
 }
+
 
 
   
