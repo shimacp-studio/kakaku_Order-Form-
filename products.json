@@ -1,82 +1,1152 @@
 [
   {
-    "jan": "4996112297666",
-    "name": "(台)ﾌﾟﾗｽﾁｯｸｽｹﾙﾄﾝｶﾞﾝ",
-    "price": 380,
+    "brand": "GA",
+    "jan": "4995770026908",
+    "name": "GA 強力油落しｸﾘｰﾅｰ/840ml #690",
+    "pack": "1箱24本入",
+    "price_ex_tax": 6720,
+    "regular_price_ex_tax": 8400,
+    "discount_ex_tax": -1680,
+    "category": "スプレ・オイル・グリス"
+  },
+  {
+    "brand": "ﾎﾘｺｰ",
+    "jan": "4571139420565",
+    "name": "ﾎﾘｺｰ 桃色美人48mmx25m MB50",
+    "pack": "1箱30巻入",
+    "price_ex_tax": 6900,
+    "regular_price_ex_tax": 7500,
+    "discount_ex_tax": -600,
+    "category": "テープ"
+  },
+  {
+    "brand": "古藤ｱﾙﾐﾃｰﾌﾟAL2/50mm×50m(ﾂﾔｱﾘ)",
+    "jan": "4909622730608",
+    "name": "古藤ｱﾙﾐﾃｰﾌﾟAL2/50mm×50m(ﾂﾔｱﾘ)",
     "pack": 1,
-    "category": "コーキング用品",
-    "brand": ""
+    "price_ex_tax": 1130,
+    "regular_price_ex_tax": 1330,
+    "discount_ex_tax": -200,
+    "category": "テープ"
   },
   {
-    "jan": "4963041150041",
-    "name": "[Z]ｾﾞｯﾄｿｰ265 替刃",
-    "price": 450,
+    "brand": "ﾐﾘｵﾝ",
+    "jan": "4971620441060",
+    "name": "ﾐﾘｵﾝ ﾋﾞﾆｰﾙﾃｰﾌﾟ 19×10m白",
+    "pack": "1束10巻入",
+    "price_ex_tax": 700,
+    "regular_price_ex_tax": 800,
+    "discount_ex_tax": -100,
+    "category": "テープ"
+  },
+  {
+    "brand": "ﾐﾘｵﾝ",
+    "jan": "4971620452783",
+    "name": "ﾐﾘｵﾝ ﾋﾞﾆｰﾙﾃｰﾌﾟ 50×20m灰",
+    "pack": "1束4巻入",
+    "price_ex_tax": 1880,
+    "regular_price_ex_tax": 1960,
+    "discount_ex_tax": -80,
+    "category": "テープ"
+  },
+  {
+    "brand": "ｶﾓｲ",
+    "jan": "4971910255131",
+    "name": "ｶﾓｲ ﾏｽｷﾝｸﾞﾃｰﾌﾟBLUE-BOSS 18mm×18m",
+    "pack": "1箱50巻入",
+    "price_ex_tax": 3300,
+    "regular_price_ex_tax": 3900,
+    "discount_ex_tax": -600,
+    "category": "テープ"
+  },
+  {
+    "brand": "ｱｻﾀﾞ",
+    "jan": "4991756028072",
+    "name": "ｱｻﾀﾞ ｼｰﾙﾃｰﾌﾟ15m R50356",
+    "pack": "10巻入",
+    "price_ex_tax": 1250,
+    "regular_price_ex_tax": 1380,
+    "discount_ex_tax": -130,
+    "category": "テープ"
+  },
+  {
+    "brand": "ｽﾘｰｽﾀｰ細ﾋﾞｽｸﾛｰﾑﾒｰﾄ3.3×45(600本)",
+    "jan": "4903768475577",
+    "name": "ｽﾘｰｽﾀｰ細ﾋﾞｽｸﾛｰﾑﾒｰﾄ3.3×45(600本)",
     "pack": 1,
-    "category": "のこぎり類",
-    "brand": ""
+    "price_ex_tax": 670,
+    "regular_price_ex_tax": 740,
+    "discount_ex_tax": -70,
+    "category": "ネジ・ビス"
   },
   {
-    "jan": "4548623578736",
-    "name": "3Mﾏｽｷﾝｸﾞﾃｰﾌﾟ 18mm×18m No.2479H※",
-    "price": 600,
-    "pack": 10,
-    "category": "マスキングテープ",
-    "brand": "3M"
-  },
-  {
-    "jan": "4962485398439",
-    "name": "ANEX 黒龍靭ﾋﾞｯﾄ段付2P/#2×100",
-    "price": 510,
+    "brand": "ｽﾘｰｽﾀｰ細ﾋﾞｽｸﾛｰﾑﾒｰﾄ3.7×65(350本)",
+    "jan": "4903768475614",
+    "name": "ｽﾘｰｽﾀｰ細ﾋﾞｽｸﾛｰﾑﾒｰﾄ3.7×65(350本)",
     "pack": 1,
-    "category": "プラスビット",
-    "brand": "ANEX"
+    "price_ex_tax": 670,
+    "regular_price_ex_tax": 740,
+    "discount_ex_tax": -70,
+    "category": "ネジ・ビス"
   },
   {
-    "jan": "4962485399931",
-    "name": "ANEX 黒龍靭ｽﾘﾑ5P/#2×110 ABRS5-2110",
-    "price": 1150,
+    "brand": "ﾗｽﾊﾟｰﾄ",
+    "jan": "4903768486733",
+    "name": "ﾗｽﾊﾟｰﾄ 板金ﾋﾞｽ42/ｼﾙﾊﾞｰ",
     "pack": 1,
-    "category": "プラスビット",
-    "brand": "ANEX"
+    "price_ex_tax": 1450,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -250,
+    "category": "ネジ・ビス"
   },
   {
-    "jan": "4986362551656",
-    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ",
-    "price": 2550,
+    "brand": "ｽﾘｰｽﾀｰｺｰｽｽﾚｯﾄﾞ28㎜全ねじ(1900本)",
+    "jan": "",
+    "name": "ｽﾘｰｽﾀｰｺｰｽｽﾚｯﾄﾞ28㎜全ねじ(1900本)",
     "pack": 1,
-    "category": "ホールソー",
-    "brand": "BM"
+    "price_ex_tax": 1200,
+    "regular_price_ex_tax": 1450,
+    "discount_ex_tax": -230,
+    "category": "ネジ・ビス"
   },
   {
-    "jan": "4986362542548",
-    "name": "BM 職人技銀次郎ﾁｯﾌﾟｿｰ 125×40P",
-    "price": 880,
+    "brand": "ｽﾘｰｽﾀｰｺｰｽｽﾚｯﾄﾞ51㎜全ねじ(1000本)",
+    "jan": "",
+    "name": "ｽﾘｰｽﾀｰｺｰｽｽﾚｯﾄﾞ51㎜全ねじ(1000本)",
     "pack": 1,
-    "category": "木工チップソー",
-    "brand": "BM"
+    "price_ex_tax": 1050,
+    "regular_price_ex_tax": 1280,
+    "discount_ex_tax": -180,
+    "category": "ネジ・ビス"
   },
   {
+    "brand": "ｽﾘｰｽﾀｰｺｰｽｽﾚｯﾄﾞ65㎜半ねじ(500本)",
+    "jan": "",
+    "name": "ｽﾘｰｽﾀｰｺｰｽｽﾚｯﾄﾞ65㎜半ねじ(500本)",
+    "pack": 1,
+    "price_ex_tax": 598,
+    "regular_price_ex_tax": 800,
+    "discount_ex_tax": -202,
+    "category": "ネジ・ビス"
+  },
+  {
+    "brand": "ｶｰﾙPCﾌﾟﾗｸﾞ6×35(110本入)",
+    "jan": "4537550906354",
+    "name": "ｶｰﾙPCﾌﾟﾗｸﾞ6×35(110本入)",
+    "pack": 1,
+    "price_ex_tax": 980,
+    "regular_price_ex_tax": 1100,
+    "discount_ex_tax": -120,
+    "category": "プラグ・カール"
+  },
+  {
+    "brand": "ｶｰﾙPCﾌﾟﾗｸﾞ7×35(150本入)",
+    "jan": "4537550907351",
+    "name": "ｶｰﾙPCﾌﾟﾗｸﾞ7×35(150本入)",
+    "pack": 1,
+    "price_ex_tax": 980,
+    "regular_price_ex_tax": 1100,
+    "discount_ex_tax": -120,
+    "category": "プラグ・カール"
+  },
+  {
+    "brand": "ｶｰﾙPCﾌﾟﾗｸﾞ8×35(90本入)",
+    "jan": "4537550909358",
+    "name": "ｶｰﾙPCﾌﾟﾗｸﾞ8×35(90本入)",
+    "pack": 1,
+    "price_ex_tax": 980,
+    "regular_price_ex_tax": 1100,
+    "discount_ex_tax": -120,
+    "category": "プラグ・カール"
+  },
+  {
+    "brand": "PCｾｯﾄｷｬｯﾌﾟ(100入)",
+    "jan": "4531588010823",
+    "name": "PCｾｯﾄｷｬｯﾌﾟ(100入) 白 P-700",
+    "pack": "10袋入",
+    "price_ex_tax": 2700,
+    "regular_price_ex_tax": 3000,
+    "discount_ex_tax": -300,
+    "category": "安全用品"
+  },
+  {
+    "brand": "PCｾｯﾄｷｬｯﾌﾟ用ﾜｯｼｬ(100入)",
+    "jan": "4531588010847",
+    "name": "PCｾｯﾄｷｬｯﾌﾟ用ﾜｯｼｬ(100入) P-710",
+    "pack": "20袋入",
+    "price_ex_tax": 7200,
+    "regular_price_ex_tax": 8000,
+    "discount_ex_tax": -800,
+    "category": "安全用品"
+  },
+  {
+    "brand": "3Mﾘﾌｨｰﾙﾛｰﾙ･64",
+    "jan": "4901690026423",
+    "name": "3Mﾘﾌｨｰﾙﾛｰﾙ･64 #100",
+    "pack": 1,
+    "price_ex_tax": 530,
+    "regular_price_ex_tax": 580,
+    "discount_ex_tax": -50,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120014",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #80",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120021",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #120",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120038",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #240",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120045",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #400",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120052",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #600",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120083",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #800",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ｼｬｲﾈｯｸｽ",
+    "jan": "4906702120069",
+    "name": "ｼｬｲﾈｯｸｽ ｻﾝﾄﾞｼｰﾄEX #1500",
+    "pack": 1,
+    "price_ex_tax": 180,
+    "regular_price_ex_tax": 200,
+    "discount_ex_tax": -20,
+    "category": "研磨材"
+  },
+  {
+    "brand": "FS耐水ﾍﾟ-ﾊﾟｰ#80",
+    "jan": "4937591855794",
+    "name": "FS耐水ﾍﾟ-ﾊﾟｰ#80",
+    "pack": 1,
+    "price_ex_tax": 80,
+    "regular_price_ex_tax": 110,
+    "discount_ex_tax": -30,
+    "category": "研磨材"
+  },
+  {
+    "brand": "FS耐水ﾍﾟ-ﾊﾟｰ#120",
+    "jan": "4937591852229",
+    "name": "FS耐水ﾍﾟ-ﾊﾟｰ#120",
+    "pack": 1,
+    "price_ex_tax": 80,
+    "regular_price_ex_tax": 110,
+    "discount_ex_tax": -30,
+    "category": "研磨材"
+  },
+  {
+    "brand": "FS耐水ﾍﾟ-ﾊﾟｰ#240",
+    "jan": "4937591013095",
+    "name": "FS耐水ﾍﾟ-ﾊﾟｰ#240",
+    "pack": 1,
+    "price_ex_tax": 80,
+    "regular_price_ex_tax": 110,
+    "discount_ex_tax": -30,
+    "category": "研磨材"
+  },
+  {
+    "brand": "FS耐水ﾍﾟ-ﾊﾟｰ#320",
+    "jan": "4937591015099",
+    "name": "FS耐水ﾍﾟ-ﾊﾟｰ#320",
+    "pack": 1,
+    "price_ex_tax": 80,
+    "regular_price_ex_tax": 110,
+    "discount_ex_tax": -30,
+    "category": "研磨材"
+  },
+  {
+    "brand": "FS耐水ﾍﾟ-ﾊﾟｰ#600",
+    "jan": "4937591019097",
+    "name": "FS耐水ﾍﾟ-ﾊﾟｰ#600",
+    "pack": 1,
+    "price_ex_tax": 80,
+    "regular_price_ex_tax": 110,
+    "discount_ex_tax": -30,
+    "category": "研磨材"
+  },
+  {
+    "brand": "FS耐水ﾍﾟ-ﾊﾟｰ#1000",
+    "jan": "4937591022097",
+    "name": "FS耐水ﾍﾟ-ﾊﾟｰ#1000",
+    "pack": 1,
+    "price_ex_tax": 90,
+    "regular_price_ex_tax": 120,
+    "discount_ex_tax": -30,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ﾏｷﾀ",
+    "jan": "88381132336",
+    "name": "ﾏｷﾀ ﾏｼﾞｯｸ式ｻﾝﾃﾞｨﾝｸﾞﾃﾞｨｽｸWA60 A-16863",
+    "pack": 1,
+    "price_ex_tax": 450,
+    "regular_price_ex_tax": 570,
+    "discount_ex_tax": -120,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ﾏｷﾀ",
+    "jan": "88381132343",
+    "name": "ﾏｷﾀ ﾏｼﾞｯｸ式ｻﾝﾃﾞｨﾝｸﾞﾃﾞｨｽｸWA80 A-16879",
+    "pack": 1,
+    "price_ex_tax": 390,
+    "regular_price_ex_tax": 510,
+    "discount_ex_tax": -120,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ﾏｷﾀ",
+    "jan": "88381132350",
+    "name": "ﾏｷﾀ ﾏｼﾞｯｸ式ｻﾝﾃﾞｨﾝｸﾞﾃﾞｨｽｸWA120 A-16885",
+    "pack": 1,
+    "price_ex_tax": 370,
+    "regular_price_ex_tax": 480,
+    "discount_ex_tax": -110,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ﾏｷﾀ",
+    "jan": "88381132367",
+    "name": "ﾏｷﾀ ﾏｼﾞｯｸ式ｻﾝﾃﾞｨﾝｸﾞﾃﾞｨｽｸWA180 A-16891",
+    "pack": 1,
+    "price_ex_tax": 370,
+    "regular_price_ex_tax": 480,
+    "discount_ex_tax": -110,
+    "category": "研磨材"
+  },
+  {
+    "brand": "ﾏｷﾀ",
+    "jan": "88381132374",
+    "name": "ﾏｷﾀ ﾏｼﾞｯｸ式ｻﾝﾃﾞｨﾝｸﾞﾃﾞｨｽｸWA240 A-16900",
+    "pack": 1,
+    "price_ex_tax": 370,
+    "regular_price_ex_tax": 480,
+    "discount_ex_tax": -110,
+    "category": "研磨材"
+  },
+  {
+    "brand": "INOUE",
+    "jan": "4530545100157",
+    "name": "INOUE ﾌﾟﾗｽﾁｯｸ ﾏﾙﾁﾍﾗ45mm",
+    "pack": 1,
+    "price_ex_tax": 125,
+    "regular_price_ex_tax": 140,
+    "discount_ex_tax": -15,
+    "category": "作業工具"
+  },
+  {
+    "brand": "INOUE",
+    "jan": "4530545100164",
+    "name": "INOUE ﾌﾟﾗｽﾁｯｸ ﾏﾙﾁﾍﾗ70mm",
+    "pack": 1,
+    "price_ex_tax": 135,
+    "regular_price_ex_tax": 150,
+    "discount_ex_tax": -15,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｵﾙﾌｧ",
+    "jan": "4901165103109",
+    "name": "ｵﾙﾌｧ 別たち 56B",
+    "pack": 1,
+    "price_ex_tax": 400,
+    "regular_price_ex_tax": 450,
+    "discount_ex_tax": -50,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｵﾙﾌｧ",
+    "jan": "4901165105257",
+    "name": "ｵﾙﾌｧ 別たち替刃 XB56(3枚入)",
+    "pack": 1,
+    "price_ex_tax": 200,
+    "regular_price_ex_tax": 220,
+    "discount_ex_tax": -20,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｵﾙﾌｧｶｯﾀｰ",
+    "jan": "4901165201614",
+    "name": "ｵﾙﾌｧｶｯﾀｰ ﾊｲﾊﾟｰAL型 193B",
+    "pack": 1,
+    "price_ex_tax": 410,
+    "regular_price_ex_tax": 460,
+    "discount_ex_tax": -50,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｵﾙﾌｧｶｯﾀｰL型替刃",
+    "jan": "4901165300065",
+    "name": "ｵﾙﾌｧｶｯﾀｰL型替刃 黒 LBB50K(50枚入)",
+    "pack": 1,
+    "price_ex_tax": 760,
+    "regular_price_ex_tax": 780,
+    "discount_ex_tax": -20,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｶﾞﾝﾀｯｶｰ",
+    "jan": "4903768571767",
+    "name": "ｶﾞﾝﾀｯｶｰ G07",
+    "pack": 1,
+    "price_ex_tax": 2500,
+    "regular_price_ex_tax": 2780,
+    "discount_ex_tax": -280,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｽﾃｰﾌﾟﾙ",
+    "jan": "4903768527474",
+    "name": "ｽﾃｰﾌﾟﾙ E07用 PF07",
+    "pack": "10ヶ入",
+    "price_ex_tax": 1250,
+    "regular_price_ex_tax": 1380,
+    "discount_ex_tax": -130,
+    "category": "釘"
+  },
+  {
+    "brand": "TKG",
+    "jan": "4907052643789",
+    "name": "TKG ｶﾞｰﾄﾞ付貫通ｽｸﾚｰﾊﾟｰ/75mm",
+    "pack": 1,
+    "price_ex_tax": 590,
+    "regular_price_ex_tax": 630,
+    "discount_ex_tax": -40,
+    "category": "作業工具"
+  },
+  {
+    "brand": "新亀",
+    "jan": "4906842251364",
+    "name": "新亀 ｷｰﾚｽﾄﾞﾘﾙﾁｬｯｸ No.CRS-13",
+    "pack": 1,
+    "price_ex_tax": 2900,
+    "regular_price_ex_tax": 3050,
+    "discount_ex_tax": -150,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ﾍﾞｯｾﾙ",
+    "jan": "4907587336569",
+    "name": "ﾍﾞｯｾﾙ 剛彩ﾋﾞｯﾄ両頭/5P (+)2×150",
+    "pack": 1,
+    "price_ex_tax": 760,
+    "regular_price_ex_tax": 840,
+    "discount_ex_tax": -80,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ANEX",
+    "jan": "4962485430269",
+    "name": "ANEX ｶﾗｰﾋﾞｯﾄ段付10P/#2×150 AC-16 ",
+    "pack": 1,
+    "price_ex_tax": 1880,
+    "regular_price_ex_tax": 2180,
+    "discount_ex_tax": -300,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ﾄﾞｳｶﾝ",
+    "jan": "4953981201057",
+    "name": "ﾄﾞｳｶﾝ ｶｯﾄﾜｰｸ万能鋏 DK-300",
+    "pack": 1,
+    "price_ex_tax": 1200,
+    "regular_price_ex_tax": 1280,
+    "discount_ex_tax": -80,
+    "category": "作業工具"
+  },
+  {
+    "brand": "土牛",
+    "jan": "4962819002933",
+    "name": "土牛 ｲﾝﾃﾘｱﾊﾞｰﾙV型 200mmB/P",
+    "pack": 1,
+    "price_ex_tax": 750,
+    "regular_price_ex_tax": 830,
+    "discount_ex_tax": -80,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｽﾀｰﾘﾊﾞｰ",
+    "jan": "4966447552013",
+    "name": "ｽﾀｰﾘﾊﾞｰ ﾊﾟﾚｯﾄ200 P70-2",
+    "pack": 1,
+    "price_ex_tax": 900,
+    "regular_price_ex_tax": 930,
+    "discount_ex_tax": -30,
+    "category": "作業工具"
+  },
+  {
+    "brand": "<Z>ﾊﾟｲﾌﾟｿｰ240mm",
+    "jan": "4963041080065",
+    "name": "<Z>ﾊﾟｲﾌﾟｿｰ240mm 本体",
+    "pack": 1,
+    "price_ex_tax": 880,
+    "regular_price_ex_tax": 980,
+    "discount_ex_tax": -100,
+    "category": "作業工具"
+  },
+  {
+    "brand": "<Z>ﾊﾟｲﾌﾟｿｰ240mm",
+    "jan": "4963041080812",
+    "name": "<Z>ﾊﾟｲﾌﾟｿｰ240mm 替刃(5枚入)",
+    "pack": 1,
+    "price_ex_tax": 1080,
+    "regular_price_ex_tax": 1230,
+    "discount_ex_tax": -150,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｴﾋﾞ",
+    "jan": "4963202071475",
+    "name": "ｴﾋﾞ ｽｹﾙﾄﾝｱﾝｷﾞﾗｽ WP250DSｽﾓｰｸ",
+    "pack": 1,
+    "price_ex_tax": 1950,
+    "regular_price_ex_tax": 2150,
+    "discount_ex_tax": -200,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｴﾋﾞ",
+    "jan": "4963202072106",
+    "name": "ｴﾋﾞ ｽｹﾙﾄﾝﾎﾟﾝﾌﾟﾌﾟﾗｲﾔｰ WP250HB青",
+    "pack": 1,
+    "price_ex_tax": 2300,
+    "regular_price_ex_tax": 2530,
+    "discount_ex_tax": -230,
+    "category": "作業工具"
+  },
+  {
+    "brand": "ｴﾋﾞ",
+    "jan": "4963202072342",
+    "name": "ｴﾋﾞ ｽｹﾙﾄﾝｱﾝｷﾞﾗｽ WP250DB青",
+    "pack": 1,
+    "price_ex_tax": 1950,
+    "regular_price_ex_tax": 2150,
+    "discount_ex_tax": -200,
+    "category": "作業工具"
+  },
+  {
+    "brand": "MCC",
+    "jan": "4989065111158",
+    "name": "MCC 樹脂ｶｯﾀｰ37 JPC-37",
+    "pack": 1,
+    "price_ex_tax": 2140,
+    "regular_price_ex_tax": 2280,
+    "discount_ex_tax": -140,
+    "category": "作業工具"
+  },
+  {
+    "brand": "MCC",
+    "jan": "4989065111172",
+    "name": "MCC 樹脂ｶｯﾀｰ37/替刃 JPCE37",
+    "pack": 1,
+    "price_ex_tax": 980,
+    "regular_price_ex_tax": 1050,
+    "discount_ex_tax": -70,
+    "category": "作業工具"
+  },
+  {
+    "brand": "土のう袋",
+    "jan": "4996112046981",
+    "name": "土のう袋 48×62㎝ 青ﾗｲﾝ",
+    "pack": "1束400枚入",
+    "price_ex_tax": 4680,
+    "regular_price_ex_tax": 5400,
+    "discount_ex_tax": -1146,
+    "category": "清掃用品"
+  },
+  {
+    "brand": "ｼﾞｬﾊﾟｯｸｽﾎﾟﾘ袋",
+    "jan": "",
+    "name": "ｼﾞｬﾊﾟｯｸｽﾎﾟﾘ袋 45L TM49 半透明(10枚入)",
+    "pack": 1,
+    "price_ex_tax": 90,
+    "regular_price_ex_tax": 110,
+    "discount_ex_tax": -20,
+    "category": "清掃用品"
+  },
+  {
+    "brand": "ﾎﾞｯｼｭ",
+    "jan": "3165140865807",
+    "name": "ﾎﾞｯｼｭ ﾏﾙﾁﾂｰﾙﾌﾞﾚｰﾄﾞ(5枚入) AIZ32ABN/5",
+    "pack": 1,
+    "price_ex_tax": 5930,
+    "regular_price_ex_tax": 6130,
+    "discount_ex_tax": -200,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾎﾞｯｼｭ",
+    "jan": "3165140865852",
+    "name": "ﾎﾞｯｼｭ ﾏﾙﾁﾂｰﾙﾌﾞﾚｰﾄﾞ(5枚入) AIZ20ATN/5",
+    "pack": 1,
+    "price_ex_tax": 7800,
+    "regular_price_ex_tax": 8200,
+    "discount_ex_tax": -400,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾎﾞｯｼｭ",
+    "jan": "3165140935883",
+    "name": "ﾎﾞｯｼｭ ﾏﾙﾁﾂｰﾙﾌﾞﾚｰﾄﾞ(10枚入) AIZ32ABN/10",
+    "pack": 1,
+    "price_ex_tax": 9800,
+    "regular_price_ex_tax": 10800,
+    "discount_ex_tax": -1000,
+    "category": "切削工具"
+  },
+  {
+    "brand": "LENOX",
+    "jan": "4536178998871",
+    "name": "LENOX ｾｰﾊﾞｰｿｰﾌﾞﾚｰﾄﾞ 054R",
+    "pack": 1,
+    "price_ex_tax": 3000,
+    "regular_price_ex_tax": 3300,
+    "discount_ex_tax": -300,
+    "category": "切削工具"
+  },
+  {
+    "brand": "LENOX",
+    "jan": "82472205350",
+    "name": "LENOX ｾｰﾊﾞｰｿｰﾌﾞﾚｰﾄﾞ(25P) B850R",
+    "pack": 1,
+    "price_ex_tax": 9800,
+    "regular_price_ex_tax": 11300,
+    "discount_ex_tax": -1500,
+    "category": "切削工具"
+  },
+  {
+    "brand": "LENOX",
+    "jan": "885363176216",
+    "name": "LENOX ﾊﾞｲﾒﾀﾙｼﾞｸﾞｿｰﾌﾞﾚｰﾄﾞ/5P B332T5",
+    "pack": 1,
+    "price_ex_tax": 980,
+    "regular_price_ex_tax": 1030,
+    "discount_ex_tax": -50,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾍﾞｯｾﾙ",
+    "jan": "4907587007773",
+    "name": "ﾍﾞｯｾﾙ ｸｯｼｮﾝﾄﾞﾘﾙ3P (鉄工用)2.8",
+    "pack": 1,
+    "price_ex_tax": 800,
+    "regular_price_ex_tax": 950,
+    "discount_ex_tax": -150,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾍﾞｯｾﾙ",
+    "jan": "4907587007858",
+    "name": "ﾍﾞｯｾﾙ ｸｯｼｮﾝﾄﾞﾘﾙ3P (鉄工用)5.0 ",
+    "pack": 1,
+    "price_ex_tax": 1130,
+    "regular_price_ex_tax": 1330,
+    "discount_ex_tax": -200,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾍﾞｯｾﾙ",
+    "jan": "4907587602947",
+    "name": "ﾍﾞｯｾﾙ ｹｯｻｸﾄﾞﾘﾙ(鉄工用) KMD-8.0",
+    "pack": 1,
+    "price_ex_tax": 980,
+    "regular_price_ex_tax": 1020,
+    "discount_ex_tax": -40,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾍﾞｯｾﾙ",
+    "jan": "4907587602985",
+    "name": "ﾍﾞｯｾﾙ ｹｯｻｸﾄﾞﾘﾙ(鉄工用) KMD-10.0",
+    "pack": 1,
+    "price_ex_tax": 1300,
+    "regular_price_ex_tax": 1450,
+    "discount_ex_tax": -150,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾍﾞｯｾﾙ",
+    "jan": "4907587602992",
+    "name": "ﾍﾞｯｾﾙ ｹｯｻｸﾄﾞﾘﾙ(鉄工用) KMD-10.5",
+    "pack": 1,
+    "price_ex_tax": 1500,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -100,
+    "category": "切削工具"
+  },
+  {
+    "brand": "Iwood",
+    "jan": "4939752992911",
+    "name": "Iwood ｽｰﾊﾟｰﾏﾃﾘｱﾙｿｰ 125×1.5×42P",
+    "pack": 1,
+    "price_ex_tax": 1550,
+    "regular_price_ex_tax": 1730,
+    "discount_ex_tax": -180,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾐﾔﾅｶﾞ",
+    "jan": "4957462122046",
+    "name": "ﾐﾔﾅｶﾞ ﾃﾞﾙﾀｺﾞﾝﾋﾞｯﾄ SDS4.3×166",
+    "pack": 1,
+    "price_ex_tax": 730,
+    "regular_price_ex_tax": 740,
+    "discount_ex_tax": -10,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾐﾔﾅｶﾞ",
+    "jan": "4957462106527",
+    "name": "ﾐﾔﾅｶﾞ ﾃﾞﾙﾀｺﾞﾝﾋﾞｯﾄ SDS6.0×166",
+    "pack": 1,
+    "price_ex_tax": 780,
+    "regular_price_ex_tax": 790,
+    "discount_ex_tax": -10,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾐﾔﾅｶﾞ",
+    "jan": "4957462106008",
+    "name": "ﾐﾔﾅｶﾞ ﾃﾞﾙﾀｺﾞﾝﾋﾞｯﾄ SDS7.0×166",
+    "pack": 1,
+    "price_ex_tax": 780,
+    "regular_price_ex_tax": 790,
+    "discount_ex_tax": -10,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾐﾔﾅｶﾞ",
+    "jan": "4957462105322",
+    "name": "ﾐﾔﾅｶﾞ ﾃﾞﾙﾀｺﾞﾝﾋﾞｯﾄ SDS8.0×166",
+    "pack": 1,
+    "price_ex_tax": 800,
+    "regular_price_ex_tax": 810,
+    "discount_ex_tax": -10,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾐﾔﾅｶﾞ",
+    "jan": "4957462127225",
+    "name": "ﾐﾔﾅｶﾞ ﾃﾞﾙﾀｺﾞﾝﾋﾞｯﾄ(5P) DLSDS34P5",
+    "pack": 1,
+    "price_ex_tax": 3150,
+    "regular_price_ex_tax": 3200,
+    "discount_ex_tax": -50,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾘﾘｰﾌ",
+    "jan": "4976463268454",
+    "name": "ﾘﾘｰﾌ 鉄工用ｼｮｰﾄﾄﾞﾘﾙ3.5mm",
+    "pack": 1,
+    "price_ex_tax": 450,
+    "regular_price_ex_tax": 500,
+    "discount_ex_tax": -50,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾘﾘｰﾌ",
+    "jan": "4976463268461",
+    "name": "ﾘﾘｰﾌ 鉄工用ｼｮｰﾄﾄﾞﾘﾙ4.0mm",
+    "pack": 1,
+    "price_ex_tax": 500,
+    "regular_price_ex_tax": 550,
+    "discount_ex_tax": -50,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362130479",
+    "name": "BM ﾄﾘﾌﾟﾙ超硬ﾛﾝｸﾞﾎﾙｿｰ SHP-25",
+    "pack": 1,
+    "price_ex_tax": 3200,
+    "regular_price_ex_tax": 3550,
+    "discount_ex_tax": -350,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362130509",
+    "name": "BM ﾄﾘﾌﾟﾙ超硬ﾛﾝｸﾞﾎﾙｿｰ SHP-32",
+    "pack": 1,
+    "price_ex_tax": 4200,
+    "regular_price_ex_tax": 4650,
+    "discount_ex_tax": -450,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362160162",
+    "name": "BM ﾄﾞﾗｺﾞﾝﾀﾞｲﾔﾓﾝﾄﾞｺｱ DG-32/SP-2Z付",
+    "pack": 1,
+    "price_ex_tax": 18000,
+    "regular_price_ex_tax": 19500,
+    "discount_ex_tax": -1500,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362160223",
+    "name": "BM ﾄﾞﾗｺﾞﾝﾀﾞｲﾔﾓﾝﾄﾞｺｱ DG-65/SP-2Z付",
+    "pack": 1,
+    "price_ex_tax": 21500,
+    "regular_price_ex_tax": 23500,
+    "discount_ex_tax": -2000,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362550819",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-18",
+    "pack": 1,
+    "price_ex_tax": 1300,
+    "regular_price_ex_tax": 1450,
+    "discount_ex_tax": -150,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362550833",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-20",
+    "pack": 1,
+    "price_ex_tax": 1400,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -200,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362550857",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-22",
+    "pack": 1,
+    "price_ex_tax": 1400,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -200,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362550871",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-24",
+    "pack": 1,
+    "price_ex_tax": 1400,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -200,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
     "jan": "4986362550956",
-    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ",
-    "price": 2150,
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-32",
     "pack": 1,
-    "category": "ホールソー",
-    "brand": "BM"
+    "price_ex_tax": 1850,
+    "regular_price_ex_tax": 2150,
+    "discount_ex_tax": -300,
+    "category": "切削工具"
   },
   {
-    "jan": "4530545100706",
-    "name": "INOUE Yﾍﾗ15mm",
-    "price": 170,
+    "brand": "BM",
+    "jan": "4986362551663",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-39",
     "pack": 1,
-    "category": "ヘラ",
-    "brand": "INOUE"
+    "price_ex_tax": 2250,
+    "regular_price_ex_tax": 2550,
+    "discount_ex_tax": -300,
+    "category": "切削工具"
   },
   {
-    "jan": "4957787999019",
-    "name": "isｺｰｷﾝｸﾞﾍﾗ 4本組",
-    "price": 360,
+    "brand": "BM",
+    "jan": "4986362551892",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-50",
     "pack": 1,
-    "category": "ヘラ",
-    "brand": "IS"
+    "price_ex_tax": 3300,
+    "regular_price_ex_tax": 3800,
+    "discount_ex_tax": -500,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362552059",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMJ-61",
+    "pack": 1,
+    "price_ex_tax": 4400,
+    "regular_price_ex_tax": 4680,
+    "discount_ex_tax": -280,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362550444",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMH-75",
+    "pack": 1,
+    "price_ex_tax": 4980,
+    "regular_price_ex_tax": 5830,
+    "discount_ex_tax": -850,
+    "category": "切削工具"
+  },
+  {
+    "brand": "BM",
+    "jan": "4986362550499",
+    "name": "BM ﾊﾞｲﾒﾀﾙﾎﾙｿｰ BMH-100",
+    "pack": 1,
+    "price_ex_tax": 6900,
+    "regular_price_ex_tax": 8050,
+    "discount_ex_tax": -1150,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ﾅﾁ",
+    "jan": "4991893012613",
+    "name": "ﾅﾁ 鉄工用ﾄﾞﾘﾙ(10P) SD-3.5",
+    "pack": 1,
+    "price_ex_tax": 2000,
+    "regular_price_ex_tax": 2200,
+    "discount_ex_tax": -200,
+    "category": "切削工具"
+  },
+  {
+    "brand": "大見",
+    "jan": "4993452030243",
+    "name": "大見 超硬ｽﾃﾝﾎｰﾙｶｯﾀｰ TG24",
+    "pack": 1,
+    "price_ex_tax": 2580,
+    "regular_price_ex_tax": 2850,
+    "discount_ex_tax": -270,
+    "category": "切削工具"
+  },
+  {
+    "brand": "大見",
+    "jan": "4993452030250",
+    "name": "大見 超硬ｽﾃﾝﾎｰﾙｶｯﾀｰ TG25",
+    "pack": 1,
+    "price_ex_tax": 2700,
+    "regular_price_ex_tax": 2850,
+    "discount_ex_tax": -150,
+    "category": "切削工具"
+  },
+  {
+    "brand": "大見",
+    "jan": "4993452030328",
+    "name": "大見 超硬ｽﾃﾝﾎｰﾙｶｯﾀｰ TG32",
+    "pack": 1,
+    "price_ex_tax": 3620,
+    "regular_price_ex_tax": 3830,
+    "discount_ex_tax": -210,
+    "category": "切削工具"
+  },
+  {
+    "brand": "大見",
+    "jan": "4993452030380",
+    "name": "大見 超硬ｽﾃﾝﾎｰﾙｶｯﾀｰ TG38",
+    "pack": 1,
+    "price_ex_tax": 4000,
+    "regular_price_ex_tax": 4400,
+    "discount_ex_tax": -400,
+    "category": "切削工具"
+  },
+  {
+    "brand": "ｺﾆｼ",
+    "jan": "4901490401673",
+    "name": "ｺﾆｼ 木工用らくらくCH38 750g･ﾎﾞﾄﾙ",
+    "pack": 1,
+    "price_ex_tax": 510,
+    "regular_price_ex_tax": 530,
+    "discount_ex_tax": -20,
+    "category": "接着・補修"
+  },
+  {
+    "brand": "ｱﾙﾃｺ",
+    "jan": "4970754820161",
+    "name": "ｱﾙﾃｺ ｽﾌﾟﾚｰﾌﾟﾗｲﾏｰ 420ml",
+    "pack": 1,
+    "price_ex_tax": 1780,
+    "regular_price_ex_tax": 1980,
+    "discount_ex_tax": -200,
+    "category": "塗料"
+  },
+  {
+    "brand": "KDS",
+    "jan": "4954183161101",
+    "name": "KDS ﾀﾞﾌﾞﾙｼﾞｰVﾏｸﾞ25巾5.5 GGV25-55MG",
+    "pack": 1,
+    "price_ex_tax": 1480,
+    "regular_price_ex_tax": 1680,
+    "discount_ex_tax": -200,
+    "category": "測定"
+  },
+  {
+    "brand": "ﾀｼﾞﾏ",
+    "jan": "4975364164940",
+    "name": "ﾀｼﾞﾏ TｶﾞｲﾄﾞHD455ﾏｸﾞﾈｼｳﾑ",
+    "pack": 1,
+    "price_ex_tax": 2700,
+    "regular_price_ex_tax": 3150,
+    "discount_ex_tax": -450,
+    "category": "測定"
+  },
+  {
+    "brand": "ｴﾋﾞｽ",
+    "jan": "4950515104082",
+    "name": "ｴﾋﾞｽ ﾌﾟﾗｽﾁｯｸﾚﾍﾞﾙ ED-20DMY",
+    "pack": 1,
+    "price_ex_tax": 860,
+    "regular_price_ex_tax": 900,
+    "discount_ex_tax": -40,
+    "category": "測量"
+  },
+  {
+    "brand": "ｼﾝﾜ",
+    "jan": "4960910789920",
+    "name": "ｼﾝﾜ 下地探し どこ太Pro35mmﾏｸﾞﾈｯﾄ付",
+    "pack": 1,
+    "price_ex_tax": 2200,
+    "regular_price_ex_tax": 2300,
+    "discount_ex_tax": -100,
+    "category": "測量"
+  },
+  {
+    "brand": "ｼﾝﾜ",
+    "jan": "4960910790223",
+    "name": "ｼﾝﾜ 下地探し どこ太35mm･45mm用替芯",
+    "pack": 1,
+    "price_ex_tax": 450,
+    "regular_price_ex_tax": 470,
+    "discount_ex_tax": -20,
+    "category": "測量"
+  },
+  {
+    "brand": "ﾜｺﾞｸﾘｱ差込ｺﾈｸﾀｰ",
+    "jan": "4055143939287",
+    "name": "ﾜｺﾞｸﾘｱ差込ｺﾈｸﾀｰ ﾎﾜｲﾄ WGZ-2-JP",
+    "pack": "120個入",
+    "price_ex_tax": 1540,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -60,
+    "category": "電気材料"
+  },
+  {
+    "brand": "ﾜｺﾞｸﾘｱ差込ｺﾈｸﾀｰ",
+    "jan": "4055143939492",
+    "name": "ﾜｺﾞｸﾘｱ差込ｺﾈｸﾀｰ ﾚｯﾄﾞ WGZ-4-JP",
+    "pack": "80個入",
+    "price_ex_tax": 1500,
+    "regular_price_ex_tax": 1540,
+    "discount_ex_tax": -40,
+    "category": "電気材料"
+  },
+  {
+    "brand": "ﾜｺﾞｸﾘｱ差込ｺﾈｸﾀｰ",
+    "jan": "4055143939577",
+    "name": "ﾜｺﾞｸﾘｱ差込ｺﾈｸﾀｰ ｵﾚﾝｼﾞ WGZ-3-JP",
+    "pack": "100個入",
+    "price_ex_tax": 1540,
+    "regular_price_ex_tax": 1600,
+    "discount_ex_tax": -60,
+    "category": "電気材料"
+  },
+  {
+    "brand": "ELPA",
+    "jan": "4901087207268",
+    "name": "ELPA 結束ﾊﾞﾝﾄﾞ KBF-N300100(WH)",
+    "pack": 1,
+    "price_ex_tax": 480,
+    "regular_price_ex_tax": 530,
+    "discount_ex_tax": -50,
+    "category": "電気材料"
+  },
+  {
+    "brand": "ELPA",
+    "jan": "4901087222681",
+    "name": "ELPA 結束ﾊﾞﾝﾄﾞ KBF-S200100(WH)",
+    "pack": 1,
+    "price_ex_tax": 270,
+    "regular_price_ex_tax": 320,
+    "discount_ex_tax": -50,
+    "category": "電気材料"
+  },
+  {
+    "brand": "ﾒｼﾞｬｰﾎﾞｰﾄﾞ",
+    "jan": "4560191706069",
+    "name": "ﾒｼﾞｬｰﾎﾞｰﾄﾞ 4つ折りﾀｲﾌﾟ",
+    "pack": 1,
+    "price_ex_tax": 680,
+    "regular_price_ex_tax": 730,
+    "discount_ex_tax": -50,
+    "category": "養生用品"
+  },
+  {
+    "brand": "布ﾃｰﾌﾟ付ﾏｽｶｰ",
+    "jan": "4571311851071",
+    "name": "布ﾃｰﾌﾟ付ﾏｽｶｰ B1100×25m※",
+    "pack": 1,
+    "price_ex_tax": 300,
+    "regular_price_ex_tax": 330,
+    "discount_ex_tax": -30,
+    "category": "養生用品"
+  },
+  {
+    "brand": "YKｼｰﾄ",
+    "jan": "4957549131367",
+    "name": "YKｼｰﾄ 1300W×100m",
+    "pack": 1,
+    "price_ex_tax": 1480,
+    "regular_price_ex_tax": 1680,
+    "discount_ex_tax": -200,
+    "category": "養生用品"
+  },
+  {
+    "brand": "ﾌﾞﾙｰｼｰﾄ原反",
+    "jan": "4996112397748",
+    "name": "ﾌﾞﾙｰｼｰﾄ原反 900×100m",
+    "pack": 1,
+    "price_ex_tax": 1680,
+    "regular_price_ex_tax": 1880,
+    "discount_ex_tax": -200,
+    "category": "養生用品"
   }
 ]
