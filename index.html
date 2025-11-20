@@ -593,15 +593,17 @@ h1{margin:0;font-weight:800}
     font-size: 9px !important;
   }
 
-     /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト */
+     /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト
+     → カードの「一番下」にボタンがそろうようにする */
   .actions-card{
     display: flex !important;
     flex-direction: column !important;  /* 縦並び */
     align-items: stretch !important;
     gap: 8px !important;
-    margin-top: 10px;
+    margin-top: auto;   /* ← ここがポイント：余りの高さを全部ここに寄せる */
     padding: 0 4px;
   }
+
 
   .qtyinput{
     flex: 0 0 auto !important;
@@ -846,6 +848,9 @@ body.catalog-open main{
   }
   .order-marquee{
     margin-bottom: 4px;
+    position: sticky;
+    top: 64px;       /* ヘッダーの高さに合わせて 56〜80px くらいで微調整OK */
+    z-index: 25;
   }
 
   /* 帯のすぐ下からフォームが始まるようにする */
