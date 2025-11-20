@@ -568,14 +568,15 @@ h1{margin:0;font-weight:800}
   }
 
      /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト */
-  .actions-card{
-    display: flex !important;
-    flex-direction: column !important;  /* 縦並び */
-    align-items: stretch !important;
-    gap: 8px !important;
-    margin-top: 10px;
-    padding: 0 4px;
-  }
+ .actions-card{
+  display: flex !important;
+  flex-direction: column !important;  /* 縦並び */
+  align-items: stretch !important;
+  gap: 8px !important;
+  margin-top: auto;
+  padding: 0 4px;
+}
+
 
   .qtyinput{
     flex: 0 0 auto !important;
@@ -814,13 +815,17 @@ body.catalog-open main{
     display: none;    /* ← 印刷（A4縦）ボタンを隠す */
   }
 
-  /* スクロール帯の下の余白を詰める */
-  .order-marquee-inner{
-    padding: 6px 16px;
-  }
-  .order-marquee{
-    margin-bottom: 4px;
-  }
+  /* スクロール帯の下の余白を詰める＋スマホではヘッダー直下に固定 */
+.order-marquee-inner{
+  padding: 6px 16px;
+}
+.order-marquee{
+  margin-bottom: 4px;
+  position: sticky;
+  top: 64px;   /* ヘッダーの高さに合わせてここは微調整OK */
+  z-index: 25;
+}
+
 
   /* 帯のすぐ下からフォームが始まるようにする */
   main{
@@ -1186,19 +1191,20 @@ main{
 /* 価格行：Electro っぽくゴールド系でアクセント */
 .price-row{
   margin-top: 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
 }
 .price-main{
+  display: block;
   font-size: 16px;
   font-weight: 800;
   color: #fbbf24;
 }
 .price-sub{
+  display: block;
+  margin-top: 2px;
   font-size: 11px;
   color: #9ca3af;
 }
+
 
 /* 互換用 .price（印刷など） */
 .price{
