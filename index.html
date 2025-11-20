@@ -394,6 +394,19 @@ h1{margin:0;font-weight:800}
   }
 }
 
+/* 追加情報の文字を少し小さめに */
+.card .meta{
+  margin-top: 4px;
+  font-size: 11px;     /* ←ここで調整（10〜12くらいが目安） */
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.card .meta div{
+  margin-bottom: 2px;
+}
+
+  
 /* === TOPページ専用：スマホ表示の最適化（SP用） ======================= */
 @media (max-width: 640px){
 
@@ -2335,7 +2348,6 @@ async function boot(){
   PRODUCTS.forEach(p => {
     const jan   = String(p.jan ?? "");
     const name  = String(p.name ?? "");
-    const brand = String(p.brand ?? "");
     const pack  = String(p.pack ?? "");
     const category = String(p.category ?? "");
 
@@ -2354,7 +2366,7 @@ async function boot(){
 
     const regularText  = regular  != null ? `￥${regular.toLocaleString()}` : "-";
 
-    // ★ 値引きの表示を『▲1,680円』形式に変更
+    // ★ 値引き表示：▲1,680円 形式
     let discountText = "-";
     if (discount != null) {
       const abs = Math.abs(discount);
@@ -2362,7 +2374,7 @@ async function boot(){
       discountText = `${sign}${abs.toLocaleString()}円`;
     }
 
-    const packText     = pack ? pack : "-";
+    const packText = pack ? pack : "-";
 
     // 画面用：JANテキスト
     const barcodeText = jan ? `JAN: ${jan}` : "";
@@ -2391,9 +2403,8 @@ async function boot(){
             <span class="price-sub">（税抜 ￥${price.toLocaleString()}）</span>
           </div>
 
-          <!-- 追加情報 -->
+          <!-- 追加情報（brand は非表示） -->
           <div class="meta">
-            <div>ブランド：${brand || "-"}</div>
             <div>入数：${packText}</div>
             <div>通常価格（税抜）：${regularText}</div>
             <div>値引き（税抜）：${discountText}</div>
@@ -2424,6 +2435,7 @@ async function boot(){
     `);
   });
 }
+
 
 
 
