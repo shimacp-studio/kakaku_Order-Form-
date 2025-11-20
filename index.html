@@ -532,11 +532,12 @@ h1{margin:0;font-weight:800}
     overflow-x: hidden !important;
   }
 
-  /* 発注画面の余白（スクロール帯のすぐ下からスタート） */
-  main{
-    margin: 8px auto 24px !important;
-    padding: 12px 8px 24px !important;
-  }
+  /* 発注画面の余白（ヘッダー＋スクロール帯の下からスタート） */
+main{
+  margin: 120px auto 24px !important;  /* ヘッダー＋帯の高さ分だけ下げる */
+  padding: 12px 8px 24px !important;
+}
+
 
   /* 商品カード 3列レイアウト */
   .grid{
@@ -568,29 +569,24 @@ h1{margin:0;font-weight:800}
   }
 
      /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト */
- .actions-card{
+.actions-card{
   display: flex !important;
   flex-direction: column !important;  /* 縦並び */
   align-items: stretch !important;
   gap: 8px !important;
-  margin-top: auto;
+  margin-top: auto;   /* カード最下部にボタンをそろえる（前回調整のまま） */
   padding: 0 4px;
 }
 
-
-  .qtyinput{
-    flex: 0 0 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 6px 8px !important;
-    font-size: 11px !important;
-    text-align: center;
-    box-sizing: border-box;
-    border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: #ffffff;
-    color: #111827;
-  }
+.qtyinput{
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 6px 8px !important;
+  font-size: 16px !important;  /* iOS ズーム対策 */
+  text-align: center;
+  box-sizing: border-box;
+}
 
   .actions-card .btn{
     width: 100% !important;
@@ -765,6 +761,16 @@ body.catalog-open main{
 /* スマホ時：ヘッダー中央寄せ＋印刷ボタンOFF＋余白調整 ===================== */
 @media (max-width:640px){
 
+/* スマホでは発注画面ヘッダーを常に固定表示 */
+header:not(.top-header){
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+}
+
+  
   /* 黒い帯の中で上下2段レイアウト（1段目：ロゴ、2段目：検索＋カート） */
   header:not(.top-header) .wrap{
     flex-direction: column;
@@ -815,14 +821,14 @@ body.catalog-open main{
     display: none;    /* ← 印刷（A4縦）ボタンを隠す */
   }
 
-  /* スクロール帯の下の余白を詰める＋スマホではヘッダー直下に固定 */
+/* スクロール帯の下の余白を詰める＋スマホではヘッダー直下に固定 */
 .order-marquee-inner{
   padding: 6px 16px;
 }
 .order-marquee{
   margin-bottom: 4px;
   position: sticky;
-  top: 64px;   /* ヘッダーの高さに合わせてここは微調整OK */
+  top: 72px;   /* タイトル＋検索行の高さにあわせて微調整可 */
   z-index: 25;
 }
 
@@ -1518,11 +1524,13 @@ main{
   .grid{
     gap: 22px 14px;
   }
-  .cart{
-    top: 84px;
-    right: 12px;
-    width: min(340px, calc(100% - 24px));
-  }
+ /* スマホ時：カートパネルがスクロール帯にかぶらないように少し下げる */
+.cart{
+  top: 150px;
+  right: 12px;
+  width: min(92vw, 340px);
+}
+
 }
 
 
@@ -2545,6 +2553,13 @@ function upsertCart(p, q){
 }
 
 function addToCart(p){
+  // スマホで数量入力後の自動ズームを解除するため、フォーカスを外す
+  try{
+    if (document.activeElement && typeof document.activeElement.blur === 'function'){
+      document.activeElement.blur();
+    }
+  }catch(_){}
+
   const input = document.getElementById(`qty-${p.jan}`);
   const q = input ? Number(input.value) : 0;
   if (!q || q <= 0) return;
