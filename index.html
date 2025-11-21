@@ -1121,16 +1121,20 @@ body.catalog-open main{
   }
 }
 
-  
 /* ===== 発注カタログ本体 ===== */
 main{
   max-width: 1200px;
   margin: 28px auto 56px;
   padding: 24px 32px 48px;
-  background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
+
+  /* ★ グレーっぽく見えるグラデをやめて、完全にダーク1色にする */
+  background: #020617;
+
   border-radius: 28px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.85);
 }
+
+
 
 /* 商品グリッド：整然と並ぶカード */
 .grid{
