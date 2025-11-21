@@ -2090,11 +2090,28 @@ header .actions .cart-toggle img{
   text-transform: uppercase;
   color: #9ca3af;
 }
-/* === SP専用：発注画面 main 背景をダークに固定 ======================= */
+
+/* === SP専用：発注画面まわりのグレー背景を全部消す ======================= */
 @media (max-width:640px){
+
+  /* ページ全体の背景をまっ黒ネイビーに固定 */
+  html,
+  body{
+    background: #020617 !important;
+  }
+
+  /* カタログ表示中も同じ色で */
+  body.catalog-open{
+    background: #020617 !important;
+  }
+
+  /* 発注エリア（main）の台紙も同じトーンに */
   main{
-    /* 上のグレーを完全に消して、ヘッダー〜商品エリアまで同じトーンに */
-    background: radial-gradient(circle at top, #020617 0, #020617 55%, #020617 100%) !important;
+    background: radial-gradient(circle at top,
+      #020617 0,
+      #020617 55%,
+      #020617 100%
+    ) !important;
     box-shadow: 0 30px 80px rgba(0,0,0,0.85) !important;
     border-radius: 28px;
   }
