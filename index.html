@@ -2117,6 +2117,44 @@ header .actions .cart-toggle img{
   }
 }
 
+/* === SP微調整：ヘッダー幅そろえ＋メタ入力ボックス ======================= */
+@media (max-width:640px){
+
+  /* ① 発注画面の見える範囲：上下の余白だけ少し詰める */
+  main{
+    margin: 12px 8px 24px !important;
+    padding: 18px 10px 32px !important;
+  }
+
+  /* ② 「シマコーポレーション発注カタログ」を検索ボックスと左右そろえる */
+  header:not(.top-header) .wrap{
+    align-items: stretch;     /* 子要素を横幅いっぱいに */
+  }
+  header:not(.top-header) .brand{
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;  /* 中身はセンター */
+  }
+  .header-row{
+    width: 100%;              /* 検索＋カートも同じ幅に */
+  }
+
+  /* ③ パートナー企業／現場名：薄いグレー＆少し上に */
+  .order-meta{
+    margin-top: 6px !important;  /* 位置を少しだけ上へ */
+    padding-inline: 12px;
+  }
+  .meta-input{
+    background: #f3f4f6;         /* 薄いグレー */
+    border: 1px solid #d1d5db;
+    color: #0f172a;
+  }
+  .meta-input::placeholder{
+    color: #6b7280;
+  }
+}
+
+  
 
 </style>
 </head>
