@@ -607,11 +607,14 @@ main{
   
 /* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
 
-/* ナビバー本体 */
+/* 発注画面ヘッダー：タイトルまわりの背景 */
 header:not(.top-header){
   position: static;
   z-index: 30;
-  background: #000;
+
+  /* シマコーポレーション発注カタログの“おしゃれボックス”と同系色 */
+  background: radial-gradient(circle at 0% 0%, #1e293b 0, #020617 55%, #020617 100%);
+
   border-bottom: 1px solid rgba(148,163,184,.5);
   box-shadow: 0 26px 80px rgba(0,0,0,.96);
 }
@@ -735,7 +738,7 @@ body.catalog-open main{
   align-items: center;
   width: 100%;
   max-width: 720px;
-  background: #020617;
+  background: #e5e7eb;
   border-radius: 999px;
   border: 1px solid #334155;
   box-shadow:
@@ -754,18 +757,18 @@ body.catalog-open main{
   border: none;
   outline: none;
   background: transparent;
-  color: #e5e7eb;
+  color: #0f172a;
   font-size: 14px;
   padding: 14px 16px 14px 44px;
 }
 .search-box input::placeholder{
-  color: #9ca3af;
+  color: #6b7280; 
 }
 .search-icon{
   position: absolute;
   left: 14px;
   font-size: 13px;
-  color: #9ca3af;
+  color: #64748b;
   pointer-events: none;
 }
 .search-btn{
@@ -1656,7 +1659,7 @@ main{
   }
   .cartitem-amount{
     text-align: left;
-    margin-top: 2px;               /* 2行目：合計金額 */
+    margin-top: 4px;               /* 2行目：合計金額 */
   }
   .cartitem-qty{
     justify-content: flex-start;
@@ -2568,19 +2571,20 @@ function updateCart(){
     const regular  = (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null;
     const discount = (typeof prod.discount_ex_tax === "number")       ? prod.discount_ex_tax       : null;
 
-    let discountLine = "";
-if (regular != null && discount != null){
-  const abs  = Math.abs(discount);
-  const sign = discount < 0 ? "▲" : "＋";
-  discountLine =
-    `<div class="cartitem-discount">
-       <div class="cartitem-regular">通常 ￥${regular.toLocaleString()}</div>
-       <div class="cartitem-discount-amt">値引き：${sign}${abs.toLocaleString()}円</div>
-     </div>`;
-  // 合計値引き（金額×数量）
-  discountTotal += discount * it.qty;
-}
+       let discountLine = "";
+    if (regular != null && discount != null){
+      const abs  = Math.abs(discount);
+      const sign = discount < 0 ? "▲" : "＋";
+      discountLine =
+        `<div class="cartitem-discount">
+           <div class="cartitem-regular">通常：￥${regular.toLocaleString()}</div>
+           <div class="cartitem-discount-amt">値引き：${sign}${abs.toLocaleString()}円</div>
+         </div>`;
+      // 合計値引き（金額×数量）
+      discountTotal += discount * it.qty;
+    }
 
+    const lineTotal = it.price * it.qty;
 
     list.insertAdjacentHTML("beforeend", `
       <div class='cartitem'>
@@ -2588,7 +2592,8 @@ if (regular != null && discount != null){
           <div class="cartitem-name">${it.name}</div>
           ${discountLine}
         </div>
-        <div class="cartitem-amount">￥${(it.price * it.qty).toLocaleString()}</div>
+        <div class="cartitem-amount">小計：￥${lineTotal.toLocaleString()}</div>
+
         <div class="cartitem-qty">
           <button type="button" class="cartqty-btn" onclick="changeCartQty(${i}, -1)">－</button>
           <input type="number" min="1" class="cartqty-input"
