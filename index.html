@@ -821,25 +821,32 @@ body.catalog-open main{
 
   /* ▼ ここから「タイトル＋スクロール帯」がかぶらないよう調整 */
 
-  /* スクロール帯：固定ヘッダーの下から始まるように少し下げる */
-  .order-marquee{
-    margin-top: 82px;         /* ヘッダーぶん下げる（必要なら数値微調整） */
-    margin-bottom: 4px;
-  }
+  /* スクロール帯の下の余白を詰める＋スマホではヘッダー直下に固定 */
+.order-marquee{
+  /* ヘッダーと少しかぶるので、下にずらす */
+  margin-top: 88px;          /* ← ここで位置を下げる。80〜100の間で好みで微調整OK */
+  margin-bottom: 4px;
 
-  .order-marquee-inner{
-    padding: 6px 16px;
-  }
-
-  /* 帯のさらに下から本文が始まるように余白を確保 */
-  main{
-    margin: 8px auto 24px !important;
-  }
-  .order-meta{
-    margin-top: 8px !important;
-    padding-inline: 16px;
-  }
+  /* タイトルの背景と同化しないように、境目をハッキリさせる */
+  background: radial-gradient(circle at top, #020617 0, #020617 55%, #020617 100%);
+  border-top: 1px solid rgba(148,163,184,.55);  /* 上にうっすらライン */
+  border-bottom: 1px solid rgba(15,23,42,.95);
+  box-shadow: 0 12px 30px rgba(0,0,0,.7);       /* ヘッダーとの段差を出す影 */
 }
+
+.order-marquee-inner{
+  padding: 6px 16px;
+}
+
+/* 帯のすぐ下からフォームが始まるようにする */
+main{
+  margin: 8px auto 24px !important;
+}
+.order-meta{
+  margin-top: 8px !important;
+  padding-inline: 16px;
+}
+
 
 
 
