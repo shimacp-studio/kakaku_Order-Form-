@@ -837,24 +837,26 @@ body.catalog-open main{
     padding: 10px 14px 6px;
   }
 
-  /* 1段目：ロゴ＋タイトルを左右中央ぞろえに */
+  /* 1段目：ロゴ＋タイトルを中央寄せ */
   header:not(.top-header) .brand{
+    margin: 0 auto 6px;
     justify-content: center;
     text-align: center;
+    white-space: normal;
+    padding-inline: 12px;
   }
   header:not(.top-header) .brand h1{
-    font-size: 14px;
+    font-size: 11px;
+    letter-spacing: .12em;
   }
 
-  /* 2段目：検索＋カートの横並び行 */
+  /* 2段目：検索＋カートの横並び */
   .header-row{
     width: 100%;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-
-  /* 検索ボックスは幅いっぱい使う */
   .header-row .search-wrap{
     flex: 1;
   }
@@ -876,36 +878,24 @@ body.catalog-open main{
     gap: 8px;
   }
   header:not(.top-header) .actions .btn{
-    display: none;    /* ← 印刷（A4縦）ボタンを隠す */
+    display: none;
   }
 
-  /* ▼ ここから「タイトル＋スクロール帯」がかぶらないよう調整 */
+  /* スクロール帯をヘッダーの下に下げる */
+  .order-marquee{
+    margin-top: 120px;
+    margin-bottom: 4px;
+  }
 
-  /* スクロール帯の下の余白を詰める＋スマホではヘッダー直下に固定 */
-.order-marquee{
-  /* ヘッダーと少しかぶるので、下にずらす */
-  margin-top: 120px;          /* ← ここで位置を下げる。80〜100の間で好みで微調整OK */
-  margin-bottom: 4px;
-
-  /* タイトルの背景と同化しないように、境目をハッキリさせる */
-  background: radial-gradient(circle at top, #020617 0, #020617 55%, #020617 100%);
-  border-top: 1px solid rgba(148,163,184,.55);  /* 上にうっすらライン */
-  border-bottom: 1px solid rgba(15,23,42,.95);
-  box-shadow: 0 12px 30px rgba(0,0,0,.7);       /* ヘッダーとの段差を出す影 */
-}
-
-.order-marquee-inner{
-  padding: 6px 16px;
-}
-
-/* 帯のすぐ下からフォームが始まるようにする */
-main{
-  margin: 8px auto 24px !important;
-}
-.order-meta{
-  margin-top: 8px !important;
-  padding-inline: 16px;
-}
+  /* 帯のすぐ下からフォームが始まるようにする */
+  main{
+    margin: 8px auto 24px !important;
+  }
+  .order-meta{
+    margin-top: 8px !important;
+    padding-inline: 16px;
+  }
+}  /* ★ ここで SP 用ブロックを閉じる */
 
 
 
@@ -1694,9 +1684,8 @@ main{
 
 }
 
-
-/* === 発注画面：背景を反転（外側：黒／中：グレー） ================= */
-@media screen {
+/* === 発注画面：背景を反転（PCのみ） ================= */
+@media screen and (min-width: 961px) {
 
   /* ページ全体を濃いネイビー〜ブラックに */
   body{
@@ -1705,12 +1694,11 @@ main{
 
   /* 商品エリア（main）は明るめグレーのパネルに */
   main{
-    background: #f3f4f6;                  /* もともと外側に使っていたグレー */
+    background: #f3f4f6;
     border-radius: 28px;
     box-shadow: 0 24px 60px rgba(0,0,0,0.85);
   }
 
-  /* 明るい背景に合わせて、文字と入力も少しだけ調整 */
   .title{
     color: #111827;
   }
@@ -1734,6 +1722,7 @@ main{
     box-shadow: 0 8px 18px rgba(0,0,0,0.25);
   }
 }
+
 
 
 /* === 印刷設定（前回の安定版をそのまま保持） === */
