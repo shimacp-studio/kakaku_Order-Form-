@@ -645,26 +645,83 @@ body.catalog-open main{
   gap: 28px;
 }
 
-/* ロゴ＋タイトル */
+/* ロゴ＋タイトル（発注画面用：おしゃれボックス） */
 .brand{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  padding: 6px 18px 6px 10px;
   white-space: nowrap;
+
+  /* 検索バーと合わせた「光ってる箱」 */
+  background: radial-gradient(circle at 0% 0%, #1e293b 0, #020617 55%, #020617 100%);
+  border-radius: 999px;
+  border: 1px solid #334155;
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,0.9),
+    0 22px 60px rgba(0,0,0,0.95);
 }
 .brand img{
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  box-shadow: 0 18px 45px rgba(0,0,0,0.9);
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.95);
 }
 .brand h1{
-  font-size: 16px;
-  letter-spacing: .25em;
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  font-weight: 800;
-  color: #f9fafb;
+  font-weight: 700;
+  color: #e5e7eb;
 }
+
+/* ロゴ＋タイトル（発注画面用：おしゃれボックス） */
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px 6px 10px;
+  white-space: nowrap;
+
+  /* 検索バーと合わせた「光ってる箱」 */
+  background: radial-gradient(circle at 0% 0%, #1e293b 0, #020617 55%, #020617 100%);
+  border-radius: 999px;
+  border: 1px solid #334155;
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,0.9),
+    0 22px 60px rgba(0,0,0,0.95);
+}
+.brand img{
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.95);
+}
+.brand h1{
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+/* スマホ時：タイトルボックスを中央寄せ＆少し小さく */
+@media (max-width:640px){
+  header:not(.top-header) .brand{
+    margin: 0 auto 6px;
+    justify-content: center;
+    white-space: normal;       /* 日本語がギチギチにならないように */
+    text-align: center;
+    padding-inline: 12px;
+  }
+  header:not(.top-header) .brand h1{
+    font-size: 11px;
+    letter-spacing: .12em;
+  }
+}
+
 
 /* 中央の検索バー */
 .search-wrap{
@@ -1571,6 +1628,47 @@ main{
   margin-top: 6px;
 }
 
+/* カート内：商品名＋価格＋値引きの見た目 */
+.cartitem-name{
+  margin: 0 0 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #e5e7eb;
+}
+.cartitem-discount{
+  margin-top: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+.cartitem-regular,
+.cartitem-discount-amt{
+  white-space: nowrap;
+}
+
+/* スマホ時：カート1件を「縦3行レイアウト」に */
+@media (max-width:640px){
+  .cartitem{
+    grid-template-columns: 1fr;    /* 1列だけにする */
+    align-items: flex-start;
+  }
+  .cartitem-amount{
+    text-align: left;
+    margin-top: 2px;               /* 2行目：合計金額 */
+  }
+  .cartitem-qty{
+    justify-content: flex-start;
+    margin-top: 4px;               /* 3行目：数量コントロール */
+  }
+  .cartitem-discount{
+    flex-direction: column;        /* 通常価格と値引きも1行ずつ */
+    align-items: flex-start;
+  }
+}
+
+  
 /* ===== レスポンシブ調整（発注画面のみ） ===== */
 @media (max-width: 960px){
   .wrap{
@@ -2471,14 +2569,18 @@ function updateCart(){
     const discount = (typeof prod.discount_ex_tax === "number")       ? prod.discount_ex_tax       : null;
 
     let discountLine = "";
-    if (regular != null && discount != null){
-      const abs  = Math.abs(discount);
-      const sign = discount < 0 ? "▲" : "＋";
-      discountLine =
-        `<div class="cartitem-discount">通常￥${regular.toLocaleString()} / 値引き：${sign}${abs.toLocaleString()}円</div>`;
-      // 合計値引き（金額×数量）
-      discountTotal += discount * it.qty;
-    }
+if (regular != null && discount != null){
+  const abs  = Math.abs(discount);
+  const sign = discount < 0 ? "▲" : "＋";
+  discountLine =
+    `<div class="cartitem-discount">
+       <div class="cartitem-regular">通常 ￥${regular.toLocaleString()}</div>
+       <div class="cartitem-discount-amt">値引き：${sign}${abs.toLocaleString()}円</div>
+     </div>`;
+  // 合計値引き（金額×数量）
+  discountTotal += discount * it.qty;
+}
+
 
     list.insertAdjacentHTML("beforeend", `
       <div class='cartitem'>
