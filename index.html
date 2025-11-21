@@ -760,16 +760,15 @@ body.catalog-open main{
 /* スマホ時：ヘッダー中央寄せ＋印刷ボタンOFF＋余白調整 ===================== */
 @media (max-width:640px){
 
-/* スマホでは発注画面ヘッダーを常に固定表示 */
-header:not(.top-header){
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 30;
-}
+  /* スマホでは発注画面ヘッダーを常に固定表示 */
+  header:not(.top-header){
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+  }
 
-  
   /* 黒い帯の中で上下2段レイアウト（1段目：ロゴ、2段目：検索＋カート） */
   header:not(.top-header) .wrap{
     flex-direction: column;
@@ -820,25 +819,28 @@ header:not(.top-header){
     display: none;    /* ← 印刷（A4縦）ボタンを隠す */
   }
 
-/* スクロール帯の下の余白を詰める＋スマホではヘッダー直下に固定 */
-.order-marquee-inner{
-  padding: 6px 16px;
-}
-.order-marquee{
-  margin-bottom: 4px;
-  
-}
+  /* ▼ ここから「タイトル＋スクロール帯」がかぶらないよう調整 */
 
+  /* スクロール帯：固定ヘッダーの下から始まるように少し下げる */
+  .order-marquee{
+    margin-top: 82px;         /* ヘッダーぶん下げる（必要なら数値微調整） */
+    margin-bottom: 4px;
+  }
 
-  /* 帯のすぐ下からフォームが始まるようにする */
+  .order-marquee-inner{
+    padding: 6px 16px;
+  }
+
+  /* 帯のさらに下から本文が始まるように余白を確保 */
   main{
-    margin: 4px auto 24px !important;
+    margin: 8px auto 24px !important;
   }
   .order-meta{
     margin-top: 8px !important;
     padding-inline: 16px;
   }
 }
+
 
 
 /* ボタン共通（印刷ボタンなど） */
@@ -1932,31 +1934,62 @@ header .actions .cart-toggle img{
   .order-marquee{ display:none !important; }
 }
 
-
-/* 右下の「ページトップへ」ボタン */
+/* 右下の「ページトップへ」ボタン（リデザイン） */
 .back-to-top{
   position: fixed;
   right: 16px;
   bottom: 16px;
-  padding: 6px 14px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   border: none;
-  background: #020617;
+  background: radial-gradient(circle at 30% 0, #38bdf8 0, #0f172a 55%, #020617 100%);
   color: #fff;
-  font-size: 12px;
-  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 30px rgba(0,0,0,.5);
+  box-shadow: 0 18px 45px rgba(0,0,0,.85);
   cursor: pointer;
-  z-index: 60;
+  z-index: 70;
+
+  /* 初期は非表示（スクロールしたら出す） */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
 }
 
-/* モバイルでも常に右下に表示 */
-.back-to-top::before{
-  content: "TOP";
+/* スクロール量に応じて付与するクラス */
+.back-to-top.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
+
+/* 矢印アイコン */
+.back-to-top::before{
+  content: "↑";
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* 下に「TOP」のラベルを薄めに */
+.back-to-top::after{
+  content: "TOP";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
 
 </style>
 </head>
@@ -2282,25 +2315,30 @@ window.addEventListener("DOMContentLoaded", () => {
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 
-  // カートトグル（開く専用）＋ 画面クリックで閉じる
+    // カートトグル（開く専用）＋ 画面クリックで閉じる
   const cartToggle = document.getElementById("cartToggle");
   const cartPanel  = document.querySelector(".cart");
   if (cartToggle && cartPanel){
     // アイコンクリック：カートを開くだけ
     cartToggle.addEventListener("click", (ev) => {
       ev.stopPropagation();
-      if (!cart.length){ alert("カートに商品がありません"); return; }
+      if (!cart.length){ 
+        alert("カートに商品がありません"); 
+        return; 
+      }
       cartPanel.classList.add("open");
     });
 
     // 発注画面の適当な場所クリックで閉じる（カート内とアイコンは除外）
-    document.addEventListener("click", (ev) => {
+    // ★ click → mousedown に変更して、数量変更時に閉じないようにする
+    document.addEventListener("mousedown", (ev) => {
       if (!cartPanel.classList.contains("open")) return;
       const target = ev.target;
       if (cartPanel.contains(target) || cartToggle.contains(target)) return;
       cartPanel.classList.remove("open");
     });
   }
+
 
 // ★ ここから検索ボックスのイベントを追加 ↓↓↓
   const searchInput = document.getElementById('productSearch');
@@ -2793,16 +2831,30 @@ async function sendOrder(){
 }
 
 
-
 // ===== ページトップへ戻るボタン =====
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('backToTop');
   if (!btn) return;
 
+  // スクロール位置に応じて表示/非表示
+  const toggleVisibility = () => {
+    if (window.scrollY > 200) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  };
+
+  window.addEventListener('scroll', toggleVisibility, { passive: true });
+  toggleVisibility();
+
+  // クリックで上部へスムーススクロール
   btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   });
 });
+
+
 
 /* ====== バーコード ====== */
 function ean13Pattern(d){
