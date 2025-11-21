@@ -2086,6 +2086,15 @@ header .actions .cart-toggle img{
   text-transform: uppercase;
   color: #9ca3af;
 }
+/* === SP専用：発注画面 main 背景をダークに固定 ======================= */
+@media (max-width:640px){
+  main{
+    /* 上のグレーを完全に消して、ヘッダー〜商品エリアまで同じトーンに */
+    background: radial-gradient(circle at top, #020617 0, #020617 55%, #020617 100%) !important;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.85) !important;
+    border-radius: 28px;
+  }
+}
 
 
 </style>
