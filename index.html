@@ -17,6 +17,76 @@ html,body{
 }
 h1{margin:0;font-weight:800}
 
+/* === アクセス制御用オーバーレイ ============================ */
+#accessOverlay{
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #1f2937, #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15000;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans JP", sans-serif;
+}
+#accessOverlay.hidden{ display: none; }
+
+.access-card{
+  width: min(420px, 90vw);
+  background: rgba(15,23,42,0.96);
+  border-radius: 18px;
+  padding: 24px 22px 20px;
+  color: #e5e7eb;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.7);
+  border: 1px solid rgba(148,163,184,0.5);
+}
+.access-title{
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.access-sub{
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 18px;
+}
+.access-field{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 14px;
+  outline: none;
+}
+.access-field:focus{
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.5);
+}
+.access-btn{
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg,#3b82f6,#2563eb);
+  color: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.access-btn:hover{
+  filter: brightness(1.05);
+}
+.access-error{
+  margin-top: 8px;
+  font-size: 12px;
+  color: #f97373;
+  min-height: 1.2em;
+}
+
+  
+
 /* === TOPページ（Wix風・1枚のヒーローカード） === */
 #topPage{
   position:fixed;
@@ -2137,7 +2207,20 @@ header .actions .cart-toggle img{
 </style>
 </head>
 <body>
-
+<!-- アクセス制御オーバーレイ -->
+<div id="accessOverlay">
+  <div class="access-card">
+    <div class="access-title">発注カタログ ログイン</div>
+    <div class="access-sub">
+      パスワードを入力してください。<br>
+      （不明な場合は本部・法人営業課までお問い合わせください）
+    </div>
+    <input id="accessPassword" class="access-field"
+           type="password" placeholder="アクセス用パスワード">
+    <button id="accessButton" class="access-btn">ログイン</button>
+    <div id="accessError" class="access-error"></div>
+  </div>
+</div>
 <!-- === TOPページ（Wix風ヒーロー） === -->
 <div id="topPage">
   <div class="top-shell">
@@ -3045,9 +3128,73 @@ function renderBarcode(jan){
   out+="</svg>";
   return out;
 }
+</script>  <!-- ★ ここで最初の script を閉じる！ -->
 
 
+<!-- アクセス制御用スクリプト -->
+<script>
+  // ===== アクセス制御 =========================================
+  const ACCESS_PASSWORD = "shimacp2025";  // ★ここを好きなパスワードに変えてOK
+
+  function checkAccessSession(){
+    try{
+      return sessionStorage.getItem("order_app_access") === "ok";
+    }catch(e){
+      return false;
+    }
+  }
+  function setAccessSessionOk(){
+    try{
+      sessionStorage.setItem("order_app_access","ok");
+    }catch(e){}
+  }
+
+  function initAccessGate(){
+    const overlay = document.getElementById("accessOverlay");
+    if(!overlay) return;
+
+    // すでにログイン済みセッションなら非表示
+    if(checkAccessSession()){
+      overlay.classList.add("hidden");
+      return;
+    }
+
+    const input = document.getElementById("accessPassword");
+    const btn   = document.getElementById("accessButton");
+    const err   = document.getElementById("accessError");
+
+    function tryLogin(){
+      const val = (input.value || "").trim();
+      if(!val){
+        err.textContent = "パスワードを入力してください。";
+        return;
+      }
+      if(val === ACCESS_PASSWORD){
+        setAccessSessionOk();
+        overlay.classList.add("hidden");
+      }else{
+        err.textContent = "パスワードが違います。";
+        input.value = "";
+        input.focus();
+      }
+    }
+
+    btn.addEventListener("click", tryLogin);
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") tryLogin();
+    });
+
+    // 初期フォーカス
+    setTimeout(() => input.focus(), 50);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", initAccessGate);
+  }else{
+    initAccessGate();
+  }
 </script>
+
 
 <!-- 商品画像拡大用モーダル（画像＋商品情報＋カート） -->
 <div id="imgModal" class="image-modal">
@@ -3086,6 +3233,7 @@ function renderBarcode(jan){
 
 </body>
 </html>
+
 
 
 
