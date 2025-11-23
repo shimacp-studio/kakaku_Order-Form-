@@ -2098,9 +2098,9 @@ header .actions .cart-toggle img{
 /* === SP微調整：ヘッダー幅そろえ＋メタ入力ボックス ======================= */
 @media (max-width:640px){
 
-  /* こう書き換え */
+  /* 発注画面全体のマージンを少しだけ上に寄せる程度に */
   main{
-    margin: -8px auto 24px !important;   /* ← ここを上げたい分だけマイナスに */
+    margin: 0 auto 24px !important;   /* ← ここを -8px から 0 に戻すイメージ */
     padding: 12px 8px 24px !important;
   }
 
@@ -2117,9 +2117,9 @@ header .actions .cart-toggle img{
     width: 100%;              /* 検索＋カートも同じ幅に */
   }
 
-  /* ③ パートナー企業／現場名：薄いグレー＆少し上に */
+  /* ③ パートナー企業／現場名：位置と余白を「いい感じ」に */
   .order-meta{
-    margin-top: -20px !important;  /* 位置を少しだけ上へ */
+    margin: 14px 0 16px !important;   /* 上：帯との間 / 下：商品との間 */
     padding-inline: 12px;
   }
   .meta-input{
