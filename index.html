@@ -3032,23 +3032,7 @@ function renderBarcode(jan){
   return out;
 }
 
-function renderBarcode(jan){
-  const bits=ean13Pattern(jan);
-  if(!bits) return "";
-  let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;
-  for(let i=0;i<bits.length;i++) if(bits[i]==="1") out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;
-  out+="</svg>";
-  return out;
-}
 
-
-</script>
-
-  
-</script>
-
-<script>
-// ここに全部の JavaScript が入っているはず
 </script>
 
 <!-- 商品画像拡大用モーダル（画像＋商品情報＋カート） -->
@@ -3089,9 +3073,6 @@ function renderBarcode(jan){
 </body>
 </html>
 
-
-</body>
-</html>
 
 
 
