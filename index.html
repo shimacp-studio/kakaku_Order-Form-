@@ -2098,10 +2098,10 @@ header .actions .cart-toggle img{
 /* === SP微調整：ヘッダー幅そろえ＋メタ入力ボックス ======================= */
 @media (max-width:640px){
 
-  /* ① 発注画面の見える範囲：上下の余白だけ少し詰める */
+  /* こう書き換え */
   main{
-    margin: 12px 8px 24px !important;
-    padding: 18px 10px 32px !important;
+    margin: -8px auto 24px !important;   /* ← ここを上げたい分だけマイナスに */
+    padding: 12px 8px 24px !important;
   }
 
   /* ② 「シマコーポレーション発注カタログ」を検索ボックスと左右そろえる */
