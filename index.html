@@ -2909,17 +2909,31 @@ async function sendOrder(){
   const partner = (partnerEl?.value || "").trim();
   const site    = (siteEl?.value    || "").trim();
 
-  const payload = {
+   const payload = {
     buyerName:   buyer,
     partnerName: partner,
     siteName:    site,
-    items: cart.map(c => ({
-      jan:   c.jan,
-      name:  c.name,
-      price: c.price,
-      qty:   c.qty
-    }))
+    items: cart.map(c => {
+      const prodMap = window.PRODUCTS_BY_JAN || {};
+      const prod    = prodMap[String(c.jan)] || {};
+
+      return {
+        jan:   c.jan,
+        name:  c.name,
+        // カートで使っている税抜販売価格
+        price_ex_tax: c.price,
+        qty:   c.qty,
+
+        // メール表示用の追加情報（あれば）
+        pack: prod.pack ?? "",
+        regular_price_ex_tax:
+          (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null,
+        discount_ex_tax:
+          (typeof prod.discount_ex_tax === "number") ? prod.discount_ex_tax : null
+      };
+    })
   };
+
 
   const btn = document.getElementById('orderBtn');
   if (btn){
