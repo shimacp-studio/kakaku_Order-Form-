@@ -1,0 +1,2937 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>シマコーポレーション 発注カタログ</title>
+<style>
+:root {
+  --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;
+  --bg:#f6f8ff;--card:#fff;--brand:#1e66ff;
+  --accent:#155eef;--shadow:0 4px 16px rgba(16,24,40,.06);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif
+}
+h1{margin:0;font-weight:800}
+
+/* === アクセス制御用オーバーレイ ============================ */
+#accessOverlay{
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #1f2937, #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15000;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans JP", sans-serif;
+}
+#accessOverlay.hidden{ display: none; }
+
+.access-card{
+  width: min(420px, 90vw);
+  background: rgba(15,23,42,0.96);
+  border-radius: 18px;
+  padding: 24px 22px 20px;
+  color: #e5e7eb;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.7);
+  border: 1px solid rgba(148,163,184,0.5);
+}
+.access-title{
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.access-sub{
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 18px;
+}
+.access-field{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 14px;
+  outline: none;
+}
+.access-field:focus{
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.5);
+}
+.access-btn{
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg,#3b82f6,#2563eb);
+  color: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.access-btn:hover{
+  filter: brightness(1.05);
+}
+.access-error{
+  margin-top: 8px;
+  font-size: 12px;
+  color: #f97373;
+  min-height: 1.2em;
+}
+
+  
+
+/* === TOPページ（Wix風・1枚のヒーローカード） === */
+#topPage{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  height:100dvh;
+  width:100%;
+  background:#f3f4f6;
+ /* ▼ グレーの縁を太くする（上下左右とも少し広げる） */
+  padding:24px 0px;
+  box-sizing:border-box;
+  transition:opacity .4s ease;
+  opacity:1;
+}
+
+/* 白い大きなカード（1枚だけ） */
+.top-shell{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  background:#ffffff;
+  border-radius:28px;
+  box-shadow:0 18px 45px rgba(15,23,42,.20);
+  padding:20px 32px 32px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+/* 上のバー（ロゴ＋タイトル） */
+.top-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding-bottom:10px;
+  border-bottom:15px solid #9ca3af;  
+}
+.top-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.top-logo{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(15,23,42,.25);
+  object-fit:cover;
+}
+.top-brand-text{
+  font-weight:800;
+  letter-spacing:.08em;
+  font-size:14px;
+  color:#111827;
+}
+.top-ship{
+  font-size:12px;
+  color:#6b7280;
+}
+
+/* 下側：ヒーロー（背景＋左コピー＋右フォーム） */
+.top-hero-row{
+  position:relative;
+  margin-top:16px;
+}
+
+/* ヒーロー全体：白ベース＋ロゴ1枚ウォーターマーク */
+.top-hero{
+  position:relative;
+  width:100%;
+  height:420px;
+  border-radius:22px;
+  overflow:hidden;
+
+  /* 台紙は完全に白（水色なし） */
+  background:#ffffff;
+}
+
+/* ロゴ1枚を大きく中央に配置して透かす */
+.top-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background-image:url("img/shima_owl.jpg");
+  background-repeat:no-repeat;
+  background-position:center center;  /* 画面中央にドン */
+  background-size: min(60%, 420px);   /* 横幅の60%か420pxの小さい方に収まるサイズ */
+
+  opacity:0.18;                       /* うっすら見えるくらい */
+  filter:saturate(115%) contrast(110%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* コピーとフォームは前面に */
+.top-hero-copy,
+.top-card{
+  position:relative;
+  z-index:1;
+}
+
+
+
+/* 小さいコメント用（任意） */
+.top-hero-sub{
+  font-size:14px;
+  font-weight:500;
+  opacity:.8;
+}
+
+
+
+
+/* 軽く縦のグラデで奥行きを出す */
+.top-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.00) 40%,
+    rgba(0,0,0,0.12) 100%
+  );
+  pointer-events:none;
+  z-index:0;
+}
+
+/* 左側キャッチコピー（大きな黒文字） */
+.top-hero-copy{
+  position:absolute;
+  left:56px;
+  top:50%;
+  transform:translateY(-50%);
+  max-width:520px;
+  font-size:32px;
+  line-height:1.5;
+  color:#111827;
+  font-weight:800;
+  z-index:1;
+}
+
+/* 右側フォームカード：1枚の白ガラスカードにする */
+.top-card{
+  position:absolute;
+  right:56px;
+  top:50%;
+  transform:translateY(-50%);
+  width:320px;
+  max-width:38%;
+  padding:20px 20px 22px;
+
+  background:rgba(255,255,255,0.88);
+  border-radius:18px;
+  box-shadow:0 20px 45px rgba(15,23,42,0.55);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  text-align:left;
+  z-index:1;
+}
+
+.top-eyebrow{
+  font-size:11px;
+  letter-spacing:.18em;
+  font-weight:700;
+  color:#9ca3af;
+  margin:0 0 6px;
+}
+.top-card h1{
+  font-size:18px;
+  line-height:1.6;
+  font-weight:800;
+  color:#111827;
+  margin:0 0 8px;
+}
+.top-lead{
+  margin:0 0 14px;
+  font-size:13px;
+  color:#6b7280;
+}
+
+/* 入力フォーム（縦並び） */
+.top-form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.autowrap{
+  position:relative;
+  width:100%;
+}
+
+/* TOPページ専用の入力ボックス：読みやすさ優先ガラス白 */
+.top-input{
+  width:100%;
+  border-radius:999px;
+  padding:10px 16px;
+  font-size:14px;
+  color:#0f172a;
+
+  /* ほぼ白だけど、うっすら背景を感じるぐらい */
+  background:rgba(248,250,252,0.95);
+  border:1px solid rgba(148,163,184,0.8);
+  box-shadow:0 8px 22px rgba(15,23,42,0.22);
+
+  outline:none;
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+.top-input::placeholder{
+  color:#9ca3af;
+}
+
+.top-input:focus{
+  border-color:#2563eb;
+  box-shadow:
+    0 0 0 1px rgba(37,99,235,0.9),
+    0 16px 34px rgba(37,99,235,0.55);
+}
+
+/* autofill 時も同じトーンに揃える */
+.top-input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px rgba(248,250,252,0.95) inset !important;
+          box-shadow:0 0 0 1000px rgba(248,250,252,0.95) inset !important;
+  -webkit-text-fill-color:#0f172a !important;
+}
+
+
+
+/* autofill で真っ白に塗りつぶされないようにする */
+.top-input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px rgba(255,255,255,0.35) inset !important;
+          box-shadow:0 0 0 1000px rgba(255,255,255,0.35) inset !important;
+  -webkit-text-fill-color:#0f172a !important;
+}
+
+/* 開くボタン（Wix っぽい青）はそのまま */
+.top-start-btn{
+  margin-top:8px;
+  width:100%;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  border-color:#1d4ed8;
+  font-size:14px;
+  padding:11px 18px;
+}
+.top-start-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(37,99,235,.35);
+}
+
+/* === スマホ・タブレットでは Electro 風ヒーローにする ================== */
+@media (max-width:900px){
+
+  /* 画面全体をダークにして、余白カードをやめる */
+  #topPage{
+    align-items:flex-start;
+    padding:0;
+    background:#020617;
+  }
+
+  .top-shell{
+    margin:0;
+    max-width:none;
+    padding:0 0 24px;
+    border-radius:0;
+    box-shadow:none;
+    background:#020617;
+  }
+
+  /* ロゴバーはそのまま上にベタっと付ける */
+  .top-header{
+    padding:10px 16px 8px;
+    border-bottom:none;
+  }
+
+    /* ★ スマホ／タブレット時のヘッダータイトルを白・太字に */
+  .top-brand-text{
+    font-size:14px;
+    line-height:1.4;
+    color:#f9fafb;      /* 白 */
+    font-weight:800;
+    display:inline-block;
+  }
+
+
+  
+  /* ヒーローは縦長の写真＋グラデ背景に */
+  .top-hero-row{
+    margin-top:0;
+  }
+
+  .top-hero{
+    position:relative;
+    height:420px;
+    border-radius:0;
+    padding:24px 18px 24px;
+
+    /* 好きな画像に差し替えてOK（今はフクロウ画像を使う想定） */
+    background:
+      linear-gradient(to bottom,
+        rgba(15,23,42,0.10) 0%,
+        rgba(15,23,42,0.50) 100%
+      ),
+      url("img/shima_owl.jpg") center / cover no-repeat;
+  }
+
+  /* もともとの ::before / ::after のロゴ重ねはスマホでは無効化 */
+  .top-hero::before,
+  .top-hero::after{
+    content:none !important;
+  }
+
+  /* キャッチコピーを左下寄せ・白文字で主張強めに */
+  .top-hero-copy{
+    position:static;
+    transform:none;
+    max-width:100%;
+    margin-top:auto;
+    margin-bottom:12px;
+    font-size:22px;
+    line-height:1.5;
+    font-weight:800;
+    color:#f9fafb;
+    text-shadow:0 4px 18px rgba(0,0,0,0.9);
+  }
+  .top-hero-sub{
+    display:block;
+    margin-top:6px;
+    font-size:13px;
+    font-weight:500;
+    color:#e5e7eb;
+    opacity:0.95;
+  }
+
+  /* 入力カードは Electro の「下に白いカードが乗る」イメージ */
+  .top-card{
+    position:relative;
+    right:auto;
+    top:auto;
+    transform:none;
+    width:auto;
+    max-width:none;
+
+    /* ヒーローの下に少し食い込ませる */
+    margin:-36px 16px 0;
+    padding:18px 16px 20px;
+
+    background:#f9fafb;
+    border-radius:18px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.65);
+  }
+
+  .top-card h1{
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  .top-lead{
+    font-size:12px;
+  }
+
+  /* 入力ボックス・ボタンは横幅100%でそのまま使う */
+  .top-input{
+    width:100%;
+  }
+  .top-start-btn{
+    width:100%;
+  }
+}
+
+/* === TOPページ専用：スマホ表示の最適化（SP用） ======================= */
+@media (max-width: 640px){
+
+  /* 画面全体をTOPに使う（※SPでは fixed をやめる） */
+  #topPage{
+    position: relative;      /* ← 元の position:fixed を上書き */
+    inset: auto;             /* fixed 時の inset:0 を無効化 */
+    height: auto;            /* 100dvh を解除して通常の高さに */
+    min-height: 100vh;       /* 画面1枚ぶんは確保 */
+    padding: 0;
+    align-items: stretch;
+    background: #000;
+  }
+
+  .top-shell{
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  /* ★ 上部のヘッダー帯：ちゃんと「バー」として表示 */
+  .top-header{
+    position: relative;
+    z-index: 10;
+    padding: 8px 16px 10px;
+    border-bottom: 1px solid rgba(148,163,184,.6);
+    background: rgba(15,23,42,.96);
+  }
+
+  .top-hero-row{
+    margin-top: 0;
+  }
+
+  /* ★ ロゴ画像を背景にフル画面（ヘッダーの高さだけ差し引く） */
+  .top-hero{
+    min-height: calc(100dvh - 64px); /* ヘッダー分を差し引き */
+    height: auto;
+    width: 100%;
+    padding: 24px 16px 32px;
+    border-radius: 0;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* ← これで中央ぞろえ */
+    align-items: center;
+    gap: 18px;
+
+    background:
+      linear-gradient(to bottom,
+        rgba(255,255,255,0.60) 0%,    /* 上をかなり薄く */
+        rgba(0,0,0,0.50) 100%
+      ),
+      url("img/shima_owl.jpg") center / cover no-repeat;
+  }
+
+  /* PC用の before/after はSPでは消す */
+  .top-hero::before,
+  .top-hero::after{
+    content: none !important;
+  }
+
+  /* キャッチコピー：中央寄せ（でも文章は左揃え） */
+  .top-hero-copy{
+    position: static;
+    transform: none;
+    max-width: 460px;
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: 800;
+    color: #f9fafb;
+    text-align: left;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.9);
+  }
+
+  .top-hero-sub{
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e7eb;
+    opacity: 0.95;
+  }
+
+     /* フォームカード：背景なしでロゴ画像の上に文字だけ乗せる */
+  .top-card{
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    margin-top: 12px;
+
+    padding: 0;                 /* 余白いらなければ 0、欲しければ 8〜12px に */
+    background: transparent;    /* ★ 背景なし */
+    border-radius: 0;           /* 角丸も消すなら 0 のまま */
+    backdrop-filter: none;      /* ぼかしOFF */
+    box-shadow: none;           /* 影OFF */
+  }
+
+
+  .top-eyebrow{
+    font-size: 10px;
+    color: #e5e7eb;
+    opacity: 0.85;
+  }
+
+  .top-card h1{
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 800;
+    color: #f9fafb;                    /* 白文字にして読みやすく */
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+  }
+
+  .top-lead{
+    font-size: 11px;
+    color: #e5e7eb;
+    opacity: 0.9;
+  }
+
+  .top-note{
+    font-size: 10px;
+    color: #e5e7eb;
+    opacity: 0.85;
+  }
+}
+/* === SP最終上書き：発注画面の見切れ＋3列を強制 ======================= */
+@media (max-width:640px){
+
+  /* 横スクロール防止 */
+  body{
+    overflow-x: hidden !important;
+  }
+
+  /* 発注画面の余白（スマホ：通常スクロール） */
+main{
+  margin: 24px auto 24px !important;
+  padding: 12px 8px 24px !important;
+}
+
+
+  /* 商品カード 3列レイアウト */
+  .grid{
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px 8px !important;
+  }
+
+ 
+  .card{
+    padding: 4px 2px 12px !important;
+  }
+
+  .thumb{
+    aspect-ratio: 3 / 4 !important;
+    border-radius: 12px !important;
+  }
+
+  .title{
+    font-size: 11px !important;
+    min-height: 2.6em !important;
+  }
+
+  .price-main{
+    font-size: 13px !important;
+  }
+  .price-sub{
+    font-size: 9px !important;
+  }
+
+     /* ★ SP時：数量（1行目）＋カートに追加（2行目）の2行レイアウト */
+.actions-card{
+  display: flex !important;
+  flex-direction: column !important;  /* 縦並び */
+  align-items: stretch !important;
+  gap: 8px !important;
+  margin-top: auto;   /* カード最下部にボタンをそろえる（前回調整のまま） */
+  padding: 0 4px;
+}
+
+.qtyinput{
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 6px 8px !important;
+  font-size: 16px !important;  /* iOS ズーム対策 */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+  .actions-card .btn{
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    min-height: 34px;
+    font-size: 11px !important;
+    padding: 8px 8px !important;
+    white-space: nowrap;
+  }
+}
+
+
+
+  
+}
+
+
+  
+/* === ★ ヘッダー最終調整：ダサくなった部分をリセット＆強化 ================== */
+
+/* 発注画面ヘッダー：タイトルまわりの背景 */
+header:not(.top-header){
+  position: static;
+  z-index: 30;
+
+  /* シマコーポレーション発注カタログの“おしゃれボックス”と同系色 */
+  background: radial-gradient(circle at 0% 0%, #1e293b 0, #020617 55%, #020617 100%);
+
+  border-bottom: none; 
+  box-shadow: 0 26px 80px rgba(0,0,0,.96);
+}
+
+/* === TOP / カタログの表示切り替え =================== */
+/* 初期状態：TOPだけ表示（bodyに catalog-open が付くまで隠す） */
+body:not(.catalog-open) header:not(.top-header),
+body:not(.catalog-open) .order-marquee,
+body:not(.catalog-open) main{
+  display: none;
+}
+
+/* カタログ表示モード：ヘッダー＋帯＋本文を表示 */
+body.catalog-open header:not(.top-header){
+  display: flex;
+}
+body.catalog-open .order-marquee,
+body.catalog-open main{
+  display: block;
+}
+
+  
+/* 中身レイアウト */
+.wrap{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ロゴ＋タイトル（発注画面用：黒ベースで主張強め） */
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 22px 8px 12px;
+  white-space: nowrap;
+
+  /* 背景をほぼ黒に（ほんの少しだけネイビーのグラデ） */
+  background: radial-gradient(circle at 0% 0%, #111827 0, #020617 40%, #000000 100%);
+  border-radius: 999px;
+
+  /* 枠線は消して、光のフチ＋落ち影で存在感を出す */
+  border: none;
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,0.9),
+    0 18px 48px rgba(0,0,0,0.95);
+}
+
+.brand img{
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.95);
+}
+
+/* タイトル文字を少し大きく＆太く＆光らせる */
+.brand h1{
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #f9fafb;
+  text-shadow:
+    0 0 10px rgba(15,23,42,0.9),
+    0 0 26px rgba(37,99,235,0.55);  /* うっすら青いグロー */
+}
+
+
+/* スマホ時：タイトルボックスを中央寄せ＆少し小さく */
+@media (max-width:640px){
+  header:not(.top-header) .brand{
+    margin: 0 auto 6px;
+    justify-content: center;
+    white-space: normal;       /* 日本語がギチギチにならないように */
+    text-align: center;
+    padding-inline: 12px;
+  }
+  header:not(.top-header) .brand h1{
+    font-size: 11px;
+    letter-spacing: .12em;
+  }
+}
+
+
+/* 中央の検索バー */
+.search-wrap{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.search-box{
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 720px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  border: 1px solid #334155;
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,0.9),
+    0 24px 70px rgba(0,0,0,0.9);
+  overflow: hidden;
+}
+.search-box:focus-within{
+  border-color: #60a5fa;
+  box-shadow:
+    0 0 0 1px #60a5fa,
+    0 30px 80px rgba(37,99,235,0.85);
+}
+.search-box input{
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #0f172a;
+  font-size: 14px;
+  padding: 14px 16px 14px 44px;
+}
+.search-box input::placeholder{
+  color: #6b7280; 
+}
+.search-icon{
+  position: absolute;
+  left: 14px;
+  font-size: 13px;
+  color: #64748b;
+  pointer-events: none;
+}
+.search-btn{
+  border: none;
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  color: #f9fafb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 0 24px;
+  cursor: pointer;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-btn:hover{
+  background: linear-gradient(135deg,#3b82f6,#1d4ed8);
+}
+
+/* 右側：カート＋印刷ボタン */
+.actions{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 2行目：検索＋カート＋印刷の横並び行 */
+.header-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex:1;
+}
+
+/* 検索ボックスはできるだけ幅を広くとる */
+.header-row .search-wrap{
+  flex:1;
+}
+
+/* actions は右側にまとまって表示 */
+.header-row .actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+/* スマホ時：ヘッダー中央寄せ＋印刷ボタンOFF＋余白調整 ===================== */
+@media (max-width:640px){
+
+  /* スマホでは発注画面ヘッダーを常に固定表示 */
+  header:not(.top-header){
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+  }
+
+  /* 黒い帯の中で上下2段レイアウト（1段目：ロゴ、2段目：検索＋カート） */
+  header:not(.top-header) .wrap{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 10px 14px 6px;
+  }
+
+  /* 1段目：ロゴ＋タイトルを中央寄せ */
+  header:not(.top-header) .brand{
+    margin: 0 auto 6px;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+    padding-inline: 12px;
+  }
+  header:not(.top-header) .brand h1{
+    font-size: 11px;
+    letter-spacing: .12em;
+  }
+
+  /* 2段目：検索＋カートの横並び */
+  .header-row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-row .search-wrap{
+    flex: 1;
+  }
+  .search-box{
+    max-width: 100%;
+  }
+  .search-box input{
+    font-size: 13px;
+  }
+  .search-btn{
+    padding: 0 16px;
+    font-size: 10px;
+  }
+
+  /* カートは残して、印刷ボタンだけスマホでは非表示 */
+  .header-row .actions{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  header:not(.top-header) .actions .btn{
+    display: none;
+  }
+
+  /* スクロール帯をヘッダーの下に下げる */
+  .order-marquee{
+    margin-top: 120px;
+    margin-bottom: 4px;
+  }
+
+  /* 帯のすぐ下からフォームが始まるようにする */
+  main{
+    margin: 8px auto 24px !important;
+  }
+  .order-meta{
+    margin-top: 8px !important;
+    padding-inline: 16px;
+  }
+}  /* ★ ここで SP 用ブロックを閉じる */
+
+
+
+
+/* ボタン共通（印刷ボタンなど） */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 18px;
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease,
+    background .12s ease,
+    border-color .12s ease,
+    opacity .12s ease;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  background: #1f2937;
+}
+.btn:active{
+  transform: translateY(0);
+  box-shadow: 0 9px 22px rgba(0,0,0,0.65);
+}
+.btn:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* カートアイコン：画像だけドンと見せる（枠線・丸背景なし） */
+.cart-toggle{
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+.cart-toggle img{
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 0;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: block;
+}
+.cart-toggle:hover img{
+  transform: translateY(-1px) scale(1.03);
+}
+
+/* カゴの件数バッジ */
+.cart-badge{
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #f97316;
+  color: #111827;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px #020617;
+}
+.cart-badge.is-empty{
+  display: none;
+}
+
+/* 印刷ボタンも少しだけ強めに */
+.btn{
+  min-height: 42px;
+  padding-inline: 18px;
+}
+
+/* === スクロールするコメント帯（主張強めバージョン） ======================= */
+.order-marquee{
+  background: radial-gradient(circle at top, #020617 0, #020617 60%, #000 100%);
+  border-top: 1px solid #020617;
+  border-bottom: 1px solid #020617;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.order-marquee-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 40px;
+  position: relative;
+}
+.order-marquee-track{
+  display: inline-flex;
+  align-items: center;
+  gap: 40px;
+  animation: orderMarquee 26s linear infinite;
+}
+
+/* 左のバッジ：もっと目立つタグっぽく */
+.order-marquee-badge{
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: 1px solid #60a5fa;
+  font-size: 11px;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  color: #bfdbfe;
+  background: rgba(37,99,235,0.18);
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,0.9),
+    0 10px 24px rgba(15,23,42,0.8);
+}
+
+/* メインテキスト：白・大きめ・太字でガツンと */
+.order-marquee-text{
+  font-size: 15px;
+  font-weight: 800;
+  color: #f9fafb;
+  text-shadow:
+    0 0 10px rgba(15,23,42,0.9),
+    0 0 24px rgba(15,23,42,0.9);
+  white-space: nowrap;
+}
+
+/* 区切りのドット */
+.order-marquee-dot{
+  font-size: 18px;
+  color: #4b5563;
+}
+
+/* スクロールアニメーション */
+@keyframes orderMarquee{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* 印刷のときは非表示 */
+@media print{
+  .order-marquee{ display:none!important; }
+}
+
+
+
+
+/* 幅が狭いときの調整 */
+@media (max-width: 960px){
+  .wrap{
+    padding-inline: 10px;
+    gap: 10px;
+  }
+  .brand h1{
+    font-size: 12px;
+    letter-spacing: .16em;
+  }
+  .search-box{
+    max-width: 100%;
+  }
+}
+
+/* === 発注画面：パートナー企業／現場名エリア ====================== */
+
+.order-meta{
+  max-width:1200px;
+  margin:10px auto 0;
+  padding:0 32px;
+}
+.order-meta-inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:flex-end;
+}
+.meta-field{
+  flex:1;
+  min-width:220px;
+}
+.meta-field label{
+  display:block;
+  margin-bottom:4px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#9ca3af;
+}
+.meta-input{
+  width:100%;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid #4b5563;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:13px;
+}
+.meta-input::placeholder{
+  color:#6b7280;
+}
+@media (max-width:960px){
+  .order-meta{
+    padding:0 16px;
+  }
+}
+@media print{
+  .order-meta{
+    display:none !important;
+  }
+}
+
+/* ===== 発注カタログ本体 ===== */
+main{
+  max-width: 1200px;
+  margin: 28px auto 56px;
+  padding: 24px 32px 48px;
+
+  /* ★ グレーっぽく見えるグラデをやめて、完全にダーク1色にする */
+  background: #020617;
+
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.85);
+}
+
+
+
+/* 商品グリッド：整然と並ぶカード */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 26px 22px;
+}
+
+/* 商品グリッド：少しゆとりを持たせる */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px 20px;
+}
+
+/* 商品カード：枠・影は消して「ただの並び」に */
+.card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: transparent;      /* ★ 背景なし */
+  border-radius: 0;             /* ★ 枠の角丸もなし */
+  border: none;                 /* ★ 枠線なし */
+  box-shadow: none;             /* ★ 影なし */
+  padding: 4px 4px 18px;        /* 上下の余白だけ少し */
+  transition:
+    transform .14s ease,
+    box-shadow .14s ease;
+}
+
+.card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  padding: 4px 4px 18px;
+  transition:
+    transform .14s ease,
+    box-shadow .14s ease;
+}
+
+/* 価格の下に出す商品情報（入数・通常価格・値引き） */
+.card .meta{
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.card .meta div{
+  margin-bottom: 2px;
+}
+
+/* カート内の商品名＋割引行 */
+.cartitem-name{
+  font-size: 12px;
+}
+.cartitem-discount{
+  margin-top: 2px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* スマホ時はもう一段小さくして詰める */
+@media (max-width:640px){
+  .card .meta{
+    font-size: 10px;
+  }
+}
+
+  
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);  /* ★ うっすら浮く程度 */
+}
+
+/* 画像エリア：白パネルに乗せる（なんちゃって透過） */
+.thumb{
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #f9fafb;              /* 白〜薄グレーのタイル */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;              /* 画像タイルだけ角丸に */
+  border: 1px solid #e5e7eb33;      /* ごく薄い枠（お好みで） */
+}
+.thumb img{
+  width: 86%;
+  max-height: 86%;
+  object-fit: contain;
+  display: block;
+  background: #f9fafb;              /* 白背景を馴染ませる */
+}
+
+/* テキストエリア：シンプルに下に並べる */
+.body{
+  padding: 10px 2px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 商品名 */
+.title{
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #e5e7eb;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3em;
+}
+
+/* 価格行：Electro っぽくゴールド系でアクセント */
+.price-row{
+  margin-top: 4px;
+}
+.price-main{
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fbbf24;
+}
+.price-sub{
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+
+/* 互換用 .price（印刷など） */
+.price{
+  font-size: 13px;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+/* JANテキスト表示（画面用） */
+.barcode{
+  margin-top: 4px;
+  font-size: 11px;
+  color: #9ca3af;
+  font-family: "SF Mono","Consolas","Menlo",monospace;
+  letter-spacing: .08em;
+  text-align: left;
+}
+
+/* 画面ではテキストだけ表示、バーコードSVGは隠す */
+.barcode-text{
+  display: block;
+}
+.barcode-svg{
+  display: none;
+}
+
+/* 下部：数量＋カートボタンをフラットに */
+.actions-card{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+  padding:0;
+  border-top:none;
+  background:transparent;
+}
+
+.qtyinput{
+  flex:0 0 90px;
+  padding:6px 8px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  background:#ffffff;
+  color:#111827;
+  font-size:13px;
+  text-align:center;
+}
+.qtyinput::placeholder{
+  color:#9ca3af;
+}
+
+.actions-card .btn{
+  flex:1;
+  font-size:11px;
+  padding:8px 10px;
+  background:#fbbf24;
+  color:#111827;
+  border-color:#fbbf24;
+  box-shadow:0 8px 18px rgba(0,0,0,0.25);
+}
+.actions-card .btn:hover{
+  background:#facc15;
+  border-color:#facc15;
+}
+
+
+/* === 商品画像拡大モーダル ======================= */
+.image-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.80);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 80;
+  padding: 16px;
+}
+.image-modal.open{
+  display: flex;
+
+  /* 画像拡大モーダル内の数量入力（iOSの自動ズーム対策） */
+#modalQty{
+  font-size: 16px;
+}
+
+  
+}
+
+.image-modal-panel{
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  max-height: 100%;
+  background: #020617;
+  border-radius: 20px;
+  border: 1px solid #1f2937;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.96);
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  color: #e5e7eb;
+}
+
+.image-modal-main{
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.image-modal-photo{
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal-photo img{
+  display: block;
+  max-width: min(340px, 60vw);
+  max-height: 420px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.9);
+}
+
+.image-modal-info{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.image-modal-title{
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.image-modal-price{
+  font-size: 16px;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.image-modal-jan{
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.image-modal-actions{
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #1f2937;
+}
+
+.modal-qtyinput{
+  flex: 0 0 90px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  text-align: center;
+}
+.modal-qtyinput::placeholder{
+  color: #9ca3af;
+}
+.modal-addbtn{
+  flex: 1;
+}
+
+/* 閉じるボタン */
+.image-modal-close{
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* スマホ最適化 */
+@media (max-width:640px){
+  .image-modal{
+    padding: 10px;
+  }
+  .image-modal-panel{
+    max-width: 100%;
+    padding: 12px 12px 14px;
+  }
+  .image-modal-main{
+    flex-direction: column;
+  }
+  .image-modal-photo img{
+    max-width: 100%;
+    max-height: 50vh;
+  }
+  .image-modal-title{
+    font-size: 13px;
+  }
+  .image-modal-price{
+    font-size: 15px;
+  }
+  .image-modal-actions{
+    gap: 6px;
+  }
+  .modal-qtyinput{
+    flex: 0 0 70px;
+    font-size: 12px;
+    padding: 5px 6px;
+  }
+}
+
+/* 印刷時はモーダル非表示 */
+@media print{
+  .image-modal{
+    display: none !important;
+  }
+}
+
+
+
+/* ===== カート（右側スライドパネル） ===== */
+.cart{
+  position: fixed;
+  top: 96px;
+  right: 28px;
+  width: 320px;
+  max-height: calc(100dvh - 160px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px 14px;
+
+  background: #020617;
+  border-radius: 20px;
+  border: 1px solid #1f2937;
+  box-shadow: 0 26px 72px rgba(0,0,0,0.95);
+  color: #e5e7eb;
+  z-index: 60;
+
+  transform: translateX(110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .25s ease, opacity .25s ease;
+}
+.cart.open{
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.cart h2{
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+/* カート内リスト */
+.cartlist{
+  flex: 1;
+  overflow: auto;
+  padding-right: 2px;
+  font-size: 12px;
+}
+.cartitem{
+  display: grid;
+  grid-template-columns: 1fr auto minmax(120px, 1fr);
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid #111827;
+}
+.cartitem:last-child{
+  border-bottom: none;
+}
+.cartitem div:nth-child(1){
+  font-weight: 500;
+}
+.cartitem div:nth-child(2){
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #d1d5db;
+}
+
+/* カート内：数量コントロール */
+.cartitem-amount{
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #d1d5db;
+}
+.cartitem-qty{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
+.cartqty-input{
+  width: 48px;
+  padding: 2px 6px;
+  font-size: 12px;
+  text-align: right;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #020617;
+  color: #e5e7eb;
+}
+.cartqty-btn{
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #e5e7eb;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cartqty-btn:active{
+  transform: translateY(1px);
+}
+.cartremove-btn{
+  margin-left: 4px;
+  border: none;
+  background: none;
+  color: #f97373;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* カート下部の合計 */
+.cart-summary{
+  font-size: 12px;
+}
+.cart-summary strong{
+  font-weight: 700;
+}
+
+/* 送信ボタン */
+.cart .btn{
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* カート内：商品名＋価格＋値引きの見た目 */
+.cartitem-name{
+  margin: 0 0 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #e5e7eb;
+}
+.cartitem-discount{
+  margin-top: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+.cartitem-regular,
+.cartitem-discount-amt{
+  white-space: nowrap;
+}
+
+/* スマホ時：カート1件を「縦3行レイアウト」に */
+@media (max-width:640px){
+  .cartitem{
+    grid-template-columns: 1fr;    /* 1列だけにする */
+    align-items: flex-start;
+  }
+  .cartitem-amount{
+    text-align: left;
+    margin-top: 4px;               /* 2行目：合計金額 */
+  }
+  .cartitem-qty{
+    justify-content: flex-start;
+    margin-top: 4px;               /* 3行目：数量コントロール */
+  }
+  .cartitem-discount{
+    flex-direction: column;        /* 通常価格と値引きも1行ずつ */
+    align-items: flex-start;
+  }
+}
+
+  
+/* ===== レスポンシブ調整（発注画面のみ） ===== */
+@media (max-width: 960px){
+  .wrap{
+    padding-inline: 16px;
+  }
+  main{
+    margin: 18px auto 40px;
+    padding: 16px 16px 32px;
+    border-radius: 0;
+  }
+  .grid{
+    gap: 22px 14px;
+  }
+ /* スマホ時：カートパネルがスクロール帯にかぶらないように少し下げる */
+.cart{
+  top: 150px;
+  right: 12px;
+  width: min(92vw, 340px);
+}
+
+}
+
+/* === 発注画面：背景を反転（PCのみ） ================= */
+@media screen and (min-width: 961px) {
+
+  /* ページ全体を濃いネイビー〜ブラックに */
+  body{
+    background: #020617;
+  }
+
+  /* 商品エリア（main）は明るめグレーのパネルに */
+  main{
+    background: #f3f4f6;
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.85);
+  }
+
+  .title{
+    color: #111827;
+  }
+  .price{
+    color: #111827;
+  }
+  .price-sub{
+    color: #6b7280;
+  }
+  .barcode svg rect[fill='#000']{
+    fill: #111827;
+  }
+
+  .qtyinput{
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+  }
+
+  .actions-card .btn{
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  }
+}
+
+
+
+/* === 印刷設定（前回の安定版をそのまま保持） === */
+@page {
+  size: A4 portrait;
+  margin: 8mm 8mm 18mm 8mm;
+}
+
+/* 画面表示のときはヘッダー／フッターを隠す */
+.header-print,
+.footer-print{
+  display:none;
+}
+
+@media print {
+  /* 画面専用UIは印刷で隠す */
+  #topPage,
+  header,
+  .actions,
+  .cart,
+  .actions-card,
+  .controls {
+    display: none !important;
+  }
+
+  /* 印刷時のみヘッダー／フッターを出す */
+  .header-print { display: flex !important; }
+  .footer-print { display: block !important; }
+
+  /* ★ ページ全体を真っ白に固定（背景＆影ぜんぶカット） */
+  html,
+  body {
+    background: #ffffff !important;
+    counter-reset: item;
+    position: relative !important;
+    box-shadow: none !important;
+  }
+
+  main,
+  .grid,
+  .card,
+  .body,
+  .thumb {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  main {
+    display: block !important;
+    margin: 0;
+    padding: 0;
+    position: relative !important;
+    min-height: 245mm !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6mm;
+    width: calc(210mm - 20mm);
+    margin: 30mm auto 0;
+  }
+
+  .card {
+    display: flex !important;
+    position: relative;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 4mm;
+    border: 1px solid #d9e1f2;
+    padding: 3.5mm;
+    height: calc((297mm - 95mm) / 5);
+    page-break-inside: avoid;
+    overflow: hidden;
+  }
+
+  .card::before {
+    counter-increment: item;
+    content: "No." counter(item);
+    position: absolute;
+    bottom: 1.8mm;
+    right: 2.2mm;
+    padding: 1.4mm 3mm;
+    font-family: "Orbitron","Segoe UI","Noto Sans JP",sans-serif;
+    font-weight: 700;
+    font-size: 7.3pt;
+    color: #fff;
+    background: linear-gradient(135deg,#0ea5e9 0%,#2563eb 50%,#1e3a8a 100%);
+    border-radius: 12px;
+  }
+
+  .thumb {
+    flex: 0 0 33mm;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+  .thumb img {
+    max-height: 27mm;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2mm;
+    padding-right: 3mm;
+  }
+  .title {
+    font-size: 9.3pt !important;
+    line-height: 1.4 !important;
+    max-height: 22mm !important;
+    overflow: hidden !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    font-weight: 700 !important;
+  }
+
+  /* ★ 印刷時のJAN：テキストを隠してバーコードSVGだけ表示 */
+  .barcode {
+    margin-top: 0;
+    text-align: left;
+  }
+  .barcode-text {
+    display: none !important;
+  }
+  .barcode-svg {
+    display: inline-block !important;
+  }
+  .barcode-svg svg {
+    height: 20px;
+    width: 70px;
+  }
+
+  .price { font-size: 9.3pt; }
+
+  /* ★ 印刷専用「数量」欄（ここで表示ON） */
+  .qty-print,
+  .print-only {
+    display: flex !important;
+  }
+  .qty-print {
+    position: absolute !important;
+    bottom: 3mm !important;
+    left: 4mm !important;
+    align-items: center;
+    gap: 1.2mm;
+    font-size: 9pt;
+    font-weight: 600;
+  }
+  .qty-print input {
+    width: 20mm !important;
+    height: 6mm !important;
+    border: 1px solid #bbb;
+    border-radius: 3mm;
+    padding: 0 2mm;
+    background: #fff;
+    outline: none;
+  }
+
+  /* ★ 印刷ヘッダー／フッターの見た目（真っ白固定） */
+  .header-print {
+    position: fixed;
+    top: 5mm;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+  }
+  .header-print img {
+    height: 14mm;
+    width: auto;
+  }
+  .header-print h2 {
+    font-size: 16pt;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .footer-print {
+    position: fixed !important;
+    bottom: 0mm !important;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 11pt;
+    font-family: "Noto Sans JP","Segoe UI",sans-serif;
+    color: #0f172a;
+    padding-top: 2mm;
+    background: #ffffff !important;
+    z-index: 9999;
+  }
+}
+
+/* === オートコンプリート候補の見た目（TOPページ用） === */
+.autolist {
+  position:absolute;
+  left:0;
+  top:100%;
+  margin-top:4px;
+  width:100%;
+  background:#ffffff;
+  border:none;
+  border-radius:8px;
+  box-shadow:0 8px 16px rgba(15,23,42,0.12);
+  max-height:180px;
+  overflow-y:auto;
+  font-size:14px;
+  z-index:50;
+}
+.autolist:empty {
+  border: 0;
+}
+.autolist div {
+  padding:6px 10px;
+  cursor:pointer;
+}
+.autolist div:hover {
+  background:#e0edff;
+}
+</style>
+</head>
+<body>
+<!-- アクセス制御オーバーレイ -->
+<div id="accessOverlay">
+  <div class="access-card">
+    <div class="access-title">発注カタログ ログイン</div>
+    <div class="access-sub">
+      パスワードを入力してください。<br>
+      （不明な場合は本部・法人営業課までお問い合わせください）
+    </div>
+    <input id="accessPassword" class="access-field"
+           type="password" placeholder="アクセス用パスワード">
+    <button id="accessButton" class="access-btn">ログイン</button>
+    <div id="accessError" class="access-error"></div>
+  </div>
+</div>
+
+<!-- TOPページ -->
+<div id="topPage">
+  <div class="top-shell">
+    <header class="top-header">
+      <div class="top-brand">
+        <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/shima_owl.jpg" alt="シマコーポレーション ロゴ" class="top-logo">
+        <span class="top-brand-text">シマコーポレーション<br>発注カタログ</span>
+      </div>
+      <div class="top-ship">現場からカンタン Web 発注</div>
+    </header>
+
+    <div class="top-hero-row">
+      <div class="top-hero">
+        <p class="top-hero-copy">
+          必要な消耗品を、<br>
+          いつもの現場からまとめて注文。<br>
+          <span class="top-hero-sub">
+            スマホひとつで、発注漏れゼロへ。
+          </span>
+        </p>
+
+        <div class="top-card">
+          <p class="top-eyebrow">ORDER FORM</p>
+          <h1>発注情報を入力して<br>カタログを開いてください</h1>
+          <p class="top-lead">
+            一度入力すると、次回から履歴として自動候補に表示されます。
+          </p>
+
+          <div class="top-form">
+            <div class="autowrap">
+              <input id="buyerName"   class="top-input" placeholder="発注者名" autocomplete="off">
+            </div>
+            <button id="startBtn" class="btn top-start-btn">
+              発注カタログを開く
+            </button>
+          </div>
+        </div><!-- /.top-card -->
+      </div><!-- /.top-hero -->
+    </div><!-- /.top-hero-row -->
+  </div><!-- /.top-shell -->
+</div><!-- /#topPage -->
+
+<!-- 発注カタログ画面 -->
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/shima_owl.jpg" alt="logo">
+      <h1>シマコーポレーション 発注カタログ</h1>
+    </div>
+
+    <div class="header-row">
+      <div class="search-wrap">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input id="productSearch" type="search"
+                 placeholder="ここに商品名・JANを入力して検索"
+                 autocomplete="off">
+          <button id="searchBtn" class="search-btn" type="button">検索</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="cartToggle" class="cart-toggle" type="button">
+          <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/KART.jpg" alt="カート">
+          <span id="cartBadge" class="cart-badge is-empty">0</span>
+        </button>
+        <button class="btn print-btn" onclick="window.print()">印刷（A4縦）</button>
+      </div>
+    </div><!-- /.header-row -->
+  </div><!-- /.wrap -->
+</header>
+
+<!-- スクロール帯 -->
+<div class="order-marquee">
+  <div class="order-marquee-inner">
+    <div class="order-marquee-track">
+      <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
+      <span class="order-marquee-text">
+        一つひとつの現場に、ちょうどいい消耗品を。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        月１回の「まとめ発注」で、ストック切れゼロへ。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        カタログから選ぶだけ。レジ前での発注メモはもう不要です。
+      </span>
+
+      <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
+      <span class="order-marquee-text">
+        一つひとつの現場に、ちょうどいい消耗品を。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        月１回の「まとめ発注」で、ストック切れゼロへ。
+      </span>
+      <span class="order-marquee-dot">—</span>
+      <span class="order-marquee-text">
+        カタログから選ぶだけ。レジ前での発注メモはもう不要です。
+      </span>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section class="order-meta">
+    <div class="order-meta-inner">
+      <div class="meta-field">
+        <label for="partnerName">パートナー企業（任意）</label>
+        <input id="partnerName" class="meta-input"
+               placeholder="例：〇〇建設" autocomplete="off">
+      </div>
+      <div class="meta-field">
+        <label for="siteName">現場名（任意）</label>
+        <input id="siteName" class="meta-input"
+               placeholder="例：△△ビル新築工事" autocomplete="off">
+      </div>
+    </div>
+  </section>
+
+  </section>
+</main>
+
+<aside class="cart">
+    <h2>カート</h2>
+    <div id="cartlist" class="cartlist"></div>
+    <div class="cart-summary">
+      <strong>小計：</strong><span id="subtotal">0円</span><br>
+      <strong>値引き合計：</strong><span id="discountTotal">0円</span><br>
+      <strong>税込：</strong><span id="total">0円</span>
+    </div>
+    <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
+  </aside>
+
+<button id="backToTop" class="back-to-top" type="button" aria-label="ページの先頭へ"></button>
+
+<div class="header-print">
+  <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/shima_owl.jpg" alt="logo">
+  <h2>シマコーポレーション 発注カタログ</h2>
+</div>
+<div class="footer-print">
+  発注者名：＿＿＿＿＿＿＿＿＿＿＿　日付：＿＿＿＿＿＿＿＿＿＿＿　備考：＿＿＿＿＿＿＿＿＿＿＿
+</div>
+
+<script>
+// === オートコンプリート（履歴） ===
+function enableAutoComplete(inputId){
+  const input = document.getElementById(inputId);
+  const list = document.createElement("div");
+  list.className = "autolist";
+  input.parentNode.appendChild(list);
+
+  const saved = JSON.parse(localStorage.getItem(`history_${inputId}`) || "[]");
+
+  input.addEventListener("input", () => { showList(input, list, saved); });
+  input.addEventListener("focus", () => { showList(input, list, saved); });
+
+  input.addEventListener("change", () => {
+    const val = input.value.trim();
+    if (!val) return;
+    if (!saved.includes(val)) {
+      saved.unshift(val);
+      if (saved.length > 20) saved.pop();
+      localStorage.setItem(`history_${inputId}`, JSON.stringify(saved));
+    }
+  });
+
+  document.addEventListener("click", e => {
+    if (!list.contains(e.target) && e.target !== input) list.innerHTML = "";
+  });
+}
+function showList(input, list, saved) {
+  const val = input.value.trim();
+  list.innerHTML = "";
+  const matches = val ? saved.filter(v => v.includes(val)) : saved;
+  matches.forEach(m => {
+    const item = document.createElement("div");
+    item.textContent = m;
+    item.onclick = () => {
+      input.value = m;
+      list.innerHTML = "";
+    };
+    list.appendChild(item);
+  });
+}
+
+console.log("✅ script loaded");
+
+// ★ junさんの Web Apps の URL
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw369zq8dvrIqgAuw35KAn6i2nsyQxmz6lFw8J7EpEdOlFa--QT89nPySjm7OGXf3skAA/exec";
+
+let cart = [];
+
+// TOP → カタログ開始
+function startFlow(){
+  const buyerInput = document.getElementById("buyerName");
+  const buyer = (buyerInput?.value || "").trim();
+  if (!buyer){
+    alert("発注者名を入力してください。");
+    buyerInput?.focus();
+    return;
+  }
+
+  sessionStorage.setItem("buyerName",   buyer);
+  sessionStorage.setItem("partnerName", (document.getElementById("partnerName")?.value || "").trim());
+  sessionStorage.setItem("siteName",    (document.getElementById("siteName")?.value || "").trim());
+
+  if (document.activeElement && typeof document.activeElement.blur === "function"){
+    document.activeElement.blur();
+  }
+
+  const topPage = document.getElementById("topPage");
+  const mainEl  = document.querySelector("main");
+
+  document.body.classList.add("catalog-open");
+
+  if (topPage){
+    topPage.style.opacity = "0";
+    topPage.style.pointerEvents = "none";
+    setTimeout(() => {
+      topPage.style.display    = "none";
+      topPage.style.visibility = "hidden";
+      topPage.style.zIndex     = "-1";
+    }, 350);
+  }
+
+  if (mainEl){
+    mainEl.style.display    = "block";
+    mainEl.style.visibility = "visible";
+    mainEl.style.opacity    = "1";
+    mainEl.style.position   = "relative";
+    mainEl.style.zIndex     = "1";
+  }
+
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+  try {
+    boot();
+  } catch(e){
+    console.error("boot() error:", e);
+    alert("商品描画でエラーが発生しました。");
+  }
+}
+
+// スタートボタン
+function bindStartButton(){
+  const btn = document.getElementById("startBtn");
+  if (btn) btn.addEventListener("click", startFlow);
+  ["buyerName","partnerName","siteName"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("keydown", ev => { if (ev.key === "Enter") startFlow(); });
+  });
+}
+document.addEventListener("click", ev=>{
+  const hit = ev.target.closest?.("#startBtn");
+  if (hit) startFlow();
+});
+
+// 擬似要素クリック対策
+(function(){
+  const style = document.createElement("style");
+  style.textContent = `
+    .top-hero::before, .top-hero::after { pointer-events:none !important; }
+    .top-hero, .top-card, .top-form, .top-input, #startBtn { pointer-events:auto !important; }
+  `;
+  document.head.appendChild(style);
+})();
+
+/* ===== 起動時セットアップ ===== */
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOM Ready");
+
+  ["buyerName","partnerName","siteName"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+
+  ["buyerName","partnerName","siteName"].forEach(id=>{
+    try { enableAutoComplete(id); } catch(_) {}
+  });
+
+  bindStartButton();
+
+  const orderBtn = document.getElementById("orderBtn");
+  if (orderBtn) orderBtn.onclick = sendOrder;
+
+  const cartToggle = document.getElementById("cartToggle");
+  const cartPanel  = document.querySelector(".cart");
+  if (cartToggle && cartPanel){
+    cartToggle.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      if (!cart.length){ 
+        alert("カートに商品がありません"); 
+        return; 
+      }
+      cartPanel.classList.add("open");
+    });
+
+    document.addEventListener("mousedown", (ev) => {
+      if (!cartPanel.classList.contains("open")) return;
+      const target = ev.target;
+      if (cartPanel.contains(target) || cartToggle.contains(target)) return;
+      cartPanel.classList.remove("open");
+    });
+  }
+
+  const searchInput = document.getElementById('productSearch');
+  const searchBtn   = document.getElementById('searchBtn');
+
+  if (searchInput){
+    searchInput.addEventListener('input', applySearchFilter);
+    searchInput.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter') applySearchFilter();
+    });
+  }
+  if (searchBtn){
+    searchBtn.addEventListener('click', applySearchFilter);
+  }
+});
+
+/* ===== 画像拡大モーダル ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  const modal      = document.getElementById('imgModal');
+  const modalImg   = document.getElementById('imgModalImg');
+  const modalTitle = document.getElementById('imgModalTitle');
+  const modalPrice = document.getElementById('imgModalPrice');
+  const modalJan   = document.getElementById('imgModalJan');
+  const modalQty   = document.getElementById('modalQty');
+  const modalAdd   = document.getElementById('modalAddBtn');
+
+  if (!modal || !modalImg) return;
+
+  document.addEventListener('click', e => {
+    const img = e.target.closest('.product-img');
+    if (img){
+      const jan   = img.dataset.jan  || "";
+      const name  = img.dataset.name || img.alt || "";
+      const price = Number(img.dataset.price || 0);
+
+      modalImg.src = img.src;
+      modalImg.alt = name;
+
+      if (modalTitle) modalTitle.textContent = name;
+      if (modalJan)   modalJan.textContent   = jan ? `JAN: ${jan}` : "";
+
+      if (modalPrice){
+        if (price){
+          const inc = Math.round(price * 1.1);
+          modalPrice.textContent = `￥${inc.toLocaleString()}（税抜 ￥${price.toLocaleString()}）`;
+        }else{
+          modalPrice.textContent = "";
+        }
+      }
+      if (modalQty){
+        modalQty.value = "";
+      }
+
+      modal.dataset.jan   = jan;
+      modal.dataset.name  = name;
+      modal.dataset.price = String(price || 0);
+
+      modal.classList.add('open');
+      return;
+    }
+
+    if (e.target === modal || e.target.closest('.image-modal-close')){
+      modal.classList.remove('open');
+    }
+  });
+
+  if (modalAdd){
+    modalAdd.addEventListener('click', addToCartFromModal);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){
+      modal.classList.remove('open');
+    }
+  });
+});
+
+/* ===== カート表示更新 ===== */
+function updateCart(){
+  const list  = document.getElementById('cartlist');
+  const badge = document.getElementById('cartBadge');
+
+  list.innerHTML = '';
+
+  if (!cart.length){
+    list.textContent = 'カートは空です';
+    document.getElementById('subtotal').textContent = '0円';
+    document.getElementById('total').textContent    = '0円';
+    const discSpan = document.getElementById('discountTotal');
+    if (discSpan) discSpan.textContent = '0円';
+
+    if (badge){
+      badge.textContent = '0';
+      badge.classList.add('is-empty');
+    }
+    return;
+  }
+
+  const productMap = window.PRODUCTS_BY_JAN || {};
+
+  let subtotal      = 0;
+  let discountTotal = 0;
+
+  cart.forEach((it, i) => {
+    subtotal += it.price * it.qty;
+
+    const prod     = productMap[String(it.jan)] || {};
+    const regular  = (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null;
+    const discount = (typeof prod.discount_ex_tax === "number")       ? prod.discount_ex_tax       : null;
+
+    let discountLine = "";
+    if (regular != null && discount != null){
+      const abs  = Math.abs(discount);
+      const sign = discount < 0 ? "▲" : "＋";
+      discountLine =
+        `<div class="cartitem-discount">
+           <div class="cartitem-regular">通常：￥${regular.toLocaleString()}</div>
+           <div class="cartitem-discount-amt">値引き：${sign}${abs.toLocaleString()}円</div>
+         </div>`;
+      discountTotal += discount * it.qty;
+    }
+
+    const lineTotal = it.price * it.qty;
+
+    list.insertAdjacentHTML("beforeend", `
+      <div class='cartitem'>
+        <div>
+          <div class="cartitem-name">${it.name}</div>
+          ${discountLine}
+        </div>
+        <div class="cartitem-amount">小計：￥${lineTotal.toLocaleString()}</div>
+
+        <div class="cartitem-qty">
+          <button type="button" class="cartqty-btn" onclick="changeCartQty(${i}, -1)">－</button>
+          <input type="number" min="1" class="cartqty-input"
+                 value="${it.qty}"
+                 onchange="changeCartQtyDirect(${i}, this.value)">
+          <button type="button" class="cartqty-btn" onclick="changeCartQty(${i}, 1)">＋</button>
+          <button type="button" class="cartremove-btn" onclick="removeItem(${i})">×</button>
+        </div>
+      </div>
+    `);
+  });
+
+  document.getElementById('subtotal').textContent =
+    subtotal.toLocaleString() + '円';
+  document.getElementById('total').textContent =
+    Math.round(subtotal * 1.1).toLocaleString() + '円';
+
+  const discSpan = document.getElementById('discountTotal');
+  if (discSpan){
+    if (discountTotal){
+      const abs  = Math.abs(discountTotal);
+      const sign = discountTotal < 0 ? "▲" : "＋";
+      discSpan.textContent = `${sign}${abs.toLocaleString()}円`;
+    }else{
+      discSpan.textContent = '0円';
+    }
+  }
+
+  if (badge){
+    const totalQty = cart.reduce((sum, it) => sum + (Number(it.qty) || 0), 0);
+    if (totalQty > 0){
+      badge.textContent = totalQty;
+      badge.classList.remove('is-empty');
+    }else{
+      badge.textContent = '0';
+      badge.classList.add('is-empty');
+    }
+  }
+}
+
+function changeCartQty(index, delta){
+  const item = cart[index];
+  if (!item) return;
+  let next = Number(item.qty || 0) + delta;
+  if (next <= 0){
+    removeItem(index);
+    return;
+  }
+  item.qty = next;
+  updateCart();
+}
+function changeCartQtyDirect(index, value){
+  const item = cart[index];
+  if (!item) return;
+  let next = Number(value);
+  if (!next || next <= 0){
+    removeItem(index);
+    return;
+  }
+  item.qty = next;
+  updateCart();
+}
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
+
+/* 検索フィルター */
+function applySearchFilter(){
+  const input = document.getElementById('productSearch');
+  const grid  = document.getElementById('grid');
+  if (!input || !grid) return;
+
+  const q = input.value.trim().toLowerCase();
+  const cards = grid.querySelectorAll('.card');
+
+  if (!q){
+    cards.forEach(c => c.style.display = '');
+    return;
+  }
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+/* ===== 商品描画（★GASから取得） ===== */
+async function boot(){
+  const url = GAS_ENDPOINT + "?mode=products";
+  const PRODUCTS = await fetch(url, { cache: "no-store" })
+    .then(r => {
+      if (!r.ok) throw new Error("商品データの取得に失敗しました");
+      return r.json();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("⚠️ 商品データの読み込みに失敗しました。管理者にご連絡ください。");
+      return [];
+    });
+
+  window.PRODUCTS_BY_JAN = {};
+  PRODUCTS.forEach(p => {
+    const key = String(p.jan ?? "");
+    if (key) window.PRODUCTS_BY_JAN[key] = p;
+  });
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = "";
+
+  PRODUCTS.forEach(p => {
+    const jan   = String(p.jan ?? "");
+    const name  = String(p.name ?? "");
+    const price = Number(
+      p.price_ex_tax ?? p.price ?? 0
+    );
+
+    const pack     = p.pack ?? "";
+    const regular  = (typeof p.regular_price_ex_tax === "number") ? p.regular_price_ex_tax : null;
+    const discount = (typeof p.discount_ex_tax === "number")       ? p.discount_ex_tax       : null;
+
+    const packText    = pack || "-";
+    const regularText = (regular != null) ? `￥${regular.toLocaleString()}` : "-";
+
+    let discountText = "-";
+    if (discount != null){
+      const abs  = Math.abs(discount);
+      const sign = discount < 0 ? "▲" : "＋";
+      discountText = `${sign}${abs.toLocaleString()}円`;
+    }
+
+    const barcodeText = jan ? `JAN: ${jan}` : "";
+    const barcodeSvg  = jan ? (renderBarcode(jan) || "") : "";
+
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="card">
+        <div class="thumb">
+          <img
+            src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/${jan}.jpg"
+            alt="${name}"
+            class="product-img"
+            data-name="${name}"
+            data-jan="${jan}"
+            data-price="${price}"
+            onerror="this.onerror=null;this.src='https://shimacp-studio.github.io/kakaku_Order-Form-/img/noimage.jpg'">
+        </div>
+
+        <div class="body">
+          <div class="title">${name}</div>
+
+          <div class="price-row">
+            <span class="price-main">￥${Math.round(price * 1.1).toLocaleString()}</span>
+            <span class="price-sub">(税抜 ￥${price.toLocaleString()})</span>
+          </div>
+
+          <div class="meta">
+            <div>入数：${packText}</div>
+            <div>通常価格(税抜)${regularText}</div>
+            <div>値引き(税抜)${discountText}</div>
+          </div>
+
+          <div class="barcode">
+            <span class="barcode-text">${barcodeText}</span>
+            <span class="barcode-svg">${barcodeSvg}</span>
+          </div>
+        </div>
+
+        <div class="qty-print print-only" style="display:none">
+          <label style="margin-right:4px;">数量</label>
+          <input id="print-qty-${jan}" type="text" inputmode="numeric"
+                 pattern="[0-9０-９]*" aria-label="印刷用数量">
+        </div>
+
+        <div class="actions-card">
+          <input id="qty-${jan}" type="number" class="qtyinput"
+                 min="0" step="1" placeholder="数量">
+          <button class="btn" type="button"
+            onclick='addToCart(${JSON.stringify({ jan, name, price })})'>
+            カートに追加
+          </button>
+        </div>
+      </div>
+    `);
+  });
+}
+
+/* カート操作 */
+function upsertCart(p, q){
+  const ex = cart.find(x => x.jan === p.jan);
+  const qty = Number(q);
+  if (!qty || qty <= 0) return;
+
+  if (ex){
+    ex.qty += qty;
+  }else{
+    cart.push({ ...p, qty });
+  }
+  updateCart();
+}
+function addToCart(p){
+  try{
+    if (document.activeElement && typeof document.activeElement.blur === 'function'){
+      document.activeElement.blur();
+    }
+  }catch(_){}
+
+  const input = document.getElementById(`qty-${p.jan}`);
+  const q = input ? Number(input.value) : 0;
+  if (!q || q <= 0) return;
+
+  upsertCart(p, q);
+  if (input) input.value = '';
+}
+function addToCartFromModal(){
+  const modal = document.getElementById('imgModal');
+  const input = document.getElementById('modalQty');
+  if (!modal || !input) return;
+
+  const jan   = modal.dataset.jan;
+  const name  = modal.dataset.name;
+  const price = Number(modal.dataset.price || 0);
+  const q     = Number(input.value);
+
+  if (!jan || !q || q <= 0) return;
+
+  try{
+    input.blur();
+    if (document.activeElement && typeof document.activeElement.blur === 'function'){
+      document.activeElement.blur();
+    }
+  }catch(_){}
+
+  upsertCart({ jan, name, price }, q);
+  input.value = '';
+  modal.classList.remove('open');
+}
+
+/* 送信 */
+async function sendOrder(){
+  if (!cart.length){
+    alert('カートが空です');
+    return;
+  }
+
+  const buyerEl   = document.getElementById('buyerName');
+  const partnerEl = document.getElementById('partnerName');
+  const siteEl    = document.getElementById('siteName');
+
+  const buyer = (buyerEl?.value || "").trim();
+  if (!buyer){
+    alert('発注者名を入力してください');
+    buyerEl?.focus();
+    return;
+  }
+  const partner = (partnerEl?.value || "").trim();
+  const site    = (siteEl?.value    || "").trim();
+
+  const payload = {
+    buyerName:   buyer,
+    partnerName: partner,
+    siteName:    site,
+    items: cart.map(c => {
+      const prodMap = window.PRODUCTS_BY_JAN || {};
+      const prod    = prodMap[String(c.jan)] || {};
+      return {
+        jan:   c.jan,
+        name:  c.name,
+        price_ex_tax: c.price,
+        qty:   c.qty,
+        pack: prod.pack ?? "",
+        regular_price_ex_tax:
+          (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null,
+        discount_ex_tax:
+          (typeof prod.discount_ex_tax === "number") ? prod.discount_ex_tax : null
+      };
+    })
+  };
+
+  const btn = document.getElementById('orderBtn');
+  if (btn){
+    btn.disabled = true;
+    btn.textContent = '送信中…';
+  }
+
+  try{
+    await fetch(GAS_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    alert('✅ 発注を受け付けました（メール送信済み）');
+
+    cart = [];
+    updateCart();
+
+    const topPage = document.getElementById('topPage');
+    const mainEl  = document.querySelector('main');
+    if (topPage && mainEl){
+      document.body.classList.remove('catalog-open');
+
+      mainEl.style.display    = 'none';
+      mainEl.style.opacity    = '0';
+      mainEl.style.visibility = 'hidden';
+      mainEl.style.zIndex     = '0';
+
+      topPage.style.display    = 'flex';
+      topPage.style.opacity    = '1';
+      topPage.style.visibility = 'visible';
+      topPage.style.zIndex     = '9999';
+
+      ['buyerName','partnerName','siteName'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+  }catch(e){
+    alert('⚠️ 送信に失敗しました：' + e.message);
+  }finally{
+    if (btn){
+      btn.disabled = false;
+      btn.textContent = 'この内容で発注（メール送信）';
+    }
+  }
+}
+
+// ページトップへボタン
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+
+  const toggleVisibility = () => {
+    if (window.scrollY > 200) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  };
+
+  window.addEventListener('scroll', toggleVisibility, { passive: true });
+  toggleVisibility();
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  });
+});
+
+// バーコード
+function ean13Pattern(d){
+  const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],
+        G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],
+        R=["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"],
+        P={"0":"LLLLLL","1":"LLGLGG","2":"LLGGLG","3":"LLGGGL","4":"LGLLGG","5":"LGGLLG","6":"LGGGLL","7":"LGLGLG","8":"LGLGGL","9":"LGGLGL"};
+  const s=(d||"").replace(/[^0-9]/g,"");
+  if(s.length<12) return null;
+  const d12=s.slice(0,12),
+        cd=(10-((d12.split("").reduce((a,b,i)=>a+Number(b)*(i%2?3:1),0))%10))%10;
+  const first=d12[0], left=d12.slice(1,7), right=d12.slice(7,12)+cd;
+  let bits="101", par=P[first];
+  for(let i=0;i<6;i++){ bits+=(par[i]==="L"?L[left[i]]:G[left[i]]); }
+  bits+="01010";
+  for(let i=0;i<6;i++){ bits+=R[right[i]]; }
+  return bits+"101";
+}
+function renderBarcode(jan){
+  const bits=ean13Pattern(jan);
+  if(!bits) return "";
+  let out=`<svg viewBox='0 0 ${bits.length} 20' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'><rect width='${bits.length}' height='20' fill='#fff'/>`;
+  for(let i=0;i<bits.length;i++) if(bits[i]==="1") out+=`<rect x='${i}' y='0' width='1' height='18' fill='#000'/>`;
+  out+="</svg>";
+  return out;
+}
+</script>
+
+<!-- アクセス制御 -->
+<script>
+const ACCESS_PASSWORD = "Shima-Order-Only";
+
+function checkAccessSession(){
+  try{
+    return sessionStorage.getItem("order_app_access") === "ok";
+  }catch(e){
+    return false;
+  }
+}
+function setAccessSessionOk(){
+  try{
+    sessionStorage.setItem("order_app_access","ok");
+  }catch(e){}
+}
+function initAccessGate(){
+  const overlay = document.getElementById("accessOverlay");
+  if(!overlay) return;
+
+  if(checkAccessSession()){
+    overlay.classList.add("hidden");
+    return;
+  }
+
+  const input = document.getElementById("accessPassword");
+  const btn   = document.getElementById("accessButton");
+  const err   = document.getElementById("accessError");
+
+  function tryLogin(){
+    const val = (input.value || "").trim();
+    if(!val){
+      err.textContent = "パスワードを入力してください。";
+      return;
+    }
+    if(val === ACCESS_PASSWORD){
+      setAccessSessionOk();
+      overlay.classList.add("hidden");
+    }else{
+      err.textContent = "パスワードが違います。";
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  btn.addEventListener("click", tryLogin);
+  input.addEventListener("keydown", e => {
+    if(e.key === "Enter") tryLogin();
+  });
+
+  setTimeout(() => input.focus(), 50);
+}
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", initAccessGate);
+}else{
+  initAccessGate();
+}
+</script>
+
+<!-- 画像拡大モーダル -->
+<div id="imgModal" class="image-modal">
+  <div class="image-modal-panel">
+    <button type="button"
+            class="image-modal-close"
+            aria-label="閉じる">×</button>
+
+    <div class="image-modal-main">
+      <div class="image-modal-photo">
+        <img id="imgModalImg" src="" alt="">
+      </div>
+
+      <div class="image-modal-info">
+        <div id="imgModalTitle" class="image-modal-title"></div>
+        <div id="imgModalPrice" class="image-modal-price"></div>
+        <div id="imgModalJan"   class="image-modal-jan"></div>
+
+        <div class="image-modal-actions">
+          <input id="modalQty"
+                 type="number"
+                 class="modal-qtyinput"
+                 min="0"
+                 step="1"
+                 placeholder="数量">
+          <button id="modalAddBtn"
+                  type="button"
+                  class="btn modal-addbtn">
+            カートに追加
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
