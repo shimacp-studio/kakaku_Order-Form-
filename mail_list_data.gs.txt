@@ -1,0 +1,14 @@
+﻿// mail_list.json の中身をコピペ（配列かオブジェクト配列だと思う）
+
+const MAIL_LIST_DATA = [
+  
+  {
+    "name": "tamaki_jun",
+    "email": "shimacorpo0157@gmail.com"
+  }
+
+];
+
+function getMailListData() {
+  return MAIL_LIST_DATA;
+}
