@@ -1,5 +1,4 @@
-﻿const PRODUCTS_DATA = [
-  
+[
   {
     "brand": "GA",
     "jan": "4995770026908",
@@ -1151,9 +1150,6 @@
     "category": "養生用品"
   }
 ]
-// 外から呼ぶ用
-function getProductsData() {
-  Logger.log('PRODUCTS_DATA length = ' + PRODUCTS_DATA.length);
-  return PRODUCTS_DATA;
-}
+
+
 
