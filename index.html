@@ -1,9 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>シマコーポレーション 発注カタログ</title>
+<title>シマコーポレーション<br>発注カタログ</title>
 <style>
 :root {
   --ink:#0f172a;--muted:#64748b;--line:#e5e7eb;
@@ -1997,9 +1997,9 @@ main{
   font-size:14px;
   z-index:50;
 }
-.autolist:empty {
-  border: 0;
-}
+.autolist:empty {        
+ border: 0;        
+ }  
 .autolist div {
   padding:6px 10px;
   cursor:pointer;
@@ -2007,6 +2007,203 @@ main{
 .autolist div:hover {
   background:#e0edff;
 }
+
+/* === ★ 最終上書き：カートアイコン＆スクロール帯を強める ================= */
+
+/* カートアイコン：丸背景・枠線を完全OFF＋サイズUP */
+header .actions .cart-toggle{
+  padding:0 !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* カートアイコン：少し小さめにして印刷ボタンの場所を確保 */
+header .actions .cart-toggle img{
+  width:44px !important;
+  height:44px !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  display:block;
+}
+
+
+/* ===== スクロール帯：白・大きく・太く・主張強め ===== */
+.order-marquee{
+  background:#020617 !important;
+  border-bottom:1px solid #111827 !important;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.order-marquee-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:14px 32px !important;        /* 高さアップ */
+  position:relative;
+}
+
+.order-marquee-track{
+  display:inline-flex;
+  align-items:center;
+  gap:48px;                             /* コメントの間隔を広めに */
+  animation:orderMarquee 22s linear infinite;
+}
+
+/* バッジは少し大きく・明るく */
+.order-marquee-badge{
+  padding:4px 16px;
+  border-radius:999px;
+  border:1px solid #64748b;
+  font-size:12px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#f9fafb;
+}
+
+/* メインメッセージ：白・大きく・太文字 */
+.order-marquee-text{
+  font-size:16px !important;
+  font-weight:800 !important;
+  color:#ffffff !important;
+  letter-spacing:.04em;
+}
+
+/* 区切りドットも少し大きく＆明るめに */
+.order-marquee-dot{
+  font-size:20px !important;
+  color:#e5e7eb !important;
+}
+
+/* 印刷のときは非表示のまま維持 */
+@media print{
+  .order-marquee{ display:none !important; }
+}
+
+/* 右下の「ページトップへ」ボタン（リデザイン） */
+.back-to-top{
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  background: radial-gradient(circle at 30% 0, #38bdf8 0, #0f172a 55%, #020617 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 18px 45px rgba(0,0,0,.85);
+  cursor: pointer;
+  z-index: 70;
+
+  /* 初期は非表示（スクロールしたら出す） */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+/* スクロール量に応じて付与するクラス */
+.back-to-top.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* 矢印アイコン */
+.back-to-top::before{
+  content: "↑";
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* 下に「TOP」のラベルを薄めに */
+.back-to-top::after{
+  content: "TOP";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+/* === SP専用：発注画面まわりのグレー背景を全部消す ======================= */
+@media (max-width:640px){
+
+  /* ページ全体の背景をまっ黒ネイビーに固定 */
+  html,
+  body{
+    background: #020617 !important;
+  }
+
+  /* カタログ表示中も同じ色で */
+  body.catalog-open{
+    background: #020617 !important;
+  }
+
+  /* 発注エリア（main）の台紙も同じトーンに */
+  main{
+    background: radial-gradient(circle at top,
+      #020617 0,
+      #020617 55%,
+      #020617 100%
+    ) !important;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.85) !important;
+    border-radius: 28px;
+  }
+}
+
+/* === SP微調整：ヘッダー幅そろえ＋メタ入力ボックス ======================= */
+@media (max-width:640px){
+
+  /* 発注画面全体のマージンを少しだけ上に寄せる程度に */
+  main{
+    margin: 0 auto 24px !important;   /* ← ここを -8px から 0 に戻すイメージ */
+    padding: 12px 8px 24px !important;
+  }
+
+  /* ② 「シマコーポレーション発注カタログ」を検索ボックスと左右そろえる */
+  header:not(.top-header) .wrap{
+    align-items: stretch;     /* 子要素を横幅いっぱいに */
+  }
+  header:not(.top-header) .brand{
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;  /* 中身はセンター */
+  }
+  .header-row{
+    width: 100%;              /* 検索＋カートも同じ幅に */
+  }
+
+  /* ③ パートナー企業／現場名：位置と余白を「いい感じ」に */
+  .order-meta{
+    margin: 12px 0 25px !important;   /* 上：帯との間 / 下：商品との間 */
+    padding-inline: 12px;
+  }
+  .meta-input{
+    background: #f3f4f6;         /* 薄いグレー */
+    border: 1px solid #d1d5db;
+    color: #0f172a;
+  }
+  .meta-input::placeholder{
+    color: #6b7280;
+  }
+}
+
+  
+
 </style>
 </head>
 <body>
@@ -2024,28 +2221,32 @@ main{
     <div id="accessError" class="access-error"></div>
   </div>
 </div>
-
-<!-- TOPページ -->
+<!-- === TOPページ（Wix風ヒーロー） === -->
 <div id="topPage">
   <div class="top-shell">
+    <!-- 上部バー -->
     <header class="top-header">
       <div class="top-brand">
-        <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/shima_owl.jpg" alt="シマコーポレーション ロゴ" class="top-logo">
+        <img src="img/shima_owl.jpg" alt="シマコーポレーション ロゴ" class="top-logo">
         <span class="top-brand-text">シマコーポレーション<br>発注カタログ</span>
       </div>
       <div class="top-ship">現場からカンタン Web 発注</div>
     </header>
 
-    <div class="top-hero-row">
-      <div class="top-hero">
-        <p class="top-hero-copy">
-          必要な消耗品を、<br>
-          いつもの現場からまとめて注文。<br>
-          <span class="top-hero-sub">
-            スマホひとつで、発注漏れゼロへ。
-          </span>
-        </p>
+   <!-- ヒーロー＋フォーム -->
+<div class="top-hero-row">
+  <div class="top-hero">
+    <!-- 左側コピー -->
+    <p class="top-hero-copy">
+      必要な消耗品を、<br>
+      いつもの現場からまとめて注文。<br>
+      <span class="top-hero-sub">
+        スマホひとつで、発注漏れゼロへ。
+      </span>
+    </p>
 
+
+        <!-- 右側フォームカード -->
         <div class="top-card">
           <p class="top-eyebrow">ORDER FORM</p>
           <h1>発注情報を入力して<br>カタログを開いてください</h1>
@@ -2055,8 +2256,9 @@ main{
 
           <div class="top-form">
             <div class="autowrap">
-              <input id="buyerName"   class="top-input" placeholder="発注者名" autocomplete="off">
+              <input id="buyerName"   class="top-input" placeholder="発注者名"       autocomplete="off">
             </div>
+           
             <button id="startBtn" class="btn top-start-btn">
               発注カタログを開く
             </button>
@@ -2067,15 +2269,18 @@ main{
   </div><!-- /.top-shell -->
 </div><!-- /#topPage -->
 
-<!-- 発注カタログ画面 -->
+<!-- === 発注カタログ画面 === -->
 <header>
   <div class="wrap">
+    <!-- 1行目：ロゴ＋タイトル -->
     <div class="brand">
-      <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/shima_owl.jpg" alt="logo">
+      <img src="img/shima_owl.jpg" alt="logo">
       <h1>シマコーポレーション 発注カタログ</h1>
     </div>
 
+    <!-- 2行目：検索＋カート＋印刷をまとめた行 -->
     <div class="header-row">
+      <!-- 検索ボックス -->
       <div class="search-wrap">
         <div class="search-box">
           <span class="search-icon">🔍</span>
@@ -2086,18 +2291,20 @@ main{
         </div>
       </div>
 
+      <!-- カート＋印刷 -->
       <div class="actions">
         <button id="cartToggle" class="cart-toggle" type="button">
-          <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/KART.jpg" alt="カート">
+          <img src="img/KART.jpg" alt="カート">
           <span id="cartBadge" class="cart-badge is-empty">0</span>
         </button>
-        <button class="btn print-btn" onclick="window.print()">印刷（A4縦）</button>
+        <!-- ★ クラス print-btn を追加 -->
+  <button class="btn print-btn" onclick="window.print()">印刷（A4縦）</button>
       </div>
     </div><!-- /.header-row -->
   </div><!-- /.wrap -->
 </header>
 
-<!-- スクロール帯 -->
+<!-- ★★★ スクロールするコメント帯 ★★★ -->
 <div class="order-marquee">
   <div class="order-marquee-inner">
     <div class="order-marquee-track">
@@ -2114,6 +2321,7 @@ main{
         カタログから選ぶだけ。レジ前での発注メモはもう不要です。
       </span>
 
+      <!-- ループ用にもう一周分コピー -->
       <span class="order-marquee-badge">SHIMA ORDER MESSAGE</span>
       <span class="order-marquee-text">
         一つひとつの現場に、ちょうどいい消耗品を。
@@ -2129,8 +2337,10 @@ main{
     </div>
   </div>
 </div>
+<!-- ★★★ ここまでスクロール帯 ★★★ -->
 
 <main>
+  <!-- ★ 発注画面用：パートナー企業／現場名 -->
   <section class="order-meta">
     <div class="order-meta-inner">
       <div class="meta-field">
@@ -2146,24 +2356,29 @@ main{
     </div>
   </section>
 
+  <section>
+    <div id="grid" class="grid"></div>
   </section>
-</main>
 
 <aside class="cart">
-    <h2>カート</h2>
-    <div id="cartlist" class="cartlist"></div>
-    <div class="cart-summary">
-      <strong>小計：</strong><span id="subtotal">0円</span><br>
-      <strong>値引き合計：</strong><span id="discountTotal">0円</span><br>
-      <strong>税込：</strong><span id="total">0円</span>
-    </div>
-    <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
-  </aside>
+  <h2>カート</h2>
+  <div id="cartlist" class="cartlist"></div>
+  <div>
+    <strong>小計：</strong><span id="subtotal">0円</span><br>
+    <strong>値引き合計：</strong><span id="discountTotal">0円</span><br>
+    <strong>税込：</strong><span id="total">0円</span>
+  </div>
+  
+  <button id="orderBtn" class="btn">この内容で発注（メール送信）</button>
+</aside>
+ 
+</main>
 
-<button id="backToTop" class="back-to-top" type="button" aria-label="ページの先頭へ"></button>
+  <!-- ページの一番上へ戻るボタン -->
+  <button id="backToTop" class="back-to-top" type="button" aria-label="ページの先頭へ"></button>
 
 <div class="header-print">
-  <img src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/shima_owl.jpg" alt="logo">
+  <img src="img/shima_owl.jpg" alt="logo">
   <h2>シマコーポレーション 発注カタログ</h2>
 </div>
 <div class="footer-print">
@@ -2171,7 +2386,7 @@ main{
 </div>
 
 <script>
-// === オートコンプリート（履歴） ===
+// === オートコンプリート機能（履歴のみ） ===
 function enableAutoComplete(inputId){
   const input = document.getElementById(inputId);
   const list = document.createElement("div");
@@ -2197,6 +2412,7 @@ function enableAutoComplete(inputId){
     if (!list.contains(e.target) && e.target !== input) list.innerHTML = "";
   });
 }
+
 function showList(input, list, saved) {
   const val = input.value.trim();
   list.innerHTML = "";
@@ -2214,12 +2430,10 @@ function showList(input, list, saved) {
 
 console.log("✅ script loaded");
 
-// ★ junさんの Web Apps の URL
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw369zq8dvrIqgAuw35KAn6i2nsyQxmz6lFw8J7EpEdOlFa--QT89nPySjm7OGXf3skAA/exec";
-
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxL1Q3E_U2fI07AU56vABLQzbgxuL2BdwnYhoVaGNzNkSaBo4j-yQuuzxuIOopOQIu9Rw/exec";
+                      
 let cart = [];
 
-// TOP → カタログ開始
 function startFlow(){
   const buyerInput = document.getElementById("buyerName");
   const buyer = (buyerInput?.value || "").trim();
@@ -2229,10 +2443,12 @@ function startFlow(){
     return;
   }
 
+  // 入力値を保存（履歴用）
   sessionStorage.setItem("buyerName",   buyer);
   sessionStorage.setItem("partnerName", (document.getElementById("partnerName")?.value || "").trim());
   sessionStorage.setItem("siteName",    (document.getElementById("siteName")?.value || "").trim());
 
+  // スマホのキーボードを閉じる
   if (document.activeElement && typeof document.activeElement.blur === "function"){
     document.activeElement.blur();
   }
@@ -2240,8 +2456,10 @@ function startFlow(){
   const topPage = document.getElementById("topPage");
   const mainEl  = document.querySelector("main");
 
+  // ★ カタログ表示モードON（CSS側で header/main を表示させる）
   document.body.classList.add("catalog-open");
 
+  // TOPをフェードアウトして隠す
   if (topPage){
     topPage.style.opacity = "0";
     topPage.style.pointerEvents = "none";
@@ -2252,6 +2470,7 @@ function startFlow(){
     }, 350);
   }
 
+  // 念のため main 側も強制表示
   if (mainEl){
     mainEl.style.display    = "block";
     mainEl.style.visibility = "visible";
@@ -2260,31 +2479,37 @@ function startFlow(){
     mainEl.style.zIndex     = "1";
   }
 
+  // 画面を一番上へ
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
+  // 商品グリッド描画
   try {
     boot();
   } catch(e){
     console.error("boot() error:", e);
-    alert("商品描画でエラーが発生しました。");
+    alert("商品描画でエラーが発生しました。コンソールをご確認ください。");
   }
 }
 
-// スタートボタン
+
+
 function bindStartButton(){
   const btn = document.getElementById("startBtn");
   if (btn) btn.addEventListener("click", startFlow);
+  // Enterでも開始
   ["buyerName","partnerName","siteName"].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.addEventListener("keydown", ev => { if (ev.key === "Enter") startFlow(); });
   });
 }
+
+// 念のため、クリック委任で拾う保険
 document.addEventListener("click", ev=>{
   const hit = ev.target.closest?.("#startBtn");
   if (hit) startFlow();
 });
 
-// 擬似要素クリック対策
+// ヒーロー疑似要素がクリックをブロックしないよう強制
 (function(){
   const style = document.createElement("style");
   style.textContent = `
@@ -2294,27 +2519,33 @@ document.addEventListener("click", ev=>{
   document.head.appendChild(style);
 })();
 
-/* ===== 起動時セットアップ ===== */
+/* ====== 起動時セットアップ ====== */
 window.addEventListener("DOMContentLoaded", () => {
   console.log("✅ DOM Ready");
 
+  // 入力欄を毎回リセット
   ["buyerName","partnerName","siteName"].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
 
+  // オートコンプリート
   ["buyerName","partnerName","siteName"].forEach(id=>{
     try { enableAutoComplete(id); } catch(_) {}
   });
 
+  // スタートボタン/Enter バインド
   bindStartButton();
 
+  // メール送信ボタン
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) orderBtn.onclick = sendOrder;
 
+    // カートトグル（開く専用）＋ 画面クリックで閉じる
   const cartToggle = document.getElementById("cartToggle");
   const cartPanel  = document.querySelector(".cart");
   if (cartToggle && cartPanel){
+    // アイコンクリック：カートを開くだけ
     cartToggle.addEventListener("click", (ev) => {
       ev.stopPropagation();
       if (!cart.length){ 
@@ -2324,6 +2555,8 @@ window.addEventListener("DOMContentLoaded", () => {
       cartPanel.classList.add("open");
     });
 
+    // 発注画面の適当な場所クリックで閉じる（カート内とアイコンは除外）
+    // ★ click → mousedown に変更して、数量変更時に閉じないようにする
     document.addEventListener("mousedown", (ev) => {
       if (!cartPanel.classList.contains("open")) return;
       const target = ev.target;
@@ -2332,11 +2565,15 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
+// ★ ここから検索ボックスのイベントを追加 ↓↓↓
   const searchInput = document.getElementById('productSearch');
   const searchBtn   = document.getElementById('searchBtn');
 
   if (searchInput){
+    // 入力するたびに絞り込み
     searchInput.addEventListener('input', applySearchFilter);
+    // Enterキーでも検索
     searchInput.addEventListener('keydown', ev => {
       if (ev.key === 'Enter') applySearchFilter();
     });
@@ -2344,9 +2581,10 @@ window.addEventListener("DOMContentLoaded", () => {
   if (searchBtn){
     searchBtn.addEventListener('click', applySearchFilter);
   }
+  
 });
 
-/* ===== 画像拡大モーダル ===== */
+/* ===== 商品画像タップで拡大表示 ===== */
 document.addEventListener('DOMContentLoaded', () => {
   const modal      = document.getElementById('imgModal');
   const modalImg   = document.getElementById('imgModalImg');
@@ -2358,6 +2596,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!modal || !modalImg) return;
 
+  // 画像をタップしたとき
   document.addEventListener('click', e => {
     const img = e.target.closest('.product-img');
     if (img){
@@ -2379,10 +2618,14 @@ document.addEventListener('DOMContentLoaded', () => {
           modalPrice.textContent = "";
         }
       }
-      if (modalQty){
+
+　　      if (modalQty){
+        // 自動フォーカスはやめて、ユーザーがタップしたときだけキーボードを出す
         modalQty.value = "";
       }
 
+
+      // モーダルに商品情報を覚えさせる
       modal.dataset.jan   = jan;
       modal.dataset.name  = name;
       modal.dataset.price = String(price || 0);
@@ -2391,15 +2634,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // オーバーレイ or ×ボタンで閉じる
     if (e.target === modal || e.target.closest('.image-modal-close')){
       modal.classList.remove('open');
     }
   });
 
+  // 「カートに追加」ボタン
   if (modalAdd){
     modalAdd.addEventListener('click', addToCartFromModal);
   }
 
+  // ESCキーでも閉じる
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape'){
       modal.classList.remove('open');
@@ -2407,7 +2653,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* ===== カート表示更新 ===== */
+
+
+  
+/* ====== カート表示更新 ====== */
 function updateCart(){
   const list  = document.getElementById('cartlist');
   const badge = document.getElementById('cartBadge');
@@ -2440,7 +2689,7 @@ function updateCart(){
     const regular  = (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null;
     const discount = (typeof prod.discount_ex_tax === "number")       ? prod.discount_ex_tax       : null;
 
-    let discountLine = "";
+       let discountLine = "";
     if (regular != null && discount != null){
       const abs  = Math.abs(discount);
       const sign = discount < 0 ? "▲" : "＋";
@@ -2449,6 +2698,7 @@ function updateCart(){
            <div class="cartitem-regular">通常：￥${regular.toLocaleString()}</div>
            <div class="cartitem-discount-amt">値引き：${sign}${abs.toLocaleString()}円</div>
          </div>`;
+      // 合計値引き（金額×数量）
       discountTotal += discount * it.qty;
     }
 
@@ -2474,11 +2724,13 @@ function updateCart(){
     `);
   });
 
+  // 小計・税込
   document.getElementById('subtotal').textContent =
     subtotal.toLocaleString() + '円';
   document.getElementById('total').textContent =
     Math.round(subtotal * 1.1).toLocaleString() + '円';
 
+  // 値引き合計
   const discSpan = document.getElementById('discountTotal');
   if (discSpan){
     if (discountTotal){
@@ -2490,6 +2742,7 @@ function updateCart(){
     }
   }
 
+  // バッジ（件数）
   if (badge){
     const totalQty = cart.reduce((sum, it) => sum + (Number(it.qty) || 0), 0);
     if (totalQty > 0){
@@ -2507,29 +2760,28 @@ function changeCartQty(index, delta){
   if (!item) return;
   let next = Number(item.qty || 0) + delta;
   if (next <= 0){
+    // 0 以下になったら削除
     removeItem(index);
     return;
   }
   item.qty = next;
   updateCart();
 }
+
 function changeCartQtyDirect(index, value){
   const item = cart[index];
   if (!item) return;
   let next = Number(value);
   if (!next || next <= 0){
+    // 0 や空欄になったら削除
     removeItem(index);
     return;
   }
   item.qty = next;
   updateCart();
 }
-function removeItem(i){
-  cart.splice(i,1);
-  updateCart();
-}
 
-/* 検索フィルター */
+/* ====== 商品検索フィルター（名前・JAN両方） ====== */
 function applySearchFilter(){
   const input = document.getElementById('productSearch');
   const grid  = document.getElementById('grid');
@@ -2539,6 +2791,7 @@ function applySearchFilter(){
   const cards = grid.querySelectorAll('.card');
 
   if (!q){
+    // 検索文字列が空なら全部表示
     cards.forEach(c => c.style.display = '');
     return;
   }
@@ -2549,20 +2802,23 @@ function applySearchFilter(){
   });
 }
 
-/* ===== 商品描画（★GASから取得） ===== */
+  
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
+
+/* ====== 商品描画 ====== */
 async function boot(){
-  const url = GAS_ENDPOINT + "?mode=products";
-  const PRODUCTS = await fetch(url, { cache: "no-store" })
-    .then(r => {
-      if (!r.ok) throw new Error("商品データの取得に失敗しました");
-      return r.json();
-    })
+  const PRODUCTS = await fetch('products.json', { cache: "no-store" })
+    .then(r => { if (!r.ok) throw new Error("products.jsonが読み込めませんでした"); return r.json(); })
     .catch(err => {
       console.error(err);
-      alert("⚠️ 商品データの読み込みに失敗しました。管理者にご連絡ください。");
+      alert("⚠️ 商品データの読み込みに失敗しました。products.jsonの配置を確認してください。");
       return [];
     });
 
+  // JAN -> 商品情報 のマップ（カート側で値引き計算に使う）
   window.PRODUCTS_BY_JAN = {};
   PRODUCTS.forEach(p => {
     const key = String(p.jan ?? "");
@@ -2570,13 +2826,17 @@ async function boot(){
   });
 
   const grid = document.getElementById('grid');
-  grid.innerHTML = "";
+  grid.innerHTML = ""; // クリア
 
   PRODUCTS.forEach(p => {
     const jan   = String(p.jan ?? "");
     const name  = String(p.name ?? "");
+
+    // JSON の税抜価格を読む（なければ旧 price を見る）
     const price = Number(
-      p.price_ex_tax ?? p.price ?? 0
+      p.price_ex_tax ??   // 新JSON
+      p.price ??          // 旧JSON互換
+      0
     );
 
     const pack     = p.pack ?? "";
@@ -2586,6 +2846,7 @@ async function boot(){
     const packText    = pack || "-";
     const regularText = (regular != null) ? `￥${regular.toLocaleString()}` : "-";
 
+    // 値引き表示（▲1,680円 形式）
     let discountText = "-";
     if (discount != null){
       const abs  = Math.abs(discount);
@@ -2593,6 +2854,7 @@ async function boot(){
       discountText = `${sign}${abs.toLocaleString()}円`;
     }
 
+    // JAN 表示用
     const barcodeText = jan ? `JAN: ${jan}` : "";
     const barcodeSvg  = jan ? (renderBarcode(jan) || "") : "";
 
@@ -2600,13 +2862,13 @@ async function boot(){
       <div class="card">
         <div class="thumb">
           <img
-            src="https://shimacp-studio.github.io/kakaku_Order-Form-/img/${jan}.jpg"
+            src="img/${jan}.jpg"
             alt="${name}"
             class="product-img"
             data-name="${name}"
             data-jan="${jan}"
             data-price="${price}"
-            onerror="this.onerror=null;this.src='https://shimacp-studio.github.io/kakaku_Order-Form-/img/noimage.jpg'">
+            onerror="this.onerror=null;this.src='img/noimage.jpg'">
         </div>
 
         <div class="body">
@@ -2617,18 +2879,21 @@ async function boot(){
             <span class="price-sub">(税抜 ￥${price.toLocaleString()})</span>
           </div>
 
+          <!-- ここが追加の商品情報 -->
           <div class="meta">
             <div>入数：${packText}</div>
             <div>通常価格(税抜)${regularText}</div>
             <div>値引き(税抜)${discountText}</div>
           </div>
 
+          <!-- JAN 表示＋バーコード -->
           <div class="barcode">
             <span class="barcode-text">${barcodeText}</span>
             <span class="barcode-svg">${barcodeSvg}</span>
           </div>
         </div>
 
+        <!-- 印刷専用数量欄 -->
         <div class="qty-print print-only" style="display:none">
           <label style="margin-right:4px;">数量</label>
           <input id="print-qty-${jan}" type="text" inputmode="numeric"
@@ -2648,7 +2913,9 @@ async function boot(){
   });
 }
 
-/* カート操作 */
+
+
+/* ====== カート操作 ====== */
 function upsertCart(p, q){
   const ex = cart.find(x => x.jan === p.jan);
   const qty = Number(q);
@@ -2661,7 +2928,9 @@ function upsertCart(p, q){
   }
   updateCart();
 }
+
 function addToCart(p){
+  // スマホで数量入力後の自動ズームを解除するため、フォーカスを外す
   try{
     if (document.activeElement && typeof document.activeElement.blur === 'function'){
       document.activeElement.blur();
@@ -2675,6 +2944,8 @@ function addToCart(p){
   upsertCart(p, q);
   if (input) input.value = '';
 }
+
+/* モーダルからカートに追加 */
 function addToCartFromModal(){
   const modal = document.getElementById('imgModal');
   const input = document.getElementById('modalQty');
@@ -2687,6 +2958,7 @@ function addToCartFromModal(){
 
   if (!jan || !q || q <= 0) return;
 
+  // iOS で拡大したままにならないよう、フォーカスを外す
   try{
     input.blur();
     if (document.activeElement && typeof document.activeElement.blur === 'function'){
@@ -2699,7 +2971,8 @@ function addToCartFromModal(){
   modal.classList.remove('open');
 }
 
-/* 送信 */
+
+/* ====== 送信 ====== */
 async function sendOrder(){
   if (!cart.length){
     alert('カートが空です');
@@ -2719,18 +2992,22 @@ async function sendOrder(){
   const partner = (partnerEl?.value || "").trim();
   const site    = (siteEl?.value    || "").trim();
 
-  const payload = {
+   const payload = {
     buyerName:   buyer,
     partnerName: partner,
     siteName:    site,
     items: cart.map(c => {
       const prodMap = window.PRODUCTS_BY_JAN || {};
       const prod    = prodMap[String(c.jan)] || {};
+
       return {
         jan:   c.jan,
         name:  c.name,
+        // カートで使っている税抜販売価格
         price_ex_tax: c.price,
         qty:   c.qty,
+
+        // メール表示用の追加情報（あれば）
         pack: prod.pack ?? "",
         regular_price_ex_tax:
           (typeof prod.regular_price_ex_tax === "number") ? prod.regular_price_ex_tax : null,
@@ -2739,6 +3016,7 @@ async function sendOrder(){
       };
     })
   };
+
 
   const btn = document.getElementById('orderBtn');
   if (btn){
@@ -2756,29 +3034,36 @@ async function sendOrder(){
 
     alert('✅ 発注を受け付けました（メール送信済み）');
 
+    // カートをクリア
     cart = [];
     updateCart();
 
+    // TOPに戻す
     const topPage = document.getElementById('topPage');
     const mainEl  = document.querySelector('main');
     if (topPage && mainEl){
+      // ★ カタログ表示モードOFF → ヘッダー＆mainをCSS側で非表示に
       document.body.classList.remove('catalog-open');
 
+      // 発注画面を隠す
       mainEl.style.display    = 'none';
       mainEl.style.opacity    = '0';
       mainEl.style.visibility = 'hidden';
       mainEl.style.zIndex     = '0';
 
+      // TOPを再表示
       topPage.style.display    = 'flex';
       topPage.style.opacity    = '1';
       topPage.style.visibility = 'visible';
       topPage.style.zIndex     = '9999';
 
+      // 入力欄をリセット
       ['buyerName','partnerName','siteName'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
 
+      // 画面を一番上へ
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
   }catch(e){
@@ -2791,11 +3076,13 @@ async function sendOrder(){
   }
 }
 
-// ページトップへボタン
+
+// ===== ページトップへ戻るボタン =====
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('backToTop');
   if (!btn) return;
 
+  // スクロール位置に応じて表示/非表示
   const toggleVisibility = () => {
     if (window.scrollY > 200) {
       btn.classList.add('show');
@@ -2807,12 +3094,15 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', toggleVisibility, { passive: true });
   toggleVisibility();
 
+  // クリックで上部へスムーススクロール
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   });
 });
 
-// バーコード
+
+
+/* ====== バーコード ====== */
 function ean13Pattern(d){
   const L=["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"],
         G=["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"],
@@ -2829,6 +3119,7 @@ function ean13Pattern(d){
   for(let i=0;i<6;i++){ bits+=R[right[i]]; }
   return bits+"101";
 }
+
 function renderBarcode(jan){
   const bits=ean13Pattern(jan);
   if(!bits) return "";
@@ -2837,68 +3128,75 @@ function renderBarcode(jan){
   out+="</svg>";
   return out;
 }
-</script>
+</script>  <!-- ★ ここで最初の script を閉じる！ -->
 
-<!-- アクセス制御 -->
+
+<!-- アクセス制御用スクリプト -->
 <script>
-const ACCESS_PASSWORD = "Shima-Order-Only";
+  // ===== アクセス制御 =========================================
+  const ACCESS_PASSWORD = "Shima-Order-Only";  // ★ここを好きなパスワードに変えてOK
 
-function checkAccessSession(){
-  try{
-    return sessionStorage.getItem("order_app_access") === "ok";
-  }catch(e){
-    return false;
+  function checkAccessSession(){
+    try{
+      return sessionStorage.getItem("order_app_access") === "ok";
+    }catch(e){
+      return false;
+    }
   }
-}
-function setAccessSessionOk(){
-  try{
-    sessionStorage.setItem("order_app_access","ok");
-  }catch(e){}
-}
-function initAccessGate(){
-  const overlay = document.getElementById("accessOverlay");
-  if(!overlay) return;
-
-  if(checkAccessSession()){
-    overlay.classList.add("hidden");
-    return;
+  function setAccessSessionOk(){
+    try{
+      sessionStorage.setItem("order_app_access","ok");
+    }catch(e){}
   }
 
-  const input = document.getElementById("accessPassword");
-  const btn   = document.getElementById("accessButton");
-  const err   = document.getElementById("accessError");
+  function initAccessGate(){
+    const overlay = document.getElementById("accessOverlay");
+    if(!overlay) return;
 
-  function tryLogin(){
-    const val = (input.value || "").trim();
-    if(!val){
-      err.textContent = "パスワードを入力してください。";
+    // すでにログイン済みセッションなら非表示
+    if(checkAccessSession()){
+      overlay.classList.add("hidden");
       return;
     }
-    if(val === ACCESS_PASSWORD){
-      setAccessSessionOk();
-      overlay.classList.add("hidden");
-    }else{
-      err.textContent = "パスワードが違います。";
-      input.value = "";
-      input.focus();
+
+    const input = document.getElementById("accessPassword");
+    const btn   = document.getElementById("accessButton");
+    const err   = document.getElementById("accessError");
+
+    function tryLogin(){
+      const val = (input.value || "").trim();
+      if(!val){
+        err.textContent = "パスワードを入力してください。";
+        return;
+      }
+      if(val === ACCESS_PASSWORD){
+        setAccessSessionOk();
+        overlay.classList.add("hidden");
+      }else{
+        err.textContent = "パスワードが違います。";
+        input.value = "";
+        input.focus();
+      }
     }
+
+    btn.addEventListener("click", tryLogin);
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") tryLogin();
+    });
+
+    // 初期フォーカス
+    setTimeout(() => input.focus(), 50);
   }
 
-  btn.addEventListener("click", tryLogin);
-  input.addEventListener("keydown", e => {
-    if(e.key === "Enter") tryLogin();
-  });
-
-  setTimeout(() => input.focus(), 50);
-}
-if(document.readyState === "loading"){
-  document.addEventListener("DOMContentLoaded", initAccessGate);
-}else{
-  initAccessGate();
-}
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", initAccessGate);
+  }else{
+    initAccessGate();
+  }
 </script>
 
-<!-- 画像拡大モーダル -->
+
+<!-- 商品画像拡大用モーダル（画像＋商品情報＋カート） -->
 <div id="imgModal" class="image-modal">
   <div class="image-modal-panel">
     <button type="button"
@@ -2935,3 +3233,11 @@ if(document.readyState === "loading"){
 
 </body>
 </html>
+
+
+
+
+
+
+
+
